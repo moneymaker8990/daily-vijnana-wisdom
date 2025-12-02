@@ -41,7 +41,10 @@ export function ShareButton({ text, title, source, className = '', variant = 'ic
       try {
         await navigator.share({
           title: title,
-          text: shareText,
+          text: source 
+            ? `"${text}"\n\n— ${source}\n\n🧘 Explore more wisdom, meditate with the timer, and start your 365-day journey:`
+            : `"${text}"\n\n🧘 Daily Vijnana Wisdom - Ancient teachings for modern seekers:`,
+          url: shareUrl,
         });
       } catch (err) {
         if ((err as Error).name !== 'AbortError') {
