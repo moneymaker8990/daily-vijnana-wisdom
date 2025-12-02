@@ -59,6 +59,7 @@ function TraditionCard({
             text={text}
             title={title}
             source={title}
+            dayNumber={dayNumber}
           />
         </div>
       </div>
@@ -127,6 +128,7 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
             title={`Day ${dayNumber} - ${theme}`}
             variant="full"
             className="inline-flex"
+            dayNumber={dayNumber}
           />
         </div>
       </section>
@@ -287,6 +289,7 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
               text={entry.prayer}
               title={`Day ${dayNumber} Prayer`}
               source="Daily Vijnana Wisdom"
+              dayNumber={dayNumber}
             />
           </div>
         </div>

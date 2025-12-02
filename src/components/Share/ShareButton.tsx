@@ -6,15 +6,20 @@ type ShareButtonProps = {
   source?: string;
   className?: string;
   variant?: 'icon' | 'full';
+  dayNumber?: number;
 };
 
-export function ShareButton({ text, title, source, className = '', variant = 'icon' }: ShareButtonProps) {
+export function ShareButton({ text, title, source, className = '', variant = 'icon', dayNumber }: ShareButtonProps) {
   const [showCopied, setShowCopied] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
+  // Get the app URL for sharing
+  const appUrl = typeof window !== 'undefined' ? window.location.origin : '';
+  const shareUrl = dayNumber ? `${appUrl}?day=${dayNumber}` : appUrl;
+  
   const shareText = source 
-    ? `"${text}"\n\n— ${source}\n\nFrom Daily Vijnana Wisdom`
-    : `"${text}"\n\nFrom Daily Vijnana Wisdom`;
+    ? `"${text}"\n\n— ${source}\n\n🧘 Explore more wisdom, meditate with the timer, and start your 365-day journey:\n${shareUrl}`
+    : `"${text}"\n\n🧘 Daily Vijnana Wisdom - Ancient teachings for modern seekers:\n${shareUrl}`;
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -45,8 +50,9 @@ export function ShareButton({ text, title, source, className = '', variant = 'ic
   };
 
   const shareToTwitter = () => {
-    const tweetText = encodeURIComponent(text.slice(0, 200) + (text.length > 200 ? '...' : ''));
-    window.open(`https://twitter.com/intent/tweet?text=${tweetText}`, '_blank');
+    const tweetText = text.slice(0, 180) + (text.length > 180 ? '...' : '');
+    const fullTweet = encodeURIComponent(`"${tweetText}" 🧘`);
+    window.open(`https://twitter.com/intent/tweet?text=${fullTweet}&url=${encodeURIComponent(shareUrl)}`, '_blank');
     setShowMenu(false);
   };
 
