@@ -77,7 +77,14 @@ export function useDailyEntry() {
         clearDayFromUrl();
       }
 
-      const e = await ds.getEntryByDay(dayNumber);
+      let e = await ds.getEntryByDay(dayNumber);
+      
+      // If requested day doesn't exist, fall back to day 1
+      if (!e) {
+        e = await ds.getEntryByDay(1);
+        dayNumber = 1;
+      }
+      
       if (e) {
         setEntry(e);
         setUserCurrentDay(actualCurrentDay);
@@ -94,17 +101,23 @@ export function useDailyEntry() {
     void init();
   }, []);
 
-  const goToDay = async (dayNumber: number) => {
+  const goToDay = async (day: number) => {
     const ds = getDataSource();
-    const e = await ds.getEntryByDay(dayNumber);
-    if (!e) return;
+    let e = await ds.getEntryByDay(day);
+    
+    // If requested day doesn't exist, stay on current entry
+    if (!e) {
+      console.warn(`Day ${day} not found`);
+      return;
+    }
+    
     setEntry(e);
     
     // If navigating beyond current progress, update progress
-    if (dayNumber > userCurrentDay) {
-      setUserCurrentDay(dayNumber);
+    if (day > userCurrentDay) {
+      setUserCurrentDay(day);
       saveUserState({
-        currentDay: dayNumber,
+        currentDay: day,
         lastVisited: new Date().toISOString(),
       });
     }

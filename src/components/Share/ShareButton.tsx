@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 type ShareButtonProps = {
   text: string;
@@ -12,6 +12,21 @@ type ShareButtonProps = {
 export function ShareButton({ text, title, source, className = '', variant = 'icon', dayNumber }: ShareButtonProps) {
   const [showCopied, setShowCopied] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    if (!showMenu) return;
+    
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setShowMenu(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showMenu]);
 
   // Get the app URL for sharing
   const appUrl = typeof window !== 'undefined' ? window.location.origin : '';
@@ -64,7 +79,7 @@ export function ShareButton({ text, title, source, className = '', variant = 'ic
 
   if (variant === 'full') {
     return (
-      <div className={`relative ${className}`}>
+      <div ref={menuRef} className={`relative ${className}`}>
         <button
           onClick={handleShare}
           className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white/60 hover:text-white/80 transition-all text-sm"
@@ -117,7 +132,7 @@ export function ShareButton({ text, title, source, className = '', variant = 'ic
   }
 
   return (
-    <div className={`relative inline-block ${className}`}>
+    <div ref={menuRef} className={`relative inline-block ${className}`}>
       <button
         onClick={handleShare}
         className="p-2 text-white/40 hover:text-white/70 transition-colors rounded-lg hover:bg-white/5"

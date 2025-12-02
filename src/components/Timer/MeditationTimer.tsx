@@ -226,14 +226,14 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
   }
 
   return (
-    <div className="mt-4 bg-gradient-to-br from-slate-900/80 to-indigo-950/80 backdrop-blur-xl rounded-2xl p-6 border border-white/10 animate-fadeIn">
+    <div className="relative mt-4 bg-gradient-to-br from-slate-900/80 to-indigo-950/80 backdrop-blur-xl rounded-2xl p-6 border border-white/10 animate-fadeIn">
       {/* Close button */}
       <button
         onClick={() => {
           setIsOpen(false);
           handleReset();
         }}
-        className="absolute top-3 right-3 text-white/40 hover:text-white/80 transition-colors"
+        className="absolute top-4 right-4 p-1 text-white/40 hover:text-white/80 transition-colors rounded-lg hover:bg-white/10"
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

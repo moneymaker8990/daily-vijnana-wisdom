@@ -3,6 +3,7 @@ type NavigationButtonsProps = {
   onNext: () => void;
   onToday: () => void;
   disablePrev?: boolean;
+  disableNext?: boolean;
 };
 
 export function NavigationButtons({
@@ -10,6 +11,7 @@ export function NavigationButtons({
   onNext,
   onToday,
   disablePrev,
+  disableNext,
 }: NavigationButtonsProps) {
   return (
     <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
@@ -31,7 +33,8 @@ export function NavigationButtons({
       <button
         type="button"
         onClick={onNext}
-        className="px-4 py-2.5 rounded-xl glass-button text-sm md:text-base text-white/90"
+        disabled={disableNext}
+        className="px-4 py-2.5 rounded-xl glass-button text-sm md:text-base text-white/90 disabled:opacity-40 disabled:cursor-not-allowed"
       >
         Next Day →
       </button>

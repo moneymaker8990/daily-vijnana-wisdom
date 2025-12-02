@@ -48,7 +48,7 @@ function TraditionCard({
         <h4 className="text-xs font-medium text-violet-300/80 uppercase tracking-wider">
           {title}
         </h4>
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
           <FavoriteButton
             dayNumber={dayNumber}
             source={title}
@@ -284,7 +284,7 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
       <section className="text-center py-6 border-y border-white/10 group">
         <div className="flex items-center justify-center gap-2 mb-2">
           <SectionHeader>Prayer</SectionHeader>
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="md:opacity-0 md:group-hover:opacity-100 transition-opacity">
             <ShareButton
               text={entry.prayer}
               title={`Day ${dayNumber} Prayer`}
@@ -317,6 +317,7 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
         onNext={onNext}
         onToday={onToday}
         disablePrev={dayNumber <= 1}
+        disableNext={dayNumber >= 365}
       />
     </div>
   );
