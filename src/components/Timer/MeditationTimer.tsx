@@ -13,8 +13,18 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
   const [timeLeft, setTimeLeft] = useState(suggestedMinutes * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  
+  // Store the actual end time for accurate tracking across sleep/wake
+  const endTimeRef = useRef<number | null>(null);
   const intervalRef = useRef<number | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
+
+  // Request notification permission on mount
+  useEffect(() => {
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+  }, []);
 
   // Play a gentle bell sound
   const playBell = useCallback(() => {
@@ -23,6 +33,12 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
         audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
       }
       const ctx = audioContextRef.current;
+      
+      // Resume context if suspended (required for mobile)
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
+      
       const oscillator = ctx.createOscillator();
       const gainNode = ctx.createGain();
       
@@ -42,28 +58,105 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
     }
   }, []);
 
-  // Timer logic
+  // Show notification (appears on lock screen)
+  const showNotification = useCallback(() => {
+    if ('Notification' in window && Notification.permission === 'granted') {
+      const notification = new Notification('Meditation Complete 🧘', {
+        body: `Your ${selectedMinutes} minute ${title} session is complete.`,
+        icon: '/icon.svg',
+        tag: 'meditation-timer',
+        requireInteraction: true, // Keeps notification visible until user interacts
+        vibrate: [200, 100, 200], // Vibration pattern
+      });
+      
+      notification.onclick = () => {
+        window.focus();
+        notification.close();
+      };
+    }
+  }, [selectedMinutes, title]);
+
+  // Complete the timer
+  const completeTimer = useCallback(() => {
+    setIsRunning(false);
+    setIsComplete(true);
+    setTimeLeft(0);
+    endTimeRef.current = null;
+    playBell();
+    showNotification();
+  }, [playBell, showNotification]);
+
+  // Calculate remaining time from end time
+  const updateTimeFromEndTime = useCallback(() => {
+    if (!endTimeRef.current) return;
+    
+    const now = Date.now();
+    const remaining = Math.max(0, Math.ceil((endTimeRef.current - now) / 1000));
+    
+    if (remaining <= 0) {
+      completeTimer();
+    } else {
+      setTimeLeft(remaining);
+    }
+  }, [completeTimer]);
+
+  // Timer tick - uses end time for accuracy
   useEffect(() => {
-    if (isRunning && timeLeft > 0) {
+    if (isRunning && endTimeRef.current) {
+      // Update immediately
+      updateTimeFromEndTime();
+      
+      // Then update every second
       intervalRef.current = window.setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            setIsRunning(false);
-            setIsComplete(true);
-            playBell();
-            return 0;
-          }
-          return prev - 1;
-        });
+        updateTimeFromEndTime();
       }, 1000);
     }
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
     };
-  }, [isRunning, playBell]);
+  }, [isRunning, updateTimeFromEndTime]);
+
+  // Handle visibility change - recalculate time when user returns
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && isRunning && endTimeRef.current) {
+        updateTimeFromEndTime();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Also handle window focus
+    const handleFocus = () => {
+      if (isRunning && endTimeRef.current) {
+        updateTimeFromEndTime();
+      }
+    };
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [isRunning, updateTimeFromEndTime]);
+
+  // Keep checking even when in background using a longer interval
+  useEffect(() => {
+    if (!isRunning || !endTimeRef.current) return;
+    
+    // Check every 5 seconds as a backup (less battery drain)
+    const backupInterval = setInterval(() => {
+      if (endTimeRef.current && Date.now() >= endTimeRef.current) {
+        completeTimer();
+      }
+    }, 5000);
+
+    return () => clearInterval(backupInterval);
+  }, [isRunning, completeTimer]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -71,23 +164,43 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const progress = ((selectedMinutes * 60 - timeLeft) / (selectedMinutes * 60)) * 100;
+  const totalSeconds = selectedMinutes * 60;
+  const progress = ((totalSeconds - timeLeft) / totalSeconds) * 100;
 
   const handleStart = () => {
     if (isComplete) {
       setTimeLeft(selectedMinutes * 60);
       setIsComplete(false);
     }
+    
+    // Set the end time
+    const duration = (isComplete ? selectedMinutes * 60 : timeLeft) * 1000;
+    endTimeRef.current = Date.now() + duration;
+    
     setIsRunning(true);
     playBell(); // Starting bell
+    
+    // Resume audio context on user interaction (required for mobile)
+    if (audioContextRef.current?.state === 'suspended') {
+      audioContextRef.current.resume();
+    }
   };
 
-  const handlePause = () => setIsRunning(false);
+  const handlePause = () => {
+    setIsRunning(false);
+    // Save remaining time
+    if (endTimeRef.current) {
+      const remaining = Math.max(0, Math.ceil((endTimeRef.current - Date.now()) / 1000));
+      setTimeLeft(remaining);
+    }
+    endTimeRef.current = null;
+  };
 
   const handleReset = () => {
     setIsRunning(false);
     setIsComplete(false);
     setTimeLeft(selectedMinutes * 60);
+    endTimeRef.current = null;
   };
 
   const handleSelectTime = (mins: number) => {
@@ -95,6 +208,7 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
     setTimeLeft(mins * 60);
     setIsComplete(false);
     setIsRunning(false);
+    endTimeRef.current = null;
   };
 
   if (!isOpen) {
@@ -130,6 +244,11 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
       <div className="text-center mb-6">
         <h4 className="text-xs uppercase tracking-[0.2em] text-violet-300/70 mb-1">Meditation Timer</h4>
         <p className="text-sm text-white/50">{title}</p>
+        {isRunning && (
+          <p className="text-[10px] text-emerald-400/70 mt-1">
+            ✓ Timer will notify you when complete
+          </p>
+        )}
       </div>
 
       {/* Timer Display */}
@@ -232,7 +351,13 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
           </button>
         )}
       </div>
+      
+      {/* Notification permission hint */}
+      {'Notification' in window && Notification.permission === 'default' && (
+        <p className="text-center text-[10px] text-white/30 mt-4">
+          Enable notifications to be alerted when the timer completes
+        </p>
+      )}
     </div>
   );
 }
-
