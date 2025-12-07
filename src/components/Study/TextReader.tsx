@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import type { LibraryText, LibraryVerse } from '../../data/library/types';
 import { FavoriteButton } from '../Favorites/FavoriteButton';
 import { ShareButton } from '../Share/ShareButton';
+import { updateReadingProgress, toggleBookmark, isBookmarked } from '../../lib/readingProgress';
 
 type TextReaderProps = {
   text: LibraryText;
@@ -9,19 +10,67 @@ type TextReaderProps = {
   initialVerse?: number;
 };
 
+// Helper to get a sourceId from text title
+function getSourceId(title: string): string {
+  const mapping: Record<string, string> = {
+    'Bhagavad Gita': 'bhagavad-gita',
+    'Tao Te Ching': 'tao-te-ching',
+    'Vijnana Bhairava Tantra': 'vijnana-bhairava-tantra',
+    'The Upanishads': 'upanishads',
+    'Ashtavakra Gita': 'ashtavakra-gita',
+    'Yoga Sutras of Patanjali': 'yoga-sutras',
+    'Shiva Sutras': 'shiva-sutras',
+    'Rig Veda': 'rig-veda',
+    'Dhammapada': 'dhammapada',
+    'Zen Koans (Mumonkan)': 'zen-koans',
+    'Rumi - Masnavi & Odes': 'rumi',
+    'The Cloud of Unknowing': 'cloud-of-unknowing',
+  };
+  return mapping[title] || title.toLowerCase().replace(/\s+/g, '-');
+}
+
 export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) {
   const [currentIndex, setCurrentIndex] = useState(initialVerse);
   const [viewMode, setViewMode] = useState<'single' | 'list'>('single');
   const [showToc, setShowToc] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
   const verseRef = useRef<HTMLDivElement>(null);
-
+  
+  const sourceId = getSourceId(text.title);
   const verse = text.verses[currentIndex];
+
+  // Check bookmark status on mount and when verse changes
+  useEffect(() => {
+    if (verse) {
+      setBookmarked(isBookmarked(sourceId, verse.id));
+    }
+  }, [sourceId, verse]);
+
+  // Save reading progress when index changes
+  useEffect(() => {
+    if (verse) {
+      updateReadingProgress(
+        sourceId,
+        verse.id,
+        currentIndex,
+        verse.chapter,
+        verse.number
+      );
+    }
+  }, [currentIndex, verse, sourceId]);
 
   useEffect(() => {
     if (viewMode === 'single' && verseRef.current) {
       verseRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, [currentIndex, viewMode]);
+
+  const handleToggleBookmark = useCallback(() => {
+    if (verse) {
+      const newState = toggleBookmark(sourceId, verse.id);
+      setBookmarked(newState);
+    }
+  }, [sourceId, verse]);
 
   const goToVerse = (index: number) => {
     setCurrentIndex(index);
@@ -111,6 +160,8 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
             onPrev={goPrev}
             onNext={goNext}
             verseRef={verseRef}
+            bookmarked={bookmarked}
+            onToggleBookmark={handleToggleBookmark}
           />
         ) : (
           <ListView
@@ -132,9 +183,11 @@ type SingleVerseViewProps = {
   onPrev: () => void;
   onNext: () => void;
   verseRef: React.RefObject<HTMLDivElement | null>;
+  bookmarked: boolean;
+  onToggleBookmark: () => void;
 };
 
-function SingleVerseView({ verse, text, index, total, onPrev, onNext, verseRef }: SingleVerseViewProps) {
+function SingleVerseView({ verse, text, index, total, onPrev, onNext, verseRef, bookmarked, onToggleBookmark }: SingleVerseViewProps) {
   return (
     <div className="space-y-6" ref={verseRef}>
       {/* Progress bar */}
@@ -183,6 +236,25 @@ function SingleVerseView({ verse, text, index, total, onPrev, onNext, verseRef }
 
         {/* Actions */}
         <div className="mt-4 flex items-center justify-end gap-2">
+          {/* Bookmark Button */}
+          <button
+            onClick={onToggleBookmark}
+            className={`p-2 rounded-lg transition-colors ${
+              bookmarked 
+                ? 'text-amber-400 bg-amber-400/10' 
+                : 'text-white/40 hover:text-white/80 hover:bg-white/10'
+            }`}
+            title={bookmarked ? 'Remove bookmark' : 'Bookmark this verse'}
+          >
+            <svg 
+              className="w-5 h-5" 
+              fill={bookmarked ? 'currentColor' : 'none'} 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
+          </button>
           <FavoriteButton
             dayNumber={verse.number}
             source={text.title}
