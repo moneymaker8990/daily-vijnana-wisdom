@@ -79,6 +79,54 @@ export const conferenceOfBirdsVerses: Verse[] = [
   { id: 'cob-31', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Wisdom', verseNumber: 3, text: 'Strip away all you have, and you will possess all. Die to yourself, and you will live forever. This is the paradox of the path.', translator: 'Edward FitzGerald', tags: ['paradox', 'surrender', 'death'], difficulty: 3 },
   
   { id: 'cob-32', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Wisdom', verseNumber: 4, text: 'The ocean does not seek rivers; they flow to it. The Beloved does not seek you; you are drawn. In truth, the seeking itself is the Beloved\'s call.', translator: 'Edward FitzGerald', tags: ['grace', 'devotion', 'nonduality'], difficulty: 3 },
+  
+  { id: 'cob-33', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Wisdom', verseNumber: 5, text: 'Do not ask what the end of the journey is. The journey is the end. Each step is arrival, each moment a homecoming.', translator: 'Edward FitzGerald', tags: ['presence', 'journey', 'wisdom'], difficulty: 2 },
+  
+  { id: 'cob-34', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Wisdom', verseNumber: 6, text: 'The cage door is open. Why do you remain inside? The sky awaits those who dare to spread their wings.', translator: 'Edward FitzGerald', tags: ['freedom', 'courage', 'liberation'], difficulty: 1 },
+  
+  { id: 'cob-35', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Wisdom', verseNumber: 7, text: 'You are not the cage, but the bird. You are not the wave, but the ocean. Remember who you are.', translator: 'Edward FitzGerald', tags: ['nonduality', 'identity', 'presence'], difficulty: 2 },
+  
+  { id: 'cob-36', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Wisdom', verseNumber: 8, text: 'The pearl does not seek the oyster. It lies hidden, waiting to be found. So does the Self wait within you.', translator: 'Edward FitzGerald', tags: ['inquiry', 'presence', 'wisdom'], difficulty: 2 },
+  
+  { id: 'cob-37', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Stories', verseNumber: 1, text: 'A moth asked a candle: "Am I destroying myself or finding myself?" The candle replied: "In this flame, there is no difference."', translator: 'Edward FitzGerald', tags: ['death', 'love', 'paradox'], difficulty: 3 },
+  
+  { id: 'cob-38', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Stories', verseNumber: 2, text: 'A king asked a dervish: "What is the way to God?" The dervish replied: "There is no way to God; there is only God."', translator: 'Edward FitzGerald', tags: ['nonduality', 'inquiry', 'wisdom'], difficulty: 3 },
+  
+  { id: 'cob-39', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Stories', verseNumber: 3, text: 'A fish asked: "What is water?" No other fish could answer, for they had never known anything else. So it is with the soul and God.', translator: 'Edward FitzGerald', tags: ['nonduality', 'presence', 'mystery'], difficulty: 2 },
+  
+  { id: 'cob-40', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Stories', verseNumber: 4, text: 'A beggar found a jewel and thought it a pebble. For years he used it to knock on doors. Only when a jeweler saw it did he learn its worth.', translator: 'Edward FitzGerald', tags: ['wisdom', 'identity', 'story'], difficulty: 2 },
+  
+  { id: 'cob-41', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Stories', verseNumber: 5, text: 'A lover stood at the door of the Beloved and knocked. A voice asked: "Who is there?" "It is I," said the lover. The door remained closed.', translator: 'Edward FitzGerald', tags: ['love', 'surrender', 'story'], difficulty: 2 },
+  
+  { id: 'cob-42', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Stories', verseNumber: 6, text: 'The lover went away and was consumed by love. Years later, returning, the voice asked again: "Who is there?" "It is Thou," said the lover. The door opened.', translator: 'Edward FitzGerald', tags: ['love', 'nonduality', 'surrender'], difficulty: 3, commentary: 'The door opens only when the separate self dissolves into the Beloved.' },
+  
+  { id: 'cob-43', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Teaching', verseNumber: 1, text: 'The path is not outside you. You are the path. Every step you take is a step into yourself.', translator: 'Edward FitzGerald', tags: ['inquiry', 'presence', 'nonduality'], difficulty: 2 },
+  
+  { id: 'cob-44', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Teaching', verseNumber: 2, text: 'Do not seek God in temples and mosques. Seek within your own heart. That is where the Beloved dwells.', translator: 'Edward FitzGerald', tags: ['devotion', 'presence', 'inquiry'], difficulty: 2 },
+  
+  { id: 'cob-45', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Teaching', verseNumber: 3, text: 'Prayer is not asking. Prayer is listening. Be silent and hear the voice that speaks without words.', translator: 'Edward FitzGerald', tags: ['stillness', 'devotion', 'meditation'], difficulty: 2 },
+  
+  { id: 'cob-46', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Teaching', verseNumber: 4, text: 'The greatest journey is the journey from the head to the heart. It is only inches in distance, but it takes a lifetime to traverse.', translator: 'Edward FitzGerald', tags: ['love', 'journey', 'wisdom'], difficulty: 2 },
+  
+  { id: 'cob-47', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Teaching', verseNumber: 5, text: 'What you seek is seeking you. The thirst you feel is the water calling you. Trust the pull of longing.', translator: 'Edward FitzGerald', tags: ['grace', 'love', 'presence'], difficulty: 2 },
+  
+  { id: 'cob-48', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Teaching', verseNumber: 6, text: 'Every heartbreak is a doorway. Every loss opens a space. Do not flee from pain; let it hollow you out for love.', translator: 'Edward FitzGerald', tags: ['suffering', 'love', 'transformation'], difficulty: 2 },
+  
+  { id: 'cob-49', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Teaching', verseNumber: 7, text: 'The ego is a skillful thief. It steals even spiritual experiences and claims them as its own. Stay watchful.', translator: 'Edward FitzGerald', tags: ['shadow', 'discipline', 'inquiry'], difficulty: 3 },
+  
+  { id: 'cob-50', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Teaching', verseNumber: 8, text: 'When you think you have arrived, you have only begun. When you know nothing, you know everything. Such is the way.', translator: 'Edward FitzGerald', tags: ['paradox', 'humility', 'wisdom'], difficulty: 3 },
+  
+  { id: 'cob-51', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Love', verseNumber: 1, text: 'Love is the fire that burns away all that is not love. Let yourself burn.', translator: 'Edward FitzGerald', tags: ['love', 'surrender', 'transformation'], difficulty: 2 },
+  
+  { id: 'cob-52', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Love', verseNumber: 2, text: 'The lover and the Beloved are one wine poured into two cups. Drink deep and discover there was never any separation.', translator: 'Edward FitzGerald', tags: ['love', 'nonduality', 'presence'], difficulty: 3 },
+  
+  { id: 'cob-53', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Love', verseNumber: 3, text: 'Love asks nothing in return. It gives itself completely. This is how you recognize true love.', translator: 'Edward FitzGerald', tags: ['love', 'surrender', 'compassion'], difficulty: 2 },
+  
+  { id: 'cob-54', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Love', verseNumber: 4, text: 'Before the world was made, love existed. After the world passes, love will remain. You are made of love.', translator: 'Edward FitzGerald', tags: ['love', 'nonduality', 'presence'], difficulty: 2 },
+  
+  { id: 'cob-55', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Love', verseNumber: 5, text: 'The secret of love cannot be told. It can only be lived. Become the secret.', translator: 'Edward FitzGerald', tags: ['love', 'mystery', 'presence'], difficulty: 2 },
+  
+  { id: 'cob-56', sourceId: 'conference-of-birds', sourceName: 'Conference of the Birds', tradition: 'Sufi', chapter: 'Closing', verseNumber: 1, text: 'This poem is a mirror. What you see in it is yourself. May you recognize the Simorgh you have always been.', translator: 'Edward FitzGerald', tags: ['nonduality', 'identity', 'wisdom'], difficulty: 2, commentary: 'The final teaching: you are what you seek.' },
 ];
 
 export default conferenceOfBirdsVerses;

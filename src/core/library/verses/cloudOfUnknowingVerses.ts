@@ -89,6 +89,66 @@ export const cloudOfUnknowingVerses: Verse[] = [
   { id: 'cloud-39', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 39, verseNumber: 39, text: 'Mean God himself, not any good or goods that you may get from Him.', translator: 'Public Domain', tags: ['devotion', 'surrender', 'love'], difficulty: 2 },
   
   { id: 'cloud-40', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 40, verseNumber: 40, text: 'And look that nothing works in your mind or in your will but only God. And try to strike down every thought of anything less than God and to tread it down deep under the cloud of forgetting.', translator: 'Public Domain', tags: ['meditation', 'stillness', 'devotion'], difficulty: 3, commentary: 'The practice: let only God occupy your awareness; let all else sink below.' },
+  
+  { id: 'cloud-41', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 41, verseNumber: 41, text: 'A man or woman, terrified by any sudden chance of fire, or of death, or whatever else, is suddenly driven, through necessity, to cry or to pray for help.', translator: 'Public Domain', tags: ['surrender', 'fear', 'presence'], difficulty: 2 },
+  
+  { id: 'cloud-42', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 42, verseNumber: 42, text: 'How does he do it? Surely not in many words, nor yet in one long word. And why? Because he thinks it would take too long to declare the urgency of his need.', translator: 'Public Domain', tags: ['presence', 'mantra', 'stillness'], difficulty: 2 },
+  
+  { id: 'cloud-43', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 43, verseNumber: 43, text: 'Therefore he bursts out in his terror with one short word, and that word of one syllable—such as "Fire!" or "Help!"', translator: 'Public Domain', tags: ['mantra', 'presence', 'surrender'], difficulty: 1 },
+  
+  { id: 'cloud-44', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 44, verseNumber: 44, text: 'A little word of one syllable suits the work of the spirit better than a long word of many syllables, however holy it may be.', translator: 'Public Domain', tags: ['mantra', 'stillness', 'discipline'], difficulty: 2 },
+  
+  { id: 'cloud-45', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 45, verseNumber: 45, text: 'So, if you want to gather all your desire into one simple word that the mind can easily retain, choose a short word rather than a long one.', translator: 'Public Domain', tags: ['mantra', 'discipline', 'meditation'], difficulty: 2 },
+  
+  { id: 'cloud-46', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 46, verseNumber: 46, text: 'A word like GOD or LOVE. Choose which you prefer, or perhaps some other word that suits your taste, provided it is of one syllable.', translator: 'Public Domain', tags: ['mantra', 'love', 'devotion'], difficulty: 1 },
+  
+  { id: 'cloud-47', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 47, verseNumber: 47, text: 'And clasp this word tightly in your heart so that it never leaves you, no matter what may happen.', translator: 'Public Domain', tags: ['mantra', 'discipline', 'devotion'], difficulty: 2 },
+  
+  { id: 'cloud-48', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 48, verseNumber: 48, text: 'This word shall be your shield and your spear, whether you ride in peace or in war. With this word you shall beat on this cloud and this darkness above you.', translator: 'Public Domain', tags: ['mantra', 'courage', 'discipline'], difficulty: 2 },
+  
+  { id: 'cloud-49', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 49, verseNumber: 49, text: 'With this word you shall strike down all manner of thought under the cloud of forgetting.', translator: 'Public Domain', tags: ['mantra', 'stillness', 'meditation'], difficulty: 2 },
+  
+  { id: 'cloud-50', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 50, verseNumber: 50, text: 'So that if any thought presses on you to ask what you are seeking, answer with no more words than this one word.', translator: 'Public Domain', tags: ['stillness', 'mantra', 'discipline'], difficulty: 2 },
+  
+  { id: 'cloud-51', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 51, verseNumber: 51, text: 'And if the thought offers, from its great learning, to expound that word and to tell you its meanings, answer that you will have it whole, and not broken up or undone.', translator: 'Public Domain', tags: ['stillness', 'discipline', 'surrender'], difficulty: 2 },
+  
+  { id: 'cloud-52', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 52, verseNumber: 52, text: 'If you hold fast to this purpose, I assure you the thought will not stay very long.', translator: 'Public Domain', tags: ['discipline', 'stillness', 'meditation'], difficulty: 2 },
+  
+  { id: 'cloud-53', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 53, verseNumber: 53, text: 'The condition of a perfect lover is to be stripped of self and to be clothed in what is loved.', translator: 'Public Domain', tags: ['love', 'surrender', 'nonduality'], difficulty: 3 },
+  
+  { id: 'cloud-54', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 54, verseNumber: 54, text: 'For contemplation is nothing else than a secret love fixed in the will.', translator: 'Public Domain', tags: ['love', 'stillness', 'meditation'], difficulty: 2 },
+  
+  { id: 'cloud-55', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 55, verseNumber: 55, text: 'This loving stirring shall be as it were a spark of fire, and this spark shall ever be tending upward to God.', translator: 'Public Domain', tags: ['love', 'devotion', 'presence'], difficulty: 2 },
+  
+  { id: 'cloud-56', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 56, verseNumber: 56, text: 'Look that no man or woman ever thinks that he or she may presume to work this work unless called thereto by grace.', translator: 'Public Domain', tags: ['grace', 'surrender', 'humility'], difficulty: 2 },
+  
+  { id: 'cloud-57', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 57, verseNumber: 57, text: 'Be careful that you do not take as an example the bodily ascension of Christ, thinking to strain your imagination upward during the time of prayer.', translator: 'Public Domain', tags: ['discipline', 'meditation', 'stillness'], difficulty: 2 },
+  
+  { id: 'cloud-58', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 58, verseNumber: 58, text: 'For grace does not come through any such straining of the imagination. It comes only through this meek, loving stirring toward God.', translator: 'Public Domain', tags: ['grace', 'love', 'stillness'], difficulty: 2 },
+  
+  { id: 'cloud-59', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 59, verseNumber: 59, text: 'For He can well be loved, but He cannot be thought. By love He may be gotten and held; but by thinking, never.', translator: 'Public Domain', tags: ['love', 'nonduality', 'mystery'], difficulty: 3, commentary: 'God is reached not by thought but by love alone.' },
+  
+  { id: 'cloud-60', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 60, verseNumber: 60, text: 'It is enough for you that you feel moved in love by something, you know not what, so that in this impulse you have no special thought of anything but God.', translator: 'Public Domain', tags: ['love', 'mystery', 'presence'], difficulty: 2 },
+  
+  { id: 'cloud-61', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 61, verseNumber: 61, text: 'For in this work God asks of you only yourself. He wishes to make you one with Himself.', translator: 'Public Domain', tags: ['nonduality', 'surrender', 'love'], difficulty: 2 },
+  
+  { id: 'cloud-62', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 62, verseNumber: 62, text: 'And where your attention goes, there goes your love. And where your love goes, there you go in spirit.', translator: 'Public Domain', tags: ['love', 'presence', 'attention'], difficulty: 2 },
+  
+  { id: 'cloud-63', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 63, verseNumber: 63, text: 'For contemplative prayer, when it is rightly practiced, is that reverent, loving awareness that comes from within, not from without.', translator: 'Public Domain', tags: ['meditation', 'love', 'presence'], difficulty: 2 },
+  
+  { id: 'cloud-64', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 64, verseNumber: 64, text: 'It rises spontaneously within you and goes directly up to God.', translator: 'Public Domain', tags: ['devotion', 'love', 'stillness'], difficulty: 1 },
+  
+  { id: 'cloud-65', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 65, verseNumber: 65, text: 'Anyone who does not understand this work will think that they themselves are doing all the work. But it is not so.', translator: 'Public Domain', tags: ['grace', 'surrender', 'nonduality'], difficulty: 3 },
+  
+  { id: 'cloud-66', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 66, verseNumber: 66, text: 'It is only God, stirring your will and your desire, who is doing all this work in you.', translator: 'Public Domain', tags: ['grace', 'surrender', 'devotion'], difficulty: 2 },
+  
+  { id: 'cloud-67', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 67, verseNumber: 67, text: 'Your part is simply to consent, to surrender to this divine action within you.', translator: 'Public Domain', tags: ['surrender', 'grace', 'stillness'], difficulty: 2 },
+  
+  { id: 'cloud-68', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 68, verseNumber: 68, text: 'The soul that is perfectly meek in true humility will be taken up into God himself, suddenly and graciously.', translator: 'Public Domain', tags: ['humility', 'grace', 'nonduality'], difficulty: 2 },
+  
+  { id: 'cloud-69', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 69, verseNumber: 69, text: 'Perfect meekness is when a soul truly sees itself as it is. And anyone who could see their own being as it truly is would be truly meek indeed.', translator: 'Public Domain', tags: ['humility', 'inquiry', 'vision'], difficulty: 2 },
+  
+  { id: 'cloud-70', sourceId: 'cloud-of-unknowing', sourceName: 'The Cloud of Unknowing', tradition: 'ChristianMystic', chapter: 70, verseNumber: 70, text: 'For humility is nothing else but a true knowing and feeling of yourself as you are.', translator: 'Public Domain', tags: ['humility', 'inquiry', 'presence'], difficulty: 2, commentary: 'True humility is simply seeing yourself as you truly are.' },
 ];
 
 export default cloudOfUnknowingVerses;

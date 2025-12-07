@@ -75,6 +75,46 @@ export const imitationOfChristVerses: Verse[] = [
   { id: 'ioc-4-4', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Four', verseNumber: 4, text: '"Whatever you did for one of the least of these brothers and sisters of mine, you did for me." In serving others, you serve me.', translator: 'William Benham', tags: ['compassion', 'service', 'nonduality'], difficulty: 1 },
   
   { id: 'ioc-4-5', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Four', verseNumber: 5, text: 'Whoever draws near to God with a sincere heart, and frees themselves from worldly affection and desire, is fit to receive grace and obtain the gift of devotion.', translator: 'William Benham', tags: ['grace', 'devotion', 'surrender'], difficulty: 2, commentary: 'The path to grace: sincerity and detachment.' },
+  
+  { id: 'ioc-1-7', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book One', verseNumber: 7, text: 'Vanity of vanities, and all is vanity, except to love God and serve him only.', translator: 'William Benham', tags: ['devotion', 'surrender', 'wisdom'], difficulty: 1 },
+  
+  { id: 'ioc-1-8', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book One', verseNumber: 8, text: 'This is the highest wisdom: by despising the world to press on toward heavenly kingdoms.', translator: 'William Benham', tags: ['wisdom', 'surrender', 'liberation'], difficulty: 2 },
+  
+  { id: 'ioc-1-9', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book One', verseNumber: 9, text: 'Oh, how swiftly passes the glory of the world! Would that their life had been in keeping with their learning! Then would they have read and studied to good purpose.', translator: 'William Benham', tags: ['impermanence', 'wisdom', 'action'], difficulty: 2 },
+  
+  { id: 'ioc-1-10', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book One', verseNumber: 10, text: 'The more I go into myself, the more I go out of myself. The more I know myself, the more I know God.', translator: 'William Benham', tags: ['inquiry', 'nonduality', 'presence'], difficulty: 3 },
+  
+  { id: 'ioc-1-11', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book One', verseNumber: 11, text: 'It is better to choose to have less than more, to take the lower place rather than the higher, to be subject rather than to rule.', translator: 'William Benham', tags: ['humility', 'simplicity', 'surrender'], difficulty: 2 },
+  
+  { id: 'ioc-1-12', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book One', verseNumber: 12, text: 'If you would know anything profitable, love to be unknown and to be counted for nothing.', translator: 'William Benham', tags: ['humility', 'surrender', 'wisdom'], difficulty: 2 },
+  
+  { id: 'ioc-2-7', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Two', verseNumber: 7, text: 'Who has a harder battle than he who strives to conquer himself? And this should be our endeavor: to conquer ourselves, and daily to grow stronger.', translator: 'William Benham', tags: ['discipline', 'shadow', 'courage'], difficulty: 2 },
+  
+  { id: 'ioc-2-8', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Two', verseNumber: 8, text: 'Occasions of adversity best discover how great virtue or strength each has. For occasions do not make a man frail, but they show what he is.', translator: 'William Benham', tags: ['suffering', 'strength', 'inquiry'], difficulty: 2 },
+  
+  { id: 'ioc-2-9', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Two', verseNumber: 9, text: 'First keep yourself in peace, and then you shall be able to bring peace to others. A peaceable man does more good than a very learned one.', translator: 'William Benham', tags: ['stillness', 'compassion', 'presence'], difficulty: 1 },
+  
+  { id: 'ioc-2-10', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Two', verseNumber: 10, text: 'Pure simplicity and humility are the two wings by which the soul is lifted above earthly things and above itself.', translator: 'William Benham', tags: ['simplicity', 'humility', 'liberation'], difficulty: 2 },
+  
+  { id: 'ioc-2-11', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Two', verseNumber: 11, text: 'A humble knowledge of yourself is a surer way to God than a deep search after learning.', translator: 'William Benham', tags: ['humility', 'inquiry', 'wisdom'], difficulty: 2 },
+  
+  { id: 'ioc-2-12', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Two', verseNumber: 12, text: 'If God were always the pure intention of our desire, we would not be so easily troubled by resistance to our opinions.', translator: 'William Benham', tags: ['surrender', 'stillness', 'devotion'], difficulty: 2 },
+  
+  { id: 'ioc-3-9', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Three', verseNumber: 9, text: '"My son, suffer me to do with you what I will. I know what is expedient for you. You think as a man; you judge in many things as human feeling persuades."', translator: 'William Benham', tags: ['surrender', 'trust', 'grace'], difficulty: 2 },
+  
+  { id: 'ioc-3-10', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Three', verseNumber: 10, text: '"Lord, what you say is true. Your care for me is greater than all the care I can take of myself. For he stands very unstably who casts not all his anxiety upon you."', translator: 'William Benham', tags: ['trust', 'surrender', 'grace'], difficulty: 1 },
+  
+  { id: 'ioc-3-11', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Three', verseNumber: 11, text: '"My son, you must learn many things which you have not yet well learned." "What are those, Lord?" "To make your desire altogether according to my good pleasure."', translator: 'William Benham', tags: ['surrender', 'discipline', 'devotion'], difficulty: 2 },
+  
+  { id: 'ioc-3-12', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Three', verseNumber: 12, text: '"My son, be not curious, nor trouble yourself with idle cares. What is this or that to you? Follow me. For what is it to you whether he be such or such, or whether he do or speak this or that?"', translator: 'William Benham', tags: ['presence', 'surrender', 'simplicity'], difficulty: 2 },
+  
+  { id: 'ioc-3-13', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Three', verseNumber: 13, text: '"Love to be unknown." This short sentence carries infinite weight. Stop seeking recognition, and you find rest.', translator: 'William Benham', tags: ['humility', 'surrender', 'stillness'], difficulty: 2, commentary: 'True peace comes from releasing the need for recognition.' },
+  
+  { id: 'ioc-3-14', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Three', verseNumber: 14, text: '"You are not holier if you are praised, nor more worthless if you are found fault with. What you are, that you are; neither by word can you be made greater than what you are in the sight of God."', translator: 'William Benham', tags: ['identity', 'humility', 'freedom'], difficulty: 2 },
+  
+  { id: 'ioc-3-15', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Three', verseNumber: 15, text: '"Grant me, most sweet and loving Jesus, to rest in you above all creatures, above health and beauty, above honor and glory, above all power and dignity."', translator: 'William Benham', tags: ['devotion', 'surrender', 'love'], difficulty: 1 },
+  
+  { id: 'ioc-3-16', sourceId: 'imitation-of-christ', sourceName: 'The Imitation of Christ', tradition: 'ChristianMystic', chapter: 'Book Three', verseNumber: 16, text: '"My son, I must be your supreme and ultimate end, if you truly desire to be blessed. By this intention shall your affection be purified."', translator: 'William Benham', tags: ['devotion', 'purity', 'liberation'], difficulty: 2 },
 ];
 
 export default imitationOfChristVerses;

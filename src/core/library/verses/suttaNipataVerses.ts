@@ -135,6 +135,22 @@ export const suttaNipataVerses: Verse[] = [
   { id: 'sn-maha-9', sourceId: 'sutta-nipata', sourceName: 'Sutta Nipata', tradition: 'Buddhist', chapter: 'Various', verseNumber: 9, text: 'For one who has nothing, who does not cling to food and shelter—whose field is emptiness, signlessness, and liberation—their track is hard to trace, like that of birds through the sky.', translator: 'V. Fausbøll', tags: ['emptiness', 'freedom', 'mystery'], difficulty: 3, commentary: 'The sage leaves no trace, like birds in flight.' },
   
   { id: 'sn-maha-10', sourceId: 'sutta-nipata', sourceName: 'Sutta Nipata', tradition: 'Buddhist', chapter: 'Various', verseNumber: 10, text: 'One whose taints are destroyed, who is not attached to food, whose field is emptiness and signless liberation—their path, like that of birds in the sky, cannot be traced.', translator: 'V. Fausbøll', tags: ['liberation', 'emptiness', 'freedom'], difficulty: 3 },
+  
+  { id: 'sn-maha-11', sourceId: 'sutta-nipata', sourceName: 'Sutta Nipata', tradition: 'Buddhist', chapter: 'Various', verseNumber: 11, text: 'Not by silence does one become a sage if one is foolish and ignorant. The wise person, as if holding scales, takes what is good and rejects what is evil.', translator: 'V. Fausbøll', tags: ['wisdom', 'discipline', 'inquiry'], difficulty: 2 },
+  
+  { id: 'sn-maha-12', sourceId: 'sutta-nipata', sourceName: 'Sutta Nipata', tradition: 'Buddhist', chapter: 'Various', verseNumber: 12, text: 'For this reason, one is a sage. Whoever understands both worlds is called a sage for that reason.', translator: 'V. Fausbøll', tags: ['wisdom', 'nonduality'], difficulty: 2 },
+  
+  { id: 'sn-maha-13', sourceId: 'sutta-nipata', sourceName: 'Sutta Nipata', tradition: 'Buddhist', chapter: 'Various', verseNumber: 13, text: 'One who does no harm to any being, weak or strong, who does not kill or cause to kill—that one I call a brahmin.', translator: 'V. Fausbøll', tags: ['compassion', 'ethics', 'ahimsa'], difficulty: 1 },
+  
+  { id: 'sn-maha-14', sourceId: 'sutta-nipata', sourceName: 'Sutta Nipata', tradition: 'Buddhist', chapter: 'Various', verseNumber: 14, text: 'One who is friendly among the hostile, peaceful among the violent, unattached among the attached—that one I call a brahmin.', translator: 'V. Fausbøll', tags: ['compassion', 'stillness', 'peace'], difficulty: 2 },
+  
+  { id: 'sn-maha-15', sourceId: 'sutta-nipata', sourceName: 'Sutta Nipata', tradition: 'Buddhist', chapter: 'Various', verseNumber: 15, text: 'From whom lust and hatred, pride and hypocrisy have dropped off like a mustard seed from the point of a needle—that one I call a brahmin.', translator: 'V. Fausbøll', tags: ['liberation', 'surrender', 'purity'], difficulty: 2 },
+  
+  { id: 'sn-maha-16', sourceId: 'sutta-nipata', sourceName: 'Sutta Nipata', tradition: 'Buddhist', chapter: 'Various', verseNumber: 16, text: 'One who speaks truthful, instructive words, words that offend no one—that one I call a brahmin.', translator: 'V. Fausbøll', tags: ['speech', 'ethics', 'wisdom'], difficulty: 1 },
+  
+  { id: 'sn-maha-17', sourceId: 'sutta-nipata', sourceName: 'Sutta Nipata', tradition: 'Buddhist', chapter: 'Various', verseNumber: 17, text: 'One who has gone beyond both merit and demerit, who is sorrowless, dustless, pure—that one I call a brahmin.', translator: 'V. Fausbøll', tags: ['liberation', 'nonduality', 'purity'], difficulty: 3 },
+  
+  { id: 'sn-maha-18', sourceId: 'sutta-nipata', sourceName: 'Sutta Nipata', tradition: 'Buddhist', chapter: 'Various', verseNumber: 18, text: 'One who is like the moon, spotless, pure, serene, undisturbed, in whom joy has dried up—that one I call a brahmin.', translator: 'V. Fausbøll', tags: ['stillness', 'purity', 'peace'], difficulty: 2, commentary: 'Not the joy of pleasure, but the tranquility beyond all disturbance.' },
 ];
 
 export default suttaNipataVerses;

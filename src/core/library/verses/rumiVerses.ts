@@ -109,6 +109,66 @@ export const rumiVerses: Verse[] = [
   { id: 'rumi-49', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 49, text: 'When the world pushes you to your knees, you\'re in the perfect position to pray.', translator: 'Public Domain', tags: ['surrender', 'devotion', 'suffering'], difficulty: 1 },
   
   { id: 'rumi-50', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 50, text: 'Die before you die, and find that there is no death.', translator: 'Public Domain', tags: ['death', 'nonduality', 'surrender'], difficulty: 3, commentary: 'The mystic death: die to the false self before the body dies, and discover deathlessness.' },
+  
+  { id: 'rumi-51', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 51, text: 'Sit quietly and listen for a voice that will say, "Be more silent." Die and be quiet. Quietness is the surest sign that you have died.', translator: 'Public Domain', tags: ['stillness', 'death', 'silence'], difficulty: 3 },
+  
+  { id: 'rumi-52', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 52, text: 'When you do things from your soul, you feel a river moving in you, a joy.', translator: 'Public Domain', tags: ['joy', 'action', 'presence'], difficulty: 1 },
+  
+  { id: 'rumi-53', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 53, text: 'I want to sing like the birds sing, not worrying about who hears or what they think.', translator: 'Public Domain', tags: ['joy', 'surrender', 'play'], difficulty: 1 },
+  
+  { id: 'rumi-54', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 54, text: 'These pains you feel are messengers. Listen to them.', translator: 'Public Domain', tags: ['suffering', 'shadow', 'inquiry'], difficulty: 2 },
+  
+  { id: 'rumi-55', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 55, text: 'Wear gratitude like a cloak and it will feed every corner of your life.', translator: 'Public Domain', tags: ['joy', 'presence', 'devotion'], difficulty: 1 },
+  
+  { id: 'rumi-56', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 56, text: 'We are not drops in the ocean. We are the entire ocean in a drop.', translator: 'Public Domain', tags: ['nonduality', 'presence', 'unity'], difficulty: 2 },
+  
+  { id: 'rumi-57', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 57, text: 'There is a life-force within your soul, seek that life. There is a gem in the mountain of your body, seek that mine.', translator: 'Public Domain', tags: ['inquiry', 'body-awareness', 'presence'], difficulty: 2 },
+  
+  { id: 'rumi-58', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 58, text: 'Words are a pretext. It is the inner bond that draws one person to another, not words.', translator: 'Public Domain', tags: ['love', 'stillness', 'mystery'], difficulty: 2 },
+  
+  { id: 'rumi-59', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 59, text: 'Put your thoughts to sleep, do not let them cast a shadow over the moon of your heart. Let go of thinking.', translator: 'Public Domain', tags: ['stillness', 'meditation', 'surrender'], difficulty: 2 },
+  
+  { id: 'rumi-60', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 60, text: 'Wherever you are, and whatever you do, be in love.', translator: 'Public Domain', tags: ['love', 'presence', 'devotion'], difficulty: 1 },
+  
+  { id: 'rumi-61', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 61, text: 'Every moment I shape my destiny with a chisel. I am the carpenter of my own soul.', translator: 'Public Domain', tags: ['action', 'discipline', 'courage'], difficulty: 2 },
+  
+  { id: 'rumi-62', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 62, text: 'Do you know what you are? You are a manuscript of a divine letter. You are a mirror reflecting a noble face.', translator: 'Public Domain', tags: ['nonduality', 'love', 'presence'], difficulty: 2 },
+  
+  { id: 'rumi-63', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 63, text: 'The lion is most handsome when looking for food.', translator: 'Public Domain', tags: ['action', 'courage', 'presence'], difficulty: 1 },
+  
+  { id: 'rumi-64', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 64, text: 'There is a candle in your heart, ready to be kindled. There is a void in your soul, ready to be filled.', translator: 'Public Domain', tags: ['love', 'presence', 'devotion'], difficulty: 1 },
+  
+  { id: 'rumi-65', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 65, text: 'Lovers do not finally meet somewhere. They are in each other all along.', translator: 'Public Domain', tags: ['love', 'nonduality', 'presence'], difficulty: 2 },
+  
+  { id: 'rumi-66', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 66, text: 'Love is the bridge between you and everything.', translator: 'Public Domain', tags: ['love', 'nonduality', 'unity'], difficulty: 1 },
+  
+  { id: 'rumi-67', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 67, text: 'The wound is the place where the Light enters you.', translator: 'Public Domain', tags: ['suffering', 'shadow', 'vision'], difficulty: 2 },
+  
+  { id: 'rumi-68', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 68, text: 'Start a huge, foolish project, like Noah. It makes absolutely no difference what people think of you.', translator: 'Public Domain', tags: ['courage', 'action', 'surrender'], difficulty: 2 },
+  
+  { id: 'rumi-69', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 69, text: 'Let yourself be drawn by the stronger pull of that which you truly love.', translator: 'Public Domain', tags: ['love', 'surrender', 'devotion'], difficulty: 1 },
+  
+  { id: 'rumi-70', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 70, text: 'You were born with wings, why prefer to crawl through life?', translator: 'Public Domain', tags: ['courage', 'joy', 'vision'], difficulty: 1 },
+  
+  { id: 'rumi-71', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 71, text: 'This being human is a guest house. Every morning a new arrival.', translator: 'Public Domain', tags: ['presence', 'acceptance', 'stillness'], difficulty: 2 },
+  
+  { id: 'rumi-72', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 72, text: 'Welcome and entertain them all! Even if they are a crowd of sorrows, who violently sweep your house empty of its furniture.', translator: 'Public Domain', tags: ['acceptance', 'surrender', 'suffering'], difficulty: 2 },
+  
+  { id: 'rumi-73', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 73, text: 'Be empty of worrying. Think of who created thought!', translator: 'Public Domain', tags: ['stillness', 'inquiry', 'surrender'], difficulty: 2 },
+  
+  { id: 'rumi-74', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 74, text: 'The Beloved is all in all; the lover merely veils the Beloved. The Beloved is all that lives; the lover a dead thing.', translator: 'Public Domain', tags: ['love', 'nonduality', 'devotion'], difficulty: 3 },
+  
+  { id: 'rumi-75', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 75, text: 'Be a lamp, or a lifeboat, or a ladder. Help someone\'s soul heal. Walk out of your house like a shepherd.', translator: 'Public Domain', tags: ['compassion', 'action', 'love'], difficulty: 1 },
+  
+  { id: 'rumi-76', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 76, text: 'That hurt we embrace becomes joy. Call it to your arms where it can change.', translator: 'Public Domain', tags: ['suffering', 'acceptance', 'joy'], difficulty: 2 },
+  
+  { id: 'rumi-77', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 77, text: 'Ignore those that make you fearful and sad, that degrade you back towards disease and death.', translator: 'Public Domain', tags: ['fear', 'courage', 'discipline'], difficulty: 1 },
+  
+  { id: 'rumi-78', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 78, text: 'The morning breeze has secrets to tell you. Do not go back to sleep.', translator: 'Public Domain', tags: ['presence', 'mystery', 'vision'], difficulty: 1 },
+  
+  { id: 'rumi-79', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 79, text: 'What hurts you, blesses you. Darkness is your candle.', translator: 'Public Domain', tags: ['suffering', 'shadow', 'vision'], difficulty: 2 },
+  
+  { id: 'rumi-80', sourceId: 'rumi', sourceName: 'Rumi', tradition: 'Sufi', chapter: 'Odes', verseNumber: 80, text: 'Knock, and He will open the door. Vanish, and He will make you shine like the sun.', translator: 'Public Domain', tags: ['surrender', 'devotion', 'death'], difficulty: 2 },
 ];
 
 export default rumiVerses;

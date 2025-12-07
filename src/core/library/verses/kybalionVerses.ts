@@ -74,6 +74,36 @@ export const kybalionVerses: Verse[] = [
   { id: 'kyb-8-3', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Mental Transmutation', verseNumber: 3, text: 'The art of polarization becomes the art of mental alchemy. By changing your polarity, you master your moods and mental states instead of being their slave.', translator: 'Three Initiates', tags: ['transformation', 'mastery', 'freedom'], difficulty: 3, commentary: 'The practical application: transmute negative to positive.' },
   
   { id: 'kyb-8-4', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Mental Transmutation', verseNumber: 4, text: '"He who grasps the truth of the mental nature of the Universe is well advanced on the path to Mastery." Nothing real can be harmed; all is Mind.', translator: 'Three Initiates', tags: ['consciousness', 'nonduality', 'mastery'], difficulty: 3 },
+  
+  { id: 'kyb-9-1', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Plane of Correspondence', verseNumber: 1, text: 'There are great planes of consciousness, from the lowest to the highest. But all are subject to the same Laws—from the smallest atom to the greatest sun.', translator: 'Three Initiates', tags: ['consciousness', 'law', 'correspondence'], difficulty: 2 },
+  
+  { id: 'kyb-9-2', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Plane of Correspondence', verseNumber: 2, text: 'Man dwells on the physical plane, but his being extends upward through the mental and spiritual planes. He is a citizen of many realms.', translator: 'Three Initiates', tags: ['consciousness', 'humanity', 'spirit'], difficulty: 2 },
+  
+  { id: 'kyb-9-3', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Plane of Correspondence', verseNumber: 3, text: 'The wise one studies the known to understand the unknown. The principles operating on the lowest plane reveal those operating on the highest.', translator: 'Three Initiates', tags: ['wisdom', 'correspondence', 'inquiry'], difficulty: 2 },
+  
+  { id: 'kyb-10-1', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Whole and Part', verseNumber: 1, text: 'While All is in THE ALL, it is equally true that THE ALL is in All. He who truly understands this truth has great knowledge.', translator: 'Three Initiates', tags: ['nonduality', 'divine', 'paradox'], difficulty: 3, commentary: 'The paradox of immanence: God is in everything, and everything is in God.' },
+  
+  { id: 'kyb-10-2', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Whole and Part', verseNumber: 2, text: 'THE ALL creates within its Infinite Mind countless universes, which exist for aeons of time—and yet to THE ALL, they are but the wink of an eye.', translator: 'Three Initiates', tags: ['divine', 'time', 'creation'], difficulty: 3 },
+  
+  { id: 'kyb-10-3', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Whole and Part', verseNumber: 3, text: 'The mind of man, like the mind of THE ALL, contains within it the power to create. Man creates mental worlds just as THE ALL creates the Universe.', translator: 'Three Initiates', tags: ['consciousness', 'creation', 'mind'], difficulty: 2 },
+  
+  { id: 'kyb-11-1', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Divine Paradox', verseNumber: 1, text: 'Under the same Laws, the wise proceed in the opposite direction. While the masses sink into materiality, the wise rise toward Spirit.', translator: 'Three Initiates', tags: ['wisdom', 'freedom', 'discipline'], difficulty: 2 },
+  
+  { id: 'kyb-11-2', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Divine Paradox', verseNumber: 2, text: 'The Universe exists by reason of these Laws. These same Laws allow the wise to escape from the lower planes to the higher.', translator: 'Three Initiates', tags: ['law', 'liberation', 'wisdom'], difficulty: 2 },
+  
+  { id: 'kyb-11-3', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Divine Paradox', verseNumber: 3, text: 'The half-wise, recognizing the unreality of the Universe, imagine that they may defy its Laws. Such are vain fools; they are dashed against the rocks.', translator: 'Three Initiates', tags: ['wisdom', 'discipline', 'shadow'], difficulty: 2 },
+  
+  { id: 'kyb-11-4', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Divine Paradox', verseNumber: 4, text: 'The truly wise, knowing the nature of the Universe, use Law against laws, the higher against the lower, and by Alchemy transmute the undesirable into the worthy.', translator: 'Three Initiates', tags: ['alchemy', 'mastery', 'transformation'], difficulty: 3 },
+  
+  { id: 'kyb-12-1', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Axioms', verseNumber: 1, text: 'The possession of Knowledge, unless accompanied by a manifestation and expression in Action, is like the hoarding of precious metals—a vain and foolish thing.', translator: 'Three Initiates', tags: ['wisdom', 'action', 'discipline'], difficulty: 2 },
+  
+  { id: 'kyb-12-2', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Axioms', verseNumber: 2, text: 'Knowledge, like Wealth, is intended for Use. The Law of Use is universal, and he who violates it suffers by reason of his conflict with natural forces.', translator: 'Three Initiates', tags: ['wisdom', 'action', 'law'], difficulty: 2 },
+  
+  { id: 'kyb-12-3', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Axioms', verseNumber: 3, text: 'To change your mood or mental state, change your vibration. This is the secret of mental alchemy: raise the vibration, and the state changes.', translator: 'Three Initiates', tags: ['transformation', 'vibration', 'alchemy'], difficulty: 2 },
+  
+  { id: 'kyb-12-4', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Axioms', verseNumber: 4, text: 'The wise ones serve on the higher planes, but they rule on the lower. In this way, they operate under the Law of the higher, while ruling as masters on the lower.', translator: 'Three Initiates', tags: ['mastery', 'service', 'wisdom'], difficulty: 3 },
+  
+  { id: 'kyb-12-5', sourceId: 'kybalion', sourceName: 'The Kybalion', tradition: 'Hermetic', chapter: 'Axioms', verseNumber: 5, text: '"The lips of wisdom are closed, except to the ears of Understanding." This is the great paradox: those who know, speak carefully; those who speak freely, know little.', translator: 'Three Initiates', tags: ['wisdom', 'silence', 'discipline'], difficulty: 2, commentary: 'True wisdom speaks only to those ready to receive.' },
 ];
 
 export default kybalionVerses;

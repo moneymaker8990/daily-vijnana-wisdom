@@ -83,6 +83,44 @@ export const zhuangziVerses: Verse[] = [
   { id: 'zz-26-1', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 26, verseNumber: 1, text: 'External things cannot be counted on. So Lung-feng was executed, Pi Kan was disemboweled, Prince Chi feigned madness, E Lai was killed, and Chieh and Chou were overthrown. There is no ruler who does not want his ministers to be loyal, but loyal ministers are not always trusted.', translator: 'James Legge', tags: ['shadow', 'action', 'wisdom'], difficulty: 2 },
   { id: 'zz-26-2', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 26, verseNumber: 2, text: 'Fish live in water and thrive, but men who try to live in water die. Creatures differ because they have different likes and dislikes.', translator: 'James Legge', tags: ['nature', 'perspective'], difficulty: 1 },
   { id: 'zz-26-3', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 26, verseNumber: 3, text: 'So the former sages never required the same ability from all creatures, or the same accomplishments. They called them by names that befitted their realities, and gave them duties that suited their gifts.', translator: 'James Legge', tags: ['wisdom', 'compassion', 'action'], difficulty: 2 },
+  
+  { id: 'zz-3-3', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 3, verseNumber: 3, text: 'In cutting up an ox, the skilled butcher never hacks at bone. He follows the natural openings. For nineteen years he has used one knife, and it remains as sharp as if new.', translator: 'James Legge', tags: ['flow', 'skill', 'simplicity'], difficulty: 2 },
+  
+  { id: 'zz-3-4', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 3, verseNumber: 4, text: '"I encounter no resistance because I follow the Tao. A good cook changes his knife once a year; an ordinary cook, once a month. I have used mine for nineteen years."', translator: 'James Legge', tags: ['flow', 'mastery', 'tao'], difficulty: 2 },
+  
+  { id: 'zz-4-3', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 4, verseNumber: 3, text: 'When men hear of a great thief, they will guard their valuables. But the greatest thief steals the whole kingdom—and is called a prince.', translator: 'James Legge', tags: ['paradox', 'shadow', 'wisdom'], difficulty: 2 },
+  
+  { id: 'zz-5-3', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 5, verseNumber: 3, text: 'Virtue that has no form is called true virtue. Perfect virtue does not seek virtue. If it sought virtue, it would no longer be virtue.', translator: 'James Legge', tags: ['virtue', 'paradox', 'naturalness'], difficulty: 3 },
+  
+  { id: 'zz-6-6', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 6, verseNumber: 6, text: 'The true men of old knew neither to love life nor to hate death. They came without welcome; they went without resisting. Quietly they came, quietly they went.', translator: 'James Legge', tags: ['death', 'flow', 'presence'], difficulty: 2 },
+  
+  { id: 'zz-6-7', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 6, verseNumber: 7, text: 'They did not forget where they had started from, nor did they seek to know where they would end. They accepted what came to them with joy; they returned to their original condition without resistance.', translator: 'James Legge', tags: ['flow', 'presence', 'surrender'], difficulty: 2 },
+  
+  { id: 'zz-7-8', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 7, verseNumber: 8, text: 'Do not be the host of fame. Do not be the storehouse of schemes. Do not be the proprietor of wisdom. Do not be the slave of knowledge.', translator: 'James Legge', tags: ['freedom', 'simplicity', 'surrender'], difficulty: 2 },
+  
+  { id: 'zz-7-9', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 7, verseNumber: 9, text: 'Embrace the boundless and roam in it. Accept what you receive from Heaven, and do not think yourself to have gotten anything. Just be empty—that is all.', translator: 'James Legge', tags: ['emptiness', 'flow', 'stillness'], difficulty: 2 },
+  
+  { id: 'zz-12-5', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 12, verseNumber: 5, text: 'When there is no more self, there is no more world. When there is no more world, there is no more death. When there is no more death, life becomes eternal.', translator: 'James Legge', tags: ['nonduality', 'death', 'liberation'], difficulty: 4 },
+  
+  { id: 'zz-13-3', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 13, verseNumber: 3, text: 'He who has found the Tao is master of his own virtue. He who has mastered virtue is master of his own body. He who has mastered his body dwells in Heaven.', translator: 'James Legge', tags: ['virtue', 'mastery', 'tao'], difficulty: 2 },
+  
+  { id: 'zz-14-3', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 14, verseNumber: 3, text: 'The operations of Heaven and Earth proceed by the most admirable order, and yet they say nothing. The four seasons observe the clearest laws, and yet they do not discuss.', translator: 'James Legge', tags: ['nature', 'silence', 'law'], difficulty: 2 },
+  
+  { id: 'zz-17-4', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 17, verseNumber: 4, text: 'From the standpoint of distinctions, if we call something great because there is a sense in which it is great, then all things are great. If we call something small because there is a sense in which it is small, then all things are small.', translator: 'James Legge', tags: ['perspective', 'nonduality', 'inquiry'], difficulty: 3 },
+  
+  { id: 'zz-18-4', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 18, verseNumber: 4, text: 'Now I do not know whether I was then a man dreaming I was a butterfly, or whether I am now a butterfly dreaming that I am a man.', translator: 'James Legge', tags: ['dream', 'identity', 'paradox'], difficulty: 2, commentary: 'The famous butterfly dream: who is dreaming whom?' },
+  
+  { id: 'zz-19-3', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 19, verseNumber: 3, text: 'When an archer shoots without taking aim, he shoots straight. When he begins to care about hitting the target, his arrows go crooked.', translator: 'James Legge', tags: ['flow', 'action', 'naturalness'], difficulty: 2 },
+  
+  { id: 'zz-19-4', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 19, verseNumber: 4, text: 'The prizes make him nervous. His skill is the same, but the attachment clouds his vision. He thinks more about winning than about shooting—and that takes away from his power.', translator: 'James Legge', tags: ['attachment', 'action', 'skill'], difficulty: 2 },
+  
+  { id: 'zz-20-4', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 20, verseNumber: 4, text: 'The wren makes its nest in the forest, but uses only a single branch. The mole drinks at the river, but takes only what fills its belly.', translator: 'James Legge', tags: ['simplicity', 'contentment', 'naturalness'], difficulty: 1 },
+  
+  { id: 'zz-21-4', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 21, verseNumber: 4, text: 'There is no footprint of the wind on the water. There is no self in the soul of the sage.', translator: 'James Legge', tags: ['nonduality', 'stillness', 'identity'], difficulty: 3 },
+  
+  { id: 'zz-23-4', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 23, verseNumber: 4, text: 'Forget the years; forget distinction. Take your place in infinity, and find your home there.', translator: 'James Legge', tags: ['liberation', 'presence', 'nonduality'], difficulty: 2 },
+  
+  { id: 'zz-24-3', sourceId: 'zhuangzi', sourceName: 'Zhuangzi', tradition: 'Taoist', chapter: 24, verseNumber: 3, text: 'Words exist because of meaning. Once you\'ve gotten the meaning, you can forget the words. Where can I find a man who has forgotten words? He is the one I would like to talk to.', translator: 'James Legge', tags: ['silence', 'wisdom', 'paradox'], difficulty: 3, commentary: 'The paradox of speech: words are ladders to be discarded once you arrive.' },
 ];
 
 export default zhuangziVerses;

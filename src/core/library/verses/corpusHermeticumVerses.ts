@@ -78,6 +78,48 @@ export const corpusHermeticumVerses: Verse[] = [
   { id: 'ch-13-3', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Secret Discourse', verseNumber: 3, text: '"I have passed beyond myself. I am no longer what I was. I have been born in Mind. This is not a thing of the body—I see now not with bodily sight."', translator: 'G.R.S. Mead', tags: ['rebirth', 'transformation', 'vision'], difficulty: 3, commentary: 'Spiritual rebirth: a new identity beyond body and personality.' },
   
   { id: 'ch-13-4', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Secret Discourse', verseNumber: 4, text: '"I have become immortal. No longer am I what I seemed before. I have been born in Mind. This body that was mine—I know it now for a dream."', translator: 'G.R.S. Mead', tags: ['rebirth', 'dream', 'liberation'], difficulty: 3 },
+  
+  { id: 'ch-13-5', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Secret Discourse', verseNumber: 5, text: 'The divine birth is not produced by seeds, but by the will of God. This birth is wrought by God alone.', translator: 'G.R.S. Mead', tags: ['rebirth', 'grace', 'divine'], difficulty: 2 },
+  
+  { id: 'ch-5-1', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'God Unseen Yet Manifest', verseNumber: 1, text: 'God is not Mind, but the cause of Mind. He is not Spirit, but the cause of Spirit. He is not Light, but the cause of Light.', translator: 'G.R.S. Mead', tags: ['divine', 'mystery', 'transcendence'], difficulty: 3 },
+  
+  { id: 'ch-5-2', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'God Unseen Yet Manifest', verseNumber: 2, text: 'God has two names: the Good and the Father. He is called Good because of all things, and Father because he makes all things.', translator: 'G.R.S. Mead', tags: ['divine', 'love', 'creation'], difficulty: 2 },
+  
+  { id: 'ch-5-3', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'God Unseen Yet Manifest', verseNumber: 3, text: 'The Father is the source of all, and there is no source without him. He is the beginning of all things, and the end is also in him.', translator: 'G.R.S. Mead', tags: ['divine', 'nonduality', 'creation'], difficulty: 2 },
+  
+  { id: 'ch-5-4', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'God Unseen Yet Manifest', verseNumber: 4, text: 'God is the maker of all things, and contains all things within himself. He is both the crafted and the craftsman, both the made and the maker.', translator: 'G.R.S. Mead', tags: ['nonduality', 'creation', 'divine'], difficulty: 3 },
+  
+  { id: 'ch-6-1', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Only in God Is Good', verseNumber: 1, text: 'In God there is no lack, no imperfection. The good is perfect fullness. All things come from it; nothing returns empty to it.', translator: 'G.R.S. Mead', tags: ['divine', 'perfection', 'abundance'], difficulty: 2 },
+  
+  { id: 'ch-6-2', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Only in God Is Good', verseNumber: 2, text: 'The good is that which gives all and receives nothing. God is the Good; therefore God is he who gives all and receives nothing.', translator: 'G.R.S. Mead', tags: ['divine', 'generosity', 'love'], difficulty: 2 },
+  
+  { id: 'ch-7-1', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Greatest Ill Is Ignorance', verseNumber: 1, text: 'The greatest ill among men is ignorance of God. The soul that has no knowledge of the truth can have no salvation.', translator: 'G.R.S. Mead', tags: ['wisdom', 'truth', 'shadow'], difficulty: 2 },
+  
+  { id: 'ch-7-2', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Greatest Ill Is Ignorance', verseNumber: 2, text: 'The evil that befalls you comes not from without, but from within. You are both the sickness and the remedy.', translator: 'G.R.S. Mead', tags: ['shadow', 'inquiry', 'transformation'], difficulty: 2 },
+  
+  { id: 'ch-7-3', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Greatest Ill Is Ignorance', verseNumber: 3, text: 'When mind has known the truth, it becomes a light unto itself. Ignorance then departs, as darkness before the sun.', translator: 'G.R.S. Mead', tags: ['wisdom', 'light', 'transformation'], difficulty: 2 },
+  
+  { id: 'ch-8-1', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Nothing Perishes', verseNumber: 1, text: 'Nothing is destroyed in the cosmos; all things change. Life is not coming into being—it is becoming manifest. Death is not destruction—it is withdrawal.', translator: 'G.R.S. Mead', tags: ['death', 'change', 'nonduality'], difficulty: 2 },
+  
+  { id: 'ch-8-2', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Nothing Perishes', verseNumber: 2, text: 'Change is nothing but the withdrawal of what was manifest. The cosmos is full of change because the cosmos is full of life.', translator: 'G.R.S. Mead', tags: ['change', 'life', 'presence'], difficulty: 2 },
+  
+  { id: 'ch-9-1', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Thought and Sense', verseNumber: 1, text: 'The senses perceive the world; the mind perceives the senses. And that which perceives the mind—that is the true Self.', translator: 'G.R.S. Mead', tags: ['inquiry', 'witness', 'nonduality'], difficulty: 3 },
+  
+  { id: 'ch-9-2', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Thought and Sense', verseNumber: 2, text: 'The body belongs to the world, but the soul belongs to God. Know to which you belong.', translator: 'G.R.S. Mead', tags: ['soul', 'inquiry', 'identity'], difficulty: 2 },
+  
+  { id: 'ch-12-1', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'About the Common Mind', verseNumber: 1, text: 'Mind is the swiftest of all divine things. It passes through all things without hindrance. It is present in all places at once.', translator: 'G.R.S. Mead', tags: ['consciousness', 'presence', 'freedom'], difficulty: 2 },
+  
+  { id: 'ch-12-2', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'About the Common Mind', verseNumber: 2, text: 'Think of yourself in all places at once—in sea, on land, in sky. Think of yourself as not yet born, as in the womb, as young, as old, as dead, as beyond death.', translator: 'G.R.S. Mead', tags: ['meditation', 'consciousness', 'nonduality'], difficulty: 3 },
+  
+  { id: 'ch-12-3', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'About the Common Mind', verseNumber: 3, text: 'Grasp all this together in your consciousness: all times and places, all substances and qualities, all magnitudes. Then you will know God.', translator: 'G.R.S. Mead', tags: ['consciousness', 'nonduality', 'wisdom'], difficulty: 4 },
+  
+  { id: 'ch-14-1', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'On the Making of Man', verseNumber: 1, text: 'Man is a great miracle, worthy of honor and reverence. He passes into the nature of God as though he were God himself.', translator: 'G.R.S. Mead', tags: ['humanity', 'divine', 'transformation'], difficulty: 2 },
+  
+  { id: 'ch-14-2', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'On the Making of Man', verseNumber: 2, text: 'Man knows the race of spirits, because he shares their nature. He knows his origin among the gods.', translator: 'G.R.S. Mead', tags: ['humanity', 'divine', 'wisdom'], difficulty: 2 },
+  
+  { id: 'ch-15-1', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Definitions', verseNumber: 1, text: 'Every soul is immortal and always in motion. Only that which is always in motion is immortal.', translator: 'G.R.S. Mead', tags: ['soul', 'immortality', 'motion'], difficulty: 2 },
+  
+  { id: 'ch-15-2', sourceId: 'corpus-hermeticum', sourceName: 'Corpus Hermeticum', tradition: 'Hermetic', chapter: 'Definitions', verseNumber: 2, text: 'All that exists participates in God. Nothing exists without God. God is all things, and nothing is outside of God.', translator: 'G.R.S. Mead', tags: ['nonduality', 'divine', 'presence'], difficulty: 2, commentary: 'The perennial insight: nothing exists apart from the divine ground.' },
 ];
 
 export default corpusHermeticumVerses;

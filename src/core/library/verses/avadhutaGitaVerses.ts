@@ -35,6 +35,42 @@ export const avadhutaGitaVerses: Verse[] = [
   
   { id: 'avd-1-12', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 12, text: 'The nature of the Self is pure consciousness. There is no "you" or "I." There is only the One, appearing as many through maya.', translator: 'Swami Vivekananda', tags: ['nonduality', 'consciousness', 'illusion'], difficulty: 4 },
   
+  { id: 'avd-1-13', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 13, text: 'There is neither higher nor lower self in the absolute. There is no guru, no disciple. I am the free Self, immutable, beyond all pairs of opposites.', translator: 'Swami Vivekananda', tags: ['nonduality', 'freedom', 'unity'], difficulty: 4 },
+  
+  { id: 'avd-1-14', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 14, text: 'In the nature of the Self there is neither purity nor impurity. Neither activity nor inactivity. I am one, all-pervading like the sky.', translator: 'Swami Vivekananda', tags: ['nonduality', 'stillness', 'presence'], difficulty: 3 },
+  
+  { id: 'avd-1-15', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 15, text: 'The Self is one without any quality or condition. It cannot be described by any word. It cannot be conceived by any thought.', translator: 'Swami Vivekananda', tags: ['nonduality', 'mystery', 'presence'], difficulty: 4 },
+  
+  { id: 'avd-1-16', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 16, text: 'I am the Self that is within all. I am the all-pervading, all-penetrating Self. I am pure consciousness, the essence of all that is.', translator: 'Swami Vivekananda', tags: ['nonduality', 'presence', 'consciousness'], difficulty: 3 },
+  
+  { id: 'avd-1-17', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 17, text: 'I am neither the sacrificer nor the sacrifice. Neither the mantra nor the meditation. I am the Self, beyond all such notions.', translator: 'Swami Vivekananda', tags: ['nonduality', 'witness', 'surrender'], difficulty: 3 },
+  
+  { id: 'avd-1-18', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 18, text: 'The scriptures declare: "Thou art That." But even this is a concept. In truth, there is no "thou" and no "that"—only the Self.', translator: 'Swami Vivekananda', tags: ['nonduality', 'wisdom', 'paradox'], difficulty: 4 },
+  
+  { id: 'avd-1-19', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 19, text: 'As the sun does not require another light to illumine it, so the Self does not require knowledge to know itself.', translator: 'Swami Vivekananda', tags: ['nonduality', 'vision', 'presence'], difficulty: 3 },
+  
+  { id: 'avd-1-20', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 20, text: 'Where there is no dissolution, no creation, no bound one, no seeker, no liberated one—that is the Self, the truth.', translator: 'Swami Vivekananda', tags: ['nonduality', 'freedom', 'stillness'], difficulty: 4 },
+  
+  { id: 'avd-1-21', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 21, text: 'I am knowledge; I am the known; I am the knower. I am all the three. I am beyond the three. I am the Self alone.', translator: 'Swami Vivekananda', tags: ['nonduality', 'witness', 'presence'], difficulty: 4 },
+  
+  { id: 'avd-1-22', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 22, text: 'There is no mind in me, no body, no senses. I am the Self, infinite, all-pervading, beyond thought.', translator: 'Swami Vivekananda', tags: ['nonduality', 'stillness', 'freedom'], difficulty: 3 },
+  
+  { id: 'avd-1-23', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 23, text: 'There is neither attachment nor aversion in me. There is neither pleasure nor pain. I am beyond all opposites.', translator: 'Swami Vivekananda', tags: ['stillness', 'nonduality', 'freedom'], difficulty: 3 },
+  
+  { id: 'avd-1-24', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 24, text: 'There is no waking, no dream, no deep sleep, no fourth state for me. I am the Self, beyond all states.', translator: 'Swami Vivekananda', tags: ['nonduality', 'witness', 'stillness'], difficulty: 4 },
+  
+  { id: 'avd-1-25', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 25, text: 'Just as there is no darkness for the sun, so there is no ignorance for the Self. The Self is ever-luminous.', translator: 'Swami Vivekananda', tags: ['nonduality', 'vision', 'presence'], difficulty: 2 },
+  
+  { id: 'avd-1-26', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 26, text: 'The Self is beyond all assertions and denials. It is neither one nor many. It simply is, indescribable, inconceivable.', translator: 'Swami Vivekananda', tags: ['nonduality', 'mystery', 'paradox'], difficulty: 4 },
+  
+  { id: 'avd-1-27', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 27, text: 'As space pervades everything, so the Self pervades all beings. The Self has no inside or outside—it is the totality.', translator: 'Swami Vivekananda', tags: ['nonduality', 'presence', 'unity'], difficulty: 2 },
+  
+  { id: 'avd-1-28', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 28, text: 'There is no action, no reaction in the Self. There is no cause, no effect. The Self is free from all such notions.', translator: 'Swami Vivekananda', tags: ['nonduality', 'stillness', 'freedom'], difficulty: 3 },
+  
+  { id: 'avd-1-29', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 29, text: 'I am not the body, not the mind, not the intellect. I am the Self—pure, free, ever-existing consciousness.', translator: 'Swami Vivekananda', tags: ['nonduality', 'body-awareness', 'presence'], difficulty: 2 },
+  
+  { id: 'avd-1-30', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 1, verseNumber: 30, text: 'Liberation is not the result of any practice. It is the recognition of what you already are. You are free.', translator: 'Swami Vivekananda', tags: ['liberation', 'freedom', 'wisdom'], difficulty: 3 },
+  
   // Chapter 2: On the Nature of Liberation
   { id: 'avd-2-1', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 2, verseNumber: 1, text: 'How can there be meditation or non-meditation? How can there be external or internal? Truly I am nothing but pure consciousness, like space.', translator: 'Swami Vivekananda', tags: ['nonduality', 'meditation', 'stillness'], difficulty: 4 },
   
@@ -85,6 +121,33 @@ export const avadhutaGitaVerses: Verse[] = [
   { id: 'avd-7-1', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 7, verseNumber: 1, text: 'I am infinite like space. This whole world is my modification. How can there be any rejection or acceptance in me?', translator: 'Swami Vivekananda', tags: ['nonduality', 'acceptance', 'freedom'], difficulty: 3 },
   
   { id: 'avd-7-2', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 7, verseNumber: 2, text: 'I am verily that supreme Brahman which is beyond praise and blame, beyond merit and demerit. I am the nectar of knowledge, infinite like the sky.', translator: 'Swami Vivekananda', tags: ['nonduality', 'wisdom', 'presence'], difficulty: 3, commentary: 'The closing declaration: absolute freedom is your natural state.' },
+  
+  { id: 'avd-7-3', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 7, verseNumber: 3, text: 'There is no meditation or lack of meditation for me. There is no union or separation. I am the Self alone.', translator: 'Swami Vivekananda', tags: ['nonduality', 'meditation', 'stillness'], difficulty: 4 },
+  
+  { id: 'avd-7-4', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 7, verseNumber: 4, text: 'I have no desire for liberation, for I was never bound. How can you liberate what was never in bondage?', translator: 'Swami Vivekananda', tags: ['liberation', 'freedom', 'paradox'], difficulty: 4 },
+  
+  { id: 'avd-7-5', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 7, verseNumber: 5, text: 'The wise one sees the Self in all and all in the Self. Such a one remains in peace, undisturbed by the world.', translator: 'Swami Vivekananda', tags: ['nonduality', 'vision', 'stillness'], difficulty: 2 },
+  
+  // Chapter 8: Final Wisdom
+  { id: 'avd-8-1', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 8, verseNumber: 1, text: 'The avadhuta, having shaken off all attachments, wanders freely like the wind. Neither seeking nor avoiding anything.', translator: 'Swami Vivekananda', tags: ['freedom', 'surrender', 'presence'], difficulty: 2 },
+  
+  { id: 'avd-8-2', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 8, verseNumber: 2, text: 'Having realized the Self, the avadhuta is beyond all ceremonies and rituals. Beyond all duties and prohibitions.', translator: 'Swami Vivekananda', tags: ['freedom', 'surrender', 'nonduality'], difficulty: 3 },
+  
+  { id: 'avd-8-3', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 8, verseNumber: 3, text: 'The avadhuta knows neither virtue nor vice. Neither bondage nor liberation. Only the Self, ever-free, ever-pure.', translator: 'Swami Vivekananda', tags: ['nonduality', 'freedom', 'stillness'], difficulty: 4 },
+  
+  { id: 'avd-8-4', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 8, verseNumber: 4, text: 'For the avadhuta, this world is like a city seen in a dream. It appears, it disappears. Only the Self remains.', translator: 'Swami Vivekananda', tags: ['dream', 'illusion', 'presence'], difficulty: 3 },
+  
+  { id: 'avd-8-5', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 8, verseNumber: 5, text: 'As the crystal reflects whatever is placed before it yet remains unchanged, so the Self reflects the world yet remains pure.', translator: 'Swami Vivekananda', tags: ['witness', 'stillness', 'nonduality'], difficulty: 2 },
+  
+  { id: 'avd-8-6', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 8, verseNumber: 6, text: 'Just as fire burns all things to ash yet remains fire, so the Self consumes all experience yet remains the Self.', translator: 'Swami Vivekananda', tags: ['nonduality', 'transformation', 'presence'], difficulty: 3 },
+  
+  { id: 'avd-8-7', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 8, verseNumber: 7, text: 'This is the highest truth: I am neither the body nor the mind. I am the Self—birthless, deathless, infinite.', translator: 'Swami Vivekananda', tags: ['nonduality', 'death', 'freedom'], difficulty: 2 },
+  
+  { id: 'avd-8-8', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 8, verseNumber: 8, text: 'The avadhuta has no name, no form, no country, no caste. Like the sky, the avadhuta pervades all.', translator: 'Swami Vivekananda', tags: ['identity', 'freedom', 'nonduality'], difficulty: 3 },
+  
+  { id: 'avd-8-9', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 8, verseNumber: 9, text: 'Rest in the Self. Be at peace. There is nothing to do, nothing to achieve. You are already That.', translator: 'Swami Vivekananda', tags: ['stillness', 'presence', 'freedom'], difficulty: 2 },
+  
+  { id: 'avd-8-10', sourceId: 'avadhuta-gita', sourceName: 'Avadhuta Gita', tradition: 'Hindu', chapter: 8, verseNumber: 10, text: 'Thus ends the Avadhuta Gita. The song of the free. May all beings realize their true nature.', translator: 'Swami Vivekananda', tags: ['compassion', 'freedom', 'wisdom'], difficulty: 1 },
 ];
 
 export default avadhutaGitaVerses;

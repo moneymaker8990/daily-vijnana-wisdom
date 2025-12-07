@@ -70,6 +70,60 @@ export const rigVedaVerses: Verse[] = [
   { id: 'rv-10-191-2', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '10.191', verseNumber: 2, text: 'Come together, speak together, let your minds be of one accord, as the ancient gods were of one mind in receiving their share.', translator: 'Ralph Griffith', tags: ['compassion', 'love', 'presence'], difficulty: 1 },
   { id: 'rv-10-191-3', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '10.191', verseNumber: 3, text: 'One is the intention, one is the assembly, one is the mind, one is the decision. I utter a common prayer for you, and I make a common offering for you.', translator: 'Ralph Griffith', tags: ['compassion', 'love'], difficulty: 1 },
   { id: 'rv-10-191-4', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '10.191', verseNumber: 4, text: 'One is your intention, one your minds, so that there may be perfect unity among you. I utter a common prayer for you, and I make a common offering for you.', translator: 'Ralph Griffith', tags: ['compassion', 'love', 'nonduality'], difficulty: 1, commentary: 'The hymn of unity: may all beings come together with one heart.' },
+  
+  // Hymn to Dawn (Ushas) - 1.113
+  { id: 'rv-1-113-1', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '1.113', verseNumber: 1, text: 'This light has come, of all the lights the fairest; the brilliant radiance, born in heaven, has risen. Night, sent away, makes room for the rising Dawn.', translator: 'Ralph Griffith', tags: ['vision', 'presence', 'joy'], difficulty: 1 },
+  { id: 'rv-1-113-3', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '1.113', verseNumber: 3, text: 'Fair as a bride, adorned by her mother, you show your light; your rays reach all quarters. Ushas, shine with your splendid glory.', translator: 'Ralph Griffith', tags: ['vision', 'joy', 'devotion'], difficulty: 1 },
+  { id: 'rv-1-113-7', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '1.113', verseNumber: 7, text: 'Dawn stirs all creatures that have feet to motion, and awakens birds to fly. Dawn rouses to their work all those who slumber.', translator: 'Ralph Griffith', tags: ['presence', 'action', 'discipline'], difficulty: 1 },
+  
+  // Hymn to the Waters - 7.49
+  { id: 'rv-7-49-1', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '7.49', verseNumber: 1, text: 'Forth from the middle of the flood the Waters—the stream gives cleansing—are flowing. May the divine Waters guard us here on earth.', translator: 'Ralph Griffith', tags: ['nature', 'stillness', 'devotion'], difficulty: 2 },
+  { id: 'rv-7-49-2', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '7.49', verseNumber: 2, text: 'The Waters that are heavenly, that flow in channels dug by man, and those that spring up naturally—may all these Waters bring us peace.', translator: 'Ralph Griffith', tags: ['stillness', 'nature', 'presence'], difficulty: 1 },
+  
+  // Hymn to Varuna - 7.86
+  { id: 'rv-7-86-1', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '7.86', verseNumber: 1, text: 'Wise are the ways of the ancient King. His ruling extends both far and wide. He has made for the sun a path to travel.', translator: 'Ralph Griffith', tags: ['devotion', 'vision', 'presence'], difficulty: 2 },
+  { id: 'rv-7-86-4', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '7.86', verseNumber: 4, text: 'If we have committed wrong, O Varuna, against a companion or dear friend, against a brother or a neighbor, free us from that guilt.', translator: 'Ralph Griffith', tags: ['compassion', 'shadow', 'surrender'], difficulty: 2 },
+  { id: 'rv-7-86-5', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '7.86', verseNumber: 5, text: 'If through our nature we have sinned, or if we have transgressed your laws, O God, do not punish us for that wrong. Do not harm us for the sins of others.', translator: 'Ralph Griffith', tags: ['compassion', 'surrender', 'shadow'], difficulty: 2 },
+  
+  // Hymn to Earth - 5.84
+  { id: 'rv-5-84-1', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '5.84', verseNumber: 1, text: 'The Earth, upheld by truth, sustains all living beings. May she bestow upon us health and happiness.', translator: 'Ralph Griffith', tags: ['nature', 'compassion', 'presence'], difficulty: 1 },
+  
+  // Hymn to Soma - 9.1
+  { id: 'rv-9-1-1', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '9.1', verseNumber: 1, text: 'In sweetest and most gladdening stream flow pure, O Soma, for Indra to drink. With swiftness flow through the purifying cloth.', translator: 'Ralph Griffith', tags: ['devotion', 'joy'], difficulty: 2 },
+  { id: 'rv-9-1-6', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '9.1', verseNumber: 6, text: 'Flow, Soma, inviolate on your celestial path. Grant us immortal life.', translator: 'Ralph Griffith', tags: ['devotion', 'death', 'presence'], difficulty: 2 },
+  
+  // Hymn to Night - 10.127
+  { id: 'rv-10-127-1', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '10.127', verseNumber: 1, text: 'With all her eyes the goddess Night looks forth approaching many a spot. She has put on her glories.', translator: 'Ralph Griffith', tags: ['presence', 'stillness', 'mystery'], difficulty: 2 },
+  { id: 'rv-10-127-4', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '10.127', verseNumber: 4, text: 'As Night draws near, I, like a bird, seek my nest on a tree. The villagers have gone home to rest.', translator: 'Ralph Griffith', tags: ['stillness', 'presence', 'surrender'], difficulty: 1 },
+  { id: 'rv-10-127-6', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '10.127', verseNumber: 6, text: 'Drive away the she-wolf and the wolf. Drive away the thief. Be easy for us to pass through.', translator: 'Ralph Griffith', tags: ['fear', 'devotion', 'stillness'], difficulty: 1 },
+  
+  // Hymn to the Sun - 1.50
+  { id: 'rv-1-50-1', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '1.50', verseNumber: 1, text: 'His bright rays bear him up aloft, the god who knows all creatures. Surya, that all may see the sun.', translator: 'Ralph Griffith', tags: ['vision', 'presence', 'devotion'], difficulty: 1 },
+  { id: 'rv-1-50-4', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '1.50', verseNumber: 4, text: 'Looking upon the loftier light above the darkness we have come, to Surya, god among the gods, the light that is most excellent.', translator: 'Ralph Griffith', tags: ['vision', 'devotion', 'joy'], difficulty: 1 },
+  { id: 'rv-1-50-10', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '1.50', verseNumber: 10, text: 'Rising today, O rich in friends, ascending to the loftier heaven, Surya, remove my heart disease and take from me this yellowness.', translator: 'Ralph Griffith', tags: ['devotion', 'body-awareness'], difficulty: 1 },
+  
+  // Hymn to the Ashvins - 1.116
+  { id: 'rv-1-116-1', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '1.116', verseNumber: 1, text: 'I summon you, O Ashvins, who are masters of all good things, who bring healing to the afflicted, who bring rescue to those in distress.', translator: 'Ralph Griffith', tags: ['devotion', 'compassion'], difficulty: 1 },
+  
+  // Hymn to the Sky and Earth - 1.160
+  { id: 'rv-1-160-1', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '1.160', verseNumber: 1, text: 'These two, Heaven and Earth, afford protection to all. Vast, holy, and supporting all, they guard all creatures.', translator: 'Ralph Griffith', tags: ['nature', 'presence', 'compassion'], difficulty: 1 },
+  { id: 'rv-1-160-3', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '1.160', verseNumber: 3, text: 'Heaven and Earth, ye from whom all things proceed, mighty in your strength, shower blessings upon us.', translator: 'Ralph Griffith', tags: ['devotion', 'nature', 'joy'], difficulty: 1 },
+  
+  // More Indra hymns - 2.12
+  { id: 'rv-2-12-1', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '2.12', verseNumber: 1, text: 'He who, just born, was the first mind to think, he who protected all the gods with his power, he before whose breath the two world-halves tremble at the greatness of his manly vigor—he, O people, is Indra.', translator: 'Ralph Griffith', tags: ['strength', 'courage', 'devotion'], difficulty: 2 },
+  { id: 'rv-2-12-5', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '2.12', verseNumber: 5, text: 'He under whose supreme command are horses, all chariots, villages, and cattle; he who gave being to the sun and morning, who leads the waters—he, O people, is Indra.', translator: 'Ralph Griffith', tags: ['strength', 'devotion', 'presence'], difficulty: 2 },
+  
+  // Hymn to Fire - 1.1 (already included, add more)
+  { id: 'rv-1-1-6', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '1.1', verseNumber: 6, text: 'In Agni meet the divine guests, worthy of reverence. May Agni, the sage, lead us to happiness.', translator: 'Ralph Griffith', tags: ['devotion', 'joy'], difficulty: 1 },
+  { id: 'rv-1-1-7', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '1.1', verseNumber: 7, text: 'Whatever blessing, Agni, you will grant to the one who worships, that blessing comes from you, Angiras.', translator: 'Ralph Griffith', tags: ['devotion', 'surrender'], difficulty: 1 },
+  
+  // Gayatri Mantra - 3.62.10
+  { id: 'rv-3-62-10', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '3.62', verseNumber: 10, text: 'We meditate on the adorable glory of the radiant sun; may he inspire our intelligence.', translator: 'Ralph Griffith', tags: ['meditation', 'vision', 'devotion'], difficulty: 1, commentary: 'The Gayatri Mantra: the most sacred prayer of the Vedic tradition.' },
+  
+  // Hymn to Purusha - 10.90 (already included, add more verses)
+  { id: 'rv-10-90-5', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '10.90', verseNumber: 5, text: 'From him Viraj was born; from Viraj the Purusha. When born he spread to the west and to the east.', translator: 'Ralph Griffith', tags: ['nonduality', 'mystery', 'presence'], difficulty: 3 },
+  { id: 'rv-10-90-10', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '10.90', verseNumber: 10, text: 'From that sacrifice, offered completely, the verses and the melodies were born; from it the meters were born; from it the sacred formulas were born.', translator: 'Ralph Griffith', tags: ['nonduality', 'mystery'], difficulty: 3 },
+  { id: 'rv-10-90-16', sourceId: 'rig-veda', sourceName: 'Rig Veda', tradition: 'Hindu', chapter: '10.90', verseNumber: 16, text: 'With sacrifice the gods sacrificed to sacrifice. These were the first ordinances. These powers reached the sky, where dwell the ancient gods.', translator: 'Ralph Griffith', tags: ['mystery', 'nonduality', 'paradox'], difficulty: 4 },
 ];
 
 export default rigVedaVerses;
