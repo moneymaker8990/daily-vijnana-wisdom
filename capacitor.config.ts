@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.vijnana.daily',
-  appName: 'Daily Vijnana Wisdom',
+  appId: 'com.stillpoint.app',
+  appName: 'Stillpoint',
   webDir: 'dist',
   server: {
     androidScheme: 'https',
@@ -17,7 +17,7 @@ const config: CapacitorConfig = {
       presentationOptions: ['badge', 'sound', 'alert'],
     },
     BackgroundRunner: {
-      label: 'com.vijnana.daily.background',
+      label: 'com.stillpoint.app.background',
       src: 'background.js',
       event: 'meditationTimer',
       repeat: false,

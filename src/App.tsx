@@ -101,7 +101,7 @@ function App() {
 
   return (
     <>
-      <AppLayout onGoToDay={goToDay}>
+      <AppLayout onGoToDay={goToDay} activeTab={activeTab}>
         {renderContent()}
       </AppLayout>
       

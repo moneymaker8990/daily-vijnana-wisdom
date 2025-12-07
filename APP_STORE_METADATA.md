@@ -1,10 +1,10 @@
-# App Store Metadata for Daily Vijnana Wisdom
+# App Store Metadata for Stillpoint
 
 ## App Name
-Daily Vijnana Wisdom
+Stillpoint
 
 ## Subtitle
-365 Days of Ancient Wisdom
+Ancient Wisdom for Modern Seekers
 
 ## Category
 - Primary: Lifestyle
@@ -17,7 +17,7 @@ meditation, spiritual, mindfulness, yoga, wisdom, daily reflection, sacred texts
 
 **Embark on a 365-day journey through the world's greatest wisdom traditions.**
 
-Daily Vijnana Wisdom weaves together teachings from the Vijnana Bhairava Tantra, Tao Te Ching, Upanishads, Bhagavad Gita, Yoga Sutras, Ashtavakra Gita, and Shiva Sutras into a single, elegant daily practice.
+Stillpoint weaves together teachings from the Vijnana Bhairava Tantra, Tao Te Ching, Upanishads, Bhagavad Gita, Yoga Sutras, Ashtavakra Gita, and Shiva Sutras into a single, elegant daily practice.
 
 **What You'll Experience:**
 
@@ -33,7 +33,7 @@ Daily Vijnana Wisdom weaves together teachings from the Vijnana Bhairava Tantra,
 
 **A Different Kind of Meditation App:**
 
-This isn't about optimizing your productivity or reducing stress (though that may happen). Daily Vijnana Wisdom is for those who sense there's something deeper—who want to explore the nature of consciousness itself.
+This isn't about optimizing your productivity or reducing stress (though that may happen). Stillpoint is for those who sense there's something deeper—who want to explore the nature of consciousness itself.
 
 The teachings are presented in a "Mystic Modern" voice: psychologically grounded, spiritually mature, and never preachy. Whether you're new to contemplative practice or a longtime seeker, you'll find wisdom that meets you where you are.
 
@@ -54,7 +54,7 @@ Start your journey today. One day, one teaching, one breath at a time.
 ---
 
 ## What's New (Version 1.0)
-Welcome to Daily Vijnana Wisdom! This initial release includes:
+Welcome to Stillpoint! This initial release includes:
 - 365 days of curated spiritual teachings
 - Complete sacred text library
 - Meditation timer with gentle bells
@@ -89,13 +89,13 @@ Welcome to Daily Vijnana Wisdom! This initial release includes:
 ---
 
 ## Support URL
-https://vijnana.app/support
+https://stillpoint.app/support
 
 ## Privacy Policy URL
-https://vijnana.app/privacy-policy.html
+https://stillpoint.app/privacy-policy.html
 
 ## Marketing URL
-https://vijnana.app
+https://stillpoint.app
 
 ---
 
@@ -119,7 +119,7 @@ https://vijnana.app
 "Record your dreams. Discover their meaning."
 
 *[Screen: App logo]*
-"Daily Vijnana Wisdom. Start your journey."
+"Stillpoint. Start your journey."
 
 ---
 

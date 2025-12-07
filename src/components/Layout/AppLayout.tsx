@@ -3,12 +3,21 @@ import { NotificationSettings } from '../NotificationSettings/NotificationSettin
 import { FavoritesPanel } from '../Favorites/FavoritesPanel';
 import { TextSizeToggle } from '../Settings/TextSizeControl';
 
+type TabId = 'daily' | 'study' | 'dreams';
+
 type AppLayoutProps = {
   children: ReactNode;
   onGoToDay?: (day: number) => void;
+  activeTab?: TabId;
 };
 
-export function AppLayout({ children, onGoToDay }: AppLayoutProps) {
+const PAGE_TITLES: Record<TabId, string> = {
+  daily: "Today's Wisdom",
+  study: 'Sacred Library',
+  dreams: 'Dream Journal',
+};
+
+export function AppLayout({ children, onGoToDay, activeTab = 'daily' }: AppLayoutProps) {
   const [showNotificationSettings, setShowNotificationSettings] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [, forceUpdate] = useState({});
@@ -18,6 +27,8 @@ export function AppLayout({ children, onGoToDay }: AppLayoutProps) {
     // Dispatch a storage event so DayView can react
     window.dispatchEvent(new Event('storage'));
   };
+
+  const pageTitle = PAGE_TITLES[activeTab];
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 pt-8 pb-24">
@@ -29,41 +40,45 @@ export function AppLayout({ children, onGoToDay }: AppLayoutProps) {
       </div>
       
       <div className="relative w-full max-w-3xl glass rounded-3xl p-6 md:p-10">
-        <header className="mb-8 md:mb-10 text-center relative">
-          {/* Header controls */}
-          <div className="absolute right-0 top-0 flex items-center gap-1 z-10">
-            {/* Text size toggle */}
-            <TextSizeToggle onChange={handleTextSizeChange} />
-            
-            {/* Favorites button */}
-            <button
-              onClick={() => setShowFavorites(true)}
-              className="p-2 text-white/40 hover:text-white/80 hover:bg-white/10 rounded-lg transition-colors"
-              title="Saved Passages"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </button>
+        <header className="mb-6 md:mb-8">
+          {/* Header row with controls and title */}
+          <div className="flex items-center justify-between gap-4">
+            {/* Left: Controls */}
+            <div className="flex items-center gap-1 flex-shrink-0">
+              {/* Text size toggle */}
+              <TextSizeToggle onChange={handleTextSizeChange} />
+              
+              {/* Favorites button */}
+              <button
+                onClick={() => setShowFavorites(true)}
+                className="p-2 text-white/40 hover:text-white/80 hover:bg-white/10 rounded-lg transition-colors"
+                title="Saved Passages"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </button>
 
-            {/* Notification settings button */}
-            <button
-              onClick={() => setShowNotificationSettings(true)}
-              className="p-2 text-white/40 hover:text-white/80 hover:bg-white/10 rounded-lg transition-colors"
-              title="Reminder Settings"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-            </button>
+              {/* Notification settings button */}
+              <button
+                onClick={() => setShowNotificationSettings(true)}
+                className="p-2 text-white/40 hover:text-white/80 hover:bg-white/10 rounded-lg transition-colors"
+                title="Reminder Settings"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Center: Page Title */}
+            <h1 className="text-xl md:text-2xl font-serif font-medium tracking-wide text-white text-center flex-1">
+              {pageTitle}
+            </h1>
+
+            {/* Right: Spacer for balance */}
+            <div className="w-[108px] hidden md:block" />
           </div>
-
-          <h1 className="text-3xl md:text-4xl font-serif font-medium tracking-wide text-white">
-            Daily Vijnana Wisdom
-          </h1>
-          <p className="text-sm md:text-base text-white/60 mt-2 font-light">
-            A quiet daily companion weaving Vijnana Bhairava, Tao, Art of War, and the Upanishads.
-          </p>
         </header>
         <main>{children}</main>
       </div>

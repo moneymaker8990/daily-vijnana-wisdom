@@ -12,9 +12,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg'],
       manifest: {
-        name: 'Daily Vijnana Wisdom',
-        short_name: 'Vijnana',
-        description: 'A 365-day journey through sacred wisdom traditions',
+        name: 'Stillpoint',
+        short_name: 'Stillpoint',
+        description: 'Ancient wisdom for modern seekers - sacred texts, meditation, and dream journal',
         theme_color: '#1e1b4b',
         background_color: '#0f0d1a',
         display: 'standalone',
