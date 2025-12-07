@@ -88,13 +88,10 @@ export function StudyLibrary({ isPremium = true, onUpgrade }: StudyLibraryProps)
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Subheader - main title is in AppLayout */}
       <div className="text-center pb-4 border-b border-white/10">
-        <h2 className="text-2xl md:text-3xl font-serif text-white mb-2">
-          Sacred Library
-        </h2>
         <p className="text-sm text-white/60">
-          {sources.length} sacred texts from {sortedTraditions.length} wisdom traditions
+          Complete texts from seven wisdom traditions
         </p>
       </div>
 

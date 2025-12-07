@@ -64,11 +64,8 @@ export function DreamJournal({ isPremium = true, onUpgrade }: DreamJournalProps)
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Subheader - main title is in AppLayout */}
       <div className="text-center pb-4 border-b border-white/10">
-        <h2 className="text-2xl md:text-3xl font-serif text-white mb-2">
-          Dream Journal
-        </h2>
         <p className="text-sm text-white/60">
           Record and explore the wisdom of your dreams
         </p>
