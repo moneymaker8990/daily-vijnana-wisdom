@@ -6,8 +6,7 @@ import type { DreamInterpretation } from './dreamStorage';
 // Supabase configuration
 // Your Wisdom App project credentials
 const SUPABASE_URL = 'https://coihujjfdhpqfwmibfbi.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNvaWh1ampmZGhwcWZ3bWliZmJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM1Mzc0MjMsImV4cCI6MjA0OTExMzQyM30.placeholder';
-// Note: Replace the anon key above with your actual anon key from Supabase dashboard
+const SUPABASE_ANON_KEY = 'sb_publishable_tEH7Suuk9vP0F-4TSXJePQ_7kMx09Q5';
 
 export async function interpretDream(
   dreamContent: string,
