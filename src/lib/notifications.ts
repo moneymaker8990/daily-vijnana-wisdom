@@ -1,4 +1,6 @@
 // Notification service for quote reminders
+import { Capacitor } from '@capacitor/core';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 export type NotificationSettings = {
   enabled: boolean;
@@ -25,15 +27,36 @@ export function getNotificationSettings(): NotificationSettings {
   };
 }
 
-export function saveNotificationSettings(settings: NotificationSettings): void {
+export async function saveNotificationSettings(settings: NotificationSettings): Promise<void> {
   try {
     localStorage.setItem(NOTIFICATION_STORAGE_KEY, JSON.stringify(settings));
+    
+    // Schedule or cancel native daily reminders
+    if (Capacitor.isNativePlatform()) {
+      if (settings.enabled && settings.times.length > 0) {
+        await scheduleDailyReminders(settings.times);
+      } else {
+        await cancelDailyReminders();
+      }
+    }
   } catch (e) {
     console.error('Error saving notification settings:', e);
   }
 }
 
 export async function requestNotificationPermission(): Promise<boolean> {
+  // Native platform
+  if (Capacitor.isNativePlatform()) {
+    try {
+      const result = await LocalNotifications.requestPermissions();
+      return result.display === 'granted';
+    } catch (e) {
+      console.error('Error requesting native notification permission:', e);
+      return false;
+    }
+  }
+  
+  // Web platform
   if (!('Notification' in window)) {
     console.warn('This browser does not support notifications');
     return false;
@@ -49,6 +72,63 @@ export async function requestNotificationPermission(): Promise<boolean> {
 
   const permission = await Notification.requestPermission();
   return permission === 'granted';
+}
+
+// Schedule daily notifications at specified times (native only)
+export async function scheduleDailyReminders(times: string[]): Promise<void> {
+  if (!Capacitor.isNativePlatform()) return;
+  
+  try {
+    // Cancel all existing daily reminder notifications (IDs 1-10)
+    await LocalNotifications.cancel({
+      notifications: times.map((_, i) => ({ id: i + 1 })),
+    });
+    
+    const notifications = times.map((time, index) => {
+      const [hour, minute] = time.split(':').map(Number);
+      
+      // Create a date for today at the specified time
+      const scheduleDate = new Date();
+      scheduleDate.setHours(hour, minute, 0, 0);
+      
+      // If the time has already passed today, schedule for tomorrow
+      if (scheduleDate.getTime() <= Date.now()) {
+        scheduleDate.setDate(scheduleDate.getDate() + 1);
+      }
+      
+      return {
+        id: index + 1,
+        title: 'Stillpoint 🧘',
+        body: 'Time for your daily wisdom and meditation practice.',
+        schedule: {
+          at: scheduleDate,
+          repeats: true,
+          every: 'day' as const,
+        },
+        channelId: 'daily-reminders',
+        sound: 'bell.wav',
+      };
+    });
+    
+    await LocalNotifications.schedule({ notifications });
+    console.log('Daily reminders scheduled:', times);
+  } catch (e) {
+    console.error('Error scheduling daily reminders:', e);
+  }
+}
+
+// Cancel all daily reminder notifications
+export async function cancelDailyReminders(): Promise<void> {
+  if (!Capacitor.isNativePlatform()) return;
+  
+  try {
+    // Cancel notifications with IDs 1-10 (daily reminders)
+    await LocalNotifications.cancel({
+      notifications: Array.from({ length: 10 }, (_, i) => ({ id: i + 1 })),
+    });
+  } catch (e) {
+    console.error('Error canceling daily reminders:', e);
+  }
 }
 
 export function getNotificationPermissionStatus(): NotificationPermission | 'unsupported' {

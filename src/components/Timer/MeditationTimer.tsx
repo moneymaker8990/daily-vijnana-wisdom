@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { Capacitor } from '@capacitor/core';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 type MeditationTimerProps = {
   suggestedMinutes: number;
@@ -6,6 +8,7 @@ type MeditationTimerProps = {
 };
 
 const PRESET_TIMES = [1, 3, 5, 10, 15, 20, 30];
+const TIMER_NOTIFICATION_ID = 999;
 
 export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,8 +24,50 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
 
   // Request notification permission on mount
   useEffect(() => {
+    // Web notifications
     if ('Notification' in window && Notification.permission === 'default') {
       Notification.requestPermission();
+    }
+    // Native notifications via Capacitor
+    if (Capacitor.isNativePlatform()) {
+      LocalNotifications.requestPermissions();
+    }
+  }, []);
+
+  // Schedule a native notification for when the timer should complete
+  const scheduleNativeNotification = useCallback(async (endTime: number) => {
+    if (!Capacitor.isNativePlatform()) return;
+    
+    try {
+      // Cancel any existing timer notification
+      await LocalNotifications.cancel({ notifications: [{ id: TIMER_NOTIFICATION_ID }] });
+      
+      // Schedule new notification
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            id: TIMER_NOTIFICATION_ID,
+            title: 'Meditation Complete 🧘',
+            body: `Your ${selectedMinutes} minute ${title} session is complete.`,
+            schedule: { at: new Date(endTime) },
+            sound: 'bell.wav',
+            channelId: 'meditation-timer',
+          },
+        ],
+      });
+    } catch (e) {
+      console.log('Native notification scheduling failed:', e);
+    }
+  }, [selectedMinutes, title]);
+
+  // Cancel scheduled native notification
+  const cancelNativeNotification = useCallback(async () => {
+    if (!Capacitor.isNativePlatform()) return;
+    
+    try {
+      await LocalNotifications.cancel({ notifications: [{ id: TIMER_NOTIFICATION_ID }] });
+    } catch (e) {
+      console.log('Native notification cancellation failed:', e);
     }
   }, []);
 
@@ -179,10 +224,14 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
     
     // Set the end time
     const duration = (isComplete ? selectedMinutes * 60 : timeLeft) * 1000;
-    endTimeRef.current = Date.now() + duration;
+    const newEndTime = Date.now() + duration;
+    endTimeRef.current = newEndTime;
     
     setIsRunning(true);
     playBell(); // Starting bell
+    
+    // Schedule native notification for background completion
+    scheduleNativeNotification(newEndTime);
     
     // Resume audio context on user interaction (required for mobile)
     if (audioContextRef.current?.state === 'suspended') {
@@ -198,6 +247,8 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
       setTimeLeft(remaining);
     }
     endTimeRef.current = null;
+    // Cancel scheduled notification
+    cancelNativeNotification();
   };
 
   const handleReset = () => {
@@ -205,6 +256,8 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
     setIsComplete(false);
     setTimeLeft(selectedMinutes * 60);
     endTimeRef.current = null;
+    // Cancel scheduled notification
+    cancelNativeNotification();
   };
 
   const handleSelectTime = (mins: number) => {

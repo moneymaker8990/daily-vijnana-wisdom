@@ -47,20 +47,20 @@ export function NotificationSettings({ onClose }: Props) {
     }
     const updated = { ...settings, enabled: !settings.enabled };
     setSettings(updated);
-    saveNotificationSettings(updated);
+    await saveNotificationSettings(updated);
   };
 
-  const handleAddTime = () => {
+  const handleAddTime = async () => {
     if (settings.times.includes(newTime)) return;
     const updated = { ...settings, times: [...settings.times, newTime].sort() };
     setSettings(updated);
-    saveNotificationSettings(updated);
+    await saveNotificationSettings(updated);
   };
 
-  const handleRemoveTime = (time: string) => {
+  const handleRemoveTime = async (time: string) => {
     const updated = { ...settings, times: settings.times.filter(t => t !== time) };
     setSettings(updated);
-    saveNotificationSettings(updated);
+    await saveNotificationSettings(updated);
   };
 
   const formatTime = (time: string) => {
