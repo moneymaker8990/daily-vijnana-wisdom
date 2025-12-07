@@ -3,9 +3,11 @@
 
 import type { DreamInterpretation } from './dreamStorage';
 
-// Supabase configuration - will be replaced with actual values
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+// Supabase configuration
+// Your Wisdom App project credentials
+const SUPABASE_URL = 'https://coihujjfdhpqfwmibfbi.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNvaWh1ampmZGhwcWZ3bWliZmJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzM1Mzc0MjMsImV4cCI6MjA0OTExMzQyM30.placeholder';
+// Note: Replace the anon key above with your actual anon key from Supabase dashboard
 
 export async function interpretDream(
   dreamContent: string,
@@ -18,15 +20,15 @@ export async function interpretDream(
   }
 
   try {
-    const response = await fetch(`${SUPABASE_URL}/functions/v1/interpret-dream`, {
+    // Using the "hyper-processor" function (can be renamed to "interpret-dream" if preferred)
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/hyper-processor`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
       },
       body: JSON.stringify({
-        dreamContent,
-        mood,
+        dream: dreamContent + (mood ? ` (Mood: ${mood})` : ''),
       }),
     });
 
@@ -35,6 +37,13 @@ export async function interpretDream(
     }
 
     const data = await response.json();
+    
+    // The Edge Function returns { interpretation: string }
+    // We need to parse it into our DreamInterpretation format
+    if (data.interpretation) {
+      return parseInterpretation(data.interpretation, dreamContent, mood);
+    }
+    
     return {
       ...data,
       generatedAt: new Date().toISOString(),
@@ -44,6 +53,44 @@ export async function interpretDream(
     // Fallback to mock interpretation
     return generateMockInterpretation(dreamContent, mood);
   }
+}
+
+// Parse AI interpretation into structured format
+function parseInterpretation(aiResponse: string, dreamContent: string, mood?: string): DreamInterpretation {
+  // The AI returns a prose interpretation, we'll structure it
+  const paragraphs = aiResponse.split('\n\n').filter(p => p.trim());
+  
+  return {
+    summary: paragraphs[0] || 'Your dream reflects the ongoing work of your psyche.',
+    symbols: extractSymbols(dreamContent),
+    psychologicalInsight: paragraphs[1] || paragraphs[0] || '',
+    spiritualConnection: paragraphs[2] || 'Dreams serve as bridges between conscious and unconscious awareness.',
+    actionSuggestion: paragraphs[3] || 'Sit quietly with this dream and notice what feelings arise without judgment.',
+    generatedAt: new Date().toISOString(),
+  };
+}
+
+// Extract potential symbols from dream content
+function extractSymbols(content: string): Array<{ symbol: string; meaning: string }> {
+  const commonSymbols = [
+    { word: 'water', meaning: 'Emotions, the unconscious mind, purification, or transformation' },
+    { word: 'flying', meaning: 'Freedom, transcendence, or escape from limitations' },
+    { word: 'falling', meaning: 'Loss of control, anxiety, or letting go' },
+    { word: 'house', meaning: 'The self, the psyche, or aspects of your identity' },
+    { word: 'door', meaning: 'Opportunity, transition, or new possibilities' },
+    { word: 'light', meaning: 'Awareness, insight, divine presence, or truth' },
+    { word: 'dark', meaning: 'The unknown, the unconscious, or hidden aspects of self' },
+    { word: 'snake', meaning: 'Transformation, healing, kundalini energy, or hidden fears' },
+    { word: 'ocean', meaning: 'Vastness of consciousness, emotions, or the infinite' },
+    { word: 'fire', meaning: 'Transformation, passion, purification, or destruction' },
+  ];
+  
+  const lowerContent = content.toLowerCase();
+  const found = commonSymbols.filter(s => lowerContent.includes(s.word));
+  
+  return found.length > 0 
+    ? found.slice(0, 3).map(s => ({ symbol: s.word, meaning: s.meaning }))
+    : [{ symbol: 'Personal Imagery', meaning: 'Your dream contains unique symbols specific to your experience.' }];
 }
 
 // Mock interpretation for when Supabase is not configured
@@ -113,4 +160,5 @@ function generateMockInterpretation(content: string, mood?: string): DreamInterp
     generatedAt: new Date().toISOString(),
   };
 }
+
 

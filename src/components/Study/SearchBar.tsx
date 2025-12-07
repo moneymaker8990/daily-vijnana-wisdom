@@ -131,3 +131,4 @@ export function SearchBar({ value, onChange, onSelectText }: SearchBarProps) {
   );
 }
 
+

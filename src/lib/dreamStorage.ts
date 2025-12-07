@@ -96,3 +96,4 @@ export function getRecentDreams(count: number = 10): DreamEntry[] {
   return loadDreams().slice(0, count);
 }
 
+

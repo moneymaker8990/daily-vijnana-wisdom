@@ -138,3 +138,4 @@ function TextCard({ text, onSelect, locked, onUpgrade }: TextCardProps) {
   );
 }
 
+

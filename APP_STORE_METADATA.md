@@ -139,3 +139,4 @@ https://vijnana.app
 - Anyone interested in consciousness and psychology
 - People in recovery or life transitions seeking meaning
 
+
