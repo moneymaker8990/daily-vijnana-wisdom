@@ -55,7 +55,7 @@ export async function interpretDream(
 }
 
 // Parse AI interpretation into structured format
-function parseInterpretation(aiResponse: string, dreamContent: string, mood?: string): DreamInterpretation {
+function parseInterpretation(aiResponse: string, dreamContent: string, _mood?: string): DreamInterpretation {
   // The AI returns a prose interpretation, we'll structure it
   const paragraphs = aiResponse.split('\n\n').filter(p => p.trim());
   

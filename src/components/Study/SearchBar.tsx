@@ -41,7 +41,7 @@ export function SearchBar({ value, onChange, onSelectText }: SearchBarProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSelect = (text: LibraryText, verseIndex: number) => {
+  const handleSelect = (text: LibraryText, _verseIndex: number) => {
     onSelectText(text);
     setShowResults(false);
     onChange('');
@@ -94,7 +94,7 @@ export function SearchBar({ value, onChange, onSelectText }: SearchBarProps) {
           className="absolute z-20 w-full mt-2 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden"
         >
           <div className="max-h-80 overflow-y-auto">
-            {results.map((result, index) => (
+            {results.map((result) => (
               <button
                 key={`${result.text.id}-${result.verseIndex}`}
                 onClick={() => handleSelect(result.text, result.verseIndex)}

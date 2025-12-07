@@ -131,7 +131,7 @@ type SingleVerseViewProps = {
   total: number;
   onPrev: () => void;
   onNext: () => void;
-  verseRef: React.RefObject<HTMLDivElement>;
+  verseRef: React.RefObject<HTMLDivElement | null>;
 };
 
 function SingleVerseView({ verse, text, index, total, onPrev, onNext, verseRef }: SingleVerseViewProps) {

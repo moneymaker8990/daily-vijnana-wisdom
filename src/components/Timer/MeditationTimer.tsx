@@ -66,8 +66,12 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
         icon: '/icon.svg',
         tag: 'meditation-timer',
         requireInteraction: true, // Keeps notification visible until user interacts
-        vibrate: [200, 100, 200], // Vibration pattern
       });
+      
+      // Try to vibrate if supported (mobile devices)
+      if ('vibrate' in navigator) {
+        navigator.vibrate([200, 100, 200]);
+      }
       
       notification.onclick = () => {
         window.focus();
