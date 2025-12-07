@@ -1,0 +1,31 @@
+# Supabase Configuration for Daily Vijnana Wisdom
+
+[project]
+id = "your-project-id"
+name = "daily-vijnana-wisdom"
+
+# Database settings (not needed for Edge Functions only)
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+# API settings
+[api]
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+
+# Edge Function settings
+[functions]
+# Edge functions will be deployed from ./supabase/functions
+
+# Dashboard (optional)
+[studio]
+enabled = true
+port = 54323
+
+# Local development secrets
+# Note: In production, set these via Supabase Dashboard > Settings > Edge Functions > Secrets
+# ANTHROPIC_API_KEY should NEVER be committed to git
+

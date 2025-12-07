@@ -20,7 +20,7 @@ export function AppLayout({ children, onGoToDay }: AppLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center px-4 pt-8 pb-24">
       {/* Ambient glow effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
@@ -31,7 +31,7 @@ export function AppLayout({ children, onGoToDay }: AppLayoutProps) {
       <div className="relative w-full max-w-3xl glass rounded-3xl p-6 md:p-10">
         <header className="mb-8 md:mb-10 text-center relative">
           {/* Header controls */}
-          <div className="absolute right-0 top-0 flex items-center gap-1">
+          <div className="absolute right-0 top-0 flex items-center gap-1 z-10">
             {/* Text size toggle */}
             <TextSizeToggle onChange={handleTextSizeChange} />
             

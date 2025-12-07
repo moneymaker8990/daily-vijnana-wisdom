@@ -1,0 +1,8 @@
+# Supabase secrets and local config
+.env
+.env.local
+*.local
+
+# Don't commit API keys
+secrets.toml
+
