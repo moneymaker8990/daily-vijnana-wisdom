@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { 
   addJournalEntry, 
   updateJournalEntry, 
@@ -11,6 +11,7 @@ import {
   moodInfo, 
   type JournalPrompt 
 } from '../../data/journalPrompts';
+import { VoiceDictationButton } from '../VoiceDictation';
 
 type JournalEntryFormProps = {
   entry?: JournalEntry | null;
@@ -112,6 +113,16 @@ export function JournalEntryForm({ entry, onSave, onCancel, initialPrompt }: Jou
     setCurrentPrompt(getRandomPrompt());
     _setShowPromptPicker(false);
   };
+
+  // Voice dictation handler - appends to content with proper spacing
+  const handleVoiceTranscript = useCallback((transcript: string) => {
+    setContent(prev => {
+      const trimmed = prev.trim();
+      if (!trimmed) return transcript;
+      // Add space between existing content and new transcript
+      return trimmed + ' ' + transcript;
+    });
+  }, []);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -245,11 +256,18 @@ export function JournalEntryForm({ entry, onSave, onCancel, initialPrompt }: Jou
 
       {/* Main Content */}
       <div>
-        <label className="block text-sm text-white/60 mb-2">Your reflections</label>
+        <div className="flex items-center justify-between mb-2">
+          <label className="block text-sm text-white/60">Your reflections</label>
+          <VoiceDictationButton
+            onTranscript={handleVoiceTranscript}
+            label="Speak"
+            className="scale-90"
+          />
+        </div>
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="Write your thoughts, feelings, and reflections..."
+          placeholder="Write your thoughts, feelings, and reflections... or tap the microphone to speak"
           rows={8}
           className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-violet-400/50 focus:ring-1 focus:ring-violet-400/25 transition-all resize-none"
           required

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { addDream, updateDream, type DreamEntry } from '../../lib/dreamStorage';
+import { VoiceDictationButton } from '../VoiceDictation';
 
 type DreamEntryFormProps = {
   dream?: DreamEntry | null;
@@ -22,6 +23,16 @@ export function DreamEntryForm({ dream, onSave, onCancel }: DreamEntryFormProps)
   const [date, setDate] = useState(dream?.date || new Date().toISOString().split('T')[0]);
   const [mood, setMood] = useState<DreamEntry['mood']>(dream?.mood);
   const [saving, setSaving] = useState(false);
+
+  // Voice dictation handler - appends to content with proper spacing
+  const handleVoiceTranscript = useCallback((transcript: string) => {
+    setContent(prev => {
+      const trimmed = prev.trim();
+      if (!trimmed) return transcript;
+      // Add space between existing content and new transcript
+      return trimmed + ' ' + transcript;
+    });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,13 +102,20 @@ export function DreamEntryForm({ dream, onSave, onCancel }: DreamEntryFormProps)
 
         {/* Content */}
         <div>
-          <label className="block text-xs uppercase tracking-wider text-white/50 mb-2">
-            Dream Description
-          </label>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-xs uppercase tracking-wider text-white/50">
+              Dream Description
+            </label>
+            <VoiceDictationButton
+              onTranscript={handleVoiceTranscript}
+              label="Speak"
+              className="scale-90"
+            />
+          </div>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Describe your dream in as much detail as you can remember..."
+            placeholder="Describe your dream in as much detail as you can remember... or tap the microphone to speak"
             rows={8}
             className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-violet-500/50 focus:bg-white/10 transition-all resize-none"
             required
