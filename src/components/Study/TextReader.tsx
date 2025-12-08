@@ -2,7 +2,9 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import type { LibraryText, LibraryVerse } from '../../data/library/types';
 import { FavoriteButton } from '../Favorites/FavoriteButton';
 import { ShareButton } from '../Share/ShareButton';
-import { updateReadingProgress, toggleBookmark, isBookmarked } from '../../lib/readingProgress';
+import { updateReadingProgress, toggleBookmark, isBookmarked, getReadingProgress } from '../../lib/readingProgress';
+import { ALL_SOURCES } from '../../core/library/registry';
+import type { HistoricalIntro } from '../../core/library/types';
 
 type TextReaderProps = {
   text: LibraryText;
@@ -10,34 +12,30 @@ type TextReaderProps = {
   initialVerse?: number;
 };
 
-// Helper to get a sourceId from text title
-function getSourceId(title: string): string {
-  const mapping: Record<string, string> = {
-    'Bhagavad Gita': 'bhagavad-gita',
-    'Tao Te Ching': 'tao-te-ching',
-    'Vijnana Bhairava Tantra': 'vijnana-bhairava-tantra',
-    'The Upanishads': 'upanishads',
-    'Ashtavakra Gita': 'ashtavakra-gita',
-    'Yoga Sutras of Patanjali': 'yoga-sutras',
-    'Shiva Sutras': 'shiva-sutras',
-    'Rig Veda': 'rig-veda',
-    'Dhammapada': 'dhammapada',
-    'Zen Koans (Mumonkan)': 'zen-koans',
-    'Rumi - Masnavi & Odes': 'rumi',
-    'The Cloud of Unknowing': 'cloud-of-unknowing',
-  };
-  return mapping[title] || title.toLowerCase().replace(/\s+/g, '-');
+// Helper to get source data from text title - uses registry for accurate mapping
+function getSource(title: string) {
+  return ALL_SOURCES.find(s => s.name === title);
 }
 
 export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) {
   const [currentIndex, setCurrentIndex] = useState(initialVerse);
   const [viewMode, setViewMode] = useState<'single' | 'list'>('single');
   const [showToc, setShowToc] = useState(false);
+  const [showIntro, setShowIntro] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const verseRef = useRef<HTMLDivElement>(null);
   
-  const sourceId = getSourceId(text.title);
+  const source = getSource(text.title);
+  const sourceId = source?.id || text.title.toLowerCase().replace(/\s+/g, '-');
   const verse = text.verses[currentIndex];
+  
+  // Show intro automatically on first visit (when no reading progress exists)
+  useEffect(() => {
+    const progress = getReadingProgress(sourceId);
+    if (!progress && source?.historicalIntro) {
+      setShowIntro(true);
+    }
+  }, [sourceId, source]);
 
   // Check bookmark status on mount and when verse changes
   useEffect(() => {
@@ -105,6 +103,21 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
         </button>
 
         <div className="flex items-center gap-2">
+          {/* About/Intro Toggle */}
+          {source?.historicalIntro && (
+            <button
+              onClick={() => setShowIntro(!showIntro)}
+              className={`p-2 rounded-lg transition-colors ${
+                showIntro ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80'
+              }`}
+              title="About this text"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </button>
+          )}
+
           {/* View Toggle */}
           <button
             onClick={() => setViewMode(viewMode === 'single' ? 'list' : 'single')}
@@ -139,8 +152,17 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
         <p className="text-sm text-white/50">{text.subtitle}</p>
       </div>
 
+      {/* Historical Introduction */}
+      {showIntro && source?.historicalIntro && (
+        <IntroductionPanel
+          intro={source.historicalIntro}
+          source={source}
+          onClose={() => setShowIntro(false)}
+        />
+      )}
+
       {/* Table of Contents */}
-      {showToc && (
+      {!showIntro && showToc && (
         <TableOfContents
           text={text}
           currentIndex={currentIndex}
@@ -150,7 +172,7 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
       )}
 
       {/* Main Content */}
-      {!showToc && (
+      {!showIntro && !showToc && (
         viewMode === 'single' ? (
           <SingleVerseView
             verse={verse}
@@ -421,6 +443,102 @@ function TableOfContents({ text, currentIndex, onSelect, onClose }: TableOfConte
           </button>
         );
       })}
+    </div>
+  );
+}
+
+type IntroductionPanelProps = {
+  intro: HistoricalIntro;
+  source: { name: string; period?: string; originalLanguage?: string; icon?: string };
+  onClose: () => void;
+};
+
+function IntroductionPanel({ intro, source, onClose }: IntroductionPanelProps) {
+  const [expandedSection, setExpandedSection] = useState<string | null>('origin');
+
+  const sections = [
+    { id: 'origin', title: 'Origins', icon: '🌍', content: intro.origin },
+    { id: 'author', title: 'Author & Transmission', icon: '✍️', content: intro.author },
+    { id: 'significance', title: 'Significance', icon: '💎', content: intro.significance },
+    { id: 'howToRead', title: 'How to Read', icon: '📖', content: intro.howToRead },
+  ];
+
+  return (
+    <div className="space-y-4 animate-fadeIn">
+      {/* Header Card */}
+      <div className="bg-gradient-to-br from-violet-500/20 to-indigo-500/20 rounded-2xl p-6 border border-violet-500/30">
+        <div className="flex items-start justify-between">
+          <div>
+            <span className="text-3xl mb-2 block">{source.icon || '📜'}</span>
+            <h3 className="text-lg font-serif text-white mb-1">About This Text</h3>
+            <div className="flex items-center gap-3 text-xs text-white/50">
+              {source.period && <span>{source.period}</span>}
+              {source.originalLanguage && (
+                <>
+                  <span className="text-white/20">•</span>
+                  <span>{source.originalLanguage}</span>
+                </>
+              )}
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 text-white/40 hover:text-white/80 transition-colors rounded-lg hover:bg-white/10"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Expandable Sections */}
+      <div className="space-y-2">
+        {sections.map((section) => (
+          <div
+            key={section.id}
+            className="rounded-xl overflow-hidden border border-white/10"
+          >
+            <button
+              onClick={() => setExpandedSection(expandedSection === section.id ? null : section.id)}
+              className={`w-full flex items-center justify-between p-4 transition-colors ${
+                expandedSection === section.id ? 'bg-white/10' : 'bg-white/5 hover:bg-white/10'
+              }`}
+            >
+              <span className="flex items-center gap-2 text-sm font-medium text-white">
+                <span>{section.icon}</span>
+                <span>{section.title}</span>
+              </span>
+              <svg
+                className={`w-5 h-5 text-white/50 transition-transform ${
+                  expandedSection === section.id ? 'rotate-180' : ''
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {expandedSection === section.id && (
+              <div className="p-4 bg-white/5 border-t border-white/10">
+                <p className="text-sm text-white/80 leading-relaxed">
+                  {section.content}
+                </p>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Begin Reading Button */}
+      <button
+        onClick={onClose}
+        className="w-full py-3 bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-400 hover:to-indigo-400 rounded-xl text-white font-medium shadow-lg shadow-violet-500/25 transition-all hover:scale-[1.02]"
+      >
+        Begin Reading
+      </button>
     </div>
   );
 }

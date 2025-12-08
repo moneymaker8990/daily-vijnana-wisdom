@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { playBell, getSoundSettings } from '../../lib/soundSettings';
 
 type MeditationTimerProps = {
   suggestedMinutes: number;
@@ -20,7 +21,6 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
   // Store the actual end time for accurate tracking across sleep/wake
   const endTimeRef = useRef<number | null>(null);
   const intervalRef = useRef<number | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
 
   // Request notification permission on mount
   useEffect(() => {
@@ -71,36 +71,9 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
     }
   }, []);
 
-  // Play a gentle bell sound
-  const playBell = useCallback(() => {
-    try {
-      if (!audioContextRef.current) {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      }
-      const ctx = audioContextRef.current;
-      
-      // Resume context if suspended (required for mobile)
-      if (ctx.state === 'suspended') {
-        ctx.resume();
-      }
-      
-      const oscillator = ctx.createOscillator();
-      const gainNode = ctx.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(ctx.destination);
-      
-      oscillator.frequency.setValueAtTime(528, ctx.currentTime); // Solfeggio frequency
-      oscillator.type = 'sine';
-      
-      gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 2);
-      
-      oscillator.start(ctx.currentTime);
-      oscillator.stop(ctx.currentTime + 2);
-    } catch (e) {
-      console.log('Audio not available');
-    }
+  // Play a meditation bell sound using the user's selected sound
+  const playMeditationBell = useCallback(() => {
+    playBell();
   }, []);
 
   // Show notification (appears on lock screen)
@@ -131,9 +104,14 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
     setIsComplete(true);
     setTimeLeft(0);
     endTimeRef.current = null;
-    playBell();
+    
+    // Play ending bell if enabled
+    const settings = getSoundSettings();
+    if (settings.playAtEnd) {
+      playMeditationBell();
+    }
     showNotification();
-  }, [playBell, showNotification]);
+  }, [playMeditationBell, showNotification]);
 
   // Calculate remaining time from end time
   const updateTimeFromEndTime = useCallback(() => {
@@ -228,15 +206,15 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
     endTimeRef.current = newEndTime;
     
     setIsRunning(true);
-    playBell(); // Starting bell
+    
+    // Play starting bell if enabled
+    const settings = getSoundSettings();
+    if (settings.playAtStart) {
+      playMeditationBell();
+    }
     
     // Schedule native notification for background completion
     scheduleNativeNotification(newEndTime);
-    
-    // Resume audio context on user interaction (required for mobile)
-    if (audioContextRef.current?.state === 'suspended') {
-      audioContextRef.current.resume();
-    }
   };
 
   const handlePause = () => {

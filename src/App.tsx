@@ -8,6 +8,7 @@ import { TabNavigation, type TabId } from './components/Navigation/TabNavigation
 import { StudyHub } from './components/StudyPathways';
 import { StudyLibrary } from './components/Study/StudyLibrary';
 import { DreamJournal } from './components/Dreams/DreamJournal';
+import { Journal } from './components/Journal';
 
 function App() {
   const { entry, loading, goToNext, goToPrev, goToToday, goToDay } = useDailyEntry();
@@ -78,6 +79,9 @@ function App() {
             onToday={goToToday}
           />
         );
+      
+      case 'journal':
+        return <Journal />;
       
       case 'courses':
         return <StudyHub />;

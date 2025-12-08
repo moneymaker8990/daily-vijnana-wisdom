@@ -54,6 +54,23 @@ export type Verse = {
 };
 
 /**
+ * Historical introduction for a sacred text
+ */
+export type HistoricalIntro = {
+  /** Where and when the text originated */
+  origin: string;
+  
+  /** Who wrote or compiled the text */
+  author: string;
+  
+  /** Why this text matters in the spiritual tradition */
+  significance: string;
+  
+  /** Guidance on approaching this text */
+  howToRead: string;
+};
+
+/**
  * Metadata about a sacred text source
  */
 export type Source = {
@@ -83,6 +100,9 @@ export type Source = {
   
   /** Icon/emoji for UI display */
   icon?: string;
+  
+  /** Rich historical context for the text */
+  historicalIntro?: HistoricalIntro;
 };
 
 /**

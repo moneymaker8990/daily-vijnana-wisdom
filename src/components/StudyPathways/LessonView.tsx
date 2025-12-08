@@ -9,6 +9,13 @@ import { getCourseById, getNextLesson, getPreviousLesson, isLastLesson, getLesso
 import { completeLesson, setCurrentLesson, isLessonCompleted } from '../../core/study/progress';
 import { ALL_VERSES } from '../../core/library/registry';
 import type { Verse } from '../../core/library/types';
+import { MeditationTimer } from '../Timer/MeditationTimer';
+
+// Helper to parse duration string like "10-15 minutes" into a number
+function parseDuration(durationStr: string): number {
+  const match = durationStr.match(/(\d+)/);
+  return match ? parseInt(match[1], 10) : 10;
+}
 
 type LessonViewProps = {
   courseId: string;
@@ -179,6 +186,12 @@ export function LessonView({ courseId, lessonId, onBack, onNavigateLesson }: Les
                 </li>
               ))}
             </ol>
+
+            {/* Meditation Timer */}
+            <MeditationTimer 
+              suggestedMinutes={parseDuration(lesson.practice.duration)} 
+              title={lesson.practice.title}
+            />
           </div>
         </CollapsibleSection>
       </div>
