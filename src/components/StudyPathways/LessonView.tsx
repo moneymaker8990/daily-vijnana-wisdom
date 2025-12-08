@@ -10,6 +10,8 @@ import { completeLesson, setCurrentLesson, isLessonCompleted } from '../../core/
 import { ALL_VERSES } from '../../core/library/registry';
 import type { Verse } from '../../core/library/types';
 import { MeditationTimer } from '../Timer/MeditationTimer';
+import { ExplainButton, ExplainPanel } from '../Explain';
+import type { TextExplanation } from '../../lib/textExplain';
 
 // Helper to parse duration string like "10-15 minutes" into a number
 function parseDuration(durationStr: string): number {
@@ -324,6 +326,8 @@ type VerseCardProps = {
 };
 
 function VerseCard({ verse, index }: VerseCardProps) {
+  const [explanation, setExplanation] = useState<TextExplanation | null>(null);
+
   return (
     <div className="p-4 bg-gradient-to-br from-white/10 to-white/5 rounded-xl border border-white/10">
       <div className="flex items-start justify-between mb-2">
@@ -332,7 +336,15 @@ function VerseCard({ verse, index }: VerseCardProps) {
           {verse.chapter && ` • ${typeof verse.chapter === 'number' ? `Ch. ${verse.chapter}` : verse.chapter}`}
           {verse.verseNumber && `:${verse.verseNumber}`}
         </span>
-        <span className="text-xs text-white/30">#{index}</span>
+        <div className="flex items-center gap-2">
+          <ExplainButton
+            text={verse.text}
+            source={verse.sourceName}
+            onExplanation={setExplanation}
+            isExpanded={explanation !== null}
+          />
+          <span className="text-xs text-white/30">#{index}</span>
+        </div>
       </div>
       
       <p className="text-sm text-white/90 font-serif leading-relaxed italic">
@@ -353,6 +365,14 @@ function VerseCard({ verse, index }: VerseCardProps) {
             </span>
           ))}
         </div>
+      )}
+
+      {/* AI Explanation Panel */}
+      {explanation && (
+        <ExplainPanel
+          explanation={explanation}
+          onClose={() => setExplanation(null)}
+        />
       )}
     </div>
   );

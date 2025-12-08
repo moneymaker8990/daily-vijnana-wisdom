@@ -2,9 +2,11 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import type { LibraryText, LibraryVerse } from '../../data/library/types';
 import { FavoriteButton } from '../Favorites/FavoriteButton';
 import { ShareButton } from '../Share/ShareButton';
+import { ExplainButton, ExplainPanel } from '../Explain';
 import { updateReadingProgress, toggleBookmark, isBookmarked, getReadingProgress } from '../../lib/readingProgress';
 import { ALL_SOURCES } from '../../core/library/registry';
 import type { HistoricalIntro } from '../../core/library/types';
+import type { TextExplanation } from '../../lib/textExplain';
 
 type TextReaderProps = {
   text: LibraryText;
@@ -210,6 +212,13 @@ type SingleVerseViewProps = {
 };
 
 function SingleVerseView({ verse, text, index, total, onPrev, onNext, verseRef, bookmarked, onToggleBookmark }: SingleVerseViewProps) {
+  const [explanation, setExplanation] = useState<TextExplanation | null>(null);
+
+  // Clear explanation when verse changes
+  useEffect(() => {
+    setExplanation(null);
+  }, [verse.id]);
+
   return (
     <div className="space-y-6" ref={verseRef}>
       {/* Progress bar */}
@@ -258,6 +267,13 @@ function SingleVerseView({ verse, text, index, total, onPrev, onNext, verseRef, 
 
         {/* Actions */}
         <div className="mt-4 flex items-center justify-end gap-2">
+          {/* Explain Button */}
+          <ExplainButton
+            text={verse.text}
+            source={text.title}
+            onExplanation={setExplanation}
+            isExpanded={explanation !== null}
+          />
           {/* Bookmark Button */}
           <button
             onClick={onToggleBookmark}
@@ -290,6 +306,14 @@ function SingleVerseView({ verse, text, index, total, onPrev, onNext, verseRef, 
             dayNumber={verse.number}
           />
         </div>
+
+        {/* AI Explanation Panel */}
+        {explanation && (
+          <ExplainPanel
+            explanation={explanation}
+            onClose={() => setExplanation(null)}
+          />
+        )}
       </div>
 
       {/* Navigation */}
