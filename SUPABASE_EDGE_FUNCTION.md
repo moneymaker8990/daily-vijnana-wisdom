@@ -111,3 +111,4 @@ Dream: "${dream}"`,
 - Check the function logs for detailed error messages
 - Make sure the function is deployed (green status indicator)
 
+

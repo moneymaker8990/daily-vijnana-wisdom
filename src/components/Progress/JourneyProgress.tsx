@@ -67,3 +67,4 @@ export function JourneyProgress({ currentDay, totalDays = 365 }: JourneyProgress
 
 
 
+

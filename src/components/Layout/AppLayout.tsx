@@ -3,7 +3,7 @@ import { NotificationSettings } from '../NotificationSettings/NotificationSettin
 import { FavoritesPanel } from '../Favorites/FavoritesPanel';
 import { TextSizeToggle } from '../Settings/TextSizeControl';
 
-type TabId = 'daily' | 'study' | 'dreams';
+type TabId = 'daily' | 'courses' | 'library' | 'dreams';
 
 type AppLayoutProps = {
   children: ReactNode;
@@ -13,7 +13,8 @@ type AppLayoutProps = {
 
 const PAGE_TITLES: Record<TabId, string> = {
   daily: "Today's Wisdom",
-  study: 'Sacred Library',
+  courses: 'Study Pathways',
+  library: 'Sacred Library',
   dreams: 'Dream Journal',
 };
 

@@ -5,6 +5,7 @@ import { useDailyEntry } from './hooks/useDailyEntry';
 import { startNotificationScheduler, getNotificationSettings } from './lib/notifications';
 import { getDataSource } from './lib/dataSource';
 import { TabNavigation, type TabId } from './components/Navigation/TabNavigation';
+import { StudyHub } from './components/StudyPathways';
 import { StudyLibrary } from './components/Study/StudyLibrary';
 import { DreamJournal } from './components/Dreams/DreamJournal';
 
@@ -78,7 +79,10 @@ function App() {
           />
         );
       
-      case 'study':
+      case 'courses':
+        return <StudyHub />;
+      
+      case 'library':
         return (
           <StudyLibrary
             isPremium={isPremium}

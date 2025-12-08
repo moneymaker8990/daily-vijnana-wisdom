@@ -243,3 +243,4 @@ export const vbtVerses: Verse[] = [
 
 export default vbtVerses;
 
+
