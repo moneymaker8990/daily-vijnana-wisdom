@@ -8,20 +8,45 @@ import type { Course, PathwayType } from './types';
 
 // Import themed courses
 import { natureOfSelfCourse } from './courses/themed/natureOfSelf';
+import { stillnessAndSilenceCourse } from './courses/themed/stillnessAndSilence';
+import { deathAndDeathlessnessCourse } from './courses/themed/deathAndDeathlessness';
+import { pathOfLoveCourse } from './courses/themed/pathOfLove';
+import { actionWithoutAttachmentCourse } from './courses/themed/actionWithoutAttachment';
 
 // Import tradition courses  
 import { advaitaEssentialsCourse } from './courses/tradition/advaitaEssentials';
+import { wayOfTaoCourse } from './courses/tradition/wayOfTao';
+import { buddhasPathCourse } from './courses/tradition/buddhasPath';
+import { sufiHeartCourse } from './courses/tradition/sufiHeart';
+import { christianContemplationCourse } from './courses/tradition/christianContemplation';
 
 // Import comparative courses
 import { nondualityAcrossCourse } from './courses/comparative/nondualityAcross';
+import { pathsToLiberationCourse } from './courses/comparative/pathsToLiberation';
+import { innerTeacherCourse } from './courses/comparative/innerTeacher';
+import { beyondWordsCourse } from './courses/comparative/beyondWords';
 
 /**
  * ALL_COURSES: The complete collection of study courses
  */
 export const ALL_COURSES: Course[] = [
+  // Themed Journeys
   natureOfSelfCourse,
+  stillnessAndSilenceCourse,
+  deathAndDeathlessnessCourse,
+  pathOfLoveCourse,
+  actionWithoutAttachmentCourse,
+  // Tradition Deep Dives
   advaitaEssentialsCourse,
+  wayOfTaoCourse,
+  buddhasPathCourse,
+  sufiHeartCourse,
+  christianContemplationCourse,
+  // Comparative Studies
   nondualityAcrossCourse,
+  pathsToLiberationCourse,
+  innerTeacherCourse,
+  beyondWordsCourse,
 ];
 
 /**
