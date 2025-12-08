@@ -64,13 +64,13 @@ type TabNavigationProps = {
 export function TabNavigation({ activeTab, onTabChange }: TabNavigationProps) {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-slate-900/90 backdrop-blur-xl border-t border-white/10 safe-area-pb">
-      <div className="max-w-3xl mx-auto px-4">
-        <div className="flex items-center justify-around py-2">
+      <div className="max-w-3xl mx-auto px-2">
+        <div className="flex items-center justify-between py-2">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
-              className={`flex flex-col items-center gap-1 px-6 py-2 rounded-xl transition-all ${
+              className={`relative flex-1 flex flex-col items-center gap-0.5 py-2 rounded-xl transition-all ${
                 activeTab === tab.id
                   ? 'text-violet-400'
                   : 'text-white/50 hover:text-white/80'
@@ -79,9 +79,9 @@ export function TabNavigation({ activeTab, onTabChange }: TabNavigationProps) {
               <span className={activeTab === tab.id ? 'scale-110' : ''}>
                 {tab.icon}
               </span>
-              <span className="text-xs font-medium">{tab.label}</span>
+              <span className="text-[10px] font-medium">{tab.label}</span>
               {activeTab === tab.id && (
-                <span className="absolute -bottom-0 w-8 h-0.5 bg-violet-500 rounded-full" />
+                <span className="absolute bottom-0 w-6 h-0.5 bg-violet-500 rounded-full" />
               )}
             </button>
           ))}
