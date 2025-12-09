@@ -83,7 +83,7 @@ export function useVoiceDictation(
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const isListeningRef = useRef(false);
   const onTranscriptRef = useRef(onTranscript);
-  const processedResultsRef = useRef<Set<number>>(new Set());
+  const finalTranscriptRef = useRef('');
   
   // Keep the callback ref updated
   useEffect(() => {
@@ -101,7 +101,8 @@ export function useVoiceDictation(
     const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognitionClass();
     
-    recognition.continuous = true;
+    // Simpler settings - no continuous mode to avoid duplicate issues
+    recognition.continuous = false;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
     recognition.maxAlternatives = 1;
@@ -110,45 +111,53 @@ export function useVoiceDictation(
       setState('listening');
       setError(null);
       isListeningRef.current = true;
-      // Clear processed results on new session
-      processedResultsRef.current.clear();
+      finalTranscriptRef.current = '';
     };
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
-      let finalTranscript = '';
       let interim = '';
+      let final = '';
 
-      for (let i = event.resultIndex; i < event.results.length; i++) {
+      // Get the latest result
+      for (let i = 0; i < event.results.length; i++) {
         const result = event.results[i];
         const transcript = result[0].transcript;
         
         if (result.isFinal) {
-          // Only process each final result once
-          if (!processedResultsRef.current.has(i)) {
-            processedResultsRef.current.add(i);
-            finalTranscript += transcript;
-          }
+          final += transcript;
         } else {
-          interim += transcript;
+          interim = transcript; // Just show the current interim, don't accumulate
         }
       }
 
       setInterimTranscript(interim);
-
-      if (finalTranscript) {
-        onTranscriptRef.current(finalTranscript, true);
+      
+      // Store final transcript to send when recognition ends
+      if (final) {
+        finalTranscriptRef.current = final;
       }
     };
 
     recognition.onerror = (event: Event & { error: string }) => {
       console.error('Speech recognition error:', event.error);
       
+      // Don't show error for no-speech - just means user stopped talking
+      if (event.error === 'no-speech') {
+        // Silently end
+        setState('idle');
+        isListeningRef.current = false;
+        return;
+      }
+      
       if (event.error === 'not-allowed') {
         setError('Microphone access denied. Please allow microphone access in your browser settings.');
-      } else if (event.error === 'no-speech') {
-        setError('No speech detected. Please try again.');
       } else if (event.error === 'network') {
         setError('Network error. Please check your connection.');
+      } else if (event.error === 'aborted') {
+        // User cancelled, not an error
+        setState('idle');
+        isListeningRef.current = false;
+        return;
       } else {
         setError(`Error: ${event.error}`);
       }
@@ -158,10 +167,20 @@ export function useVoiceDictation(
     };
 
     recognition.onend = () => {
-      // If we're still supposed to be listening, restart
+      // Send the final transcript when recognition ends
+      if (finalTranscriptRef.current.trim()) {
+        onTranscriptRef.current(finalTranscriptRef.current.trim(), true);
+        finalTranscriptRef.current = '';
+      }
+      
+      // If user wants to keep listening, restart
       if (isListeningRef.current) {
         try {
-          recognition.start();
+          setTimeout(() => {
+            if (isListeningRef.current && recognitionRef.current) {
+              recognitionRef.current.start();
+            }
+          }, 100); // Small delay before restarting
         } catch {
           // Recognition might be already started
         }
@@ -178,7 +197,7 @@ export function useVoiceDictation(
         recognitionRef.current.abort();
       }
     };
-  }, [isSupported]); // Removed onTranscript from deps - using ref instead
+  }, [isSupported]);
 
   const startListening = useCallback(() => {
     if (!recognitionRef.current) {
