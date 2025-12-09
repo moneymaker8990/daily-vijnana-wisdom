@@ -82,12 +82,19 @@ export function useVoiceDictation(
   
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const isListeningRef = useRef(false);
+  const onTranscriptRef = useRef(onTranscript);
+  const processedResultsRef = useRef<Set<number>>(new Set());
+  
+  // Keep the callback ref updated
+  useEffect(() => {
+    onTranscriptRef.current = onTranscript;
+  }, [onTranscript]);
   
   // Check if Speech Recognition is supported
   const isSupported = typeof window !== 'undefined' && 
     ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window);
 
-  // Initialize recognition
+  // Initialize recognition - only once
   useEffect(() => {
     if (!isSupported) return;
 
@@ -103,6 +110,8 @@ export function useVoiceDictation(
       setState('listening');
       setError(null);
       isListeningRef.current = true;
+      // Clear processed results on new session
+      processedResultsRef.current.clear();
     };
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
@@ -114,7 +123,11 @@ export function useVoiceDictation(
         const transcript = result[0].transcript;
         
         if (result.isFinal) {
-          finalTranscript += transcript;
+          // Only process each final result once
+          if (!processedResultsRef.current.has(i)) {
+            processedResultsRef.current.add(i);
+            finalTranscript += transcript;
+          }
         } else {
           interim += transcript;
         }
@@ -123,7 +136,7 @@ export function useVoiceDictation(
       setInterimTranscript(interim);
 
       if (finalTranscript) {
-        onTranscript(finalTranscript, true);
+        onTranscriptRef.current(finalTranscript, true);
       }
     };
 
@@ -165,7 +178,7 @@ export function useVoiceDictation(
         recognitionRef.current.abort();
       }
     };
-  }, [isSupported, onTranscript]);
+  }, [isSupported]); // Removed onTranscript from deps - using ref instead
 
   const startListening = useCallback(() => {
     if (!recognitionRef.current) {
