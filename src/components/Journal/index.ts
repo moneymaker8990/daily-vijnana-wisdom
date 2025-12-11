@@ -3,4 +3,5 @@ export { JournalEntryForm } from './JournalEntryForm';
 export { JournalEntryDetail } from './JournalEntryDetail';
 export { JournalCalendar } from './JournalCalendar';
 export { JournalStats } from './JournalStats';
+export { VoiceJournalMode } from './VoiceJournalMode';
 

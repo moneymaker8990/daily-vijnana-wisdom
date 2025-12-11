@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { 
   loadJournalEntries, 
   deleteJournalEntry, 
+  addJournalEntry,
   getJournalStats, 
   hasEntryToday,
   searchEntries,
@@ -15,8 +16,10 @@ import { JournalEntryForm } from './JournalEntryForm';
 import { JournalEntryDetail } from './JournalEntryDetail';
 import { JournalCalendar } from './JournalCalendar';
 import { JournalStats } from './JournalStats';
+import { VoiceJournalMode } from './VoiceJournalMode';
+import type { AIReflection } from '../../lib/voiceReflection';
 
-type View = 'list' | 'form' | 'detail' | 'calendar' | 'stats';
+type View = 'list' | 'form' | 'detail' | 'calendar' | 'stats' | 'voice';
 
 export function Journal() {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
@@ -61,6 +64,30 @@ export function Journal() {
     setView('form');
   };
 
+  const handleVoiceEntrySave = (entry: {
+    content: string;
+    reflection?: AIReflection;
+    duration: number;
+  }) => {
+    // Create a new journal entry from voice recording using addJournalEntry
+    addJournalEntry({
+      title: `Voice Entry (${Math.floor(entry.duration / 60)}:${(entry.duration % 60).toString().padStart(2, '0')})`,
+      content: entry.content,
+      mood: 'neutral',
+      moodIntensity: 3,
+      gratitudes: [],
+      tags: ['voice'],
+      date: new Date().toISOString(),
+      isPrivate: false,
+      ...(entry.reflection && {
+        prompt: `AI Reflection: ${entry.reflection.summary}\n\nEmotional Tone: ${entry.reflection.emotionalTone}\n\nReflection Question: ${entry.reflection.reflectionQuestion}`,
+      }),
+    });
+
+    refreshData();
+    setView('list');
+  };
+
   const filteredEntries = searchQuery
     ? searchEntries(searchQuery)
     : selectedTag
@@ -69,6 +96,16 @@ export function Journal() {
 
   const todayEntry = hasEntryToday();
   const dailyPrompt = getDailyPrompt();
+
+  // View: Voice Journal
+  if (view === 'voice') {
+    return (
+      <VoiceJournalMode
+        onClose={() => setView('list')}
+        onSave={handleVoiceEntrySave}
+      />
+    );
+  }
 
   // View: Entry Form
   if (view === 'form') {
@@ -226,7 +263,18 @@ export function Journal() {
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
-          <span>New Entry</span>
+          <span>Write</span>
+        </button>
+        
+        <button
+          onClick={() => setView('voice')}
+          className="flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-red-500/20 to-orange-500/20 hover:from-red-500/30 hover:to-orange-500/30 border border-red-400/30 rounded-xl text-white transition-all"
+          title="Voice Journal"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+          </svg>
+          <span>Voice</span>
         </button>
         
         <button
