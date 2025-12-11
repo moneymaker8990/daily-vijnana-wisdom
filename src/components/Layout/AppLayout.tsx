@@ -3,6 +3,7 @@ import { NotificationSettings } from '../NotificationSettings/NotificationSettin
 import { FavoritesPanel } from '../Favorites/FavoritesPanel';
 import { TextSizeToggle } from '../Settings/TextSizeControl';
 import { Settings } from '../Settings';
+import { UserMenu } from '../Auth';
 
 type TabId = 'daily' | 'courses' | 'library' | 'journal' | 'dreams';
 
@@ -92,8 +93,10 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily' }: AppLayou
               {pageTitle}
             </h1>
 
-            {/* Right: Spacer for balance */}
-            <div className="w-[108px] hidden md:block" />
+            {/* Right: User Menu */}
+            <div className="flex-shrink-0">
+              <UserMenu />
+            </div>
           </div>
         </header>
         <main>{children}</main>
