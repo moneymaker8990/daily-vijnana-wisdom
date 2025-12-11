@@ -4,6 +4,7 @@ import { FavoritesPanel } from '../Favorites/FavoritesPanel';
 import { TextSizeToggle } from '../Settings/TextSizeControl';
 import { Settings } from '../Settings';
 import { UserMenu } from '../Auth';
+import { SpiritualGuide } from '../Chat';
 
 type TabId = 'daily' | 'courses' | 'library' | 'journal' | 'dreams';
 
@@ -25,6 +26,7 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily' }: AppLayou
   const [showNotificationSettings, setShowNotificationSettings] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showSpiritualGuide, setShowSpiritualGuide] = useState(false);
   const [, forceUpdate] = useState({});
 
   const handleTextSizeChange = () => {
@@ -117,6 +119,20 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily' }: AppLayou
       {/* Settings modal */}
       {showSettings && (
         <Settings onClose={() => setShowSettings(false)} />
+      )}
+
+      {/* Spiritual Guide floating button */}
+      <button
+        onClick={() => setShowSpiritualGuide(true)}
+        className="fixed bottom-20 right-4 z-40 w-14 h-14 bg-gradient-to-br from-violet-500 to-indigo-600 rounded-full shadow-lg shadow-violet-500/30 flex items-center justify-center text-white hover:scale-105 transition-transform"
+        title="Ask the Spiritual Guide"
+      >
+        <span className="text-2xl">🙏</span>
+      </button>
+
+      {/* Spiritual Guide chat */}
+      {showSpiritualGuide && (
+        <SpiritualGuide onClose={() => setShowSpiritualGuide(false)} />
       )}
     </div>
   );
