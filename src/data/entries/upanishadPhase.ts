@@ -1,132 +1,178 @@
-import type { DailyEntry } from '@lib/types';
+import type { DailyEntry, TraditionRef } from '@lib/types';
+import {
+  WISDOM_TRADITIONS,
+  getBalancedTraditions,
+  getTextByIndex,
+  TRADITION_SOURCE_MAP,
+  TRADITION_FIELD_MAP,
+  type TraditionKey,
+} from '../wisdomTexts';
+
+// Helper function to add companion traditions to an entry
+function addCompanionTraditions(
+  entry: DailyEntry,
+  dayNumber: number,
+  theme: string,
+  primaryTradition: TraditionKey = 'upanishads'
+): void {
+  const companions = getBalancedTraditions(dayNumber, primaryTradition);
+  const textIndex = dayNumber - 1;
+
+  for (const tradition of companions) {
+    const fields = TRADITION_FIELD_MAP[tradition];
+    const data = WISDOM_TRADITIONS[tradition];
+    const source = TRADITION_SOURCE_MAP[tradition] as TraditionRef['source'];
+
+    (entry as Record<string, unknown>)[fields.ref] = {
+      source,
+      ref: `${source.substring(0, 3)}-${dayNumber}`,
+    };
+    (entry as Record<string, unknown>)[fields.text] = getTextByIndex(tradition, textIndex);
+    (entry as Record<string, unknown>)[fields.commentary] =
+      `${data.commentaryStyle} This wisdom illuminates today's theme of ${theme.toLowerCase()}.`;
+
+    if (!entry.traditionContext) entry.traditionContext = {};
+    (entry.traditionContext as Record<string, string>)[fields.contextKey] = data.context;
+
+    if (!entry.whyThisMatters) entry.whyThisMatters = {};
+    (entry.whyThisMatters as Record<string, string>)[fields.whyMattersKey] = data.whyMatters;
+  }
+}
 
 // Days 113-168: Upanishads Cycle (56 days)
 // Focus: "ear behind the ear", "seer behind the eye", Self as awareness, nondual philosophy
 
 export const UPANISHAD_PHASE_ENTRIES: DailyEntry[] = [
   // Day 113
-  {
-    dayNumber: 113,
-    theme: 'The Ear Behind the Ear',
-    phaseId: 'UPANISHADS_113_168',
-    vijnanaRef: { source: 'VIJNANA', ref: 'V10' },
-    taoRef: { source: 'TAO', ref: 'Tao-14' },
-    artOfWarRef: { source: 'ART_OF_WAR', ref: 'AoW-3.1' },
-    upanishadRef: { source: 'UPANISHAD', ref: 'Kena-1.1' },
-    traditionContext: {
-      upanishads: 'Nondual dialogues from ancient India exploring the source behind all perception and thought.',
-      vijnana: 'A Kashmiri tantra using breath and sensation as doorways to awareness.',
-      tao: 'Ancient Chinese wisdom pointing to what lies beyond form and concept.',
-      artOfWar: 'A classical treatise on strategy that mirrors inner self-knowledge.',
-    },
-    upanishadText: 'By whom is the mind directed? That which is the hearing of the ear, the seeing of the eye.',
-    upanishadCommentary: 'The Kena Upanishad opens with the essential question: What hears? What sees? The answer is not the organs themselves but that which empowers them. We shift from content to source.',
-    whyThisMatters: {
-      upanishads: 'This question interrupts the habit of getting lost in content and redirects attention to the aware presence behind all perception.',
-      vijnana: 'The gap before and after sound reveals the silence that is always here—the same silence the Upanishads point to.',
-      tao: 'What cannot be seen is the seeing itself. Recognizing this dissolves the sense of separation.',
-      artOfWar: 'Ignorance of the Self is the only true vulnerability. Self-knowledge brings fearlessness.',
-    },
-    vijnanaText: 'Chant any letter, focusing on the moment before and after. There is the void.',
-    vijnanaCommentary: 'Both traditions point to the same recognition: behind every experience is the experiencer.',
-    taoText: 'Look, it cannot be seen—it is beyond form.',
-    taoCommentary: 'The Tao echoes the Upanishads: what we seek cannot be seen because it is the seeing itself.',
-    artOfWarText: 'If you know the enemy and know yourself, you need not fear.',
-    artOfWarCommentary: 'Self-knowledge is the foundation. The "enemy" is ignorance of the Self.',
-    integratedReflectionTitle: 'Listening from the Source',
-    integratedReflectionBody: 'We enter the Upanishads with a question that has no easy answer: What is it that hears through your ears? Not the ear itself—the ear is just an instrument. Something uses the ear, something prior to the ear. Notice when you are surprised by a sound—for a split second, there is just hearing, before "you" show up to interpret. Today, we begin to shift attention from what is heard to the hearing itself, from content to the awareness that knows content.',
-    meditation: {
-      title: 'Listening to Silence',
-      steps: [
-        'Sit comfortably with eyes closed.',
-        'Bring attention to the sounds around you.',
-        'Shift attention from the sounds themselves to the space in which they arise.',
-        'Notice: there is something that hears before any particular sound.',
-        'Rest as that open space of listening.',
-      ],
-      suggestedMinutes: 10,
-    },
-    meditationContext: 'This practice trains you to recognize the listener rather than just what is listened to. It is a direct path to Self-recognition.',
-    prayer: 'May I remember the quiet presence behind seeing, hearing, and thinking. May I rest as that.',
-    dailyAction: 'Choose one conversation today in which you listen more deeply than you speak.',
-    dailyActionContext: 'Let your awareness rest behind the words—yours and theirs. What hears?',
-  },
+  (() => {
+    const entry: DailyEntry = {
+      dayNumber: 113,
+      theme: 'The Ear Behind the Ear',
+      phaseId: 'UPANISHADS_113_168',
+      vijnanaRef: { source: 'VIJNANA', ref: 'V10' },
+      taoRef: { source: 'TAO', ref: 'Tao-14' },
+      upanishadRef: { source: 'UPANISHAD', ref: 'Kena-1.1' },
+      traditionContext: {
+        upanishads: WISDOM_TRADITIONS.upanishads.context,
+        vijnana: WISDOM_TRADITIONS.vijnana.context,
+        tao: WISDOM_TRADITIONS.tao.context,
+      },
+      upanishadText: 'By whom is the mind directed? That which is the hearing of the ear, the seeing of the eye.',
+      upanishadCommentary: 'The Kena Upanishad opens with the essential question: What hears? What sees? The answer is not the organs themselves but that which empowers them. We shift from content to source.',
+      whyThisMatters: {
+        upanishads: WISDOM_TRADITIONS.upanishads.whyMatters,
+        vijnana: WISDOM_TRADITIONS.vijnana.whyMatters,
+        tao: WISDOM_TRADITIONS.tao.whyMatters,
+      },
+      vijnanaText: getTextByIndex('vijnana', 112),
+      vijnanaCommentary: 'Both traditions point to the same recognition: behind every experience is the experiencer.',
+      taoText: getTextByIndex('tao', 112),
+      taoCommentary: 'The Tao echoes the Upanishads: what we seek cannot be seen because it is the seeing itself.',
+      integratedReflectionTitle: 'Listening from the Source',
+      integratedReflectionBody: 'We enter the Upanishads with a question that has no easy answer: What is it that hears through your ears? Not the ear itself—the ear is just an instrument. Something uses the ear, something prior to the ear. Notice when you are surprised by a sound—for a split second, there is just hearing, before "you" show up to interpret. Today, we begin to shift attention from what is heard to the hearing itself, from content to the awareness that knows content.',
+      meditation: {
+        title: 'Listening to Silence',
+        steps: [
+          'Sit comfortably with eyes closed.',
+          'Bring attention to the sounds around you.',
+          'Shift attention from the sounds themselves to the space in which they arise.',
+          'Notice: there is something that hears before any particular sound.',
+          'Rest as that open space of listening.',
+        ],
+        suggestedMinutes: 10,
+      },
+      meditationContext: 'This practice trains you to recognize the listener rather than just what is listened to. It is a direct path to Self-recognition.',
+      prayer: 'May I remember the quiet presence behind seeing, hearing, and thinking. May I rest as that.',
+      dailyAction: 'Choose one conversation today in which you listen more deeply than you speak.',
+      dailyActionContext: 'Let your awareness rest behind the words—yours and theirs. What hears?',
+    };
+    addCompanionTraditions(entry, 113, 'The Ear Behind the Ear', 'upanishads');
+    return entry;
+  })(),
 
   // Day 114
-  {
-    dayNumber: 114,
-    theme: 'What the Mind Cannot Grasp',
-    phaseId: 'UPANISHADS_113_168',
-    upanishadRef: { source: 'UPANISHAD', ref: 'Kena-1.2' },
-    taoRef: { source: 'TAO', ref: 'Tao-01' },
-    traditionContext: {
-      upanishads: 'The Kena Upanishad explores what empowers the mind—that which thinks through thinking.',
-      tao: 'The Tao Te Ching begins with the limits of language and concept.',
-    },
-    upanishadText: 'That which the mind cannot think, but by which the mind thinks—know that alone to be Brahman.',
-    upanishadCommentary: 'Brahman—ultimate reality—is not an object of thought. It is that by which thought is possible. The mind cannot grasp it because the mind is grasped by it.',
-    whyThisMatters: {
-      upanishads: 'Recognizing the limits of thought frees you from the exhausting effort to understand everything conceptually.',
-      tao: 'Words point but cannot arrive. Relaxing the grip of concept opens direct experience.',
-    },
-    taoText: 'The Tao that can be spoken is not the eternal Tao.',
-    taoCommentary: 'Both Tao and Brahman point beyond the mind\'s grasp to the source of mind itself.',
-    integratedReflectionTitle: 'The Unthinkable Thinker',
-    integratedReflectionBody: 'The mind seeks to understand, categorize, grasp. But Brahman is not an object of thought—it is that by which thought is possible. Like the eye that cannot see itself, awareness cannot be made into an object. Yet it can be recognized. Think of how frustrating it is when you cannot remember a word—and then it comes, unbidden. The mind cannot summon its own source. But recognition is possible. This recognition is the heart of the Upanishadic teaching.',
-    meditation: {
-      title: 'Recognizing the Ungraspable',
-      steps: [
-        'Close your eyes and notice thoughts arising.',
-        'Ask: "What is aware of these thoughts?"',
-        'When the mind tries to answer, notice that the answer is also a thought.',
-        'Rest in the questioning itself, not in answers.',
-        'The one who cannot be found is the finder.',
-      ],
-      suggestedMinutes: 12,
-    },
-    meditationContext: 'This practice uses self-inquiry to reveal the limits of thought and the presence beyond it.',
-    prayer: 'May I stop seeking You as an object and recognize You as the seeker.',
-    dailyAction: 'When you catch yourself analyzing, pause. Ask: "Who is thinking?" Rest in the pause before the answer.',
-    dailyActionContext: 'The question is more important than any answer. Let it dissolve seeking.',
-  },
+  (() => {
+    const entry: DailyEntry = {
+      dayNumber: 114,
+      theme: 'What the Mind Cannot Grasp',
+      phaseId: 'UPANISHADS_113_168',
+      upanishadRef: { source: 'UPANISHAD', ref: 'Kena-1.2' },
+      taoRef: { source: 'TAO', ref: 'Tao-01' },
+      traditionContext: {
+        upanishads: WISDOM_TRADITIONS.upanishads.context,
+        tao: WISDOM_TRADITIONS.tao.context,
+      },
+      upanishadText: 'That which the mind cannot think, but by which the mind thinks—know that alone to be Brahman.',
+      upanishadCommentary: 'Brahman—ultimate reality—is not an object of thought. It is that by which thought is possible. The mind cannot grasp it because the mind is grasped by it.',
+      whyThisMatters: {
+        upanishads: WISDOM_TRADITIONS.upanishads.whyMatters,
+        tao: WISDOM_TRADITIONS.tao.whyMatters,
+      },
+      taoText: getTextByIndex('tao', 113),
+      taoCommentary: 'Both Tao and Brahman point beyond the mind\'s grasp to the source of mind itself.',
+      integratedReflectionTitle: 'The Unthinkable Thinker',
+      integratedReflectionBody: 'The mind seeks to understand, categorize, grasp. But Brahman is not an object of thought—it is that by which thought is possible. Like the eye that cannot see itself, awareness cannot be made into an object. Yet it can be recognized. Think of how frustrating it is when you cannot remember a word—and then it comes, unbidden. The mind cannot summon its own source. But recognition is possible. This recognition is the heart of the Upanishadic teaching.',
+      meditation: {
+        title: 'Recognizing the Ungraspable',
+        steps: [
+          'Close your eyes and notice thoughts arising.',
+          'Ask: "What is aware of these thoughts?"',
+          'When the mind tries to answer, notice that the answer is also a thought.',
+          'Rest in the questioning itself, not in answers.',
+          'The one who cannot be found is the finder.',
+        ],
+        suggestedMinutes: 12,
+      },
+      meditationContext: 'This practice uses self-inquiry to reveal the limits of thought and the presence beyond it.',
+      prayer: 'May I stop seeking You as an object and recognize You as the seeker.',
+      dailyAction: 'When you catch yourself analyzing, pause. Ask: "Who is thinking?" Rest in the pause before the answer.',
+      dailyActionContext: 'The question is more important than any answer. Let it dissolve seeking.',
+    };
+    addCompanionTraditions(entry, 114, 'What the Mind Cannot Grasp', 'upanishads');
+    return entry;
+  })(),
 
   // Day 115
-  {
-    dayNumber: 115,
-    theme: 'Beyond Speech',
-    phaseId: 'UPANISHADS_113_168',
-    upanishadRef: { source: 'UPANISHAD', ref: 'Kena-1.3' },
-    taoRef: { source: 'TAO', ref: 'Tao-56' },
-    traditionContext: {
-      upanishads: 'The Kena continues: even speech is empowered by something beyond speech.',
-      tao: 'Taoist wisdom values silence over words, knowing over talking.',
-    },
-    upanishadText: 'That which speech cannot express, but by which speech is expressed—know that alone to be Brahman.',
-    upanishadCommentary: 'Words emerge from silence and return to it. The deepest truth is not something to be said but someone to be.',
-    whyThisMatters: {
-      upanishads: 'Language creates the illusion that reality can be captured. Recognizing its limits opens you to direct knowing.',
-      tao: 'The wise speak less and listen more. Silence reveals what chatter obscures.',
-    },
-    taoText: 'Those who know do not talk. Those who talk do not know.',
-    taoCommentary: 'Silence is the language of the Real. Words are fingers pointing; silence is the moon.',
-    integratedReflectionTitle: 'The Silence Behind Words',
-    integratedReflectionBody: 'Words can point but never arrive. Every utterance emerges from and dissolves into silence. Notice the moment before you speak—there is intention, then words, then silence again. The Upanishads remind us that the deepest truth is not something to be said but someone to be. When speech exhausts itself, what remains is the presence that made speech possible.',
-    meditation: {
-      title: 'From Speech to Silence',
-      steps: [
-        'Sit quietly and take several deep breaths.',
-        'Think of a word—any word. Notice it arising.',
-        'Now notice the silence before and after the word.',
-        'Let words arise and fall, focusing on the silence between.',
-        'Rest in the silence that holds all words.',
-      ],
-      suggestedMinutes: 8,
-    },
-    meditationContext: 'This practice reveals that you are the silence from which words emerge, not the words themselves.',
-    prayer: 'May my words arise from silence and return to silence. May I speak only what deepens presence.',
-    dailyAction: 'Before speaking today, pause briefly. Feel the silence. Let your words arise from stillness.',
-    dailyActionContext: 'This can be done even in fast conversation—a brief inner pause before responding.',
-  },
+  (() => {
+    const entry: DailyEntry = {
+      dayNumber: 115,
+      theme: 'Beyond Speech',
+      phaseId: 'UPANISHADS_113_168',
+      upanishadRef: { source: 'UPANISHAD', ref: 'Kena-1.3' },
+      taoRef: { source: 'TAO', ref: 'Tao-56' },
+      traditionContext: {
+        upanishads: WISDOM_TRADITIONS.upanishads.context,
+        tao: WISDOM_TRADITIONS.tao.context,
+      },
+      upanishadText: 'That which speech cannot express, but by which speech is expressed—know that alone to be Brahman.',
+      upanishadCommentary: 'Words emerge from silence and return to it. The deepest truth is not something to be said but someone to be.',
+      whyThisMatters: {
+        upanishads: WISDOM_TRADITIONS.upanishads.whyMatters,
+        tao: WISDOM_TRADITIONS.tao.whyMatters,
+      },
+      taoText: getTextByIndex('tao', 114),
+      taoCommentary: 'Silence is the language of the Real. Words are fingers pointing; silence is the moon.',
+      integratedReflectionTitle: 'The Silence Behind Words',
+      integratedReflectionBody: 'Words can point but never arrive. Every utterance emerges from and dissolves into silence. Notice the moment before you speak—there is intention, then words, then silence again. The Upanishads remind us that the deepest truth is not something to be said but someone to be. When speech exhausts itself, what remains is the presence that made speech possible.',
+      meditation: {
+        title: 'From Speech to Silence',
+        steps: [
+          'Sit quietly and take several deep breaths.',
+          'Think of a word—any word. Notice it arising.',
+          'Now notice the silence before and after the word.',
+          'Let words arise and fall, focusing on the silence between.',
+          'Rest in the silence that holds all words.',
+        ],
+        suggestedMinutes: 8,
+      },
+      meditationContext: 'This practice reveals that you are the silence from which words emerge, not the words themselves.',
+      prayer: 'May my words arise from silence and return to silence. May I speak only what deepens presence.',
+      dailyAction: 'Before speaking today, pause briefly. Feel the silence. Let your words arise from stillness.',
+      dailyActionContext: 'This can be done even in fast conversation—a brief inner pause before responding.',
+    };
+    addCompanionTraditions(entry, 115, 'Beyond Speech', 'upanishads');
+    return entry;
+  })(),
 
   // Days 116-168: Complete remaining entries
   ...generateRemainingUpanishadEntries(),
@@ -192,23 +238,25 @@ function generateRemainingUpanishadEntries(): DailyEntry[] {
   ];
 
   for (const u of upanishadDays) {
-    entries.push({
+    const taoRef = `Tao-${String(((u.day - 1) % 81) + 1).padStart(2, '0')}`;
+
+    const entry: DailyEntry = {
       dayNumber: u.day,
       theme: u.theme,
       phaseId: 'UPANISHADS_113_168',
       upanishadRef: { source: 'UPANISHAD', ref: u.ref },
-      taoRef: { source: 'TAO', ref: `Tao-${String(((u.day - 1) % 81) + 1).padStart(2, '0')}` },
+      taoRef: { source: 'TAO', ref: taoRef },
       traditionContext: {
-        upanishads: 'Nondual dialogues from ancient India exploring the source behind all perception and thought.',
-        tao: 'Ancient Chinese wisdom pointing to what lies beyond form and concept.',
+        upanishads: WISDOM_TRADITIONS.upanishads.context,
+        tao: WISDOM_TRADITIONS.tao.context,
       },
       upanishadText: u.text,
       upanishadCommentary: `This teaching points to ${u.focus}. The Upanishads use words to lead beyond words, concepts to dissolve concepts.`,
       whyThisMatters: {
-        upanishads: `Contemplating ${u.focus} loosens identification with the limited self and reveals the awareness that is always present.`,
-        tao: 'The Tao confirms that what cannot be captured can still be lived. This is not philosophy but direct recognition.',
+        upanishads: WISDOM_TRADITIONS.upanishads.whyMatters,
+        tao: WISDOM_TRADITIONS.tao.whyMatters,
       },
-      taoText: 'The way that can be walked is not the eternal Way.',
+      taoText: getTextByIndex('tao', u.day - 1),
       taoCommentary: 'Both Tao and Vedanta point to what cannot be captured yet can be lived.',
       integratedReflectionTitle: u.theme,
       integratedReflectionBody: `Today we contemplate ${u.focus}. The Upanishads are not philosophy to be believed but pointers to be followed. Think of a moment when you forgot yourself—absorbed in music, startled awake, or gazing at the sky. That forgetting is a glimpse of what the sages describe. Each verse is an invitation to direct recognition. Let this teaching work on you throughout the day, not as an idea to hold but as a question to live.`,
@@ -227,7 +275,12 @@ function generateRemainingUpanishadEntries(): DailyEntry[] {
       prayer: `May I recognize ${u.focus}. May this recognition free me from the illusion of separation.`,
       dailyAction: `Carry today's teaching with you. When you forget, gently remember: the Self is always here.`,
       dailyActionContext: 'Try this: when you notice yourself lost in thought or reaction, pause and ask, "What is aware of this?" That is your reminder.',
-    });
+    };
+
+    // Add 4 companion traditions from different families
+    addCompanionTraditions(entry, u.day, u.theme, 'upanishads');
+
+    entries.push(entry);
   }
 
   return entries;

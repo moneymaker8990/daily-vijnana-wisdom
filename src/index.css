@@ -5,10 +5,38 @@
   --font-sans: 'Outfit', system-ui, sans-serif;
 }
 
+/* Base styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   @apply antialiased font-sans;
   background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #312e81 70%, #4c1d95 100%);
   min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
+  overflow-x: hidden;
+}
+
+/* Prevent text overflow globally */
+p, h1, h2, h3, h4, h5, h6, span, div {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Better text rendering */
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
 }
 
 /* Glass effect utilities */
@@ -133,6 +161,86 @@ html {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.25);
+}
+
+/* ===== CONSISTENT CARD STYLES ===== */
+.card {
+  @apply bg-white/5 rounded-xl p-4 border border-white/10;
+}
+
+.card-elevated {
+  @apply bg-gradient-to-br from-white/10 to-white/5 rounded-xl p-4 border border-white/15;
+}
+
+.card-text {
+  @apply bg-white/5 rounded-xl p-4 sm:p-5 border border-white/10;
+}
+
+/* ===== CONSISTENT TEXT CONTAINERS ===== */
+.text-container {
+  @apply text-white/80 leading-relaxed;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.text-container-centered {
+  @apply text-white/80 leading-relaxed text-center;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* ===== SCRIPTURE/QUOTE STYLING ===== */
+.scripture-text {
+  @apply font-serif text-white/90 leading-relaxed text-center italic;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.commentary-text {
+  @apply text-sm text-white/70 leading-relaxed;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* ===== SECTION HEADERS ===== */
+.section-header {
+  @apply text-[10px] sm:text-xs font-medium text-white/50 uppercase tracking-[0.15em] sm:tracking-[0.2em];
+}
+
+/* ===== BUTTONS ===== */
+.btn-primary {
+  @apply py-2.5 sm:py-3 px-4 sm:px-5 bg-gradient-to-r from-violet-500 to-purple-500
+         hover:from-violet-400 hover:to-purple-400 rounded-xl text-white
+         font-medium shadow-lg shadow-violet-500/25 transition-all text-sm sm:text-base;
+}
+
+.btn-secondary {
+  @apply px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/20
+         hover:bg-white/20 hover:border-white/30 transition-all duration-300 ease-out text-white/90 text-sm sm:text-base;
+}
+
+.btn-icon {
+  @apply p-2 text-white/40 hover:text-white hover:bg-white/10
+         rounded-lg transition-colors;
+}
+
+/* ===== MOBILE-FIRST SPACING ===== */
+.space-section {
+  @apply space-y-4 sm:space-y-6;
+}
+
+.space-content {
+  @apply space-y-3 sm:space-y-4;
+}
+
+/* ===== HIDE SCROLLBAR BUT KEEP FUNCTIONALITY ===== */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 

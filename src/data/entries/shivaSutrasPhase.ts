@@ -1,4 +1,43 @@
-import type { DailyEntry } from '@lib/types';
+import type { DailyEntry, TraditionRef } from '@lib/types';
+import {
+  WISDOM_TRADITIONS,
+  getBalancedTraditions,
+  getTextByIndex,
+  TRADITION_SOURCE_MAP,
+  TRADITION_FIELD_MAP,
+  type TraditionKey,
+} from '../wisdomTexts';
+
+// Helper function to add companion traditions to an entry
+function addCompanionTraditions(
+  entry: DailyEntry,
+  dayNumber: number,
+  theme: string,
+  primaryTradition: TraditionKey = 'shivaSutras'
+): void {
+  const companions = getBalancedTraditions(dayNumber, primaryTradition);
+  const textIndex = dayNumber - 1;
+
+  for (const tradition of companions) {
+    const fields = TRADITION_FIELD_MAP[tradition];
+    const data = WISDOM_TRADITIONS[tradition];
+    const source = TRADITION_SOURCE_MAP[tradition] as TraditionRef['source'];
+
+    (entry as Record<string, unknown>)[fields.ref] = {
+      source,
+      ref: `${source.substring(0, 3)}-${dayNumber}`,
+    };
+    (entry as Record<string, unknown>)[fields.text] = getTextByIndex(tradition, textIndex);
+    (entry as Record<string, unknown>)[fields.commentary] =
+      `${data.commentaryStyle} This wisdom illuminates today's theme of ${theme.toLowerCase()}.`;
+
+    if (!entry.traditionContext) entry.traditionContext = {};
+    (entry.traditionContext as Record<string, string>)[fields.contextKey] = data.context;
+
+    if (!entry.whyThisMatters) entry.whyThisMatters = {};
+    (entry.whyThisMatters as Record<string, string>)[fields.whyMattersKey] = data.whyMatters;
+  }
+}
 
 // Days 331-365: Shiva Sutras (Kashmir Shaivism) (35 days)
 // Focus: identity as consciousness, play of energy, integrating all prior phases
@@ -46,24 +85,22 @@ function generateShivaSutrasEntries(): DailyEntry[] {
 
   return shivaDays.map(s => {
     const isLastDay = s.day === 365;
-    
-    return {
+
+    const entry: DailyEntry = {
       dayNumber: s.day,
       theme: s.theme,
       phaseId: 'SHIVA_SUTRAS_331_365' as const,
       shivaSutraRef: { source: 'SHIVA_SUTRA' as const, ref: s.ref },
       taoRef: { source: 'TAO' as const, ref: isLastDay ? 'Tao-81' : `Tao-${String(((s.day - 331) % 81) + 1).padStart(2, '0')}` },
       vijnanaRef: { source: 'VIJNANA' as const, ref: isLastDay ? 'V112' : `V${((s.day - 331) % 112) + 1}` },
-      artOfWarRef: { source: 'ART_OF_WAR' as const, ref: isLastDay ? 'AoW-13.3' : `AoW-${Math.floor((s.day - 331) / 5) + 1}.${((s.day - 331) % 5) + 1}` },
       traditionContext: {
-        shivaSutras: 'The heart of Kashmir Shaivism, revealing consciousness as ultimate reality and identity.',
-        tao: isLastDay 
+        shivaSutras: WISDOM_TRADITIONS.shivaSutras.context,
+        tao: isLastDay
           ? 'The Tao Te Ching ends with simplicity—truth beyond beautiful words.'
-          : 'Ancient Chinese wisdom pointing to the one reality beneath all forms.',
+          : WISDOM_TRADITIONS.tao.context,
         vijnana: isLastDay
           ? 'The Vijnana Bhairava\'s 112 techniques all lead to this single recognition.'
-          : 'A Kashmiri tantra using immediate experience as the doorway to recognition.',
-        artOfWar: 'Strategic wisdom confirming that self-knowledge is the only true victory.',
+          : WISDOM_TRADITIONS.vijnana.context,
       },
       shivaSutraText: s.text,
       shivaSutraCommentary: isLastDay
@@ -72,31 +109,24 @@ function generateShivaSutrasEntries(): DailyEntry[] {
       whyThisMatters: {
         shivaSutras: isLastDay
           ? 'This recognition ends the exhausting search. You are already what you sought.'
-          : `Recognizing ${s.focus} collapses the distance between you and the divine. There is no gap to cross.`,
+          : WISDOM_TRADITIONS.shivaSutras.whyMatters,
         tao: isLastDay
           ? 'Words point beyond themselves. The journey ends in silence.'
-          : 'All traditions converge at the source. Different windows, same light.',
+          : WISDOM_TRADITIONS.tao.whyMatters,
         vijnana: isLastDay
           ? 'Every technique was a finger pointing at the moon. Now, see the moon directly.'
-          : 'The body and breath are laboratories for this recognition.',
-        artOfWar: isLastDay
-          ? 'The ultimate victory is recognizing you have always been home.'
-          : 'Self-knowledge ends all inner warfare.',
+          : WISDOM_TRADITIONS.vijnana.whyMatters,
       },
-      taoText: isLastDay ? 'True words are not beautiful. Beautiful words are not true.' : 'The Tao flows everywhere, nourishing all things.',
+      taoText: isLastDay ? getTextByIndex('tao', 7) : getTextByIndex('tao', s.day - 1),
       taoCommentary: isLastDay
         ? 'We end with simplicity. All the beautiful words of 365 days point to what is beyond words.'
         : 'Tao and Shiva are one reality seen through different windows.',
       vijnanaText: isLastDay
-        ? 'In the end, which is also the beginning, there is only this—awareness being aware of itself, forever.'
-        : 'Rest in the space between breaths. There, consciousness recognizes itself.',
+        ? getTextByIndex('vijnana', 7)
+        : getTextByIndex('vijnana', s.day - 1),
       vijnanaCommentary: isLastDay
         ? 'The Vijnana Bhairava\'s final verse echoes the Shiva Sutras\' first: awareness is all.'
         : 'All 112 techniques of the Vijnana Bhairava lead to this single recognition.',
-      artOfWarText: isLastDay ? 'The wise warrior prepares the ground for peace.' : 'Know yourself and you will win all battles.',
-      artOfWarCommentary: isLastDay
-        ? 'The ultimate strategy is recognition: you have always been what you sought.'
-        : 'Self-knowledge is the only true victory.',
       integratedReflectionTitle: s.theme,
       integratedReflectionBody: isLastDay
         ? 'Day 365 brings us full circle. We end where we began: consciousness is the Self. Every teaching, every practice, every tradition has pointed to this single truth. Think of how a child knows they exist before they know their name—that knowing is what we have been exploring. The journey was never about reaching somewhere new but about recognizing what has always been here. Tomorrow, the cycle begins again—but you are not the same. You know. You have always known. The recognition deepens, the forgetting lessens, and daily life becomes the final teaching.'
@@ -134,5 +164,10 @@ function generateShivaSutrasEntries(): DailyEntry[] {
         ? 'The journey continues, but the seeking ends. You are home. You have always been home. Now live from here.'
         : 'This is the final practice: seeing all of life as the play of consciousness, and yourself as both the player and the play.',
     };
+
+    // Add 4 companion traditions from different families
+    addCompanionTraditions(entry, s.day, s.theme, 'shivaSutras');
+
+    return entry;
   });
 }

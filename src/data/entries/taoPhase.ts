@@ -1,4 +1,43 @@
-import type { DailyEntry } from '@lib/types';
+import type { DailyEntry, TraditionRef } from '@lib/types';
+import {
+  WISDOM_TRADITIONS,
+  getBalancedTraditions,
+  getTextByIndex,
+  TRADITION_SOURCE_MAP,
+  TRADITION_FIELD_MAP,
+  type TraditionKey,
+} from '../wisdomTexts';
+
+// Helper function to add companion traditions to an entry
+function addCompanionTraditions(
+  entry: DailyEntry,
+  dayNumber: number,
+  theme: string,
+  primaryTradition: TraditionKey = 'tao'
+): void {
+  const companions = getBalancedTraditions(dayNumber, primaryTradition);
+  const textIndex = dayNumber - 1;
+
+  for (const tradition of companions) {
+    const fields = TRADITION_FIELD_MAP[tradition];
+    const data = WISDOM_TRADITIONS[tradition];
+    const source = TRADITION_SOURCE_MAP[tradition] as TraditionRef['source'];
+
+    (entry as Record<string, unknown>)[fields.ref] = {
+      source,
+      ref: `${source.substring(0, 3)}-${dayNumber}`,
+    };
+    (entry as Record<string, unknown>)[fields.text] = getTextByIndex(tradition, textIndex);
+    (entry as Record<string, unknown>)[fields.commentary] =
+      `${data.commentaryStyle} This wisdom illuminates today's theme of ${theme.toLowerCase()}.`;
+
+    if (!entry.traditionContext) entry.traditionContext = {};
+    (entry.traditionContext as Record<string, string>)[fields.contextKey] = data.context;
+
+    if (!entry.whyThisMatters) entry.whyThisMatters = {};
+    (entry.whyThisMatters as Record<string, string>)[fields.whyMattersKey] = data.whyMatters;
+  }
+}
 
 // Days 211-260: Tao Te Ching Deep Cycle (50 days)
 // Focus: letting go of push, moving like water, small simplicity, effortless action
@@ -59,45 +98,47 @@ function generateTaoEntries(): DailyEntry[] {
     { day: 260, theme: 'True Words', ref: 'Tao-81', text: 'True words are not beautiful. Beautiful words are not true. Good people do not argue.', focus: 'honest simplicity' },
   ];
 
-  return taoDays.map(t => ({
-    dayNumber: t.day,
-    theme: t.theme,
-    phaseId: 'TAO_211_260' as const,
-    taoRef: { source: 'TAO' as const, ref: t.ref },
-    vijnanaRef: { source: 'VIJNANA' as const, ref: `V${((t.day - 211) % 112) + 1}` },
-    artOfWarRef: { source: 'ART_OF_WAR' as const, ref: `AoW-${Math.floor((t.day - 211) / 5) + 1}.${((t.day - 211) % 5) + 1}` },
-    traditionContext: {
-      tao: 'An ancient Chinese classic on effortless living, written for rulers and sages, speaking in paradox to awaken direct seeing.',
-      vijnana: 'A Kashmiri tantra using breath and sensation as doorways to presence.',
-      artOfWar: 'A classical treatise where strategy mirrors inner alignment.',
-    },
-    taoText: t.text,
-    taoCommentary: `This chapter illuminates ${t.focus}. The Tao Te Ching speaks in paradox because truth is paradoxical—soft overcomes hard, emptiness is useful, not-doing accomplishes everything.`,
-    whyThisMatters: {
-      tao: `Contemplating ${t.focus} retrains the nervous system to flow rather than force. This is not passivity but intelligent responsiveness.`,
-      vijnana: 'The gap between breaths is where effortless action arises. Tantra and Taoism meet in the body.',
-      artOfWar: 'Victory through alignment is the highest strategy. Inner clarity precedes outer effectiveness.',
-    },
-    vijnanaText: 'Rest in the space between breaths. There, the Tao moves.',
-    vijnanaCommentary: 'Tantra and Taoism meet in the body, in the breath, in the gap where effortless action arises.',
-    artOfWarText: 'The wise general wins without battle.',
-    artOfWarCommentary: 'Strategy at its highest is the Tao—victory through alignment, not force.',
-    integratedReflectionTitle: t.theme,
-    integratedReflectionBody: `Today we contemplate ${t.focus}. The Tao Te Ching was written for those who would lead—whether nations, families, or their own lives. Its teaching is counter-intuitive: yield to overcome, empty to be filled, step back to move forward. Think of how much energy you spend pushing against things that would resolve themselves. These paradoxes are not riddles but descriptions of how reality actually works when we stop fighting it.`,
-    meditation: {
-      title: `${t.theme} Meditation`,
-      steps: [
-        'Sit in stillness and release all effort.',
-        'Let the body soften like water.',
-        'Allow thoughts to flow without grasping.',
-        'Notice where you are holding or pushing.',
-        'Gently release into natural flow.',
-      ],
-      suggestedMinutes: 12,
-    },
-    meditationContext: `This practice embodies the Taoist principle of wu wei—action through non-action. It trains the body to release chronic tension and the mind to stop manufacturing problems. You are not doing meditation; you are letting meditation happen.`,
-    prayer: `May I embody ${t.focus}. May I move like water, yielding yet persistent.`,
-    dailyAction: 'Practice non-interference today. Let one situation unfold naturally without your pushing.',
-    dailyActionContext: 'Try this when you feel the urge to fix or control. Notice if the outcome is different—or the same—without your force. Often, stepping back allows better solutions to emerge.',
-  }));
+  return taoDays.map(t => {
+    const entry: DailyEntry = {
+      dayNumber: t.day,
+      theme: t.theme,
+      phaseId: 'TAO_211_260' as const,
+      taoRef: { source: 'TAO' as const, ref: t.ref },
+      vijnanaRef: { source: 'VIJNANA' as const, ref: `V${((t.day - 211) % 112) + 1}` },
+      traditionContext: {
+        tao: WISDOM_TRADITIONS.tao.context,
+        vijnana: WISDOM_TRADITIONS.vijnana.context,
+      },
+      taoText: t.text,
+      taoCommentary: `This chapter illuminates ${t.focus}. The Tao Te Ching speaks in paradox because truth is paradoxical—soft overcomes hard, emptiness is useful, not-doing accomplishes everything.`,
+      whyThisMatters: {
+        tao: WISDOM_TRADITIONS.tao.whyMatters,
+        vijnana: WISDOM_TRADITIONS.vijnana.whyMatters,
+      },
+      vijnanaText: getTextByIndex('vijnana', t.day - 1),
+      vijnanaCommentary: 'Tantra and Taoism meet in the body, in the breath, in the gap where effortless action arises.',
+      integratedReflectionTitle: t.theme,
+      integratedReflectionBody: `Today we contemplate ${t.focus}. The Tao Te Ching was written for those who would lead—whether nations, families, or their own lives. Its teaching is counter-intuitive: yield to overcome, empty to be filled, step back to move forward. Think of how much energy you spend pushing against things that would resolve themselves. These paradoxes are not riddles but descriptions of how reality actually works when we stop fighting it.`,
+      meditation: {
+        title: `${t.theme} Meditation`,
+        steps: [
+          'Sit in stillness and release all effort.',
+          'Let the body soften like water.',
+          'Allow thoughts to flow without grasping.',
+          'Notice where you are holding or pushing.',
+          'Gently release into natural flow.',
+        ],
+        suggestedMinutes: 12,
+      },
+      meditationContext: `This practice embodies the Taoist principle of wu wei—action through non-action. It trains the body to release chronic tension and the mind to stop manufacturing problems. You are not doing meditation; you are letting meditation happen.`,
+      prayer: `May I embody ${t.focus}. May I move like water, yielding yet persistent.`,
+      dailyAction: 'Practice non-interference today. Let one situation unfold naturally without your pushing.',
+      dailyActionContext: 'Try this when you feel the urge to fix or control. Notice if the outcome is different—or the same—without your force. Often, stepping back allows better solutions to emerge.',
+    };
+
+    // Add 4 companion traditions from different families
+    addCompanionTraditions(entry, t.day, t.theme, 'tao');
+
+    return entry;
+  });
 }

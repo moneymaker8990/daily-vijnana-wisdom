@@ -1,4 +1,43 @@
-import type { DailyEntry } from '@lib/types';
+import type { DailyEntry, TraditionRef } from '@lib/types';
+import {
+  WISDOM_TRADITIONS,
+  getBalancedTraditions,
+  getTextByIndex,
+  TRADITION_SOURCE_MAP,
+  TRADITION_FIELD_MAP,
+  type TraditionKey,
+} from '../wisdomTexts';
+
+// Helper function to add companion traditions to an entry
+function addCompanionTraditions(
+  entry: DailyEntry,
+  dayNumber: number,
+  theme: string,
+  primaryTradition: TraditionKey = 'ashtavakra'
+): void {
+  const companions = getBalancedTraditions(dayNumber, primaryTradition);
+  const textIndex = dayNumber - 1;
+
+  for (const tradition of companions) {
+    const fields = TRADITION_FIELD_MAP[tradition];
+    const data = WISDOM_TRADITIONS[tradition];
+    const source = TRADITION_SOURCE_MAP[tradition] as TraditionRef['source'];
+
+    (entry as Record<string, unknown>)[fields.ref] = {
+      source,
+      ref: `${source.substring(0, 3)}-${dayNumber}`,
+    };
+    (entry as Record<string, unknown>)[fields.text] = getTextByIndex(tradition, textIndex);
+    (entry as Record<string, unknown>)[fields.commentary] =
+      `${data.commentaryStyle} This wisdom illuminates today's theme of ${theme.toLowerCase()}.`;
+
+    if (!entry.traditionContext) entry.traditionContext = {};
+    (entry.traditionContext as Record<string, string>)[fields.contextKey] = data.context;
+
+    if (!entry.whyThisMatters) entry.whyThisMatters = {};
+    (entry.whyThisMatters as Record<string, string>)[fields.whyMattersKey] = data.whyMatters;
+  }
+}
 
 // Days 261-300: Ashtavakra Gita Cycle (40 days)
 // Focus: radical nondual insight, letting go of identification, seeing thoughts as passing
@@ -49,45 +88,52 @@ function generateAshtavakraEntries(): DailyEntry[] {
     { day: 300, theme: 'Simply Be', ref: 'Ashta-20.3', text: 'All teachings lead to this: simply be what you are.', focus: 'natural being' },
   ];
 
-  return ashtaDays.map(a => ({
-    dayNumber: a.day,
-    theme: a.theme,
-    phaseId: 'ASHTAVAKRA_261_300' as const,
-    ashtavakraRef: { source: 'ASHTAVAKRA' as const, ref: a.ref },
-    taoRef: { source: 'TAO' as const, ref: `Tao-${String(((a.day - 261) % 81) + 1).padStart(2, '0')}` },
-    vijnanaRef: { source: 'VIJNANA' as const, ref: `V${((a.day - 261) % 112) + 1}` },
-    traditionContext: {
-      ashtavakra: 'A radical nondual dialogue where an enlightened sage reveals to a king that he is already free—no practice needed, no path to walk.',
-      tao: 'Ancient Chinese wisdom pointing to what lies beyond form and concept.',
-      vijnana: 'A Kashmiri tantra using immediate experience as the doorway to recognition.',
-    },
-    ashtavakraText: a.text,
-    ashtavakraCommentary: `This verse points directly to ${a.focus}. The Ashtavakra Gita is the most radical scripture—it does not comfort the ego but dissolves it, revealing the unbounded awareness you have always been.`,
-    whyThisMatters: {
-      ashtavakra: `Recognizing ${a.focus} ends the exhausting search for something missing. You stop running and discover you were always home.`,
-      tao: 'Words point beyond themselves. The Tao and Advaita both dissolve concepts to reveal what is prior.',
-      vijnana: 'Awareness recognizing itself is liberation. No technique needed—just clear seeing.',
-    },
-    taoText: 'The Tao that can be spoken is not the eternal Tao.',
-    taoCommentary: 'Both Tao and Ashtavakra point beyond words to direct recognition.',
-    vijnanaText: 'When you are aware of being aware, that is the state.',
-    vijnanaCommentary: 'Tantra and Advaita converge: awareness recognizing itself is liberation.',
-    integratedReflectionTitle: a.theme,
-    integratedReflectionBody: `Today's radical teaching points us toward ${a.focus}. The Ashtavakra Gita does not offer gradual progress or future promises—it declares that you are already free, already complete, already the infinite awareness in which all experience appears. Think of waking from a dream—nothing changed except recognition. The only obstacle is believing otherwise. Let this teaching shock you awake.`,
-    meditation: {
-      title: `${a.theme} Recognition`,
-      steps: [
-        'Sit in stillness, releasing all seeking.',
-        'Notice: awareness is already present.',
-        'Ask: "Is this awareness bound?"',
-        'Look for the one who is bound. Can you find them?',
-        'Rest in the recognition: freedom is already here.',
-      ],
-      suggestedMinutes: 15,
-    },
-    meditationContext: `This practice is not about achieving a state but recognizing what is already true. It reveals that the seeker is what is sought. The Ashtavakra points out that seeking itself assumes something is missing—but nothing is missing.`,
-    prayer: `May I recognize ${a.focus}. May I stop pretending to be bound.`,
-    dailyAction: 'When limitation feels real, ask: "Who is limited?" Look for the one who is bound.',
-    dailyActionContext: 'Try this when you feel stuck or contracted. This inquiry dissolves the assumption of bondage. You will not find the bound one because there is no bound one—only awareness pretending.',
-  }));
+  return ashtaDays.map(a => {
+    const entry: DailyEntry = {
+      dayNumber: a.day,
+      theme: a.theme,
+      phaseId: 'ASHTAVAKRA_261_300' as const,
+      ashtavakraRef: { source: 'ASHTAVAKRA' as const, ref: a.ref },
+      taoRef: { source: 'TAO' as const, ref: `Tao-${String(((a.day - 261) % 81) + 1).padStart(2, '0')}` },
+      vijnanaRef: { source: 'VIJNANA' as const, ref: `V${((a.day - 261) % 112) + 1}` },
+      traditionContext: {
+        ashtavakra: WISDOM_TRADITIONS.ashtavakra.context,
+        tao: WISDOM_TRADITIONS.tao.context,
+        vijnana: WISDOM_TRADITIONS.vijnana.context,
+      },
+      ashtavakraText: a.text,
+      ashtavakraCommentary: `This verse points directly to ${a.focus}. The Ashtavakra Gita is the most radical scripture—it does not comfort the ego but dissolves it, revealing the unbounded awareness you have always been.`,
+      whyThisMatters: {
+        ashtavakra: WISDOM_TRADITIONS.ashtavakra.whyMatters,
+        tao: WISDOM_TRADITIONS.tao.whyMatters,
+        vijnana: WISDOM_TRADITIONS.vijnana.whyMatters,
+      },
+      taoText: getTextByIndex('tao', a.day - 1),
+      taoCommentary: 'Both Tao and Ashtavakra point beyond words to direct recognition.',
+      vijnanaText: getTextByIndex('vijnana', a.day - 1),
+      vijnanaCommentary: 'Tantra and Advaita converge: awareness recognizing itself is liberation.',
+      integratedReflectionTitle: a.theme,
+      integratedReflectionBody: `Today's radical teaching points us toward ${a.focus}. The Ashtavakra Gita does not offer gradual progress or future promises—it declares that you are already free, already complete, already the infinite awareness in which all experience appears. Think of waking from a dream—nothing changed except recognition. The only obstacle is believing otherwise. Let this teaching shock you awake.`,
+      meditation: {
+        title: `${a.theme} Recognition`,
+        steps: [
+          'Sit in stillness, releasing all seeking.',
+          'Notice: awareness is already present.',
+          'Ask: "Is this awareness bound?"',
+          'Look for the one who is bound. Can you find them?',
+          'Rest in the recognition: freedom is already here.',
+        ],
+        suggestedMinutes: 15,
+      },
+      meditationContext: `This practice is not about achieving a state but recognizing what is already true. It reveals that the seeker is what is sought. The Ashtavakra points out that seeking itself assumes something is missing—but nothing is missing.`,
+      prayer: `May I recognize ${a.focus}. May I stop pretending to be bound.`,
+      dailyAction: 'When limitation feels real, ask: "Who is limited?" Look for the one who is bound.',
+      dailyActionContext: 'Try this when you feel stuck or contracted. This inquiry dissolves the assumption of bondage. You will not find the bound one because there is no bound one—only awareness pretending.',
+    };
+
+    // Add 4 companion traditions from different families
+    addCompanionTraditions(entry, a.day, a.theme, 'ashtavakra');
+
+    return entry;
+  });
 }

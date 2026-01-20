@@ -15,40 +15,39 @@ type DayViewProps = {
   onToday: () => void;
 };
 
-function SectionHeader({ children }: { children: React.ReactNode }) {
+function SectionHeader({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <h3 className="text-xs font-medium text-white/50 uppercase tracking-[0.2em] mb-2">
+    <h3 className={`text-[10px] sm:text-xs font-medium text-white/50 uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-2 sm:mb-3 ${className}`}>
       {children}
     </h3>
   );
 }
 
-function TraditionCard({ 
-  title, 
-  text, 
+function TraditionCard({
+  title,
+  text,
   commentary,
   context,
-  whyThisMatters,
   dayNumber,
   textSize,
-}: { 
-  title: string; 
-  text: string; 
+}: {
+  title: string;
+  text: string;
   commentary?: string;
   context?: string;
-  whyThisMatters?: string;
   dayNumber: number;
   textSize: TextSize;
 }) {
   const sizeClasses = textSizeClasses[textSize];
 
   return (
-    <div className="bg-white/5 rounded-xl p-4 border border-white/10 group">
-      <div className="flex items-start justify-between mb-2">
-        <h4 className="text-xs font-medium text-violet-300/80 uppercase tracking-wider">
+    <div className="bg-white/5 rounded-xl p-4 sm:p-5 border border-white/10 group overflow-hidden">
+      {/* Header row */}
+      <div className="flex items-center justify-between gap-2 mb-3">
+        <h4 className="text-[10px] sm:text-xs font-medium text-violet-300/80 uppercase tracking-wider truncate">
           {title}
         </h4>
-        <div className="flex items-center gap-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-0.5 flex-shrink-0 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
           <FavoriteButton
             dayNumber={dayNumber}
             source={title}
@@ -63,22 +62,28 @@ function TraditionCard({
           />
         </div>
       </div>
+
+      {/* Context (simplified) */}
       {context && (
-        <p className="text-[11px] text-slate-300/70 italic leading-relaxed mb-2">
+        <p className="text-[10px] sm:text-[11px] text-white/40 leading-relaxed mb-3 line-clamp-2">
           {context}
         </p>
       )}
-      <p className={`${sizeClasses.body} text-white/90 leading-relaxed italic`}>
-        "{text}"
-      </p>
-      {commentary && (
-        <p className={`mt-3 text-xs md:text-sm text-white/60 leading-relaxed`}>
-          {commentary}
+
+      {/* Main quote - centered */}
+      <div className="py-2">
+        <p
+          className={`${sizeClasses.body} text-white/90 leading-relaxed italic text-center font-serif`}
+          style={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}
+        >
+          "{text}"
         </p>
-      )}
-      {whyThisMatters && (
-        <p className="mt-2 text-[11px] text-slate-200/70 leading-relaxed">
-          {whyThisMatters}
+      </div>
+
+      {/* Commentary */}
+      {commentary && (
+        <p className="mt-3 pt-3 border-t border-white/5 text-xs sm:text-sm text-white/60 leading-relaxed">
+          {commentary}
         </p>
       )}
     </div>
@@ -103,31 +108,31 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
   const sizeClasses = textSizeClasses[textSize];
 
   return (
-    <div className="space-y-8">
-      {/* Day Header */}
-      <section className="text-center pb-6 border-b border-white/10">
+    <div className="space-y-5 sm:space-y-6 md:space-y-8">
+      {/* Day Header - Compact */}
+      <section className="text-center pb-4 sm:pb-6 border-b border-white/10">
         <button
           onClick={() => setShowProgress(!showProgress)}
-          className="text-xs uppercase tracking-[0.25em] text-violet-300/70 mb-1 hover:text-violet-300 transition-colors cursor-pointer"
+          className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-violet-300/70 mb-1 hover:text-violet-300 transition-colors cursor-pointer"
         >
           Day {dayNumber} of 365
         </button>
         {phase && (
-          <p className="text-xs text-white/40 mb-3">
+          <p className="text-[10px] sm:text-xs text-white/40 mb-2 sm:mb-3">
             {phase.name}
           </p>
         )}
-        <h2 className={`${sizeClasses.heading} font-serif text-white font-medium`}>
+        <h2 className={`${sizeClasses.heading} font-serif text-white font-medium px-2`}>
           {theme}
         </h2>
 
-        {/* Share entire day */}
-        <div className="mt-3">
+        {/* Share entire day - smaller on mobile */}
+        <div className="mt-2 sm:mt-3">
           <ShareButton
             text={`Day ${dayNumber}: ${theme}\n\n${entry.integratedReflectionBody}`}
             title={`Day ${dayNumber} - ${theme}`}
             variant="full"
-            className="inline-flex"
+            className="inline-flex text-xs"
             dayNumber={dayNumber}
           />
         </div>
@@ -143,14 +148,13 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
       {/* Tradition Passages */}
       <section>
         <SectionHeader>Sacred Texts</SectionHeader>
-        <div className="grid gap-4">
+        <div className="grid gap-3 sm:gap-4">
           {entry.vijnanaText && (
             <TraditionCard 
               title="Vijnana Bhairava Tantra" 
               text={entry.vijnanaText} 
               commentary={entry.vijnanaCommentary}
               context={entry.traditionContext?.vijnana}
-              whyThisMatters={entry.whyThisMatters?.vijnana}
               dayNumber={dayNumber}
               textSize={textSize}
             />
@@ -161,7 +165,6 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
               text={entry.taoText} 
               commentary={entry.taoCommentary}
               context={entry.traditionContext?.tao}
-              whyThisMatters={entry.whyThisMatters?.tao}
               dayNumber={dayNumber}
               textSize={textSize}
             />
@@ -172,7 +175,6 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
               text={entry.artOfWarText} 
               commentary={entry.artOfWarCommentary}
               context={entry.traditionContext?.artOfWar}
-              whyThisMatters={entry.whyThisMatters?.artOfWar}
               dayNumber={dayNumber}
               textSize={textSize}
             />
@@ -183,7 +185,6 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
               text={entry.upanishadText} 
               commentary={entry.upanishadCommentary}
               context={entry.traditionContext?.upanishads}
-              whyThisMatters={entry.whyThisMatters?.upanishads}
               dayNumber={dayNumber}
               textSize={textSize}
             />
@@ -194,7 +195,6 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
               text={entry.gitaText} 
               commentary={entry.gitaCommentary}
               context={entry.traditionContext?.gita}
-              whyThisMatters={entry.whyThisMatters?.gita}
               dayNumber={dayNumber}
               textSize={textSize}
             />
@@ -205,7 +205,6 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
               text={entry.ashtavakraText} 
               commentary={entry.ashtavakraCommentary}
               context={entry.traditionContext?.ashtavakra}
-              whyThisMatters={entry.whyThisMatters?.ashtavakra}
               dayNumber={dayNumber}
               textSize={textSize}
             />
@@ -216,18 +215,186 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
               text={entry.yogaSutraText} 
               commentary={entry.yogaSutraCommentary}
               context={entry.traditionContext?.yogaSutras}
-              whyThisMatters={entry.whyThisMatters?.yogaSutras}
               dayNumber={dayNumber}
               textSize={textSize}
             />
           )}
           {entry.shivaSutraText && (
-            <TraditionCard 
-              title="Shiva Sutras" 
-              text={entry.shivaSutraText} 
+            <TraditionCard
+              title="Shiva Sutras"
+              text={entry.shivaSutraText}
               commentary={entry.shivaSutraCommentary}
               context={entry.traditionContext?.shivaSutras}
-              whyThisMatters={entry.whyThisMatters?.shivaSutras}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.dhammapadaText && (
+            <TraditionCard
+              title="Dhammapada"
+              text={entry.dhammapadaText}
+              commentary={entry.dhammapadaCommentary}
+              context={entry.traditionContext?.dhammapada}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.rumiText && (
+            <TraditionCard
+              title="Rumi"
+              text={entry.rumiText}
+              commentary={entry.rumiCommentary}
+              context={entry.traditionContext?.rumi}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.zenKoanText && (
+            <TraditionCard
+              title="Zen Koan"
+              text={entry.zenKoanText}
+              commentary={entry.zenKoanCommentary}
+              context={entry.traditionContext?.zenKoan}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.zhuangziText && (
+            <TraditionCard
+              title="Zhuangzi"
+              text={entry.zhuangziText}
+              commentary={entry.zhuangziCommentary}
+              context={entry.traditionContext?.zhuangzi}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.rigVedaText && (
+            <TraditionCard
+              title="Rig Veda"
+              text={entry.rigVedaText}
+              commentary={entry.rigVedaCommentary}
+              context={entry.traditionContext?.rigVeda}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.cloudOfUnknowingText && (
+            <TraditionCard
+              title="Cloud of Unknowing"
+              text={entry.cloudOfUnknowingText}
+              commentary={entry.cloudOfUnknowingCommentary}
+              context={entry.traditionContext?.cloudOfUnknowing}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.prajnaparamitaText && (
+            <TraditionCard
+              title="Heart Sutra"
+              text={entry.prajnaparamitaText}
+              commentary={entry.prajnaparamitaCommentary}
+              context={entry.traditionContext?.prajnaparamita}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.suttaNipataText && (
+            <TraditionCard
+              title="Sutta Nipata"
+              text={entry.suttaNipataText}
+              commentary={entry.suttaNipataCommentary}
+              context={entry.traditionContext?.suttaNipata}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.avadhutaGitaText && (
+            <TraditionCard
+              title="Avadhuta Gita"
+              text={entry.avadhutaGitaText}
+              commentary={entry.avadhutaGitaCommentary}
+              context={entry.traditionContext?.avadhutaGita}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.vivekachudamaniText && (
+            <TraditionCard
+              title="Vivekachudamani"
+              text={entry.vivekachudamaniText}
+              commentary={entry.vivekachudamaniCommentary}
+              context={entry.traditionContext?.vivekachudamani}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.naradaBhaktiText && (
+            <TraditionCard
+              title="Narada Bhakti Sutra"
+              text={entry.naradaBhaktiText}
+              commentary={entry.naradaBhaktiCommentary}
+              context={entry.traditionContext?.naradaBhakti}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.yogaVasisthaText && (
+            <TraditionCard
+              title="Yoga Vasistha"
+              text={entry.yogaVasisthaText}
+              commentary={entry.yogaVasisthaCommentary}
+              context={entry.traditionContext?.yogaVasistha}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.conferenceOfBirdsText && (
+            <TraditionCard
+              title="Conference of the Birds"
+              text={entry.conferenceOfBirdsText}
+              commentary={entry.conferenceOfBirdsCommentary}
+              context={entry.traditionContext?.conferenceOfBirds}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.darkNightText && (
+            <TraditionCard
+              title="Dark Night of the Soul"
+              text={entry.darkNightText}
+              commentary={entry.darkNightCommentary}
+              context={entry.traditionContext?.darkNight}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.corpusHermeticumText && (
+            <TraditionCard
+              title="Corpus Hermeticum"
+              text={entry.corpusHermeticumText}
+              commentary={entry.corpusHermeticumCommentary}
+              context={entry.traditionContext?.corpusHermeticum}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.kybalionText && (
+            <TraditionCard
+              title="The Kybalion"
+              text={entry.kybalionText}
+              commentary={entry.kybalionCommentary}
+              context={entry.traditionContext?.kybalion}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.imitationOfChristText && (
+            <TraditionCard
+              title="Imitation of Christ"
+              text={entry.imitationOfChristText}
+              commentary={entry.imitationOfChristCommentary}
+              context={entry.traditionContext?.imitationOfChrist}
               dayNumber={dayNumber}
               textSize={textSize}
             />
@@ -236,39 +403,39 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
       </section>
 
       {/* Integrated Reflection */}
-      <section className="bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-5 md:p-6 border border-white/15">
+      <section className="bg-gradient-to-br from-white/10 to-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-white/15">
         <SectionHeader>Integrated Reflection</SectionHeader>
-        <h4 className={`${textSize === 'large' ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} font-serif text-white mb-3`}>
+        <h4 className={`${textSize === 'large' ? 'text-lg sm:text-xl md:text-2xl' : 'text-base sm:text-lg md:text-xl'} font-serif text-white mb-2 sm:mb-3`}>
           {entry.integratedReflectionTitle}
         </h4>
-        <p className={`${sizeClasses.body} text-white/75 leading-relaxed`}>
+        <p className={`${sizeClasses.body} text-white/75 leading-relaxed`} style={{ overflowWrap: 'break-word' }}>
           {entry.integratedReflectionBody}
         </p>
       </section>
 
       {/* Meditation with Timer */}
-      <section className="relative bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-2xl p-5 md:p-6 border border-white/10">
+      <section className="relative bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-white/10">
         <SectionHeader>Meditation</SectionHeader>
-        <div className="flex items-baseline justify-between mb-3">
-          <h4 className={`${textSize === 'large' ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} font-serif text-white`}>
+        <div className="flex items-baseline justify-between gap-2 mb-2 sm:mb-3">
+          <h4 className={`${textSize === 'large' ? 'text-lg sm:text-xl md:text-2xl' : 'text-base sm:text-lg md:text-xl'} font-serif text-white flex-1 min-w-0`}>
             {entry.meditation.title}
           </h4>
-          <span className="text-xs text-white/50 bg-white/10 px-3 py-1 rounded-full">
+          <span className="text-[10px] sm:text-xs text-white/50 bg-white/10 px-2 sm:px-3 py-1 rounded-full flex-shrink-0">
             {entry.meditation.suggestedMinutes} min
           </span>
         </div>
-        
+
         {entry.meditationContext && (
-          <p className={`mb-4 text-xs md:text-sm text-white/60 leading-relaxed`}>
+          <p className="mb-3 sm:mb-4 text-[11px] sm:text-xs md:text-sm text-white/60 leading-relaxed">
             {entry.meditationContext}
           </p>
         )}
-        
-        <ol className="space-y-2">
+
+        <ol className="space-y-1.5 sm:space-y-2">
           {entry.meditation.steps.map((step, idx) => (
-            <li key={idx} className={`flex gap-3 ${sizeClasses.body} text-white/75`}>
-              <span className="text-violet-300/70 font-medium">{idx + 1}.</span>
-              <span>{step}</span>
+            <li key={idx} className={`flex gap-2 sm:gap-3 ${sizeClasses.body} text-white/75`}>
+              <span className="text-violet-300/70 font-medium flex-shrink-0">{idx + 1}.</span>
+              <span style={{ overflowWrap: 'break-word' }}>{step}</span>
             </li>
           ))}
         </ol>
@@ -281,9 +448,9 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
       </section>
 
       {/* Prayer */}
-      <section className="text-center py-6 border-y border-white/10 group">
+      <section className="text-center py-4 sm:py-6 border-y border-white/10 group">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <SectionHeader>Prayer</SectionHeader>
+          <SectionHeader className="mb-0">Prayer</SectionHeader>
           <div className="md:opacity-0 md:group-hover:opacity-100 transition-opacity">
             <ShareButton
               text={entry.prayer}
@@ -293,19 +460,22 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
             />
           </div>
         </div>
-        <p className={`${textSize === 'large' ? 'text-lg md:text-xl' : 'text-base md:text-lg'} text-white/80 italic font-serif leading-relaxed max-w-xl mx-auto`}>
+        <p
+          className={`${textSize === 'large' ? 'text-base sm:text-lg md:text-xl' : 'text-sm sm:text-base md:text-lg'} text-white/80 italic font-serif leading-relaxed max-w-xl mx-auto px-2`}
+          style={{ overflowWrap: 'break-word' }}
+        >
           {entry.prayer}
         </p>
       </section>
 
       {/* Daily Action */}
-      <section className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-2xl p-5 md:p-6 border border-white/10">
+      <section className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-white/10">
         <SectionHeader>Daily Action</SectionHeader>
-        <p className={`${sizeClasses.body} text-white/80 leading-relaxed`}>
+        <p className={`${sizeClasses.body} text-white/80 leading-relaxed`} style={{ overflowWrap: 'break-word' }}>
           {entry.dailyAction}
         </p>
         {entry.dailyActionContext && (
-          <p className={`mt-3 text-xs md:text-sm text-white/60 leading-relaxed`}>
+          <p className="mt-2 sm:mt-3 text-[11px] sm:text-xs md:text-sm text-white/60 leading-relaxed">
             {entry.dailyActionContext}
           </p>
         )}

@@ -1,6 +1,31 @@
 export type TraditionRef = {
-  source: 'VIJNANA' | 'TAO' | 'ART_OF_WAR' | 'UPANISHAD' | 'GITA' | 'ASHTAVAKRA' | 'YOGA_SUTRA' | 'SHIVA_SUTRA';
-  ref: string; // e.g. "V1", "Tao-01", "AoW-1.1", "Kena-1.1", "Ashta-1.1", "YS-1.2", "SS-1.1"
+  source:
+    | 'VIJNANA'
+    | 'TAO'
+    | 'ART_OF_WAR'
+    | 'UPANISHAD'
+    | 'GITA'
+    | 'ASHTAVAKRA'
+    | 'YOGA_SUTRA'
+    | 'SHIVA_SUTRA'
+    | 'DHAMMAPADA'
+    | 'RUMI'
+    | 'ZEN_KOAN'
+    | 'ZHUANGZI'
+    | 'RIG_VEDA'
+    | 'CLOUD_OF_UNKNOWING'
+    | 'PRAJNAPARAMITA'
+    | 'SUTTA_NIPATA'
+    | 'AVADHUTA_GITA'
+    | 'VIVEKACHUDAMANI'
+    | 'NARADA_BHAKTI'
+    | 'YOGA_VASISTHA'
+    | 'CONFERENCE_OF_BIRDS'
+    | 'DARK_NIGHT'
+    | 'CORPUS_HERMETICUM'
+    | 'KYBALION'
+    | 'IMITATION_OF_CHRIST';
+  ref: string;
 };
 
 export type MeditationInstruction = {
@@ -28,9 +53,10 @@ export type SpiritualPhase = {
 };
 
 export type DailyEntry = {
-  dayNumber: number; // 1..365
-  theme: string; // e.g. "The Field That Holds All Things"
+  dayNumber: number;
+  theme: string;
 
+  // References to source texts
   vijnanaRef?: TraditionRef;
   taoRef?: TraditionRef;
   artOfWarRef?: TraditionRef;
@@ -39,6 +65,23 @@ export type DailyEntry = {
   ashtavakraRef?: TraditionRef;
   yogaSutraRef?: TraditionRef;
   shivaSutraRef?: TraditionRef;
+  dhammapadaRef?: TraditionRef;
+  rumiRef?: TraditionRef;
+  zenKoanRef?: TraditionRef;
+  zhuangziRef?: TraditionRef;
+  rigVedaRef?: TraditionRef;
+  cloudOfUnknowingRef?: TraditionRef;
+  prajnaparamitaRef?: TraditionRef;
+  suttaNipataRef?: TraditionRef;
+  avadhutaGitaRef?: TraditionRef;
+  vivekachudamaniRef?: TraditionRef;
+  naradaBhaktiRef?: TraditionRef;
+  yogaVasisthaRef?: TraditionRef;
+  conferenceOfBirdsRef?: TraditionRef;
+  darkNightRef?: TraditionRef;
+  corpusHermeticumRef?: TraditionRef;
+  kybalionRef?: TraditionRef;
+  imitationOfChristRef?: TraditionRef;
 
   // Sacred text quotes
   vijnanaText?: string;
@@ -49,8 +92,25 @@ export type DailyEntry = {
   ashtavakraText?: string;
   yogaSutraText?: string;
   shivaSutraText?: string;
+  dhammapadaText?: string;
+  rumiText?: string;
+  zenKoanText?: string;
+  zhuangziText?: string;
+  rigVedaText?: string;
+  cloudOfUnknowingText?: string;
+  prajnaparamitaText?: string;
+  suttaNipataText?: string;
+  avadhutaGitaText?: string;
+  vivekachudamaniText?: string;
+  naradaBhaktiText?: string;
+  yogaVasisthaText?: string;
+  conferenceOfBirdsText?: string;
+  darkNightText?: string;
+  corpusHermeticumText?: string;
+  kybalionText?: string;
+  imitationOfChristText?: string;
 
-  // Short explanatory commentaries under each quote
+  // Short explanatory commentaries
   vijnanaCommentary?: string;
   taoCommentary?: string;
   artOfWarCommentary?: string;
@@ -59,8 +119,25 @@ export type DailyEntry = {
   ashtavakraCommentary?: string;
   yogaSutraCommentary?: string;
   shivaSutraCommentary?: string;
+  dhammapadaCommentary?: string;
+  rumiCommentary?: string;
+  zenKoanCommentary?: string;
+  zhuangziCommentary?: string;
+  rigVedaCommentary?: string;
+  cloudOfUnknowingCommentary?: string;
+  prajnaparamitaCommentary?: string;
+  suttaNipataCommentary?: string;
+  avadhutaGitaCommentary?: string;
+  vivekachudamaniCommentary?: string;
+  naradaBhaktiCommentary?: string;
+  yogaVasisthaCommentary?: string;
+  conferenceOfBirdsCommentary?: string;
+  darkNightCommentary?: string;
+  corpusHermeticumCommentary?: string;
+  kybalionCommentary?: string;
+  imitationOfChristCommentary?: string;
 
-  // Subtle 1–2 sentence origin/context blurbs for each tradition used in the entry
+  // Context blurbs for each tradition
   traditionContext?: {
     vijnana?: string;
     tao?: string;
@@ -70,9 +147,26 @@ export type DailyEntry = {
     ashtavakra?: string;
     yogaSutras?: string;
     shivaSutras?: string;
+    dhammapada?: string;
+    rumi?: string;
+    zenKoan?: string;
+    zhuangzi?: string;
+    rigVeda?: string;
+    cloudOfUnknowing?: string;
+    prajnaparamita?: string;
+    suttaNipata?: string;
+    avadhutaGita?: string;
+    vivekachudamani?: string;
+    naradaBhakti?: string;
+    yogaVasistha?: string;
+    conferenceOfBirds?: string;
+    darkNight?: string;
+    corpusHermeticum?: string;
+    kybalion?: string;
+    imitationOfChrist?: string;
   };
 
-  // Short "why this matters" explanations for each quote
+  // Why this matters explanations
   whyThisMatters?: {
     vijnana?: string;
     tao?: string;
@@ -82,21 +176,34 @@ export type DailyEntry = {
     ashtavakra?: string;
     yogaSutras?: string;
     shivaSutras?: string;
+    dhammapada?: string;
+    rumi?: string;
+    zenKoan?: string;
+    zhuangzi?: string;
+    rigVeda?: string;
+    cloudOfUnknowing?: string;
+    prajnaparamita?: string;
+    suttaNipata?: string;
+    avadhutaGita?: string;
+    vivekachudamani?: string;
+    naradaBhakti?: string;
+    yogaVasistha?: string;
+    conferenceOfBirds?: string;
+    darkNight?: string;
+    corpusHermeticum?: string;
+    kybalion?: string;
+    imitationOfChrist?: string;
   };
 
   integratedReflectionTitle: string;
   integratedReflectionBody: string;
 
   meditation: MeditationInstruction;
-
-  // A short "why this practice today" explanation
   meditationContext?: string;
 
   prayer: string;
 
   dailyAction: string;
-
-  // Explanation/example for daily action
   dailyActionContext?: string;
 
   phaseId?: SpiritualPhaseId;

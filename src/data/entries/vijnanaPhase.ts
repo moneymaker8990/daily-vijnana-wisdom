@@ -1,7 +1,13 @@
-import type { DailyEntry } from '@lib/types';
+import type { DailyEntry, TraditionRef } from '@lib/types';
 import { TAO_VERSES } from '../traditions/tao';
-import { ART_OF_WAR_PASSAGES } from '../traditions/artOfWar';
-import { UPANISHAD_PASSAGES } from '../traditions/upanishads';
+import {
+  WISDOM_TRADITIONS,
+  getBalancedTraditions,
+  getTextByIndex,
+  TRADITION_SOURCE_MAP,
+  TRADITION_FIELD_MAP,
+  type TraditionKey,
+} from '../wisdomTexts';
 
 // Days 1-112: Vijnana Bhairava Tantra Phase
 // Focus: breath, body, senses, awareness, gaps, inner space, non-reaction
@@ -14,12 +20,10 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     phaseId: 'VIJNANA_1_112',
     vijnanaRef: { source: 'VIJNANA', ref: 'V1' },
     taoRef: { source: 'TAO', ref: 'Tao-01' },
-    artOfWarRef: { source: 'ART_OF_WAR', ref: 'AoW-1.1' },
     upanishadRef: { source: 'UPANISHAD', ref: 'Kena-1.1' },
     traditionContext: {
       vijnana: 'A medieval Kashmiri text offering 112 gateways into presence through breath, sensation, and the immediacy of experience.',
       tao: 'An ancient Chinese classic pointing to effortless harmony and the wisdom of yielding.',
-      artOfWar: 'A classical treatise where outer strategy mirrors inner clarity and self-knowledge.',
       upanishads: 'Nondual dialogues exploring the source behind seeing, hearing, and thought.',
     },
     vijnanaText: 'Beloved, the awareness that permeates all things is the root of all experience. Rest in that which witnesses.',
@@ -27,13 +31,10 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     whyThisMatters: {
       vijnana: 'This teaching interrupts the habit of identifying with mental content and points you back to the awareness that is always already present.',
       tao: 'The Tao reminds us that the deepest truths slip away when we try to cage them in concepts—relaxing the grip of the conceptual mind opens direct experience.',
-      artOfWar: 'Self-knowledge calms the nervous system; you stop fighting what is and respond from clarity.',
       upanishads: 'Recognizing the seer behind seeing dissolves the sense of being a separate observer trapped in a body.',
     },
     taoText: 'The Tao that can be spoken is not the eternal Tao.',
     taoCommentary: 'What we are exploring cannot be fully captured in language. Hold these teachings lightly—they are fingers pointing at the moon.',
-    artOfWarText: 'To know yourself is to be invincible.',
-    artOfWarCommentary: 'When you truly know yourself as awareness, no external circumstance can fundamentally destabilize you.',
     upanishadText: 'By whom is the mind directed? That which is the hearing of the ear.',
     upanishadCommentary: 'The Kena Upanishad asks: what is behind your senses? There is something that hears through your ears. That is what we discover together.',
     integratedReflectionTitle: 'Resting as the Field',
@@ -62,23 +63,23 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     phaseId: 'VIJNANA_1_112',
     vijnanaRef: { source: 'VIJNANA', ref: 'V2' },
     taoRef: { source: 'TAO', ref: 'Tao-02' },
-    artOfWarRef: { source: 'ART_OF_WAR', ref: 'AoW-2.1' },
+    dhammapadaRef: { source: 'DHAMMAPADA', ref: 'Dham-1' },
     traditionContext: {
       vijnana: 'The Vijnana Bhairava uses the natural rhythm of breath as a direct path to presence.',
       tao: 'Taoist wisdom sees complementary opposites as the dance of reality itself.',
-      artOfWar: 'Strategic wisdom recognizes that timing—knowing when to move and when to be still—is everything.',
+      dhammapada: 'The Buddha\'s collected verses on mindfulness and the training of the mind.',
     },
     vijnanaText: 'Between the inhalation and exhalation shines the light of consciousness.',
     vijnanaCommentary: 'The breath is always moving between two poles. In the tiny pause between them, the mind has a chance to rest. This verse points you to that pause as a doorway.',
     whyThisMatters: {
       vijnana: 'The pause interrupts habitual mental momentum. In that gap, the nervous system downshifts and awareness shines unobstructed.',
       tao: 'Recognizing interdependence softens rigid thinking and opens you to flow.',
-      artOfWar: 'Reactivity happens when we skip the pause. Learning to wait transforms impulsiveness into responsiveness.',
+      dhammapada: 'The Buddha taught that mindfulness of breath is the foundation of all awakening practices.',
     },
     taoText: 'Being and non-being create each other.',
     taoCommentary: 'Opposites define and complete each other. The pause needs the breath; the breath needs the pause.',
-    artOfWarText: 'When you are still, be like a mountain; when you move, be like a swift river.',
-    artOfWarCommentary: 'Master both stillness and movement. The pause teaches stillness; the breath teaches flow.',
+    dhammapadaText: 'Mind is the forerunner of all actions. All deeds are led by mind, created by mind.',
+    dhammapadaCommentary: 'Where attention goes, energy follows. By placing awareness in the pause, you train the mind to rest rather than react.',
     integratedReflectionTitle: 'The Sacred Gap',
     integratedReflectionBody: 'The pause between breaths is a doorway into clarity. In stillness, the mud settles; in the gap, awareness brightens. You know this feeling—that brief moment after a sneeze, or when you step outside into cold air. The mind stops. Something opens. Your strength today is timing—pausing when it is time to pause, and moving only when the movement is true.',
     meditation: {
@@ -105,23 +106,23 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     phaseId: 'VIJNANA_1_112',
     vijnanaRef: { source: 'VIJNANA', ref: 'V3' },
     taoRef: { source: 'TAO', ref: 'Tao-03' },
-    artOfWarRef: { source: 'ART_OF_WAR', ref: 'AoW-1.2' },
+    rumiRef: { source: 'RUMI', ref: 'Rumi-1' },
     traditionContext: {
       vijnana: 'Tantra embraces all experience—pleasure and pain alike—as gateways to awareness.',
       tao: 'Wu wei, or non-doing, points to action without struggle or resistance.',
-      artOfWar: 'True strategy recognizes when not to fight.',
+      rumi: 'The Sufi poet who transformed longing and intensity into pathways of divine union.',
     },
     vijnanaText: 'At the moment of feeling pleasure or pain, become absorbed in that very feeling. There, find the infinite.',
     vijnanaCommentary: 'Intensity—whether blissful or painful—cracks the shell of ordinary experience. When you fully enter it without resistance, you discover pure awareness at its core.',
     whyThisMatters: {
       vijnana: 'Strong sensation collapses the narrative mind. When you dive in rather than recoil, you bypass the ego\'s commentary and touch presence directly.',
       tao: 'Resistance tightens the body and narrows awareness. Releasing the fight opens the field.',
-      artOfWar: 'The inner battle against discomfort wastes energy. Meeting intensity head-on conserves power for what matters.',
+      rumi: 'Rumi knew that the heart must break open to receive the Beloved. Intensity is the breaking.',
     },
     taoText: 'Practice not-doing, and everything will fall into place.',
     taoCommentary: 'Not-doing here means not fighting. When you stop resisting sensation, it reveals its nature.',
-    artOfWarText: 'The art of war is of vital importance.',
-    artOfWarCommentary: 'The inner war—between resistance and acceptance—is the most vital. Meet intensity without battle.',
+    rumiText: 'The wound is the place where the Light enters you.',
+    rumiCommentary: 'What we resist becomes a wall. What we embrace becomes a doorway. Your intensity is not your enemy—it is your teacher.',
     integratedReflectionTitle: 'The Doorway of Intensity',
     integratedReflectionBody: 'Every intense sensation is an invitation. When you allow yourself to fully enter the intensity without resistance or grasping, you discover that at its core is pure awareness itself. Think of stubbing your toe—for a split second, there is only the sensation, no "you" experiencing it. That split second is the doorway. Today, practice meeting what arises with complete presence.',
     meditation: {
@@ -148,23 +149,23 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     phaseId: 'VIJNANA_1_112',
     vijnanaRef: { source: 'VIJNANA', ref: 'V4' },
     taoRef: { source: 'TAO', ref: 'Tao-04' },
-    artOfWarRef: { source: 'ART_OF_WAR', ref: 'AoW-1.3' },
+    yogaSutraRef: { source: 'YOGA_SUTRA', ref: 'YS-2.1' },
     traditionContext: {
       vijnana: 'Tantric practice recognizes subtle energy currents in the body that can be awakened through attention.',
       tao: 'Taoist alchemy speaks of cultivating inner vitality from an inexhaustible source.',
-      artOfWar: 'Strategic clarity depends on seeing through the mind\'s self-deceptions.',
+      yogaSutras: 'Patanjali\'s systematic path describes tapas—the inner fire of discipline and transformation.',
     },
     vijnanaText: 'Focus on the fire rising through the body, becoming lighter until consumed by the flames of awareness.',
     vijnanaCommentary: 'There is a subtle warmth at the base of the spine. When attention rests there, the fire climbs—burning through dullness, illuminating the inner world.',
     whyThisMatters: {
       vijnana: 'This practice works with the body\'s own energy. Attention is the spark; what rises is aliveness itself.',
       tao: 'The inner fire is not manufactured. It is recognized. This relieves the exhausting effort of self-improvement.',
-      artOfWar: 'The mind deceives you into seeking energy externally. Recognizing inner fire ends that search.',
+      yogaSutras: 'Tapas burns through obstacles. The fire of practice purifies what obscures your natural clarity.',
     },
     taoText: 'The Tao is like an empty vessel that may be drawn from without ever needing to be filled.',
     taoCommentary: 'The inner fire draws from an inexhaustible source. You do not need to fill yourself; you need to recognize what is already burning.',
-    artOfWarText: 'All warfare is based on deception.',
-    artOfWarCommentary: 'The ego deceives you into thinking you lack fire. The truth is you are made of light.',
+    yogaSutraText: 'Tapas, self-study, and surrender to the divine constitute the yoga of action.',
+    yogaSutraCommentary: 'Tapas is the heat generated by practice. It burns through resistance and reveals the light within.',
     integratedReflectionTitle: 'Ignited from Within',
     integratedReflectionBody: 'There is a subtle warmth at the base of the spine, a spark waiting to rise. When attention is placed there with devotion, the fire climbs—burning through dullness, dissolving heaviness, illuminating the inner world. You may have felt this after deep laughter or sudden inspiration—a warmth spreading upward, a sense of lightness. This is not visualization but recognition of what is already present.',
     meditation: {
@@ -192,23 +193,23 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     phaseId: 'VIJNANA_1_112',
     vijnanaRef: { source: 'VIJNANA', ref: 'V5' },
     taoRef: { source: 'TAO', ref: 'Tao-05' },
-    artOfWarRef: { source: 'ART_OF_WAR', ref: 'AoW-1.4' },
+    zenKoanRef: { source: 'ZEN_KOAN', ref: 'Zen-1' },
     traditionContext: {
       vijnana: 'Tantra does not fear the void—it recognizes emptiness as the pregnant ground of all experience.',
       tao: 'Taoism sees impartiality not as coldness but as the wisdom of nature itself.',
-      artOfWar: 'Strategic power often hides in apparent emptiness.',
+      zenKoan: 'Zen koans short-circuit the thinking mind, pointing directly to the emptiness that is our original nature.',
     },
     vijnanaText: 'When the mind is dissolved in the void, beyond thoughts, there is pure consciousness.',
     vijnanaCommentary: 'Thoughts appear endlessly, like clouds passing through sky. But what if you could rest in the sky itself? The void is fullness without content.',
     whyThisMatters: {
       vijnana: 'The thinking mind creates a constant sense of self. Resting in the gap between thoughts reveals awareness without the usual "me."',
       tao: 'Impartiality dissolves the grip of preference. When nothing is rejected, the nervous system relaxes.',
-      artOfWar: 'Power hides in stillness. When you seem to have nothing, you are uncapturable.',
+      zenKoan: 'Zen masters ask impossible questions to exhaust the conceptual mind. What remains is the void itself.',
     },
     taoText: 'Heaven and earth are impartial; they treat all things as straw dogs.',
     taoCommentary: 'The void does not prefer one thought over another. It holds all equally and releases all equally.',
-    artOfWarText: 'When able to attack, we must seem unable.',
-    artOfWarCommentary: 'The void seems empty but contains everything. Apparent emptiness is the source of all power.',
+    zenKoanText: 'What was your original face before your parents were born?',
+    zenKoanCommentary: 'This question cannot be answered with thought. Rest in the space where the answer might be—that space is the answer.',
     integratedReflectionTitle: 'Beyond the Stream of Thought',
     integratedReflectionBody: 'Thoughts appear endlessly, like clouds passing through sky. But what if you could rest in the sky itself? The void is not emptiness as absence—it is fullness without content, presence without object. You have touched this in the gap after a question, before the answer forms. When thought pauses, even for a moment, you glimpse what has always been here.',
     meditation: {
@@ -236,23 +237,23 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     phaseId: 'VIJNANA_1_112',
     vijnanaRef: { source: 'VIJNANA', ref: 'V6' },
     taoRef: { source: 'TAO', ref: 'Tao-06' },
-    artOfWarRef: { source: 'ART_OF_WAR', ref: 'AoW-1.5' },
+    zhuangziRef: { source: 'ZHUANGZI', ref: 'Zhuang-1' },
     traditionContext: {
       vijnana: 'Tantric meditation often uses the body as a microcosm of the universe—inner space mirroring outer vastness.',
       tao: 'The Tao honors receptivity and emptiness as sources of power and renewal.',
-      artOfWar: 'True victory comes without struggle—through positioning, not force.',
+      zhuangzi: 'Zhuangzi\'s playful Taoist philosophy points to the freedom found in vastness and wandering.',
     },
     vijnanaText: 'Contemplate the space within your body as if it were a vast, empty sky. In that sky, rest.',
     vijnanaCommentary: 'Your body is not solid—it is mostly space. When you feel into this spaciousness, the sense of being a dense, bounded object softens.',
     whyThisMatters: {
       vijnana: 'Feeling spacious inside loosens the grip of tension and anxiety. The body relaxes when it stops feeling cramped.',
       tao: 'Receptivity allows experience to flow through without sticking. This is the key to emotional resilience.',
-      artOfWar: 'When you are spacious inside, there is room for difficulty to pass through without becoming conflict.',
+      zhuangzi: 'Zhuangzi found freedom in vastness. When the inner sky opens, you are no longer confined by small concerns.',
     },
     taoText: 'The spirit of the valley never dies. It is called the mysterious feminine.',
     taoCommentary: 'The valley is receptive, empty, and alive. Your inner sky has this same quality—open and endlessly receiving.',
-    artOfWarText: 'The supreme art is to subdue the enemy without fighting.',
-    artOfWarCommentary: 'When you rest in inner spaciousness, conflict dissolves before it begins. You do not fight tension—you give it room.',
+    zhuangziText: 'Heaven and Earth and I were born at the same time, and all life and I are one.',
+    zhuangziCommentary: 'When the boundaries dissolve, you discover that your inner sky is not separate from the infinite sky. You are vast.',
     integratedReflectionTitle: 'Spaciousness Within',
     integratedReflectionBody: 'Most of us live as if we were solid, dense objects moving through the world. But your body is mostly space—atoms with vast distances between them. When you contemplate this inner sky, the usual sense of being cramped and confined begins to soften. Think of how relief feels—shoulders drop, chest opens, breath deepens. That is spaciousness remembering itself. Today, discover the roominess within.',
     meditation: {
@@ -280,23 +281,23 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     phaseId: 'VIJNANA_1_112',
     vijnanaRef: { source: 'VIJNANA', ref: 'V7' },
     taoRef: { source: 'TAO', ref: 'Tao-07' },
-    artOfWarRef: { source: 'ART_OF_WAR', ref: 'AoW-2.2' },
+    upanishadRef: { source: 'UPANISHAD', ref: 'Mandukya-1' },
     traditionContext: {
       vijnana: 'The Vijnana Bhairava uses liminal moments—thresholds between states—as opportunities for recognition.',
       tao: 'Taoism honors what endures through selflessness and non-grasping.',
-      artOfWar: 'Strategic wisdom means recognizing when victory is already present.',
+      upanishads: 'The Mandukya Upanishad maps the four states of consciousness, including deep sleep and the witness beyond.',
     },
     vijnanaText: 'At the moment of sneezing, in terror, at the edge of an abyss—there consciousness shines.',
     vijnanaCommentary: 'Extreme moments interrupt the usual mind. In that interruption, awareness is revealed. The edge of sleep is one such threshold.',
     whyThisMatters: {
       vijnana: 'The transition into sleep is a natural gap in self-construction. The ego loosens its grip, and what remains is pure awareness.',
       tao: 'Selflessness at the edge of sleep reveals what survives the dissolution of "me."',
-      artOfWar: 'Resting at the threshold is mastery. You are not fighting sleep; you are aware within it.',
+      upanishads: 'The Mandukya reveals that awareness persists through waking, dreaming, and deep sleep. You are the witness of all states.',
     },
     taoText: 'Heaven is eternal, earth endures. Because they do not live for themselves, they can live forever.',
     taoCommentary: 'At the edge of sleep, the self relaxes its grip. This selflessness opens the door to something timeless.',
-    artOfWarText: 'The victorious strategist only seeks battle after the victory has been won.',
-    artOfWarCommentary: 'At the threshold of sleep, you have already won—the battle of the waking mind is over. Rest in this victory.',
+    upanishadText: 'This Self is Brahman. This Self has four quarters: waking, dreaming, deep sleep, and Turiya—the fourth.',
+    upanishadCommentary: 'Turiya is not a state but the witness of all states. At the threshold of sleep, you can glimpse this eternal witness.',
     integratedReflectionTitle: 'The Threshold of Consciousness',
     integratedReflectionBody: 'There is a moment each night when waking has dissolved but sleep has not yet come. In that liminal space, something interesting happens: the usual sense of self relaxes, and awareness shines without an object. You may have noticed this when drifting off—the body heavy, the mind empty, yet something is still aware. Tonight, try to catch this threshold. It is a natural doorway into presence.',
     meditation: {
@@ -323,23 +324,23 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     phaseId: 'VIJNANA_1_112',
     vijnanaRef: { source: 'VIJNANA', ref: 'V8' },
     taoRef: { source: 'TAO', ref: 'Tao-08' },
-    artOfWarRef: { source: 'ART_OF_WAR', ref: 'AoW-2.3' },
+    rumiRef: { source: 'RUMI', ref: 'Rumi-2' },
     traditionContext: {
       vijnana: 'Tantra works with desire rather than against it, using its energy as fuel for awakening.',
       tao: 'Water teaches the wisdom of flowing with rather than fighting against.',
-      artOfWar: 'Prolonged inner warfare depletes resources. Strategic clarity ends unnecessary battles.',
+      rumi: 'Rumi transformed longing itself into a spiritual path, teaching that desire points toward the Beloved.',
     },
     vijnanaText: 'When desire arises, observe it fully without acting. In that gap, the Self is revealed.',
     vijnanaCommentary: 'Desire is not the enemy—unconscious reaction to desire is. When you observe desire without immediately acting, you discover the awareness that is watching.',
     whyThisMatters: {
       vijnana: 'The gap between impulse and action is where freedom lives. Observing desire trains you to respond rather than react.',
       tao: 'When you stop fighting desire, the nervous system calms. Energy that was wasted in struggle becomes available.',
-      artOfWar: 'Ending the war with desire conserves inner resources for what truly matters.',
+      rumi: 'Rumi saw longing as the soul\'s homesickness for God. Desire, properly understood, leads you home.',
     },
     taoText: 'The highest good is like water. Water benefits all things without competing.',
     taoCommentary: 'Desire, like water, wants to flow. When you observe it without damming or forcing, it finds its natural level.',
-    artOfWarText: 'There is no instance of a nation benefiting from prolonged warfare.',
-    artOfWarCommentary: 'Fighting desire endlessly exhausts you. Observing it with compassion ends the war.',
+    rumiText: 'Let yourself be silently drawn by the strange pull of what you really love. It will not lead you astray.',
+    rumiCommentary: 'Not all desire is distraction. Beneath the surface wants is a deeper longing that knows the way home.',
     integratedReflectionTitle: 'The Gap Before Acting',
     integratedReflectionBody: 'Desire is energy—not good or bad, but powerful. When desire arises and you immediately act, you never see the desire itself. But when you pause, observe, and let the desire be without acting, something remarkable happens: you discover the one who is aware of desire. Notice this the next time you reach for your phone—the urge, the pull, the automatic hand. Pause. Watch. This is not suppression; it is witnessing.',
     meditation: {
@@ -367,23 +368,23 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     phaseId: 'VIJNANA_1_112',
     vijnanaRef: { source: 'VIJNANA', ref: 'V9' },
     taoRef: { source: 'TAO', ref: 'Tao-09' },
-    artOfWarRef: { source: 'ART_OF_WAR', ref: 'AoW-2.4' },
+    dhammapadaRef: { source: 'DHAMMAPADA', ref: 'Dham-2' },
     traditionContext: {
       vijnana: 'Nada yoga—the yoga of sound—uses listening as a direct path to presence.',
       tao: 'The Tao warns against overfilling; emptiness is the ground of usefulness.',
-      artOfWar: 'Speed must be balanced by stillness, or it becomes exhaustion.',
+      dhammapada: 'The Buddha taught that mindful listening brings the mind to stillness.',
     },
     vijnanaText: 'Listen to the sound of any instrument until the sound dissolves into silence. In that silence, be.',
     vijnanaCommentary: 'Sound has a beginning, a middle, and an end. When you follow sound to its end, you arrive at the silence that was always there underneath.',
     whyThisMatters: {
       vijnana: 'Following sound to its end trains attention to rest in what remains—the silence that was never interrupted.',
       tao: 'Silence is not the absence of sound but its ground. Recognizing this shifts identity from content to context.',
-      artOfWar: 'Rest is not the opposite of action but its foundation. The warrior who rests well acts well.',
+      dhammapada: 'When the mind settles into silence, wisdom arises naturally. Sound is the path; silence is the destination.',
     },
     taoText: 'Fill your bowl to the brim and it will spill.',
     taoCommentary: 'Sound fills the silence but cannot overflow it. Silence is the bowl that holds all sound.',
-    artOfWarText: 'Speed is the essence of war.',
-    artOfWarCommentary: 'But speed without stillness leads to exhaustion. Sound leads to silence; action leads to rest.',
+    dhammapadaText: 'Better than a thousand hollow words is one word that brings peace.',
+    dhammapadaCommentary: 'The Buddha valued the silence that follows true speech. Today, let sounds dissolve back into that peace.',
     integratedReflectionTitle: 'The Silence Beneath Sound',
     integratedReflectionBody: 'Every sound emerges from silence and returns to it. When you truly listen, you are not just hearing the sound—you are hearing the silence in which sound appears. Notice this after a loud noise ends—the car passes, the door closes. What remains is not nothing; it is presence. Today, use any sound as a vehicle to arrive at the quiet that holds it.',
     meditation: {
@@ -411,23 +412,23 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     phaseId: 'VIJNANA_1_112',
     vijnanaRef: { source: 'VIJNANA', ref: 'V10' },
     taoRef: { source: 'TAO', ref: 'Tao-10' },
-    artOfWarRef: { source: 'ART_OF_WAR', ref: 'AoW-2.5' },
+    upanishadRef: { source: 'UPANISHAD', ref: 'Mandukya-2' },
     traditionContext: {
       vijnana: 'Mantra practice uses sound as a bridge to silence—the source and destination of all vibration.',
       tao: 'Returning to the One is the essence of Taoist practice.',
-      artOfWar: 'The wise strategist recognizes when battle is unnecessary.',
+      upanishads: 'The Mandukya explores AUM, the sacred syllable containing all sounds and all states of consciousness.',
     },
     vijnanaText: 'Chant any letter of the alphabet, focusing on the moment before and after the sound. There is the void.',
     vijnanaCommentary: 'The sound arises from silence and returns to it. By focusing on those transition points, you touch the source.',
     whyThisMatters: {
       vijnana: 'Attention to the gaps trains the mind to rest in what underlies all experience.',
       tao: 'Embracing unity means recognizing the silent ground beneath all multiplicity.',
-      artOfWar: 'When you rest in the source, duality collapses. There is nothing to fight.',
+      upanishads: 'AUM contains the waking (A), dreaming (U), and deep sleep (M) states, plus the silence that follows—Turiya, pure awareness.',
     },
     taoText: 'Can you embrace your soul and cling to the One without parting?',
     taoCommentary: 'The One is the silence from which all letters emerge. Chanting returns you there.',
-    artOfWarText: 'The wise warrior avoids the battle.',
-    artOfWarCommentary: 'When you rest in the source, there is no battle between sound and silence.',
+    upanishadText: 'AUM is the bow, the Self is the arrow, Brahman is the target. With concentration, hit the mark.',
+    upanishadCommentary: 'The sacred sound is not the destination but the vehicle. Through AUM, you reach the silence that is Brahman.',
     integratedReflectionTitle: 'Before and After the Sound',
     integratedReflectionBody: 'Every utterance has three parts: the silence before, the sound itself, and the silence after. Most of us focus only on the sound. But watch what happens when you say your own name aloud—there is a stillness before, the vibration, and then stillness again. Today, expand your attention to include the bookends. This simple shift reveals the ground of being.',
     meditation: {
@@ -458,23 +459,23 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     phaseId: 'VIJNANA_1_112',
     vijnanaRef: { source: 'VIJNANA', ref: 'V11' },
     taoRef: { source: 'TAO', ref: 'Tao-11' },
-    artOfWarRef: { source: 'ART_OF_WAR', ref: 'AoW-3.1' },
+    dhammapadaRef: { source: 'DHAMMAPADA', ref: 'Dham-3' },
     traditionContext: {
       vijnana: 'The Vijnana Bhairava returns to breath again and again as the most accessible doorway.',
       tao: 'Taoist wisdom finds usefulness in emptiness—the hub, the room, the pause.',
-      artOfWar: 'Self-knowledge is the foundation of all effective action.',
+      dhammapada: 'The Buddha\'s foundational teaching on mindfulness begins with awareness of breath.',
     },
     vijnanaText: 'Feel the breath as it enters and leaves. Notice the still point. Dwell there.',
     vijnanaCommentary: 'Breath is the bridge between body and mind, between inner and outer. The still point is where all bridges meet.',
     whyThisMatters: {
       vijnana: 'The breath is always available and always now. It is the simplest anchor for scattered attention.',
       tao: 'The pause in breath is like the hub of a wheel—empty but essential.',
-      artOfWar: 'Knowing the breath calms the nervous system and clarifies perception.',
+      dhammapada: 'The Buddha taught anapanasati—mindfulness of breathing—as the direct path to liberation.',
     },
     taoText: 'Thirty spokes meet at a hub. The emptiness at the center makes the wheel useful.',
     taoCommentary: 'The breath, like the wheel, depends on its empty center—the pause, the stillness.',
-    artOfWarText: 'If you know the enemy and know yourself, you need not fear the result of a hundred battles.',
-    artOfWarCommentary: 'Know the breath and you know the bridge between doing and being.',
+    dhammapadaText: 'Mindfulness is the path to the deathless. Mindlessness is the path to death. The mindful do not die; the mindless are as if already dead.',
+    dhammapadaCommentary: 'The breath is always in the present moment. When you follow it, you cannot be lost in past or future.',
     integratedReflectionTitle: 'A Moving Anchor',
     integratedReflectionBody: 'Breath is the most ordinary thing in your life, and yet it never leaves you until your last moment. When you meet it consciously, it becomes a living bridge between body, mind, and awareness. Notice how a sigh of relief changes everything—the shoulders drop, the grip loosens. You do not need to force or manipulate breath; you only need to notice it. Today, your strength is in returning again and again to this quiet, moving anchor.',
     meditation: {
@@ -502,23 +503,23 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     phaseId: 'VIJNANA_1_112',
     vijnanaRef: { source: 'VIJNANA', ref: 'V12' },
     taoRef: { source: 'TAO', ref: 'Tao-12' },
-    artOfWarRef: { source: 'ART_OF_WAR', ref: 'AoW-3.2' },
+    zhuangziRef: { source: 'ZHUANGZI', ref: 'Zhuang-2' },
     traditionContext: {
       vijnana: 'Tantric and Tibetan practices use elemental dissolution as a rehearsal for the dying process and a path to awakening.',
       tao: 'The sage looks inward because outer stimulation can obscure deeper seeing.',
-      artOfWar: 'Knowing both self and circumstance prevents blind spots.',
+      zhuangzi: 'Zhuangzi taught that transformation is the nature of existence—nothing is fixed, all flows.',
     },
     vijnanaText: 'Imagine the five elements dissolving into subtler forms, until only consciousness remains.',
     vijnanaCommentary: 'Earth dissolves into water, water into fire, fire into air, air into space, space into awareness. This is not destruction but revelation.',
     whyThisMatters: {
       vijnana: 'This practice loosens identification with the physical body. When form dissolves in imagination, what remains is the witness.',
       tao: 'Trusting inner vision means relying on awareness rather than sensory stimulation.',
-      artOfWar: 'Identifying with the body is the "enemy"—the blind spot. Knowing you are awareness removes this vulnerability.',
+      zhuangzi: 'Zhuangzi saw that clinging to any form causes suffering. When you flow with dissolution, you discover what never dissolves.',
     },
     taoText: 'Colors blind the eye. Sounds deafen the ear. The sage trusts the inner vision.',
     taoCommentary: 'As outer elements dissolve, inner vision clarifies. Trust what remains when form is gone.',
-    artOfWarText: 'If you know yourself but not the enemy, for every victory you will suffer a defeat.',
-    artOfWarCommentary: 'The "enemy" here is identification with the elements. Know that you are what remains when they dissolve.',
+    zhuangziText: 'The transformation of things—this is what I call the leveling of all things. When you reach this level, you see that all things are one.',
+    zhuangziCommentary: 'When the elements dissolve, the boundaries that seemed to separate you from the world dissolve too. You and the cosmos are one.',
     integratedReflectionTitle: 'What Remains When Form Dissolves',
     integratedReflectionBody: 'Your body is made of elements—earth in bones, water in blood, fire in digestion, air in breath, space in the cavities. But you are not ultimately these elements. Think of anesthesia—the body is still there, but "you" seem to vanish. What is that "you"? When you imagine the elements dissolving into subtler and subtler forms, what remains is the awareness that was always watching. Today, touch this recognition.',
     meditation: {
@@ -543,69 +544,95 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
   ...generateRemainingVijnanaEntries(),
 ];
 
+// Helper function to add companion traditions to an entry
+function addCompanionTraditions(
+  entry: DailyEntry,
+  dayNumber: number,
+  theme: string,
+  primaryTradition: TraditionKey = 'vijnana'
+): void {
+  // Get 4 balanced traditions from different families
+  const companions = getBalancedTraditions(dayNumber, primaryTradition);
+  const textIndex = dayNumber - 1;
+
+  for (const tradition of companions) {
+    const fields = TRADITION_FIELD_MAP[tradition];
+    const data = WISDOM_TRADITIONS[tradition];
+    const source = TRADITION_SOURCE_MAP[tradition] as TraditionRef['source'];
+
+    // Add ref
+    (entry as Record<string, unknown>)[fields.ref] = {
+      source,
+      ref: `${source.substring(0, 3)}-${dayNumber}`,
+    };
+
+    // Add text
+    (entry as Record<string, unknown>)[fields.text] = getTextByIndex(tradition, textIndex);
+
+    // Add commentary
+    (entry as Record<string, unknown>)[fields.commentary] =
+      `${data.commentaryStyle} This wisdom illuminates today's theme of ${theme.toLowerCase()}.`;
+
+    // Add to tradition context
+    if (!entry.traditionContext) {
+      entry.traditionContext = {};
+    }
+    (entry.traditionContext as Record<string, string>)[fields.contextKey] = data.context;
+
+    // Add to why this matters
+    if (!entry.whyThisMatters) {
+      entry.whyThisMatters = {};
+    }
+    (entry.whyThisMatters as Record<string, string>)[fields.whyMattersKey] = data.whyMatters;
+  }
+}
+
 // Helper function to generate days 13-112 with complete content
 function generateRemainingVijnanaEntries(): DailyEntry[] {
   const entries: DailyEntry[] = [];
-  
+
   const dayData = [
     { day: 13, theme: 'The Divine Light', vijnanaText: 'With eyes closed, see your inner being in detail. Recognize the divine light.', reflectionTitle: 'Seeing Without Eyes', reflectionBody: 'Behind your closed eyelids is not darkness but a subtle luminosity. This inner light is not dependent on the sun—it is the light of awareness itself. When you look within, you are not looking at darkness; you are looking with the light that sees.', meditationTitle: 'Inner Light Meditation', steps: ['Close your eyes and let them relax.', 'Notice any colors or lights behind your eyelids.', 'Do not create images—simply receive what is there.', 'Recognize this light as the light of awareness.', 'Rest in this inner illumination.'], minutes: 10, prayer: 'May I see the light that needs no source. May I recognize my own luminosity.', action: 'Several times today, close your eyes briefly and notice the subtle light within.', actionContext: 'This can be done anywhere. You are training yourself to recognize the light you are.' },
-    
+
     { day: 14, theme: 'Empty Mouth Practice', vijnanaText: 'Place awareness in the middle of the tongue, in the empty mouth. Become that emptiness.', reflectionTitle: 'The Space of Silence', reflectionBody: 'Most of the time, the mouth is busy—eating, speaking, holding tension. But when the mouth is empty and relaxed, with the tongue resting softly, there is a profound silence available. This small cave becomes a temple of presence.', meditationTitle: 'Empty Mouth Awareness', steps: ['Sit quietly with mouth gently closed.', 'Let the tongue rest softly on the floor of the mouth.', 'Notice the space within the mouth—the emptiness.', 'Let all tension in the jaw dissolve.', 'Become the emptiness, not the mouth.'], minutes: 7, prayer: 'May my mouth become a vessel of silence. May I speak only from fullness, not from need.', action: 'Before eating or speaking today, pause and feel the empty space of the mouth.', actionContext: 'This interrupts the unconscious stream of consumption and speech.' },
-    
+
     { day: 15, theme: 'Mind Wandering Home', vijnanaText: 'Wherever your mind wanders, within or without, there is the state. Do not go elsewhere.', reflectionTitle: 'Already Here', reflectionBody: 'We often think meditation is about bringing the mind home. But this verse suggests the opposite: wherever the mind goes, the Self is already there. There is nowhere to return from because awareness accompanies every wandering. Stop fighting the mind\'s movement and recognize what is present in every location.', meditationTitle: 'Nowhere to Go', steps: ['Sit and let the mind do whatever it does.', 'When it wanders, notice where it goes.', 'Recognize: awareness is there too.', 'There is no wrong place for the mind to be.', 'Rest in this recognition.'], minutes: 10, prayer: 'May I stop chasing my mind and recognize that I am already everywhere it goes.', action: 'When your mind wanders today, instead of pulling it back, notice that awareness went with it.', actionContext: 'This is a radical shift: from controlling to recognizing.' },
-    
+
     { day: 16, theme: 'Seeing Through Form', vijnanaText: 'When looking at someone with love or desire, see through the appearance to the consciousness behind it.', reflectionTitle: 'The One Behind the Eyes', reflectionBody: 'When you look at another person, what are you really seeing? Form, features, expressions—but behind all of this is the same awareness that looks out from your own eyes. Today, practice seeing through the surface to the consciousness that animates every being.', meditationTitle: 'Seeing the Seer', steps: ['Bring to mind someone you know.', 'See their face, their form.', 'Now look beyond the form to what animates it.', 'Recognize: the same awareness that sees from you sees from them.', 'Rest in this shared seeing.'], minutes: 8, prayer: 'May I see the One behind every face. May my looking become a form of love.', action: 'When you look at someone today, briefly recognize the awareness behind their eyes.', actionContext: 'This does not require words or acknowledgment. It is an inner recognition.' },
-    
+
     { day: 17, theme: 'The Gap Between', vijnanaText: 'Fix your mind on the space between two thoughts. There, the Self reveals itself.', reflectionTitle: 'The Space Between', reflectionBody: 'Thoughts appear like train cars, one after another, seemingly continuous. But between each thought is a gap—a space of pure awareness. Most of us never notice these gaps because we are so focused on the thoughts. Today, train your attention to catch the space between.', meditationTitle: 'Gap Awareness', steps: ['Sit and watch thoughts arise.', 'Instead of following thoughts, wait for the gap.', 'When a gap appears, rest there.', 'Do not try to extend the gap—just recognize it.', 'Return to watching, waiting for the next gap.'], minutes: 10, prayer: 'May I find the spaces between my thoughts. May I rest in what has always been here.', action: 'Three times today, pause and notice the gap between two thoughts.', actionContext: 'The gap may be brief. The recognition can be instant.' },
-    
+
     { day: 18, theme: 'Pure Sensation', vijnanaText: 'In any sensation, stop and feel it completely without naming it. Become the sensation itself.', reflectionTitle: 'Before the Name', reflectionBody: 'The moment you name a sensation—"pain," "pleasure," "cold"—you have already stepped back from it. But before the name, there is raw experience. This pure sensation, unmediated by labels, is a doorway into presence. Today, practice meeting sensation before the word arrives.', meditationTitle: 'Sensation Without Labels', steps: ['Sit and feel a sensation in your body.', 'Before calling it anything, simply feel.', 'Notice its texture, its movement, its qualities.', 'Do not name it—experience it.', 'Become the sensation rather than the one observing it.'], minutes: 7, prayer: 'May I meet experience before the mind labels it. May I know life directly.', action: 'Choose one sensation today and feel it completely before naming it.', actionContext: 'This could be the taste of food, the feel of water, the touch of cloth. Meet it naked.' },
-    
+
     { day: 19, theme: 'Thought as Fire', vijnanaText: 'Imagine throwing all thought into the fire of pure consciousness. Watch them burn.', reflectionTitle: 'The Consuming Fire', reflectionBody: 'Thoughts seem so solid, so important. But when you offer them to the fire of awareness, they dissolve like paper in flame. This is not suppression—it is recognition that thoughts are temporary visitors in the house of consciousness. Today, let the fire do its work.', meditationTitle: 'Burning Thoughts', steps: ['Sit and notice a thought arising.', 'Imagine the fire of awareness at your heart.', 'Offer the thought to this fire.', 'Watch it dissolve into light.', 'Let each thought become fuel for presence.'], minutes: 8, prayer: 'May my thoughts become offerings. May the fire of awareness transform all that arises.', action: 'When a troubling thought arises today, briefly imagine offering it to inner fire.', actionContext: 'This is not avoidance but transformation. The thought is acknowledged and released.' },
-    
+
     { day: 20, theme: 'Taste of Awareness', vijnanaText: 'When eating or drinking, let each taste dissolve into awareness. Become the tasting itself.', reflectionTitle: 'Eating as Meditation', reflectionBody: 'Most eating is unconscious—we consume while thinking, talking, watching. But when you bring full presence to tasting, the ordinary becomes sacred. The food becomes a teacher, and eating becomes meditation. Today, let one meal be an act of presence.', meditationTitle: 'Mindful Tasting', steps: ['Take a small piece of food or sip of drink.', 'Before eating, pause and observe.', 'Place it in your mouth and close your eyes.', 'Let all other thoughts go—there is only taste.', 'Notice the taste dissolving, changing, fading.', 'Become the tasting itself.'], minutes: 10, prayer: 'May I receive each bite as a gift. May eating become a form of awareness.', action: 'At one meal today, eat the first three bites in complete silence and presence.', actionContext: 'This small practice can transform your relationship with food and with presence.' },
   ];
 
-  // Helper to get tradition texts
+  // Helper to get Tao reference
   const getTaoRef = (day: number) => `Tao-${String(((day - 1) % 81) + 1).padStart(2, '0')}`;
-  const getAowRef = (day: number) => `AoW-${Math.floor((day - 1) / 10) + 1}.${((day - 1) % 5) + 1}`;
-  const getUpanishadRef = (day: number) => {
-    const refs = ['Kena-1.1', 'Kena-1.2', 'Kena-1.3', 'Kena-1.4', 'Kena-1.5', 'Kena-1.6', 'Kena-2.1', 'Kena-2.2', 'Kena-2.3', 'Kena-2.4', 'Isha-1', 'Isha-2', 'Isha-3', 'Isha-4', 'Isha-5', 'Isha-6', 'Isha-7', 'Isha-8', 'Mandukya-1', 'Mandukya-2'];
-    return refs[(day - 1) % refs.length];
-  };
 
-  // Add the explicitly defined days
+  // Add the explicitly defined days with all 24 traditions rotating
   for (const d of dayData) {
     const taoRef = getTaoRef(d.day);
-    const aowRef = getAowRef(d.day);
-    const upRef = getUpanishadRef(d.day);
-    
-    entries.push({
+
+    const entry: DailyEntry = {
       dayNumber: d.day,
       theme: d.theme,
       phaseId: 'VIJNANA_1_112',
       vijnanaRef: { source: 'VIJNANA', ref: `V${d.day}` },
       taoRef: { source: 'TAO', ref: taoRef },
-      artOfWarRef: { source: 'ART_OF_WAR', ref: aowRef },
-      upanishadRef: { source: 'UPANISHAD', ref: upRef },
       traditionContext: {
-        vijnana: 'A medieval Kashmiri text offering 112 gateways into presence through breath, sensation, and immediacy.',
-        tao: 'An ancient Chinese classic pointing to effortless harmony and the wisdom of yielding.',
-        artOfWar: 'A classical treatise where outer strategy mirrors inner clarity and self-knowledge.',
-        upanishads: 'Nondual dialogues exploring the source behind seeing, hearing, and thought.',
+        vijnana: WISDOM_TRADITIONS.vijnana.context,
+        tao: WISDOM_TRADITIONS.tao.context,
       },
       vijnanaText: d.vijnanaText,
       vijnanaCommentary: `This verse invites you to explore ${d.theme.toLowerCase()} as a doorway into presence.`,
-      taoText: TAO_VERSES[taoRef]?.text || 'The Tao flows in all things.',
+      taoText: TAO_VERSES[taoRef]?.text || getTextByIndex('tao', d.day - 1),
       taoCommentary: `The Tao confirms today's teaching: ${d.theme.toLowerCase()} is a path to natural harmony.`,
-      artOfWarText: ART_OF_WAR_PASSAGES[aowRef]?.text || 'Know yourself and you will win all battles.',
-      artOfWarCommentary: `Strategic wisdom meets spiritual practice: mastery of ${d.theme.toLowerCase()} brings inner victory.`,
-      upanishadText: UPANISHAD_PASSAGES[upRef]?.text || 'That which the mind cannot think, but by which the mind thinks—know that alone to be Brahman.',
-      upanishadCommentary: `The Upanishads point to the same recognition: awareness behind all experience.`,
       whyThisMatters: {
-        vijnana: `This practice interrupts habitual patterns and opens direct contact with ${d.theme.toLowerCase()}.`,
-        tao: 'The Tao teaches that the deepest truths are discovered through experience, not concept.',
-        artOfWar: 'Inner clarity is the foundation of all effective action in the world.',
-        upanishads: 'Recognizing the seer behind seeing dissolves the sense of separation.',
+        vijnana: WISDOM_TRADITIONS.vijnana.whyMatters,
+        tao: WISDOM_TRADITIONS.tao.whyMatters,
       },
       integratedReflectionTitle: d.reflectionTitle,
       integratedReflectionBody: d.reflectionBody,
@@ -614,11 +641,16 @@ function generateRemainingVijnanaEntries(): DailyEntry[] {
         steps: d.steps,
         suggestedMinutes: d.minutes,
       },
-      meditationContext: `This practice works with ${d.theme.toLowerCase()}. It trains the nervous system to rest in awareness rather than react. Give yourself fully to the exploration.`,
+      meditationContext: `This practice works with ${d.theme.toLowerCase()}. It trains the nervous system to rest in awareness rather than react.`,
       prayer: d.prayer,
       dailyAction: d.action,
       dailyActionContext: d.actionContext,
-    });
+    };
+
+    // Add 4 companion traditions from different tradition families
+    addCompanionTraditions(entry, d.day, d.theme, 'vijnana');
+
+    entries.push(entry);
   }
 
   // Generate days 21-112 with varied, meaningful content
@@ -719,36 +751,24 @@ function generateRemainingVijnanaEntries(): DailyEntry[] {
 
   for (const t of themes) {
     const taoRef = getTaoRef(t.day);
-    const aowRef = getAowRef(t.day);
-    const upRef = getUpanishadRef(t.day);
-    
-    entries.push({
+
+    const entry: DailyEntry = {
       dayNumber: t.day,
       theme: t.theme,
       phaseId: 'VIJNANA_1_112',
       vijnanaRef: { source: 'VIJNANA', ref: `V${t.day}` },
       taoRef: { source: 'TAO', ref: taoRef },
-      artOfWarRef: { source: 'ART_OF_WAR', ref: aowRef },
-      upanishadRef: { source: 'UPANISHAD', ref: upRef },
       traditionContext: {
-        vijnana: 'A medieval Kashmiri text offering 112 gateways into presence through breath, sensation, and immediacy.',
-        tao: 'An ancient Chinese classic pointing to effortless harmony and the wisdom of yielding.',
-        artOfWar: 'A classical treatise where outer strategy mirrors inner clarity and self-knowledge.',
-        upanishads: 'Nondual dialogues exploring the source behind seeing, hearing, and thought.',
+        vijnana: WISDOM_TRADITIONS.vijnana.context,
+        tao: WISDOM_TRADITIONS.tao.context,
       },
       vijnanaText: `Contemplate ${t.focus}. Let awareness rest there, and discover what has always been present.`,
       vijnanaCommentary: `This teaching invites you to explore ${t.focus} as a direct path to presence. The Vijnana Bhairava uses ordinary experience as doorways to the extraordinary.`,
-      taoText: TAO_VERSES[taoRef]?.text || 'The Tao flows everywhere, nourishing all things.',
+      taoText: TAO_VERSES[taoRef]?.text || getTextByIndex('tao', t.day - 1),
       taoCommentary: `The Tao confirms: ${t.focus} is a natural gateway to harmony. Stop forcing; start flowing.`,
-      artOfWarText: ART_OF_WAR_PASSAGES[aowRef]?.text || 'The wise warrior knows when to act and when to wait.',
-      artOfWarCommentary: `Strategic wisdom applies to inner life: mastering ${t.focus} is mastering yourself.`,
-      upanishadText: UPANISHAD_PASSAGES[upRef]?.text || 'That which is the seeing of the eye, the hearing of the ear—know That.',
-      upanishadCommentary: `The Upanishads ask: what is aware of ${t.focus}? That awareness is your true Self.`,
       whyThisMatters: {
-        vijnana: `Focusing on ${t.focus} interrupts the mind's habitual momentum and reveals the awareness that is always present.`,
-        tao: 'Living the Tao means moving from concept to direct experience. This practice grounds wisdom in the body.',
-        artOfWar: 'Knowing your ground—awareness itself—makes all action appropriate and all response timely.',
-        upanishads: 'Recognizing the seer behind seeing dissolves the illusion of separation.',
+        vijnana: WISDOM_TRADITIONS.vijnana.whyMatters,
+        tao: WISDOM_TRADITIONS.tao.whyMatters,
       },
       integratedReflectionTitle: t.theme,
       integratedReflectionBody: `Today we explore ${t.focus}. This is not a concept to understand but an experience to enter. Think of waiting in line, or the moment before a difficult conversation—these are opportunities to practice. The Vijnana Bhairava offers 112 doorways, and this is one of them. Each door opens to the same room: the recognition of awareness as your true nature. Walk through today's door with curiosity and gentleness.`,
@@ -763,11 +783,16 @@ function generateRemainingVijnanaEntries(): DailyEntry[] {
         ],
         suggestedMinutes: 10,
       },
-      meditationContext: `This practice uses ${t.focus} as a meditation object. It trains the nervous system to rest rather than react, building capacity for presence. Every experience, properly met, reveals the awareness in which it appears.`,
+      meditationContext: `This practice uses ${t.focus} as a meditation object. It trains the nervous system to rest rather than react.`,
       prayer: `May I discover presence through ${t.focus}. May this ordinary moment become a doorway.`,
       dailyAction: `Find one moment today to consciously explore ${t.focus}.`,
       dailyActionContext: 'The practice takes only a moment—perhaps waiting for coffee or walking to your car. The recognition can last all day.',
-    });
+    };
+
+    // Add 4 companion traditions from different tradition families
+    addCompanionTraditions(entry, t.day, t.theme, 'vijnana');
+
+    entries.push(entry);
   }
 
   return entries;

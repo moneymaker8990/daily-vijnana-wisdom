@@ -1,4 +1,43 @@
-import type { DailyEntry } from '@lib/types';
+import type { DailyEntry, TraditionRef } from '@lib/types';
+import {
+  WISDOM_TRADITIONS,
+  getBalancedTraditions,
+  getTextByIndex,
+  TRADITION_SOURCE_MAP,
+  TRADITION_FIELD_MAP,
+  type TraditionKey,
+} from '../wisdomTexts';
+
+// Helper function to add companion traditions to an entry
+function addCompanionTraditions(
+  entry: DailyEntry,
+  dayNumber: number,
+  theme: string,
+  primaryTradition: TraditionKey = 'yogaSutras'
+): void {
+  const companions = getBalancedTraditions(dayNumber, primaryTradition);
+  const textIndex = dayNumber - 1;
+
+  for (const tradition of companions) {
+    const fields = TRADITION_FIELD_MAP[tradition];
+    const data = WISDOM_TRADITIONS[tradition];
+    const source = TRADITION_SOURCE_MAP[tradition] as TraditionRef['source'];
+
+    (entry as Record<string, unknown>)[fields.ref] = {
+      source,
+      ref: `${source.substring(0, 3)}-${dayNumber}`,
+    };
+    (entry as Record<string, unknown>)[fields.text] = getTextByIndex(tradition, textIndex);
+    (entry as Record<string, unknown>)[fields.commentary] =
+      `${data.commentaryStyle} This wisdom illuminates today's theme of ${theme.toLowerCase()}.`;
+
+    if (!entry.traditionContext) entry.traditionContext = {};
+    (entry.traditionContext as Record<string, string>)[fields.contextKey] = data.context;
+
+    if (!entry.whyThisMatters) entry.whyThisMatters = {};
+    (entry.whyThisMatters as Record<string, string>)[fields.whyMattersKey] = data.whyMatters;
+  }
+}
 
 // Days 301-330: Yoga Sutras Essentials (30 days)
 // Focus: stilling mind, kleshas, abhyasa & vairagya, eight limbs, psychological clarity
@@ -39,45 +78,52 @@ function generateYogaSutrasEntries(): DailyEntry[] {
     { day: 330, theme: 'Integration', ref: 'YS-1.3', text: 'Then the Seer abides in its own true nature—this is the fruit of yoga.', focus: 'yoga complete' },
   ];
 
-  return yogaDays.map(y => ({
-    dayNumber: y.day,
-    theme: y.theme,
-    phaseId: 'YOGA_SUTRAS_301_330' as const,
-    yogaSutraRef: { source: 'YOGA_SUTRA' as const, ref: y.ref },
-    taoRef: { source: 'TAO' as const, ref: `Tao-${String(((y.day - 301) % 81) + 1).padStart(2, '0')}` },
-    vijnanaRef: { source: 'VIJNANA' as const, ref: `V${((y.day - 301) % 112) + 1}` },
-    traditionContext: {
-      yogaSutras: 'Patanjali\'s classical text offering precise psychology for understanding and stilling the mind—the definitive map of inner territory.',
-      tao: 'Ancient Chinese wisdom confirming that stillness reveals what was always present.',
-      vijnana: 'A Kashmiri tantra using breath and body as the laboratory for inner work.',
-    },
-    yogaSutraText: y.text,
-    yogaSutraCommentary: `Patanjali illuminates ${y.focus}. The Yoga Sutras offer precise psychology for understanding and transforming the mind, revealing the pure awareness beneath all mental activity.`,
-    whyThisMatters: {
-      yogaSutras: `Understanding ${y.focus} gives you a map for the mind's territory. This is practical psychology, not abstract philosophy.`,
-      tao: 'Stillness is both the method and the discovery. East and West converge here.',
-      vijnana: 'The body is the laboratory. Tantra grounds abstract teaching in felt experience.',
-    },
-    taoText: 'Empty yourself of everything. Let the mind rest at peace.',
-    taoCommentary: 'Tao and Yoga agree: stillness reveals what was always present.',
-    vijnanaText: 'Between the inhalation and exhalation shines the light of consciousness.',
-    vijnanaCommentary: 'Tantra uses breath and body as the laboratory for Patanjali\'s teachings.',
-    integratedReflectionTitle: y.theme,
-    integratedReflectionBody: `Today we explore ${y.focus}. Patanjali's Yoga Sutras are not religious scripture but practical psychology—a manual for working with the mind. Think of how a restless night differs from restful sleep—the difference is mind activity. Each sutra is dense with meaning, unpacked over centuries of practice. Let this teaching inform your day, not as philosophy to believe but as practice to embody.`,
-    meditation: {
-      title: `${y.theme} Practice`,
-      steps: [
-        'Sit with spine erect but relaxed.',
-        'Let the breath settle naturally.',
-        'Observe the current state of your mind—busy or calm.',
-        'Apply today\'s teaching as a lens.',
-        'Rest in whatever stillness emerges.',
-      ],
-      suggestedMinutes: 12,
-    },
-    meditationContext: `This practice integrates sutra study with direct experience. It trains the mind to still itself, revealing the awareness beneath thought. The sutras are not to be memorized but lived.`,
-    prayer: `May I understand and embody ${y.focus}. May my mind become still and clear.`,
-    dailyAction: 'Apply today\'s sutra teaching to one mental pattern you notice.',
-    dailyActionContext: 'Try this when you notice anxiety or restlessness. Notice how awareness of the pattern changes your relationship to it. This is the beginning of mastery.',
-  }));
+  return yogaDays.map(y => {
+    const entry: DailyEntry = {
+      dayNumber: y.day,
+      theme: y.theme,
+      phaseId: 'YOGA_SUTRAS_301_330' as const,
+      yogaSutraRef: { source: 'YOGA_SUTRA' as const, ref: y.ref },
+      taoRef: { source: 'TAO' as const, ref: `Tao-${String(((y.day - 301) % 81) + 1).padStart(2, '0')}` },
+      vijnanaRef: { source: 'VIJNANA' as const, ref: `V${((y.day - 301) % 112) + 1}` },
+      traditionContext: {
+        yogaSutras: WISDOM_TRADITIONS.yogaSutras.context,
+        tao: WISDOM_TRADITIONS.tao.context,
+        vijnana: WISDOM_TRADITIONS.vijnana.context,
+      },
+      yogaSutraText: y.text,
+      yogaSutraCommentary: `Patanjali illuminates ${y.focus}. The Yoga Sutras offer precise psychology for understanding and transforming the mind, revealing the pure awareness beneath all mental activity.`,
+      whyThisMatters: {
+        yogaSutras: WISDOM_TRADITIONS.yogaSutras.whyMatters,
+        tao: WISDOM_TRADITIONS.tao.whyMatters,
+        vijnana: WISDOM_TRADITIONS.vijnana.whyMatters,
+      },
+      taoText: getTextByIndex('tao', y.day - 1),
+      taoCommentary: 'Tao and Yoga agree: stillness reveals what was always present.',
+      vijnanaText: getTextByIndex('vijnana', y.day - 1),
+      vijnanaCommentary: 'Tantra uses breath and body as the laboratory for Patanjali\'s teachings.',
+      integratedReflectionTitle: y.theme,
+      integratedReflectionBody: `Today we explore ${y.focus}. Patanjali's Yoga Sutras are not religious scripture but practical psychology—a manual for working with the mind. Think of how a restless night differs from restful sleep—the difference is mind activity. Each sutra is dense with meaning, unpacked over centuries of practice. Let this teaching inform your day, not as philosophy to believe but as practice to embody.`,
+      meditation: {
+        title: `${y.theme} Practice`,
+        steps: [
+          'Sit with spine erect but relaxed.',
+          'Let the breath settle naturally.',
+          'Observe the current state of your mind—busy or calm.',
+          'Apply today\'s teaching as a lens.',
+          'Rest in whatever stillness emerges.',
+        ],
+        suggestedMinutes: 12,
+      },
+      meditationContext: `This practice integrates sutra study with direct experience. It trains the mind to still itself, revealing the awareness beneath thought. The sutras are not to be memorized but lived.`,
+      prayer: `May I understand and embody ${y.focus}. May my mind become still and clear.`,
+      dailyAction: 'Apply today\'s sutra teaching to one mental pattern you notice.',
+      dailyActionContext: 'Try this when you notice anxiety or restlessness. Notice how awareness of the pattern changes your relationship to it. This is the beginning of mastery.',
+    };
+
+    // Add 4 companion traditions from different families
+    addCompanionTraditions(entry, y.day, y.theme, 'yogaSutras');
+
+    return entry;
+  });
 }

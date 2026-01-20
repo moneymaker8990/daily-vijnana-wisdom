@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, RefObject } from 'react';
 import { NotificationSettings } from '../NotificationSettings/NotificationSettings';
 import { FavoritesPanel } from '../Favorites/FavoritesPanel';
 import { TextSizeToggle } from '../Settings/TextSizeControl';
@@ -12,6 +12,7 @@ type AppLayoutProps = {
   children: ReactNode;
   onGoToDay?: (day: number) => void;
   activeTab?: TabId;
+  containerRef?: RefObject<HTMLDivElement | null>;
 };
 
 const PAGE_TITLES: Record<TabId, string> = {
@@ -22,7 +23,7 @@ const PAGE_TITLES: Record<TabId, string> = {
   dreams: 'Dream Journal',
 };
 
-export function AppLayout({ children, onGoToDay, activeTab = 'daily' }: AppLayoutProps) {
+export function AppLayout({ children, onGoToDay, activeTab = 'daily', containerRef }: AppLayoutProps) {
   const [showNotificationSettings, setShowNotificationSettings] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -38,16 +39,16 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily' }: AppLayou
   const pageTitle = PAGE_TITLES[activeTab];
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 pt-8 pb-24">
+    <div ref={containerRef} className="min-h-screen flex items-start justify-center px-3 sm:px-4 pt-4 sm:pt-8 pb-24">
       {/* Ambient glow effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl" />
         <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-violet-400/10 rounded-full blur-2xl" />
       </div>
-      
-      <div className="relative w-full max-w-3xl glass rounded-3xl p-6 md:p-10">
-        <header className="mb-6 md:mb-8">
+
+      <div className="relative w-full max-w-3xl glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-10 overflow-hidden">
+        <header className="mb-4 sm:mb-6 md:mb-8">
           {/* Header row with controls and title */}
           <div className="flex items-center justify-between gap-4">
             {/* Left: Controls */}

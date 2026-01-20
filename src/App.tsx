@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { AppLayout } from './components/Layout/AppLayout';
 import { DayView } from './components/DayView/DayView';
 import { useDailyEntry } from './hooks/useDailyEntry';
@@ -14,6 +14,16 @@ import { Journal } from './components/Journal';
 function App() {
   const { entry, loading, goToNext, goToPrev, goToToday, goToDay } = useDailyEntry();
   const [activeTab, setActiveTab] = useState<TabId>('daily');
+  const mainContainerRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to top when tab changes
+  const handleTabChange = (tab: TabId) => {
+    setActiveTab(tab);
+    // Scroll the window to top
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    // Also scroll the main container if it exists
+    mainContainerRef.current?.scrollTo({ top: 0, behavior: 'instant' });
+  };
 
   // Start notification scheduler on app load
   useEffect(() => {
@@ -92,11 +102,11 @@ function App() {
 
   return (
     <>
-      <AppLayout onGoToDay={goToDay} activeTab={activeTab}>
+      <AppLayout onGoToDay={goToDay} activeTab={activeTab} containerRef={mainContainerRef}>
         {renderContent()}
       </AppLayout>
 
-      <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+      <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
     </>
   );
 }
