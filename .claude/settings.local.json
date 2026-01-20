@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(npm run build:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nRefactor codebase and prepare for app store release v1.0.0\n\nSecurity:\n- Move Supabase credentials to environment variables\n- Add .env.example template for required env vars\n\nCode cleanup:\n- Remove dead premium/subscription code and UpgradeModal\n- Remove 70+ console.log/warn/error statements\n- Add TypeScript path aliases \\(@components, @lib, @core, @data, @hooks\\)\n- Centralize localStorage keys in src/lib/constants.ts\n- Fix type safety issues \\(WebkitAudioContext, LibraryText.id\\)\n\nComponent refactoring:\n- Split TextReader.tsx into SingleVerseView, ListView, TableOfContents, IntroductionPanel\n- Split Journal.tsx into EntryCard, DailyPromptCard, JournalStatsBar\n- Split dataSync.ts into modular journalSync, dreamSync, favoritesSync, studySync, preferencesSync\n\nAccessibility:\n- Add ARIA labels to icon-only buttons\n- Add role attributes to navigation, search, dialogs\n- Add aria-hidden to decorative SVGs\n\nApp store preparation:\n- Update version to 1.0.0\n- Update bundle ID to app.mindvanta.main\n- Add Privacy Policy and Terms of Service pages\n- Add legal links to Settings component\n- Add Android notification permissions\n- Update PWA manifest with multiple icon sizes\n- Add icon generation script\n- Add app store metadata and submission checklist\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(npm run dev:*)",
+      "Bash(git commit:*)",
+      "Bash(wc:*)",
+      "Bash(gh auth status:*)",
+      "Bash(git config:*)",
+      "Bash(git init:*)"
+    ]
+  }
+}
