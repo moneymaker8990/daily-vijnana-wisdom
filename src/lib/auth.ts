@@ -1,6 +1,6 @@
 /**
  * Authentication Helpers
- * 
+ *
  * Wrapper functions for Supabase auth operations.
  */
 
@@ -19,10 +19,7 @@ export interface AuthResult {
 /**
  * Sign up with email and password
  */
-export async function signUpWithEmail(
-  email: string,
-  password: string
-): Promise<AuthResult> {
+export async function signUpWithEmail(email: string, password: string): Promise<AuthResult> {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -38,10 +35,7 @@ export async function signUpWithEmail(
 /**
  * Sign in with email and password
  */
-export async function signInWithEmail(
-  email: string,
-  password: string
-): Promise<AuthResult> {
+export async function signInWithEmail(email: string, password: string): Promise<AuthResult> {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -80,7 +74,9 @@ export async function signOut(): Promise<{ error: AuthError | null }> {
  * Get current user
  */
 export async function getCurrentUser(): Promise<User | null> {
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   return user;
 }
 
@@ -88,7 +84,9 @@ export async function getCurrentUser(): Promise<User | null> {
  * Get current session
  */
 export async function getCurrentSession(): Promise<Session | null> {
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
   return session;
 }
 
@@ -115,14 +113,12 @@ export async function updatePassword(newPassword: string): Promise<{ error: Auth
 /**
  * Listen to auth state changes
  */
-export function onAuthStateChange(
-  callback: (user: User | null, session: Session | null) => void
-) {
-  const { data: { subscription } } = supabase.auth.onAuthStateChange(
-    (_event, session) => {
-      callback(session?.user ?? null, session);
-    }
-  );
+export function onAuthStateChange(callback: (user: User | null, session: Session | null) => void) {
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, session) => {
+    callback(session?.user ?? null, session);
+  });
 
   return subscription;
 }
