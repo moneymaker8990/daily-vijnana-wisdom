@@ -4,13 +4,13 @@
  * Shows course overview, progress, and list of lessons.
  */
 
-import { getCourseById } from '../../core/study/registry';
-import { 
-  getCourseProgress, 
-  startCourse, 
+import { getCourseById } from '@core/study/registry';
+import {
+  getCourseProgress,
+  startCourse,
   isLessonCompleted,
-  getCourseCompletionPercent 
-} from '../../core/study/progress';
+  getCourseCompletionPercent
+} from '@core/study/progress';
 
 type CourseViewProps = {
   courseId: string;
@@ -226,4 +226,6 @@ function DifficultyBadge({ difficulty }: { difficulty: 1 | 2 | 3 }) {
     </span>
   );
 }
+
+
 

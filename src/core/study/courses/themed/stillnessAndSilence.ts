@@ -5,7 +5,7 @@
  * Drawing from Taoism, Tantra, Christian Mysticism, Zen, and Buddhism.
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const stillnessAndSilenceCourse: Course = {
   id: 'stillness-and-silence',
@@ -222,4 +222,6 @@ Your practice is not to become still, but to notice the stillness you have never
     },
   ],
 };
+
+
 

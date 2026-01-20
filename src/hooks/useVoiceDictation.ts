@@ -139,8 +139,6 @@ export function useVoiceDictation(
     };
 
     recognition.onerror = (event: Event & { error: string }) => {
-      console.error('Speech recognition error:', event.error);
-      
       // Don't show error for no-speech - just means user stopped talking
       if (event.error === 'no-speech') {
         // Silently end
@@ -212,7 +210,6 @@ export function useVoiceDictation(
       recognitionRef.current.start();
     } catch (e) {
       // Recognition might already be started
-      console.warn('Recognition already started:', e);
     }
   }, []);
 

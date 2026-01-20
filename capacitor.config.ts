@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.stillpoint.app',
-  appName: 'Stillpoint',
+  appId: 'app.mindvanta.main',
+  appName: 'MindVanta',
   webDir: 'dist',
   server: {
     androidScheme: 'https',
@@ -17,7 +17,7 @@ const config: CapacitorConfig = {
       presentationOptions: ['badge', 'sound', 'alert'],
     },
     BackgroundRunner: {
-      label: 'com.stillpoint.app.background',
+      label: 'app.mindvanta.main.background',
       src: 'background.js',
       event: 'meditationTimer',
       repeat: false,

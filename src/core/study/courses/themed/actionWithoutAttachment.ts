@@ -5,7 +5,7 @@
  * Drawing from Bhagavad Gita, Tao Te Ching, Zhuangzi, and Dhammapada.
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const actionWithoutAttachmentCourse: Course = {
   id: 'action-without-attachment',
@@ -221,4 +221,6 @@ Life becomes flow. Actions arise naturally from the situation's needs, not from 
     },
   ],
 };
+
+
 

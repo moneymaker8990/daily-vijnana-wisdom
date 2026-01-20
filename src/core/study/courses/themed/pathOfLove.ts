@@ -6,7 +6,7 @@
  * Imitation of Christ, and Cloud of Unknowing.
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const pathOfLoveCourse: Course = {
   id: 'path-of-love',
@@ -223,4 +223,6 @@ The Imitation of Christ speaks of a love that "runs freely and joyfully, that is
     },
   ],
 };
+
+
 

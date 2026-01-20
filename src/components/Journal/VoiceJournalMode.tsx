@@ -8,8 +8,8 @@
  */
 
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { useVoiceDictation } from '../../hooks/useVoiceDictation';
-import { generateAIReflection, type AIReflection } from '../../lib/voiceReflection';
+import { useVoiceDictation } from '@hooks/useVoiceDictation';
+import { generateAIReflection, type AIReflection } from '@lib/voiceReflection';
 
 type VoiceJournalModeProps = {
   onClose: () => void;
@@ -104,7 +104,7 @@ export function VoiceJournalMode({ onClose, onSave }: VoiceJournalModeProps) {
         setReflection(aiReflection);
         setShowReflection(true);
       } catch (err) {
-        console.error('Error generating reflection:', err);
+        // Reflection generation failed silently
       } finally {
         setIsGeneratingReflection(false);
       }
@@ -384,4 +384,6 @@ export function VoiceJournalMode({ onClose, onSave }: VoiceJournalModeProps) {
     </div>
   );
 }
+
+
 

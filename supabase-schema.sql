@@ -1,4 +1,4 @@
--- Stillpoint Database Schema
+-- MindVanta Database Schema
 -- Run this SQL in your Supabase SQL Editor to create all necessary tables
 
 -- Enable Row Level Security
@@ -221,4 +221,6 @@ CREATE TRIGGER update_study_progress_updated_at
 CREATE TRIGGER update_user_preferences_updated_at
   BEFORE UPDATE ON user_preferences
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+
 

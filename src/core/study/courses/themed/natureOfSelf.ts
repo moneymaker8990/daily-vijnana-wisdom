@@ -5,7 +5,7 @@
  * Drawing from Upanishads, Ashtavakra Gita, Zen, and Christian Mysticism
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const natureOfSelfCourse: Course = {
   id: 'nature-of-self',
@@ -226,4 +226,6 @@ The journey of self-inquiry doesn't take you somewhere new. It brings you home t
     },
   ],
 };
+
+
 

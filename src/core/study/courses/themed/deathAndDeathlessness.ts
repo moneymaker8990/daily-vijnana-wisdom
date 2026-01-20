@@ -5,7 +5,7 @@
  * Drawing from Bhagavad Gita, Dhammapada, Upanishads, Sufi poetry, and Christian Mysticism.
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const deathAndDeathlessnessCourse: Course = {
   id: 'death-and-deathlessness',
@@ -223,4 +223,6 @@ The sage who has died before death lives without fear. "There is no suffering fo
     },
   ],
 };
+
+
 

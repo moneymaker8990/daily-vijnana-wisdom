@@ -16,8 +16,8 @@ import {
   signUpWithEmail,
   signOut,
   resetPassword,
-} from '../../lib/auth';
-import { syncAllOnLogin } from '../../lib/dataSync';
+} from '@lib/auth';
+import { syncAllOnLogin } from '@lib/dataSync';
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -59,8 +59,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
         ]);
         setUser(currentUser);
         setSession(currentSession);
+        
+        // Sync data if user is already logged in
+        if (currentUser) {
+          syncAllOnLogin(currentUser);
+        }
       } catch (error) {
-        console.error('Error initializing auth:', error);
+        // Auth initialization error handled silently
       } finally {
         setLoading(false);
       }
@@ -70,12 +75,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     // Subscribe to auth changes
     const subscription = onAuthStateChange((newUser, newSession) => {
+      const wasLoggedOut = !user;
       setUser(newUser);
       setSession(newSession);
       setLoading(false);
       
-      // Sync data when user logs in
-      if (newUser && !user) {
+      // Sync data when user logs in (was logged out, now logged in)
+      if (newUser && wasLoggedOut) {
         syncAllOnLogin(newUser);
       }
     });

@@ -1,4 +1,4 @@
-import type { DailyEntry } from '../../lib/types';
+import type { DailyEntry } from '@lib/types';
 import { TAO_VERSES } from '../traditions/tao';
 import { ART_OF_WAR_PASSAGES } from '../traditions/artOfWar';
 import { UPANISHAD_PASSAGES } from '../traditions/upanishads';

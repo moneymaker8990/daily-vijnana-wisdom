@@ -1,23 +1,28 @@
 import { useState, useEffect } from 'react';
-import { 
-  loadJournalEntries, 
-  deleteJournalEntry, 
+import {
+  loadJournalEntries,
+  loadJournalEntriesFromCloud,
+  deleteJournalEntry,
   addJournalEntry,
-  getJournalStats, 
+  getJournalStats,
   hasEntryToday,
   searchEntries,
   getAllTags,
   getEntriesByTag,
   type JournalEntry,
   type JournalStats as JournalStatsType
-} from '../../lib/journalStorage';
-import { getDailyPrompt, moodInfo, type JournalPrompt } from '../../data/journalPrompts';
+} from '@lib/journalStorage';
+import { getDailyPrompt, type JournalPrompt } from '@data/journalPrompts';
 import { JournalEntryForm } from './JournalEntryForm';
 import { JournalEntryDetail } from './JournalEntryDetail';
 import { JournalCalendar } from './JournalCalendar';
 import { JournalStats } from './JournalStats';
 import { VoiceJournalMode } from './VoiceJournalMode';
-import type { AIReflection } from '../../lib/voiceReflection';
+import { EntryCard } from './EntryCard';
+import { DailyPromptCard } from './DailyPromptCard';
+import { JournalStatsBar } from './JournalStatsBar';
+import type { AIReflection } from '@lib/voiceReflection';
+import { useAuth } from '../Auth';
 
 type View = 'list' | 'form' | 'detail' | 'calendar' | 'stats' | 'voice';
 
@@ -31,10 +36,18 @@ export function Journal() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [allTags, setAllTags] = useState<string[]>([]);
   const [initialPrompt, setInitialPrompt] = useState<JournalPrompt | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
-    refreshData();
-  }, []);
+    // Load from cloud if user is logged in, otherwise from localStorage
+    const loadData = async () => {
+      if (user) {
+        await loadJournalEntriesFromCloud();
+      }
+      refreshData();
+    };
+    loadData();
+  }, [user]);
 
   const refreshData = () => {
     setEntries(loadJournalEntries());
@@ -151,7 +164,7 @@ export function Journal() {
             onClick={() => setView('list')}
             className="flex items-center gap-2 text-white/60 hover:text-white transition-colors"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             <span>Back</span>
@@ -200,58 +213,12 @@ export function Journal() {
 
       {/* Stats Bar */}
       {stats && stats.totalEntries > 0 && (
-        <button
-          onClick={() => setView('stats')}
-          className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-violet-500/10 to-purple-500/10 rounded-xl border border-violet-400/20 hover:border-violet-400/40 transition-all group"
-        >
-          <div className="flex items-center gap-6">
-            {/* Streak */}
-            <div className="flex items-center gap-2">
-              <span className="text-xl">🔥</span>
-              <div className="text-left">
-                <p className="text-lg font-light text-white">{stats.currentStreak}</p>
-                <p className="text-xs text-white/40">day streak</p>
-              </div>
-            </div>
-            
-            {/* Entries */}
-            <div className="flex items-center gap-2">
-              <span className="text-xl">📖</span>
-              <div className="text-left">
-                <p className="text-lg font-light text-white">{stats.totalEntries}</p>
-                <p className="text-xs text-white/40">entries</p>
-              </div>
-            </div>
-          </div>
-          
-          <svg className="w-5 h-5 text-white/30 group-hover:text-white/60 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+        <JournalStatsBar stats={stats} onClick={() => setView('stats')} />
       )}
 
       {/* Daily Prompt Card (if no entry today) */}
       {!todayEntry && (
-        <button
-          onClick={() => startNewEntry(dailyPrompt)}
-          className="w-full text-left bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-2xl p-5 border border-amber-400/20 hover:border-amber-400/40 transition-all group"
-        >
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">✨</span>
-            <div className="flex-1">
-              <p className="text-sm text-amber-300/70 mb-1">Today's Prompt</p>
-              <p className="text-white font-serif leading-relaxed">
-                {dailyPrompt.text}
-              </p>
-              <p className="mt-3 text-sm text-amber-300/60 flex items-center gap-1 group-hover:text-amber-300 transition-colors">
-                <span>Start writing</span>
-                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </p>
-            </div>
-          </div>
-        </button>
+        <DailyPromptCard prompt={dailyPrompt} onStart={() => startNewEntry(dailyPrompt)} />
       )}
 
       {/* Action Buttons */}
@@ -260,7 +227,7 @@ export function Journal() {
           onClick={() => startNewEntry()}
           className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-violet-500 to-purple-500 hover:from-violet-400 hover:to-purple-400 rounded-xl text-white font-medium shadow-lg shadow-violet-500/25 transition-all"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
           <span>Write</span>
@@ -271,7 +238,7 @@ export function Journal() {
           className="flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-red-500/20 to-orange-500/20 hover:from-red-500/30 hover:to-orange-500/30 border border-red-400/30 rounded-xl text-white transition-all"
           title="Voice Journal"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
           </svg>
           <span>Voice</span>
@@ -281,8 +248,9 @@ export function Journal() {
           onClick={() => setView('calendar')}
           className="p-3 bg-white/10 hover:bg-white/20 rounded-xl text-white transition-colors"
           title="Calendar View"
+          aria-label="Calendar view"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         </button>
@@ -290,8 +258,8 @@ export function Journal() {
 
       {/* Search */}
       {entries.length > 0 && (
-        <div className="relative">
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="relative" role="search">
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input
@@ -302,14 +270,16 @@ export function Journal() {
               setSelectedTag(null);
             }}
             placeholder="Search your entries..."
+            aria-label="Search journal entries"
             className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:border-violet-400/50 transition-all"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white"
+              aria-label="Clear search"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -350,7 +320,7 @@ export function Journal() {
       {filteredEntries.length === 0 ? (
         <div className="text-center py-12">
           <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
-            <svg className="w-10 h-10 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-10 h-10 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
           </div>
@@ -386,83 +356,6 @@ export function Journal() {
         </div>
       )}
     </div>
-  );
-}
-
-type EntryCardProps = {
-  entry: JournalEntry;
-  onClick: () => void;
-};
-
-function EntryCard({ entry, onClick }: EntryCardProps) {
-  const mood = moodInfo[entry.mood] || moodInfo.neutral;
-  
-  const formattedDate = new Date(entry.date).toLocaleDateString('en-US', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-  });
-
-  const isToday = new Date(entry.date).toDateString() === new Date().toDateString();
-  const isYesterday = new Date(entry.date).toDateString() === new Date(Date.now() - 86400000).toDateString();
-
-  const dateLabel = isToday ? 'Today' : isYesterday ? 'Yesterday' : formattedDate;
-
-  return (
-    <button
-      onClick={onClick}
-      className="w-full text-left bg-gradient-to-br from-white/10 to-white/5 rounded-xl p-4 border border-white/10 hover:border-white/20 transition-all group"
-    >
-      <div className="flex items-start gap-3">
-        {/* Mood indicator */}
-        <div className={`flex-shrink-0 w-10 h-10 rounded-full ${mood.color} flex items-center justify-center text-lg border`}>
-          {mood.icon}
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-1">
-            <h3 className="text-sm font-medium text-white truncate">
-              {entry.title || dateLabel}
-            </h3>
-            <span className="text-xs text-white/40 flex-shrink-0 ml-2">
-              {entry.title ? dateLabel : ''}
-            </span>
-          </div>
-          
-          {/* Gratitudes preview */}
-          {entry.gratitudes.length > 0 && (
-            <div className="flex items-center gap-1 mb-1 text-amber-300/60 text-xs">
-              <span>🙏</span>
-              <span>{entry.gratitudes.length} gratitude{entry.gratitudes.length !== 1 ? 's' : ''}</span>
-            </div>
-          )}
-          
-          <p className="text-sm text-white/60 line-clamp-2">
-            {entry.content}
-          </p>
-          
-          {/* Tags */}
-          {entry.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-2">
-              {entry.tags.slice(0, 3).map(tag => (
-                <span key={tag} className="text-xs text-violet-300/60">
-                  #{tag}
-                </span>
-              ))}
-              {entry.tags.length > 3 && (
-                <span className="text-xs text-white/30">+{entry.tags.length - 3}</span>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Arrow */}
-        <svg className="w-5 h-5 text-white/30 group-hover:text-white/60 flex-shrink-0 transition-all group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-      </div>
-    </button>
   );
 }
 

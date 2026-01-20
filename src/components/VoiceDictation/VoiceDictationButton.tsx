@@ -6,7 +6,7 @@
  */
 
 import { useCallback } from 'react';
-import { useVoiceDictation } from '../../hooks/useVoiceDictation';
+import { useVoiceDictation } from '@hooks/useVoiceDictation';
 
 type VoiceDictationButtonProps = {
   /** Callback when transcript is received */
@@ -158,4 +158,6 @@ export function VoiceDictationButtonCompact({
     </button>
   );
 }
+
+
 

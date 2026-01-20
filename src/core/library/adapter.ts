@@ -6,7 +6,7 @@
  */
 
 import type { Verse, Source } from './types';
-import type { LibraryText, LibraryVerse } from '../../data/library/types';
+import type { LibraryText, LibraryVerse } from '@data/library/types';
 import { getVersesBySource, getAllSources, getVersesGroupedByChapter } from './engine';
 
 /**
@@ -82,7 +82,7 @@ export function sourceToLibraryText(source: Source): LibraryText {
     : traditionToId[source.tradition] || source.id;
   
   return {
-    id: legacyId as any,
+    id: legacyId,
     title: source.name,
     subtitle: source.period || '',
     description: source.description,
@@ -110,5 +110,7 @@ export function getLibraryText(sourceId: string): LibraryText | null {
   if (!source) return null;
   return sourceToLibraryText(source);
 }
+
+
 
 

@@ -1,10 +1,11 @@
 /**
  * Spiritual Guide AI Service
- * 
+ *
  * Provides AI-powered spiritual guidance using the Supabase Edge Function.
  */
 
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
+import { STORAGE_KEYS } from '@lib/constants';
 
 export interface ChatMessage {
   id: string;
@@ -13,14 +14,12 @@ export interface ChatMessage {
   timestamp: string;
 }
 
-const CHAT_STORAGE_KEY = 'stillpoint_chat_history';
-
 /**
  * Load chat history from localStorage
  */
 export function loadChatHistory(): ChatMessage[] {
   try {
-    const stored = localStorage.getItem(CHAT_STORAGE_KEY);
+    const stored = localStorage.getItem(STORAGE_KEYS.CHAT_HISTORY);
     return stored ? JSON.parse(stored) : [];
   } catch {
     return [];
@@ -34,9 +33,9 @@ export function saveChatHistory(messages: ChatMessage[]): void {
   try {
     // Keep only last 100 messages to avoid storage limits
     const trimmed = messages.slice(-100);
-    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(trimmed));
+    localStorage.setItem(STORAGE_KEYS.CHAT_HISTORY, JSON.stringify(trimmed));
   } catch (error) {
-    console.error('Failed to save chat history:', error);
+    // Save failed silently
   }
 }
 
@@ -44,7 +43,7 @@ export function saveChatHistory(messages: ChatMessage[]): void {
  * Clear chat history
  */
 export function clearChatHistory(): void {
-  localStorage.removeItem(CHAT_STORAGE_KEY);
+  localStorage.removeItem(STORAGE_KEYS.CHAT_HISTORY);
 }
 
 /**
@@ -116,7 +115,6 @@ export async function sendToSpiritualGuide(
     const data = await response.json();
     return data.interpretation || data.response || generateFallbackResponse(userMessage);
   } catch (error) {
-    console.error('Failed to get spiritual guidance:', error);
     return generateFallbackResponse(userMessage);
   }
 }
@@ -181,4 +179,6 @@ export function getSuggestedQuestions(): string[] {
     "How can I practice compassion for myself?",
   ];
 }
+
+
 

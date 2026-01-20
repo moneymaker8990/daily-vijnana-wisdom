@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
-import { playBell, getSoundSettings } from '../../lib/soundSettings';
+import { playBell, getSoundSettings } from '@lib/soundSettings';
 
 type MeditationTimerProps = {
   suggestedMinutes: number;
@@ -56,7 +56,7 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
         ],
       });
     } catch (e) {
-      console.log('Native notification scheduling failed:', e);
+      // Native notification scheduling failed silently
     }
   }, [selectedMinutes, title]);
 
@@ -67,7 +67,7 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
     try {
       await LocalNotifications.cancel({ notifications: [{ id: TIMER_NOTIFICATION_ID }] });
     } catch (e) {
-      console.log('Native notification cancellation failed:', e);
+      // Native notification cancellation failed silently
     }
   }, []);
 
@@ -252,7 +252,7 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
         onClick={() => setIsOpen(true)}
         className="w-full mt-4 flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-violet-500/20 to-indigo-500/20 hover:from-violet-500/30 hover:to-indigo-500/30 border border-white/10 rounded-xl text-white/80 hover:text-white transition-all duration-300 group"
       >
-        <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         <span className="text-sm font-medium">Start Timer ({suggestedMinutes} min)</span>
@@ -269,8 +269,9 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
           handleReset();
         }}
         className="absolute top-4 right-4 p-1 text-white/40 hover:text-white/80 transition-colors rounded-lg hover:bg-white/10"
+        aria-label="Close timer"
       >
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
@@ -358,7 +359,7 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
             onClick={handleStart}
             className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-400 hover:to-indigo-400 rounded-xl text-white font-medium shadow-lg shadow-violet-500/25 transition-all hover:scale-105"
           >
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M8 5v14l11-7z" />
             </svg>
             {isComplete ? 'Restart' : 'Begin'}
@@ -368,19 +369,20 @@ export function MeditationTimer({ suggestedMinutes, title }: MeditationTimerProp
             onClick={handlePause}
             className="flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-white font-medium transition-all"
           >
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
             </svg>
             Pause
           </button>
         )}
-        
+
         {(isRunning || timeLeft !== selectedMinutes * 60) && (
           <button
             onClick={handleReset}
             className="flex items-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-white/60 hover:text-white/80 transition-all"
+            aria-label="Reset timer"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
           </button>

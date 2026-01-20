@@ -5,7 +5,7 @@
  * through its three great texts: Ashtavakra Gita, Vivekachudamani, and Yoga Vasistha
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const advaitaEssentialsCourse: Course = {
   id: 'advaita-essentials',

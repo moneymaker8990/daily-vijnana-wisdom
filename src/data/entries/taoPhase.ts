@@ -1,4 +1,4 @@
-import type { DailyEntry } from '../../lib/types';
+import type { DailyEntry } from '@lib/types';
 
 // Days 211-260: Tao Te Ching Deep Cycle (50 days)
 // Focus: letting go of push, moving like water, small simplicity, effortless action

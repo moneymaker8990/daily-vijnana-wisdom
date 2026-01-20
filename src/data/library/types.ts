@@ -1,6 +1,6 @@
 // Types for the Study Library
 
-export type TextTradition = 
+export type TextTradition =
   | 'vijnana'
   | 'tao'
   | 'upanishads'
@@ -19,24 +19,29 @@ export type LibraryVerse = {
   keywords?: string[];
 };
 
+export type ChapterInfo = { number: number; title: string; verseCount: number };
+export type SectionInfo = { id: string; title: string; verseCount: number };
+
 export type LibraryText = {
-  id: TextTradition;
+  id: string;
   title: string;
   subtitle: string;
   description: string;
   origin: string;
   totalVerses: number;
-  chapters?: { number: number; title: string; verseCount: number }[];
-  sections?: { id: string; title: string; verseCount: number }[];
+  chapters?: ChapterInfo[];
+  sections?: SectionInfo[];
   verses: LibraryVerse[];
 };
 
 export type ReadingProgress = {
-  textId: TextTradition;
+  textId: string;
   lastReadVerse: number;
   bookmarkedVerses: number[];
   completedVerses: number[];
 };
+
+
 
 
 

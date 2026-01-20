@@ -5,7 +5,7 @@
  * Covering wu-wei, naturalness, the uncarved block, and living in harmony.
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const wayOfTaoCourse: Course = {
   id: 'way-of-tao',
@@ -289,4 +289,6 @@ All things emerge from the Tao and return to the Tao. This ceaseless arising and
     },
   ],
 };
+
+
 

@@ -1,4 +1,5 @@
-const FAVORITES_KEY = 'vijnana_favorites';
+import { supabase } from './supabase';
+import { STORAGE_KEYS } from '@lib/constants';
 
 export type FavoriteItem = {
   id: string;
@@ -9,9 +10,53 @@ export type FavoriteItem = {
   savedAt: number;
 };
 
+// Get current user ID (if logged in)
+async function getCurrentUserId(): Promise<string | null> {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user?.id || null;
+  } catch {
+    return null;
+  }
+}
+
+// Sync favorite to Supabase
+async function syncAddToCloud(item: FavoriteItem): Promise<void> {
+  const userId = await getCurrentUserId();
+  if (!userId) return;
+
+  try {
+    await supabase.from('favorites').upsert({
+      user_id: userId,
+      day_number: item.dayNumber,
+      source: item.source,
+      title: item.title,
+      text: item.text,
+    });
+  } catch (error) {
+    // Sync failed silently
+  }
+}
+
+// Remove favorite from Supabase
+async function syncRemoveFromCloud(dayNumber: number, source: string): Promise<void> {
+  const userId = await getCurrentUserId();
+  if (!userId) return;
+
+  try {
+    await supabase.from('favorites')
+      .delete()
+      .eq('user_id', userId)
+      .eq('day_number', dayNumber)
+      .eq('source', source);
+  } catch (error) {
+    // Remove sync failed silently
+  }
+}
+
 export function getFavorites(): FavoriteItem[] {
   try {
-    const stored = localStorage.getItem(FAVORITES_KEY);
+    const stored = localStorage.getItem(STORAGE_KEYS.FAVORITES);
     return stored ? JSON.parse(stored) : [];
   } catch {
     return [];
@@ -26,13 +71,24 @@ export function addFavorite(item: Omit<FavoriteItem, 'id' | 'savedAt'>): Favorit
     savedAt: Date.now(),
   };
   favorites.unshift(newItem);
-  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+  localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(favorites));
+  
+  // Sync to cloud in background
+  syncAddToCloud(newItem);
+  
   return newItem;
 }
 
 export function removeFavorite(id: string): void {
-  const favorites = getFavorites().filter((f) => f.id !== id);
-  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+  const favorites = getFavorites();
+  const toRemove = favorites.find(f => f.id === id);
+  const filtered = favorites.filter((f) => f.id !== id);
+  localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(filtered));
+  
+  // Sync removal to cloud
+  if (toRemove) {
+    syncRemoveFromCloud(toRemove.dayNumber, toRemove.source);
+  }
 }
 
 export function isFavorite(dayNumber: number, source: string, text: string): boolean {
@@ -55,6 +111,8 @@ export function toggleFavorite(item: Omit<FavoriteItem, 'id' | 'savedAt'>): bool
     return true;
   }
 }
+
+
 
 
 

@@ -1,17 +1,12 @@
 import { useState, useEffect } from 'react';
-import { getAllSources, getVerseCount } from '../../core/library/engine';
-import { getAllLibraryTexts } from '../../core/library/adapter';
-import type { Source } from '../../core/library/types';
-import type { LibraryText } from '../../data/library/types';
+import { getAllSources, getVerseCount } from '@core/library/engine';
+import { getAllLibraryTexts } from '@core/library/adapter';
+import type { Source } from '@core/library/types';
+import type { LibraryText } from '@data/library/types';
 import { TextReader } from './TextReader';
-import { getReadingProgress, type ReadingProgress } from '../../lib/readingProgress';
+import { getReadingProgress, type ReadingProgress } from '@lib/readingProgress';
 
-type StudyLibraryProps = {
-  isPremium?: boolean;
-  onUpgrade?: () => void;
-};
-
-export function StudyLibrary({ isPremium = true, onUpgrade }: StudyLibraryProps) {
+export function StudyLibrary() {
   const [selectedText, setSelectedText] = useState<LibraryText | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [sources, setSources] = useState<Source[]>([]);
@@ -96,12 +91,13 @@ export function StudyLibrary({ isPremium = true, onUpgrade }: StudyLibraryProps)
       </div>
 
       {/* Search */}
-      <div className="relative">
+      <div className="relative" role="search">
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search texts, traditions, themes..."
+          aria-label="Search texts, traditions, and themes"
           className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-violet-500/50 focus:bg-white/10 transition-all"
         />
         <svg
@@ -109,6 +105,7 @@ export function StudyLibrary({ isPremium = true, onUpgrade }: StudyLibraryProps)
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -135,8 +132,6 @@ export function StudyLibrary({ isPremium = true, onUpgrade }: StudyLibraryProps)
                   key={source.id}
                   source={source}
                   onSelect={() => handleSelectText(source)}
-                  locked={!isPremium && source.id !== 'vijnana-bhairava-tantra'}
-                  onUpgrade={onUpgrade}
                   progress={progress[source.id]}
                   actualVerseCount={getVerseCount(source.id)}
                 />
@@ -160,48 +155,35 @@ export function StudyLibrary({ isPremium = true, onUpgrade }: StudyLibraryProps)
 type SourceCardProps = {
   source: Source;
   onSelect: () => void;
-  locked?: boolean;
-  onUpgrade?: () => void;
   progress?: ReadingProgress;
   actualVerseCount: number;
 };
 
-function SourceCard({ source, onSelect, locked, onUpgrade, progress, actualVerseCount }: SourceCardProps) {
-  const progressPercent = progress 
+function SourceCard({ source, onSelect, progress, actualVerseCount }: SourceCardProps) {
+  const progressPercent = progress
     ? Math.round((progress.lastVerseIndex / actualVerseCount) * 100)
     : 0;
 
   return (
     <button
-      onClick={locked ? onUpgrade : onSelect}
-      className={`w-full text-left bg-gradient-to-br from-white/10 to-white/5 rounded-xl p-4 border border-white/10 transition-all duration-300 group ${
-        locked 
-          ? 'opacity-60 cursor-not-allowed' 
-          : 'hover:from-white/15 hover:to-white/10 hover:border-white/20'
-      }`}
+      onClick={onSelect}
+      className="w-full text-left bg-gradient-to-br from-white/10 to-white/5 rounded-xl p-4 border border-white/10 transition-all duration-300 group hover:from-white/15 hover:to-white/10 hover:border-white/20"
     >
       <div className="flex items-start gap-3">
-        {/* Icon */}
         <div className="text-2xl flex-shrink-0">
           {source.icon || '📜'}
         </div>
 
-        {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <h3 className="text-base font-serif text-white group-hover:text-violet-200 transition-colors truncate">
               {source.name}
             </h3>
-            {locked && (
-              <span className="flex-shrink-0 text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">
-                Premium
-              </span>
-            )}
           </div>
           <p className="text-xs text-white/50 mb-2 line-clamp-1">
             {source.description}
           </p>
-          
+
           <div className="flex items-center gap-3 text-xs text-white/40">
             <span>{actualVerseCount} verses</span>
             {source.period && (
@@ -218,7 +200,6 @@ function SourceCard({ source, onSelect, locked, onUpgrade, progress, actualVerse
             )}
           </div>
 
-          {/* Progress bar */}
           {progress && progressPercent > 0 && (
             <div className="mt-2 h-1 bg-white/10 rounded-full overflow-hidden">
               <div
@@ -229,17 +210,10 @@ function SourceCard({ source, onSelect, locked, onUpgrade, progress, actualVerse
           )}
         </div>
 
-        {/* Arrow */}
-        <div className={`flex-shrink-0 transition-transform ${locked ? '' : 'group-hover:translate-x-1'}`}>
-          {locked ? (
-            <svg className="w-5 h-5 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-          ) : (
-            <svg className="w-5 h-5 text-white/40 group-hover:text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          )}
+        <div className="flex-shrink-0 transition-transform group-hover:translate-x-1">
+          <svg className="w-5 h-5 text-white/40 group-hover:text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </div>
       </div>
     </button>

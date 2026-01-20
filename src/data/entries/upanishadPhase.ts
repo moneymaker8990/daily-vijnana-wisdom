@@ -1,4 +1,4 @@
-import type { DailyEntry } from '../../lib/types';
+import type { DailyEntry } from '@lib/types';
 
 // Days 113-168: Upanishads Cycle (56 days)
 // Focus: "ear behind the ear", "seer behind the eye", Self as awareness, nondual philosophy

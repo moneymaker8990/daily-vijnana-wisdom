@@ -4,8 +4,8 @@
  * Shows course info, difficulty, duration, and progress.
  */
 
-import { getCourseProgress, getCourseCompletionPercent } from '../../core/study/progress';
-import type { Course } from '../../core/study/types';
+import { getCourseProgress, getCourseCompletionPercent } from '@core/study/progress';
+import type { Course } from '@core/study/types';
 
 type CourseCardProps = {
   course: Course;
@@ -149,4 +149,6 @@ function getDifficultyLabel(difficulty: 1 | 2 | 3): string {
     case 3: return 'Advanced';
   }
 }
+
+
 

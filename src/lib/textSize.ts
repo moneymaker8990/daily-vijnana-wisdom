@@ -1,10 +1,10 @@
-const TEXT_SIZE_KEY = 'vijnana_text_size';
+import { STORAGE_KEYS } from '@lib/constants';
 
 export type TextSize = 'small' | 'medium' | 'large';
 
 export function getTextSize(): TextSize {
   try {
-    const stored = localStorage.getItem(TEXT_SIZE_KEY);
+    const stored = localStorage.getItem(STORAGE_KEYS.TEXT_SIZE);
     if (stored && ['small', 'medium', 'large'].includes(stored)) {
       return stored as TextSize;
     }
@@ -15,7 +15,7 @@ export function getTextSize(): TextSize {
 }
 
 export function setTextSize(size: TextSize): void {
-  localStorage.setItem(TEXT_SIZE_KEY, size);
+  localStorage.setItem(STORAGE_KEYS.TEXT_SIZE, size);
 }
 
 export const textSizeClasses: Record<TextSize, { body: string; heading: string }> = {
@@ -32,6 +32,8 @@ export const textSizeClasses: Record<TextSize, { body: string; heading: string }
     heading: 'text-2xl md:text-3xl',
   },
 };
+
+
 
 
 

@@ -5,13 +5,13 @@
  */
 
 import { useState, useEffect } from 'react';
-import { getCourseById, getNextLesson, getPreviousLesson, isLastLesson, getLessonIndex } from '../../core/study/registry';
-import { completeLesson, setCurrentLesson, isLessonCompleted } from '../../core/study/progress';
-import { ALL_VERSES } from '../../core/library/registry';
-import type { Verse } from '../../core/library/types';
+import { getCourseById, getNextLesson, getPreviousLesson, isLastLesson, getLessonIndex } from '@core/study/registry';
+import { completeLesson, setCurrentLesson, isLessonCompleted } from '@core/study/progress';
+import { ALL_VERSES } from '@core/library/registry';
+import type { Verse } from '@core/library/types';
 import { MeditationTimer } from '../Timer/MeditationTimer';
 import { ExplainButton, ExplainPanel } from '../Explain';
-import type { TextExplanation } from '../../lib/textExplain';
+import type { TextExplanation } from '@lib/textExplain';
 
 // Helper to parse duration string like "10-15 minutes" into a number
 function parseDuration(durationStr: string): number {

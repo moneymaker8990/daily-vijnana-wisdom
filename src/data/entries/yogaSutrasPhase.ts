@@ -1,4 +1,4 @@
-import type { DailyEntry } from '../../lib/types';
+import type { DailyEntry } from '@lib/types';
 
 // Days 301-330: Yoga Sutras Essentials (30 days)
 // Focus: stilling mind, kleshas, abhyasa & vairagya, eight limbs, psychological clarity

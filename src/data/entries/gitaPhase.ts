@@ -1,4 +1,4 @@
-import type { DailyEntry } from '../../lib/types';
+import type { DailyEntry } from '@lib/types';
 
 // Days 169-210: Bhagavad Gita Cycle (42 days)
 // Focus: steadiness in conflict, right action, acting without clinging, devotion as alignment

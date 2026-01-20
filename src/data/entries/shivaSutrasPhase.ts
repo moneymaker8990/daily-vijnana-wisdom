@@ -1,4 +1,4 @@
-import type { DailyEntry } from '../../lib/types';
+import type { DailyEntry } from '@lib/types';
 
 // Days 331-365: Shiva Sutras (Kashmir Shaivism) (35 days)
 // Focus: identity as consciousness, play of energy, integrating all prior phases

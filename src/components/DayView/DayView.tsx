@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import type { DailyEntry } from '../../lib/types';
+import type { DailyEntry } from '@lib/types';
 import { NavigationButtons } from '../Navigation/NavigationButtons';
-import { getPhaseForDay } from '../../data/phases';
+import { getPhaseForDay } from '@data/phases';
 import { MeditationTimer } from '../Timer/MeditationTimer';
 import { ShareButton } from '../Share/ShareButton';
 import { FavoriteButton } from '../Favorites/FavoriteButton';
 import { JourneyProgress } from '../Progress/JourneyProgress';
-import { getTextSize, type TextSize, textSizeClasses } from '../../lib/textSize';
+import { getTextSize, type TextSize, textSizeClasses } from '@lib/textSize';
 
 type DayViewProps = {
   entry: DailyEntry;

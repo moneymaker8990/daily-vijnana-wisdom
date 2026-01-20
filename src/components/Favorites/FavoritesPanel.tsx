@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getFavorites, removeFavorite, type FavoriteItem } from '../../lib/favorites';
+import { getFavorites, removeFavorite, type FavoriteItem } from '@lib/favorites';
 import { ShareButton } from '../Share/ShareButton';
 
 type FavoritesPanelProps = {

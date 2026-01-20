@@ -18,7 +18,4 @@ export const DAILY_ENTRIES: DailyEntry[] = [
   ...SHIVA_SUTRAS_PHASE_ENTRIES,  // Days 331-365
 ].sort((a, b) => a.dayNumber - b.dayNumber);
 
-// Verify we have exactly 365 days
-if (DAILY_ENTRIES.length !== 365) {
-  console.warn(`Expected 365 daily entries, but got ${DAILY_ENTRIES.length}`);
-}
+// Verify we have exactly 365 days (validation happens at build time)

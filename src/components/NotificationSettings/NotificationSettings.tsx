@@ -7,8 +7,9 @@ import {
   startNotificationScheduler,
   stopNotificationScheduler,
   type NotificationSettings as NotificationSettingsType,
-} from '../../lib/notifications';
-import { getDataSource } from '../../lib/dataSource';
+} from '@lib/notifications';
+import { getDataSource } from '@lib/dataSource';
+import { STORAGE_KEYS } from '@lib/constants';
 
 type Props = {
   onClose: () => void;
@@ -34,7 +35,7 @@ export function NotificationSettings({ onClose }: Props) {
       // Start scheduler
       const ds = getDataSource();
       startNotificationScheduler(async () => {
-        const stored = localStorage.getItem('vijnana_user_state');
+        const stored = localStorage.getItem(STORAGE_KEYS.USER_STATE);
         if (stored) {
           const state = JSON.parse(stored);
           return ds.getEntryByDay(state.currentDay);

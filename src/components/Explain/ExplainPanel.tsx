@@ -4,7 +4,7 @@
  * Displays meaning, context, and practical application.
  */
 
-import type { TextExplanation } from '../../lib/textExplain';
+import type { TextExplanation } from '@lib/textExplain';
 
 type ExplainPanelProps = {
   explanation: TextExplanation;
@@ -17,13 +17,13 @@ export function ExplainPanel({ explanation, onClose }: ExplainPanelProps) {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <span className="text-amber-400">
+          <span className="text-amber-400" aria-hidden="true">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={1.5} 
-                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
               />
             </svg>
           </span>
@@ -33,8 +33,9 @@ export function ExplainPanel({ explanation, onClose }: ExplainPanelProps) {
           onClick={onClose}
           className="p-1 text-white/40 hover:text-white/80 transition-colors rounded"
           title="Close explanation"
+          aria-label="Close explanation"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
@@ -85,4 +86,6 @@ export function ExplainPanel({ explanation, onClose }: ExplainPanelProps) {
     </div>
   );
 }
+
+
 

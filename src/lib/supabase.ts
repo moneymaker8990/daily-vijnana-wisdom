@@ -1,17 +1,23 @@
 /**
  * Supabase Client
- * 
+ *
  * Centralized Supabase client for authentication and database access.
  */
 
 import { createClient } from '@supabase/supabase-js';
 
-// Supabase configuration
-const SUPABASE_URL = 'https://coihujjfdhpqfwmibfbi.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNvaWh1ampmZGhwcWZ3bWliZmJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUwNTY4MzgsImV4cCI6MjA4MDYzMjgzOH0.tU3rtto0eb61Z6vBFuJMp0OqlQU1UkM1g9UqksSGOYo';
+// Supabase configuration from environment variables
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+// Runtime validation
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  throw new Error(
+    'Missing Supabase environment variables. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env.local file.'
+  );
+}
 
 // Create single Supabase client instance
-// Using 'any' for now since tables will be created by user running the schema
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     autoRefreshToken: true,

@@ -134,3 +134,5 @@ export function JournalCalendar({ journalingDays, onSelectDate }: JournalCalenda
   );
 }
 
+
+

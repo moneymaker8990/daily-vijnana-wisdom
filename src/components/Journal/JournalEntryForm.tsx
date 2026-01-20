@@ -4,13 +4,13 @@ import {
   updateJournalEntry, 
   type JournalEntry, 
   type MoodType 
-} from '../../lib/journalStorage';
-import { 
-  getRandomPrompt, 
-  getDailyPrompt, 
-  moodInfo, 
-  type JournalPrompt 
-} from '../../data/journalPrompts';
+} from '@lib/journalStorage';
+import {
+  getRandomPrompt,
+  getDailyPrompt,
+  moodInfo,
+  type JournalPrompt
+} from '@data/journalPrompts';
 import { VoiceDictationButton } from '../VoiceDictation';
 
 type JournalEntryFormProps = {

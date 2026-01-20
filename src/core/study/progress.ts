@@ -1,24 +1,23 @@
 /**
  * Study Progress - localStorage helpers
- * 
+ *
  * Manages user progress through study courses
  */
 
 import type { StudyProgress, AllStudyProgress } from './types';
-
-const STORAGE_KEY = 'stillpoint_study_progress';
+import { STORAGE_KEYS } from '@lib/constants';
 
 /**
  * Get all study progress from localStorage
  */
 export function getAllProgress(): AllStudyProgress {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(STORAGE_KEYS.STUDY_PROGRESS);
     if (stored) {
       return JSON.parse(stored);
     }
   } catch (error) {
-    console.error('Error reading study progress:', error);
+    // Error reading study progress handled silently
   }
   return { courses: {} };
 }
@@ -28,9 +27,9 @@ export function getAllProgress(): AllStudyProgress {
  */
 export function saveAllProgress(progress: AllStudyProgress): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    localStorage.setItem(STORAGE_KEYS.STUDY_PROGRESS, JSON.stringify(progress));
   } catch (error) {
-    console.error('Error saving study progress:', error);
+    // Error saving study progress handled silently
   }
 }
 
@@ -141,4 +140,6 @@ export function getInProgressCourses(): string[] {
   const all = getAllProgress();
   return Object.keys(all.courses);
 }
+
+
 

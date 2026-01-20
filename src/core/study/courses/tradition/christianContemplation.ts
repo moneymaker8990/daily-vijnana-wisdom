@@ -5,7 +5,7 @@
  * Dark Night of the Soul, and The Imitation of Christ.
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const christianContemplationCourse: Course = {
   id: 'christian-contemplation',
@@ -256,4 +256,6 @@ The Dark Night ends in dawn: "Oh, night more lovely than the dawn! Oh, night tha
     },
   ],
 };
+
+
 

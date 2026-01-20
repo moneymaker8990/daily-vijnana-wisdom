@@ -5,7 +5,7 @@
  * Return to Tao. Compare and contrast ultimate goals across traditions.
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const pathsToLiberationCourse: Course = {
   id: 'paths-to-liberation',
@@ -222,4 +222,6 @@ What unites them: each points beyond the ordinary ego-bound existence. Each prom
     },
   ],
 };
+
+
 

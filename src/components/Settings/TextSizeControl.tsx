@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getTextSize, setTextSize, type TextSize } from '../../lib/textSize';
+import { getTextSize, setTextSize, type TextSize } from '@lib/textSize';
 
 type TextSizeControlProps = {
   onChange?: (size: TextSize) => void;
@@ -69,6 +69,8 @@ export function TextSizeToggle({ onChange }: TextSizeControlProps) {
     </button>
   );
 }
+
+
 
 
 

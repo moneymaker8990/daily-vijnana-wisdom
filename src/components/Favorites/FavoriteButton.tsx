@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { isFavorite, toggleFavorite } from '../../lib/favorites';
+import { isFavorite, toggleFavorite } from '@lib/favorites';
 
 type FavoriteButtonProps = {
   dayNumber: number;
@@ -31,6 +31,8 @@ export function FavoriteButton({ dayNumber, source, title, text, className = '' 
       onClick={handleToggle}
       className={`p-2 transition-all rounded-lg hover:bg-white/5 ${className}`}
       title={isFav ? 'Remove from favorites' : 'Save to favorites'}
+      aria-label={isFav ? 'Remove from favorites' : 'Save to favorites'}
+      aria-pressed={isFav}
     >
       <svg
         className={`w-4 h-4 transition-all duration-300 ${
@@ -39,6 +41,7 @@ export function FavoriteButton({ dayNumber, source, title, text, className = '' 
         fill={isFav ? 'currentColor' : 'none'}
         viewBox="0 0 24 24"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -50,6 +53,8 @@ export function FavoriteButton({ dayNumber, source, title, text, className = '' 
     </button>
   );
 }
+
+
 
 
 

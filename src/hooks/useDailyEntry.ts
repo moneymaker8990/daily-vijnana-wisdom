@@ -107,7 +107,6 @@ export function useDailyEntry() {
     
     // If requested day doesn't exist, stay on current entry
     if (!e) {
-      console.warn(`Day ${day} not found`);
       return;
     }
     

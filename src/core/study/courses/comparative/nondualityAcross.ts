@@ -5,7 +5,7 @@
  * non-dual reality using different languages and frameworks.
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const nondualityAcrossCourse: Course = {
   id: 'nonduality-across',
@@ -235,4 +235,6 @@ The search itself becomes the obstacle. Every tradition, in its deepest teaching
     },
   ],
 };
+
+
 

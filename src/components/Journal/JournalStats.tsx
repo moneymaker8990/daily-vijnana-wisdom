@@ -1,5 +1,5 @@
-import { type JournalStats as JournalStatsType, type MoodType } from '../../lib/journalStorage';
-import { moodInfo } from '../../data/journalPrompts';
+import { type JournalStats as JournalStatsType, type MoodType } from '@lib/journalStorage';
+import { moodInfo } from '@data/journalPrompts';
 
 type JournalStatsProps = {
   stats: JournalStatsType;
@@ -179,4 +179,6 @@ export function JournalStats({ stats, onClose }: JournalStatsProps) {
     </div>
   );
 }
+
+
 

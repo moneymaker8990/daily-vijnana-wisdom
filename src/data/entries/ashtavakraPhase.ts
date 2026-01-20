@@ -1,4 +1,4 @@
-import type { DailyEntry } from '../../lib/types';
+import type { DailyEntry } from '@lib/types';
 
 // Days 261-300: Ashtavakra Gita Cycle (40 days)
 // Focus: radical nondual insight, letting go of identification, seeing thoughts as passing

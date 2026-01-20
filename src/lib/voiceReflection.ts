@@ -60,7 +60,6 @@ export async function generateAIReflection(transcript: string): Promise<AIReflec
     const text = data.interpretation || data.response || '';
     return parseReflectionFromText(text, transcript);
   } catch (error) {
-    console.error('Error generating reflection:', error);
     return generateFallbackReflection(transcript);
   }
 }

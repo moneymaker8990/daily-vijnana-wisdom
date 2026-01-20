@@ -1,9 +1,11 @@
 /**
  * Sound Settings for Meditation Timer
- * 
+ *
  * Manages user preferences for meditation bell sounds.
  * Supports both audio files and synthesized fallbacks.
  */
+
+import { STORAGE_KEYS } from '@lib/constants';
 
 export type BellSoundId = 
   | 'tibetan-bowl'
@@ -98,8 +100,6 @@ export type SoundSettings = {
   playAtEnd: boolean;
 };
 
-const STORAGE_KEY = 'stillpoint_sound_settings';
-
 const DEFAULT_SETTINGS: SoundSettings = {
   bellSoundId: 'tibetan-bowl',
   volume: 0.5,
@@ -112,12 +112,12 @@ const DEFAULT_SETTINGS: SoundSettings = {
  */
 export function getSoundSettings(): SoundSettings {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(STORAGE_KEYS.SOUND_SETTINGS);
     if (stored) {
       return { ...DEFAULT_SETTINGS, ...JSON.parse(stored) };
     }
   } catch (e) {
-    console.error('Failed to load sound settings:', e);
+    // Load failed, return defaults
   }
   return DEFAULT_SETTINGS;
 }
@@ -129,9 +129,9 @@ export function saveSoundSettings(settings: Partial<SoundSettings>): void {
   try {
     const current = getSoundSettings();
     const updated = { ...current, ...settings };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    localStorage.setItem(STORAGE_KEYS.SOUND_SETTINGS, JSON.stringify(updated));
   } catch (e) {
-    console.error('Failed to save sound settings:', e);
+    // Save failed silently
   }
 }
 
@@ -147,9 +147,18 @@ export function getBellSound(id: BellSoundId): BellSound {
  */
 let audioContext: AudioContext | null = null;
 
+// Type for webkit prefixed AudioContext (Safari)
+interface WebkitWindow extends Window {
+  webkitAudioContext?: typeof AudioContext;
+}
+
 function getAudioContext(): AudioContext {
   if (!audioContext) {
-    audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const AudioContextClass = window.AudioContext || (window as WebkitWindow).webkitAudioContext;
+    if (!AudioContextClass) {
+      throw new Error('AudioContext not supported');
+    }
+    audioContext = new AudioContextClass();
   }
   return audioContext;
 }
@@ -206,7 +215,7 @@ export function playSynthesizedBell(sound: BellSound, volume: number = 0.5): voi
     lfo.stop(ctx.currentTime + decay);
     
   } catch (e) {
-    console.log('Audio synthesis not available:', e);
+    // Audio synthesis not available
   }
 }
 
@@ -239,4 +248,6 @@ export function previewBell(soundId: BellSoundId): void {
   const settings = getSoundSettings();
   playBell(soundId, settings.volume);
 }
+
+
 

@@ -1,15 +1,15 @@
 /**
  * Text Explain Service
- * 
+ *
  * AI-powered explanations of sacred texts using Supabase Edge Function.
  * Caches explanations in localStorage to avoid repeat API calls.
  */
 
+import { STORAGE_KEYS } from '@lib/constants';
+
 // Supabase configuration (same as dreamAI.ts)
 const SUPABASE_URL = 'https://coihujjfdhpqfwmibfbi.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNvaWh1ampmZGhwcWZ3bWliZmJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUwNTY4MzgsImV4cCI6MjA4MDYzMjgzOH0.tU3rtto0eb61Z6vBFuJMp0OqlQU1UkM1g9UqksSGOYo';
-
-const CACHE_KEY = 'stillpoint_text_explanations';
 
 export interface TextExplanation {
   meaning: string;
@@ -36,7 +36,7 @@ function getCacheKey(text: string, source: string): string {
  */
 function loadCache(): ExplanationCache {
   try {
-    const cached = localStorage.getItem(CACHE_KEY);
+    const cached = localStorage.getItem(STORAGE_KEYS.TEXT_EXPLANATIONS);
     return cached ? JSON.parse(cached) : {};
   } catch {
     return {};
@@ -50,9 +50,9 @@ function saveToCache(key: string, explanation: TextExplanation): void {
   try {
     const cache = loadCache();
     cache[key] = explanation;
-    localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+    localStorage.setItem(STORAGE_KEYS.TEXT_EXPLANATIONS, JSON.stringify(cache));
   } catch (error) {
-    console.error('Failed to cache explanation:', error);
+    // Cache save failed silently
   }
 }
 
@@ -80,7 +80,6 @@ export async function explainText(
 
   // If Supabase is not configured, use mock explanation
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    console.log('Supabase not configured, using mock explanation');
     const mock = generateMockExplanation(text, source);
     saveToCache(cacheKey, mock);
     return mock;
@@ -121,7 +120,6 @@ Keep the tone warm, insightful, and non-dogmatic. Speak as a guide, not an autho
     saveToCache(cacheKey, explanation);
     return explanation;
   } catch (error) {
-    console.error('Failed to get AI explanation:', error);
     // Fallback to mock explanation
     const mock = generateMockExplanation(text, source);
     saveToCache(cacheKey, mock);
@@ -223,4 +221,6 @@ function generateMockExplanation(text: string, source: string): TextExplanation 
     generatedAt: new Date().toISOString(),
   };
 }
+
+
 

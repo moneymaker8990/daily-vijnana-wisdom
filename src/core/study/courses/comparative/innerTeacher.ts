@@ -5,7 +5,7 @@
  * Sufi sheikh, Christian director, Vedantic guru.
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const innerTeacherCourse: Course = {
   id: 'inner-teacher',
@@ -226,4 +226,6 @@ Rumi captures it: "What you seek is seeking you." The teacher you long for is th
     },
   ],
 };
+
+
 

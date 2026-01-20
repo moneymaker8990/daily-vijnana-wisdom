@@ -279,3 +279,5 @@ export const moodInfo: Record<string, { label: string; icon: string; color: stri
   neutral: { label: 'Neutral', icon: '😐', color: 'bg-slate-500/20 border-slate-400/30' },
 };
 
+
+

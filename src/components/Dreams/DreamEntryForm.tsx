@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { addDream, updateDream, type DreamEntry } from '../../lib/dreamStorage';
+import { addDream, updateDream, type DreamEntry } from '@lib/dreamStorage';
 import { VoiceDictationButton } from '../VoiceDictation';
 
 type DreamEntryFormProps = {
@@ -47,7 +47,7 @@ export function DreamEntryForm({ dream, onSave, onCancel }: DreamEntryFormProps)
       }
       onSave();
     } catch (error) {
-      console.error('Failed to save dream:', error);
+      // Dream save failed silently
     } finally {
       setSaving(false);
     }

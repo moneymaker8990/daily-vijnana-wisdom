@@ -5,10 +5,10 @@
  */
 
 import { useState, useEffect } from 'react';
-import { getAllCourses, getCoursesByPathway } from '../../core/study/registry';
-import { PATHWAY_INFO } from '../../core/study/types';
-import { getCourseProgress, getCourseCompletionPercent } from '../../core/study/progress';
-import type { Course, PathwayType } from '../../core/study/types';
+import { getAllCourses, getCoursesByPathway } from '@core/study/registry';
+import { PATHWAY_INFO } from '@core/study/types';
+import { getCourseProgress, getCourseCompletionPercent } from '@core/study/progress';
+import type { Course, PathwayType } from '@core/study/types';
 import { CourseCard } from './CourseCard';
 import { CourseView } from './CourseView';
 import { LessonView } from './LessonView';

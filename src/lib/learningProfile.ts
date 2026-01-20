@@ -1,9 +1,11 @@
 /**
  * Learning Profile Tracker
- * 
+ *
  * Tracks user's learning patterns, preferences, and interests
  * to provide personalized recommendations.
  */
+
+import { STORAGE_KEYS } from '@lib/constants';
 
 export interface LearningProfile {
   // Time spent per tradition (in minutes)
@@ -33,19 +35,17 @@ export interface LearningProfile {
   studyDays: string[];
 }
 
-const PROFILE_STORAGE_KEY = 'stillpoint_learning_profile';
-
 /**
  * Load learning profile from localStorage
  */
 export function loadLearningProfile(): LearningProfile {
   try {
-    const stored = localStorage.getItem(PROFILE_STORAGE_KEY);
+    const stored = localStorage.getItem(STORAGE_KEYS.LEARNING_PROFILE);
     if (stored) {
       return JSON.parse(stored);
     }
   } catch (e) {
-    console.error('Failed to load learning profile:', e);
+    // Load failed, return default profile
   }
   
   return getDefaultProfile();
@@ -56,9 +56,9 @@ export function loadLearningProfile(): LearningProfile {
  */
 export function saveLearningProfile(profile: LearningProfile): void {
   try {
-    localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
+    localStorage.setItem(STORAGE_KEYS.LEARNING_PROFILE, JSON.stringify(profile));
   } catch (e) {
-    console.error('Failed to save learning profile:', e);
+    // Save failed silently
   }
 }
 

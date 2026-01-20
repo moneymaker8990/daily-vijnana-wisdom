@@ -5,7 +5,7 @@
  * Upanishads' "neti neti," Zen's "not this," Tao's namelessness.
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const beyondWordsCourse: Course = {
   id: 'beyond-words',
@@ -229,4 +229,6 @@ This is not the failure of mysticism but its fulfillment. The finger that points
     },
   ],
 };
+
+
 

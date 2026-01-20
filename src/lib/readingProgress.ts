@@ -1,9 +1,11 @@
 /**
  * Reading Progress System
- * 
+ *
  * Tracks user's reading progress across sacred texts using localStorage.
  * Provides bookmarking and progress persistence.
  */
+
+import { STORAGE_KEYS } from '@lib/constants';
 
 export type ReadingProgress = {
   sourceId: string;
@@ -16,19 +18,17 @@ export type ReadingProgress = {
   completedVerses: string[]; // Array of verse IDs user has marked as read
 };
 
-const STORAGE_KEY = 'stillpoint_reading_progress';
-
 /**
  * Load all reading progress from localStorage
  */
 function loadAllProgress(): Record<string, ReadingProgress> {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(STORAGE_KEYS.READING_PROGRESS);
     if (stored) {
       return JSON.parse(stored);
     }
   } catch (e) {
-    console.error('Failed to load reading progress:', e);
+    // Load failed, return empty object
   }
   return {};
 }
@@ -38,9 +38,9 @@ function loadAllProgress(): Record<string, ReadingProgress> {
  */
 function saveAllProgress(progress: Record<string, ReadingProgress>): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    localStorage.setItem(STORAGE_KEYS.READING_PROGRESS, JSON.stringify(progress));
   } catch (e) {
-    console.error('Failed to save reading progress:', e);
+    // Save failed silently
   }
 }
 
@@ -180,7 +180,7 @@ export function clearReadingProgress(sourceId: string): void {
  * Clear all reading progress
  */
 export function clearAllReadingProgress(): void {
-  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(STORAGE_KEYS.READING_PROGRESS);
 }
 
 /**
@@ -192,5 +192,7 @@ export function getRecentlyRead(limit = 5): ReadingProgress[] {
     .sort((a, b) => new Date(b.lastRead).getTime() - new Date(a.lastRead).getTime())
     .slice(0, limit);
 }
+
+
 
 

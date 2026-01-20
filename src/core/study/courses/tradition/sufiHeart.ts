@@ -5,7 +5,7 @@
  * The path of love, longing, and annihilation in the Beloved.
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const sufiHeartCourse: Course = {
   id: 'sufi-heart',
@@ -222,4 +222,6 @@ This death is liberation. "Strip away all you have, and you will possess all. Di
     },
   ],
 };
+
+
 

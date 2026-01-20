@@ -1,5 +1,5 @@
-import { type JournalEntry } from '../../lib/journalStorage';
-import { moodInfo } from '../../data/journalPrompts';
+import { type JournalEntry } from '@lib/journalStorage';
+import { moodInfo } from '@data/journalPrompts';
 
 type JournalEntryDetailProps = {
   entry: JournalEntry;
@@ -157,4 +157,6 @@ export function JournalEntryDetail({ entry, onBack, onEdit, onDelete }: JournalE
     </div>
   );
 }
+
+
 

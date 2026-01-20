@@ -5,7 +5,7 @@
  * Covering the Four Noble Truths, the Noble Eightfold Path, emptiness, and awakening.
  */
 
-import type { Course } from '../../types';
+import type { Course } from '@core/study/types';
 
 export const buddhasPathCourse: Course = {
   id: 'buddhas-path',
@@ -290,4 +290,6 @@ The path is not about accumulating spiritual achievements but about letting go c
     },
   ],
 };
+
+
 

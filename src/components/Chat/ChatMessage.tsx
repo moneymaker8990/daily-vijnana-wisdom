@@ -2,7 +2,7 @@
  * ChatMessage - Individual message bubble in the chat
  */
 
-import type { ChatMessage as ChatMessageType } from '../../lib/spiritualGuide';
+import type { ChatMessage as ChatMessageType } from '@lib/spiritualGuide';
 
 type ChatMessageProps = {
   message: ChatMessageType;
@@ -57,4 +57,6 @@ function formatTime(timestamp: string): string {
   
   return date.toLocaleDateString();
 }
+
+
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { searchLibrary, type LibraryText } from '../../data/library';
+import { searchLibrary, type LibraryText } from '@data/library';
 
 type SearchBarProps = {
   value: string;

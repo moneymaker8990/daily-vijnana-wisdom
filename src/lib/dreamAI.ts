@@ -2,21 +2,12 @@
 // This will call the Supabase Edge Function for Claude AI interpretation
 
 import type { DreamInterpretation } from './dreamStorage';
-
-// Supabase configuration
-// Your Wisdom App project credentials
-const SUPABASE_URL = 'https://coihujjfdhpqfwmibfbi.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNvaWh1ampmZGhwcWZ3bWliZmJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUwNTY4MzgsImV4cCI6MjA4MDYzMjgzOH0.tU3rtto0eb61Z6vBFuJMp0OqlQU1UkM1g9UqksSGOYo';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
 
 export async function interpretDream(
   dreamContent: string,
   mood?: string
 ): Promise<DreamInterpretation> {
-  // If Supabase is not configured, use mock interpretation
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    console.log('Supabase not configured, using mock interpretation');
-    return generateMockInterpretation(dreamContent, mood);
-  }
 
   try {
     // Using the "hyper-processor" function (can be renamed to "interpret-dream" if preferred)
@@ -48,7 +39,6 @@ export async function interpretDream(
       generatedAt: new Date().toISOString(),
     };
   } catch (error) {
-    console.error('Failed to get AI interpretation:', error);
     // Fallback to mock interpretation
     return generateMockInterpretation(dreamContent, mood);
   }

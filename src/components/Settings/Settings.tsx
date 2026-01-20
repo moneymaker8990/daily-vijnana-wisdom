@@ -12,7 +12,7 @@ import {
   previewBell,
   type BellSoundId,
   type SoundSettings,
-} from '../../lib/soundSettings';
+} from '@lib/soundSettings';
 
 type SettingsProps = {
   onClose: () => void;
@@ -53,16 +53,17 @@ export function Settings({ onClose }: SettingsProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="settings-title">
       <div className="relative w-full max-w-md max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-900 to-indigo-950 rounded-2xl border border-white/10 shadow-2xl">
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-center justify-between p-6 pb-4 bg-gradient-to-br from-slate-900 to-indigo-950 border-b border-white/10">
-          <h2 className="text-xl font-serif text-white">Settings</h2>
+          <h2 id="settings-title" className="text-xl font-serif text-white">Settings</h2>
           <button
             onClick={onClose}
             className="p-2 text-white/40 hover:text-white transition-colors rounded-lg hover:bg-white/10"
+            aria-label="Close settings"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -103,7 +104,7 @@ export function Settings({ onClose }: SettingsProps) {
                   {playingPreview === sound.id ? (
                     <span className="text-xs text-violet-300 animate-pulse">Playing...</span>
                   ) : settings.bellSoundId === sound.id ? (
-                    <svg className="w-5 h-5 text-violet-400" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 text-violet-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   ) : (
@@ -114,8 +115,9 @@ export function Settings({ onClose }: SettingsProps) {
                       }}
                       className="p-2 text-white/40 hover:text-white/80 hover:bg-white/10 rounded-lg transition-colors"
                       title="Preview sound"
+                      aria-label={`Preview ${sound.name} sound`}
                     >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M8 5v14l11-7z" />
                       </svg>
                     </button>
@@ -231,15 +233,55 @@ export function Settings({ onClose }: SettingsProps) {
               onClick={() => handlePreview(settings.bellSoundId)}
               className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-violet-500/20 to-indigo-500/20 hover:from-violet-500/30 hover:to-indigo-500/30 border border-white/10 rounded-xl text-white/80 hover:text-white transition-all"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
               </svg>
               <span className="text-sm font-medium">Test Current Sound</span>
             </button>
+          </section>
+
+          {/* Legal Links */}
+          <section className="pt-4 border-t border-white/10 space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xl">📜</span>
+              <h3 className="text-sm font-medium text-white/80 uppercase tracking-wider">
+                Legal
+              </h3>
+            </div>
+
+            <a
+              href="/privacy-policy.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors"
+            >
+              <span className="text-sm text-white/80">Privacy Policy</span>
+              <svg className="w-4 h-4 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+
+            <a
+              href="/terms-of-service.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors"
+            >
+              <span className="text-sm text-white/80">Terms of Service</span>
+              <svg className="w-4 h-4 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+
+            <p className="text-xs text-white/30 text-center pt-2">
+              MindVanta v1.0.0
+            </p>
           </section>
         </div>
       </div>
     </div>
   );
 }
+
+
 

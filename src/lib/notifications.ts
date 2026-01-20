@@ -1,6 +1,7 @@
 // Notification service for quote reminders
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { STORAGE_KEYS } from '@lib/constants';
 
 export type NotificationSettings = {
   enabled: boolean;
@@ -8,17 +9,16 @@ export type NotificationSettings = {
   lastNotifiedDay: number;
 };
 
-const NOTIFICATION_STORAGE_KEY = 'vijnana_notification_settings';
 const DEFAULT_TIMES = ['08:00', '12:00', '20:00'];
 
 export function getNotificationSettings(): NotificationSettings {
   try {
-    const stored = localStorage.getItem(NOTIFICATION_STORAGE_KEY);
+    const stored = localStorage.getItem(STORAGE_KEYS.NOTIFICATION_SETTINGS);
     if (stored) {
       return JSON.parse(stored);
     }
   } catch (e) {
-    console.error('Error reading notification settings:', e);
+    // Error reading notification settings
   }
   return {
     enabled: false,
@@ -29,7 +29,7 @@ export function getNotificationSettings(): NotificationSettings {
 
 export async function saveNotificationSettings(settings: NotificationSettings): Promise<void> {
   try {
-    localStorage.setItem(NOTIFICATION_STORAGE_KEY, JSON.stringify(settings));
+    localStorage.setItem(STORAGE_KEYS.NOTIFICATION_SETTINGS, JSON.stringify(settings));
     
     // Schedule or cancel native daily reminders
     if (Capacitor.isNativePlatform()) {
@@ -40,7 +40,7 @@ export async function saveNotificationSettings(settings: NotificationSettings): 
       }
     }
   } catch (e) {
-    console.error('Error saving notification settings:', e);
+    // Error saving notification settings
   }
 }
 
@@ -51,14 +51,14 @@ export async function requestNotificationPermission(): Promise<boolean> {
       const result = await LocalNotifications.requestPermissions();
       return result.display === 'granted';
     } catch (e) {
-      console.error('Error requesting native notification permission:', e);
+      // Error requesting native notification permission
       return false;
     }
   }
   
   // Web platform
   if (!('Notification' in window)) {
-    console.warn('This browser does not support notifications');
+    // This browser does not support notifications
     return false;
   }
 
@@ -98,7 +98,7 @@ export async function scheduleDailyReminders(times: string[]): Promise<void> {
       
       return {
         id: index + 1,
-        title: 'Stillpoint 🧘',
+        title: 'MindVanta 🧘',
         body: 'Time for your daily wisdom and meditation practice.',
         schedule: {
           at: scheduleDate,
@@ -111,9 +111,9 @@ export async function scheduleDailyReminders(times: string[]): Promise<void> {
     });
     
     await LocalNotifications.schedule({ notifications });
-    console.log('Daily reminders scheduled:', times);
+    // Daily reminders scheduled
   } catch (e) {
-    console.error('Error scheduling daily reminders:', e);
+    // Error scheduling daily reminders
   }
 }
 
@@ -127,7 +127,7 @@ export async function cancelDailyReminders(): Promise<void> {
       notifications: Array.from({ length: 10 }, (_, i) => ({ id: i + 1 })),
     });
   } catch (e) {
-    console.error('Error canceling daily reminders:', e);
+    // Error canceling daily reminders
   }
 }
 
@@ -239,7 +239,7 @@ export function startNotificationScheduler(
     if (!shouldNotify) return;
 
     // Check if we already notified for this minute
-    const notificationKey = `vijnana_notified_${now.toDateString()}_${currentTime.slice(0, 4)}`;
+    const notificationKey = `mindvanta_notified_${now.toDateString()}_${currentTime.slice(0, 4)}`;
     if (localStorage.getItem(notificationKey)) return;
 
     const entry = await getCurrentEntry();
@@ -251,7 +251,7 @@ export function startNotificationScheduler(
     showNotification(
       `Day ${entry.dayNumber}: ${entry.theme}`,
       `"${quote.quote}" — ${quote.source}`,
-      `vijnana-${now.toISOString()}`
+      `mindvanta-${now.toISOString()}`
     );
 
     // Mark as notified
@@ -260,7 +260,7 @@ export function startNotificationScheduler(
     // Clean up old notification markers (keep only today's)
     const today = now.toDateString();
     Object.keys(localStorage).forEach(key => {
-      if (key.startsWith('vijnana_notified_') && !key.includes(today)) {
+      if (key.startsWith('mindvanta_notified_') && !key.includes(today)) {
         localStorage.removeItem(key);
       }
     });

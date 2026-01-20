@@ -1,4 +1,7 @@
-// Journal Local Storage
+// Journal Local Storage with Supabase Sync Support
+
+import { supabase } from './supabase';
+import { STORAGE_KEYS } from '@lib/constants';
 
 export type MoodType = 'peaceful' | 'grateful' | 'inspired' | 'reflective' | 'anxious' | 'sad' | 'joyful' | 'neutral';
 
@@ -30,28 +33,117 @@ export type JournalStats = {
   journalingDays: string[]; // ISO date strings of days with entries
 };
 
-const STORAGE_KEY = 'vijnana_journal';
-const STATS_KEY = 'vijnana_journal_stats';
+
+// Get current user ID (if logged in)
+async function getCurrentUserId(): Promise<string | null> {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user?.id || null;
+  } catch {
+    return null;
+  }
+}
+
+// Sync entry to Supabase (fire and forget)
+async function syncToCloud(entry: JournalEntry): Promise<void> {
+  const userId = await getCurrentUserId();
+  if (!userId) return;
+
+  try {
+    await supabase.from('journal_entries').upsert({
+      id: entry.id,
+      user_id: userId,
+      title: entry.title || null,
+      content: entry.content,
+      mood: entry.mood,
+      mood_intensity: entry.moodIntensity,
+      gratitudes: entry.gratitudes,
+      tags: entry.tags,
+      prompt: entry.prompt || null,
+      is_private: entry.isPrivate,
+      created_at: entry.createdAt,
+      updated_at: entry.updatedAt,
+    });
+  } catch (error) {
+    // Sync failed silently
+  }
+}
+
+// Delete from Supabase
+async function deleteFromCloud(entryId: string): Promise<void> {
+  const userId = await getCurrentUserId();
+  if (!userId) return;
+
+  try {
+    await supabase.from('journal_entries')
+      .delete()
+      .eq('id', entryId)
+      .eq('user_id', userId);
+  } catch (error) {
+    // Delete sync failed silently
+  }
+}
 
 export function loadJournalEntries(): JournalEntry[] {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(STORAGE_KEYS.JOURNAL);
     if (stored) {
       return JSON.parse(stored);
     }
   } catch (e) {
-    console.error('Failed to load journal entries:', e);
+    // Load failed, return empty array
   }
   return [];
 }
 
+/**
+ * Load journal entries from Supabase (for logged in users)
+ * Call this on login to sync cloud data to local
+ */
+export async function loadJournalEntriesFromCloud(): Promise<JournalEntry[]> {
+  const userId = await getCurrentUserId();
+  if (!userId) return loadJournalEntries();
+
+  try {
+    const { data, error } = await supabase
+      .from('journal_entries')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    const entries: JournalEntry[] = (data || []).map(e => ({
+      id: e.id,
+      date: e.created_at,
+      title: e.title || undefined,
+      content: e.content,
+      gratitudes: e.gratitudes || [],
+      mood: e.mood || 'neutral',
+      moodIntensity: e.mood_intensity || 3,
+      prompt: e.prompt || undefined,
+      tags: e.tags || [],
+      isPrivate: e.is_private || false,
+      wordCount: e.content?.split(/\s+/).filter((w: string) => w.length > 0).length || 0,
+      createdAt: e.created_at,
+      updatedAt: e.updated_at || e.created_at,
+    }));
+
+    // Update localStorage with cloud data
+    saveJournalEntries(entries);
+    return entries;
+  } catch (error) {
+    return loadJournalEntries();
+  }
+}
+
 export function saveJournalEntries(entries: JournalEntry[]): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    localStorage.setItem(STORAGE_KEYS.JOURNAL, JSON.stringify(entries));
     // Update stats whenever entries change
     updateStats(entries);
   } catch (e) {
-    console.error('Failed to save journal entries:', e);
+    // Save failed silently
   }
 }
 
@@ -70,6 +162,10 @@ export function addJournalEntry(entry: Omit<JournalEntry, 'id' | 'createdAt' | '
   
   entries.unshift(newEntry);
   saveJournalEntries(entries);
+  
+  // Sync to cloud in background
+  syncToCloud(newEntry);
+  
   return newEntry;
 }
 
@@ -90,6 +186,10 @@ export function updateJournalEntry(id: string, updates: Partial<JournalEntry>): 
   };
   
   saveJournalEntries(entries);
+  
+  // Sync to cloud in background
+  syncToCloud(entries[index]);
+  
   return entries[index];
 }
 
@@ -98,6 +198,10 @@ export function deleteJournalEntry(id: string): boolean {
   const filtered = entries.filter(e => e.id !== id);
   if (filtered.length === entries.length) return false;
   saveJournalEntries(filtered);
+  
+  // Delete from cloud in background
+  deleteFromCloud(id);
+  
   return true;
 }
 
@@ -259,20 +363,20 @@ function updateStats(entries: JournalEntry[]): void {
   };
   
   try {
-    localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+    localStorage.setItem(STORAGE_KEYS.JOURNAL_STATS, JSON.stringify(stats));
   } catch (e) {
-    console.error('Failed to save journal stats:', e);
+    // Stats save failed silently
   }
 }
 
 export function getJournalStats(): JournalStats {
   try {
-    const stored = localStorage.getItem(STATS_KEY);
+    const stored = localStorage.getItem(STORAGE_KEYS.JOURNAL_STATS);
     if (stored) {
       return JSON.parse(stored);
     }
   } catch (e) {
-    console.error('Failed to load journal stats:', e);
+    // Stats load failed, return default
   }
   
   // Return default stats
@@ -313,4 +417,6 @@ export function getRecentEntry(): JournalEntry | null {
   const recent = entries.find(e => new Date(e.createdAt).getTime() > twelveHoursAgo);
   return recent || null;
 }
+
+
 

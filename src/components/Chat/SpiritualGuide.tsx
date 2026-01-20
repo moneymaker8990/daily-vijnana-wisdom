@@ -14,7 +14,7 @@ import {
   generateMessageId,
   sendToSpiritualGuide,
   getSuggestedQuestions,
-} from '../../lib/spiritualGuide';
+} from '@lib/spiritualGuide';
 import { ChatMessage } from './ChatMessage';
 import { VoiceDictationButtonCompact } from '../VoiceDictation';
 
@@ -82,7 +82,7 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
       setMessages(finalMessages);
       saveChatHistory(finalMessages);
     } catch (error) {
-      console.error('Error getting response:', error);
+      // Error handled silently
     } finally {
       setIsLoading(false);
     }
@@ -247,4 +247,6 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
     </div>
   );
 }
+
+
 
