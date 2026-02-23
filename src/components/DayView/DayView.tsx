@@ -425,6 +425,36 @@ export function DayView({ entry, onPrev, onNext, onToday, onGoToDay, onOpenLibra
               textSize={textSize}
             />
           )}
+          {entry.stoicMeditationsText && (
+            <TraditionCard
+              title="Meditations"
+              text={entry.stoicMeditationsText}
+              commentary={entry.stoicMeditationsCommentary}
+              context={entry.traditionContext?.stoicMeditations}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.stoicDiscoursesText && (
+            <TraditionCard
+              title="Discourses"
+              text={entry.stoicDiscoursesText}
+              commentary={entry.stoicDiscoursesCommentary}
+              context={entry.traditionContext?.stoicDiscourses}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.stoicLettersText && (
+            <TraditionCard
+              title="Letters to Lucilius"
+              text={entry.stoicLettersText}
+              commentary={entry.stoicLettersCommentary}
+              context={entry.traditionContext?.stoicLetters}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
         </div>
       </section>
 

@@ -32,6 +32,9 @@ import { darkNightVerses } from './verses/darkNightVerses';
 import { corpusHermeticumVerses } from './verses/corpusHermeticumVerses';
 import { kybalionVerses } from './verses/kybalionVerses';
 import { imitationOfChristVerses } from './verses/imitationOfChristVerses';
+import { stoicMeditationsVerses } from './verses/stoicMeditationsVerses';
+import { stoicDiscoursesVerses } from './verses/stoicDiscoursesVerses';
+import { stoicLettersVerses } from './verses/stoicLettersVerses';
 
 /**
  * ALL_VERSES: The complete collection of sacred verses
@@ -62,6 +65,9 @@ export const ALL_VERSES: Verse[] = [
   ...corpusHermeticumVerses,
   ...kybalionVerses,
   ...imitationOfChristVerses,
+  ...stoicMeditationsVerses,
+  ...stoicDiscoursesVerses,
+  ...stoicLettersVerses,
 ];
 
 /**
@@ -459,6 +465,57 @@ export const ALL_SOURCES: Source[] = [
       author: 'Thomas à Kempis (c. 1380-1471), an Augustinian monk at Mount Saint Agnes monastery in the Netherlands. Thomas spent his life in contemplative community, copying manuscripts and writing devotional works. The Imitation reflects his decades of monastic experience distilled into practical wisdom.',
       significance: 'The Imitation offers the clearest guide to Christian interior life ever written. It teaches detachment from worldly concerns, interior communion with Christ, and the gradual transformation of the soul through grace. Its influence spans Catholic, Protestant, and Orthodox traditions—Ignatius of Loyola, John Wesley, and countless others treasured it.',
       howToRead: 'Read a small section daily as spiritual food, not for information. The four books progress from outer to inner life, culminating in the Eucharist. Don\'t be put off by medieval language or apparent harshness toward self—underneath is profound tenderness and practical wisdom. Let the text question your attachments rather than defending against it.',
+    },
+  },
+  {
+    id: 'stoic-meditations',
+    name: 'Meditations',
+    tradition: 'Stoic',
+    totalVerses: 54,
+    description: 'The private philosophical journal of the Roman Emperor Marcus Aurelius, written during military campaigns on the Danube frontier — reflections on virtue, duty, impermanence, and inner freedom.',
+    originalLanguage: 'Greek',
+    period: '~170-180 CE',
+    translator: 'George Long',
+    icon: '🏛️',
+    historicalIntro: {
+      origin: 'The Meditations were written during Marcus Aurelius\'s military campaigns on the Danube frontier, far from the comforts of Rome. These were private notes to himself—never intended for publication—composed in Greek, the language of philosophy, rather than Latin, the language of empire. They survive by chance, preserved through Byzantine manuscript tradition.',
+      author: 'Marcus Aurelius (121-180 CE), Roman Emperor from 161 until his death. The last of the "Five Good Emperors," he ruled during plague, war, and economic crisis while maintaining a rigorous inner philosophical practice. He studied Stoicism under Junius Rusticus and the correspondence of Marcus Cornelius Fronto.',
+      significance: 'The Meditations is perhaps the most intimate document of self-examination ever written by a person of such power. Here the most powerful man in the world seeks not conquest but virtue, not fame but equanimity. The text demonstrates that Stoic philosophy is not cold theory but a daily practice of radical inner transformation.',
+      howToRead: 'Read a few entries at a time, perhaps in the morning as Marcus intended his own practice. These are not systematic philosophy but daily exercises in attention. Notice the recurring themes: impermanence, duty, the shortness of life, the power of judgment. Let Marcus\'s struggles with anger, distraction, and mortality mirror your own. The most powerful man in the world had the same inner battles you do.',
+    },
+  },
+  {
+    id: 'stoic-discourses',
+    name: 'Discourses',
+    tradition: 'Stoic',
+    totalVerses: 50,
+    description: 'The lectures of Epictetus — born a slave, became one of the most influential philosophers in history — on freedom, judgment, and the art of living, recorded by his student Arrian.',
+    originalLanguage: 'Greek',
+    period: '~108 CE',
+    translator: 'Elizabeth Carter',
+    icon: '⛓️',
+    historicalIntro: {
+      origin: 'The Discourses were recorded at Epictetus\'s school in Nicopolis (northwestern Greece) around 108 CE by his student Arrian of Nicomedia. Originally eight books, only four survive. Arrian also compiled the Enchiridion (Handbook), a condensed summary of the core teachings. The school attracted students from across the Roman Empire.',
+      author: 'Epictetus (c. 50-135 CE) was born a slave in Hierapolis, Phrygia (modern Turkey). His master Epaphroditus allowed him to study under the Stoic teacher Musonius Rufus. Tradition holds that his master broke his leg, teaching Epictetus firsthand about what is and is not in one\'s control. Freed after Nero\'s death, he taught in Rome until Domitian banished philosophers, then established his school in Nicopolis.',
+      significance: 'Epictetus\'s teaching centers on the "dichotomy of control"—distinguishing what is "up to us" (our judgments, intentions, desires) from what is not (our body, reputation, possessions). This single insight, rigorously applied, constitutes his entire philosophy. His influence extends through Marcus Aurelius (who studied the Discourses), Stockdale (who survived POW camp with Epictetus), and modern cognitive behavioral therapy.',
+      howToRead: 'Read the Enchiridion first for the essential framework, then dive into the Discourses for the full teaching in action. Epictetus is direct, often blunt, sometimes funny. He challenges students who want comfort rather than truth. Apply each teaching to your own life immediately—Epictetus despised armchair philosophy. Ask yourself with each passage: "What is up to me here? What is not?"',
+    },
+  },
+  {
+    id: 'stoic-letters',
+    name: 'Letters to Lucilius',
+    tradition: 'Stoic',
+    totalVerses: 55,
+    description: '124 moral letters from Seneca to his friend Lucilius, written in his final years — the most accessible entry point to Stoic philosophy, blending practical advice with profound wisdom on time, death, virtue, and the good life.',
+    originalLanguage: 'Latin',
+    period: '~63-65 CE',
+    translator: 'Richard Mott Gummere',
+    icon: '✉️',
+    historicalIntro: {
+      origin: 'The Moral Letters to Lucilius were written in Rome and Seneca\'s country estates during the last two years of his life (63-65 CE), after he had retired from politics and the court of Nero. Whether the letters were real correspondence or a literary device remains debated; either way, they represent Seneca\'s most mature philosophical thought, composed with the urgency of a man who knew his time was short.',
+      author: 'Lucius Annaeus Seneca (c. 4 BCE - 65 CE) was born in Córdoba, Spain, and raised in Rome. He served as statesman, dramatist, and tutor to the young emperor Nero. When Nero turned tyrannical, Seneca withdrew. Accused of conspiracy in 65 CE, he was ordered to commit suicide, which he did with philosophical composure, in conscious imitation of Socrates.',
+      significance: 'The Letters are perhaps the most readable introduction to Stoic philosophy ever written. Seneca writes not as a sage dispensing perfection but as a fellow traveler sharing what he has learned. His topics—how to use time, how to face death, the nature of true friendship, the trap of wealth—remain urgently relevant. The Letters influenced Montaigne, Shakespeare, and the entire essay tradition.',
+      howToRead: 'Read one letter at a time, as Lucilius would have received them. Seneca writes with warmth and self-deprecating honesty—he admits his own failings even as he counsels. Pay attention to the opening of each letter, which often contains a practical observation from daily life. Let Seneca be your philosophical friend rather than your teacher. These letters were written to be lived, not merely admired.',
     },
   },
 ];

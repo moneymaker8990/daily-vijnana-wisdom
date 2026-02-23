@@ -9,7 +9,8 @@ export type TraditionKey =
   | 'vijnana' | 'tao' | 'gita' | 'upanishads' | 'ashtavakra' | 'yogaSutras' | 'shivaSutras'
   | 'dhammapada' | 'rumi' | 'zenKoan' | 'zhuangzi' | 'rigVeda' | 'cloudOfUnknowing'
   | 'prajnaparamita' | 'suttaNipata' | 'avadhutaGita' | 'vivekachudamani' | 'naradaBhakti'
-  | 'yogaVasistha' | 'conferenceOfBirds' | 'darkNight' | 'corpusHermeticum' | 'kybalion' | 'imitationOfChrist';
+  | 'yogaVasistha' | 'conferenceOfBirds' | 'darkNight' | 'corpusHermeticum' | 'kybalion' | 'imitationOfChrist'
+  | 'stoicMeditations' | 'stoicDiscourses' | 'stoicLetters';
 
 export interface TraditionData {
   name: string;
@@ -434,6 +435,127 @@ export const WISDOM_TRADITIONS: Record<TraditionKey, TraditionData> = {
     ],
     commentaryStyle: 'The Kybalion systematizes cosmic principles for practical application.',
   },
+
+  // === STOIC ===
+  stoicMeditations: {
+    name: 'Meditations (Marcus Aurelius)',
+    context: 'The private journal of the Roman Emperor Marcus Aurelius, written during military campaigns on the Danube frontier (~170-180 CE).',
+    whyMatters: 'Marcus Aurelius reminds us that inner freedom is always available—regardless of outer circumstances.',
+    texts: [
+      'You have power over your mind—not outside events. Realize this, and you will find strength.',
+      'The happiness of your life depends upon the quality of your thoughts.',
+      'Waste no more time arguing about what a good man should be. Be one.',
+      'Very little is needed to make a happy life; it is all within yourself, in your way of thinking.',
+      'When you arise in the morning, think of what a precious privilege it is to be alive.',
+      'The soul becomes dyed with the color of its thoughts.',
+      'Accept the things to which fate binds you, and love the people with whom fate brings you together.',
+      'Never esteem anything as of advantage to you that will make you break your word or lose your self-respect.',
+      'How much more grievous are the consequences of anger than the causes of it.',
+      'Loss is nothing else but change, and change is Nature\'s delight.',
+      'It is not death that a man should fear, but he should fear never beginning to live.',
+      'The object of life is not to be on the side of the majority, but to escape finding oneself in the ranks of the insane.',
+      'Dwell on the beauty of life. Watch the stars, and see yourself running with them.',
+      'Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth.',
+      'The best revenge is to be unlike him who performed the injury.',
+      'Begin each day by telling yourself: today I shall meet with interference, ingratitude, insolence, disloyalty, ill-will, and selfishness.',
+      'If it is not right do not do it; if it is not true do not say it.',
+      'Look within. Within is the fountain of good, and it will ever bubble up, if you will ever dig.',
+      'He who lives in harmony with himself lives in harmony with the universe.',
+      'The universe is change; our life is what our thoughts make it.',
+      'That which is not good for the swarm, neither is it good for the bee.',
+      'Do every act of your life as though it were the very last act of your life.',
+      'To the wise, life is a problem; to the fool, a solution.',
+      'Be like the cliff against which the waves continually break; but it stands firm and tames the fury of the water around it.',
+      'Confine yourself to the present.',
+      'No man is free who is not master of himself.',
+      'What we do now echoes in eternity.',
+      'The impediment to action advances action. What stands in the way becomes the way.',
+      'Think of yourself as dead. You have lived your life. Now take what is left and live it properly.',
+      'Today I escaped anxiety. Or no, I discarded it, because it was within me, in my own perceptions—not outside.',
+      'You always own the option of having no opinion.',
+    ],
+    commentaryStyle: 'Marcus Aurelius reminds us that inner freedom is always available, regardless of circumstance.',
+  },
+
+  stoicDiscourses: {
+    name: 'Discourses (Epictetus)',
+    context: 'Lectures of the former slave turned philosopher Epictetus, recorded by his student Arrian at Nicopolis (~108 CE).',
+    whyMatters: 'Epictetus teaches that freedom begins with recognizing what is truly in our power and what is not.',
+    texts: [
+      'There is only one way to happiness and that is to cease worrying about things which are beyond the power of our will.',
+      'It is not things that disturb us, but our judgments about things.',
+      'Make the best use of what is in your power, and take the rest as it happens.',
+      'No man is free who is not master of himself.',
+      'First say to yourself what you would be; and then do what you have to do.',
+      'We cannot choose our external circumstances, but we can always choose how we respond to them.',
+      'Wealth consists not in having great possessions, but in having few wants.',
+      'Don\'t explain your philosophy. Embody it.',
+      'If you want to improve, be content to be thought foolish and stupid.',
+      'He is a wise man who does not grieve for the things which he has not, but rejoices for those which he has.',
+      'It is difficulties that show what men are.',
+      'Any person capable of angering you becomes your master.',
+      'The key is to keep company only with people who uplift you, whose presence calls forth your best.',
+      'Freedom is the only worthy goal in life. It is won by disregarding things that lie beyond our control.',
+      'Men are disturbed not by things, but by the views which they take of things.',
+      'Caretake this moment. Immerse yourself in its particulars.',
+      'Other people\'s views and troubles can be contagious. Don\'t sabotage yourself by unwittingly adopting negative, unproductive attitudes.',
+      'You are a little soul carrying about a corpse.',
+      'Suffering arises from trying to control what is uncontrollable, or from neglecting what is within our power.',
+      'Of all existing things some are in our power, and others are not in our power.',
+      'Nature hath given men one tongue but two ears, that we may hear from others twice as much as we speak.',
+      'It is impossible for a man to learn what he thinks he already knows.',
+      'Circumstances don\'t make the man, they only reveal him to himself.',
+      'Practice yourself, for heaven\'s sake, in little things; and thence proceed to greater.',
+      'Who is your master? Anyone who has control over things upon which you\'ve set your heart.',
+      'The greater the difficulty, the more glory in surmounting it.',
+      'Be not swept off your feet by the vividness of the impression, but say, "Impression, wait for me a little."',
+      'God has entrusted me with myself.',
+      'On the occasion of every accident that befalls you, remember to turn to yourself and inquire what power you have for turning it to use.',
+      'No thing great is created suddenly, any more than a bunch of grapes or a fig.',
+      'If you wish to be a writer, write.',
+    ],
+    commentaryStyle: 'Epictetus teaches that true freedom lies in mastering our judgments and responses.',
+  },
+
+  stoicLetters: {
+    name: 'Letters to Lucilius (Seneca)',
+    context: '124 moral letters written by Seneca to his friend Lucilius in his final years (~63-65 CE), blending practical advice with profound wisdom.',
+    whyMatters: 'Seneca writes with rare honesty about the human condition, showing how philosophy heals the soul.',
+    texts: [
+      'It is not that we have a short time to live, but that we waste a great deal of it.',
+      'We suffer more often in imagination than in reality.',
+      'Luck is what happens when preparation meets opportunity.',
+      'True happiness is to enjoy the present, without anxious dependence upon the future.',
+      'Difficulties strengthen the mind, as labor does the body.',
+      'As is a tale, so is life: not how long it is, but how good it is, is what matters.',
+      'He who is brave is free.',
+      'Begin at once to live, and count each separate day as a separate life.',
+      'It is the power of the mind to be unconquerable.',
+      'If a man knows not to which port he sails, no wind is favorable.',
+      'We are more often frightened than hurt; and we suffer more often in imagination than in reality.',
+      'Religion is to do good. The best way to worship the gods is to be like them.',
+      'The whole future lies in uncertainty: live immediately.',
+      'It is not the man who has too little who is poor, but the one who hankers after more.',
+      'Until we have begun to go without them, we fail to realize how unnecessary many things are.',
+      'There is no genius without a touch of madness.',
+      'Associate with people who are likely to improve you.',
+      'Hang on to your youthful enthusiasms—you will be able to use them better when you are older.',
+      'Nothing, to my way of thinking, is a better proof of a well-ordered mind than a man\'s ability to stop just where he is and pass some time in his own company.',
+      'The mind that is anxious about future events is miserable.',
+      'Life is like a play: it is not the length, but the excellence of the acting that matters.',
+      'No man was ever wise by chance.',
+      'Withdraw into yourself, as far as you can. Associate with those who will make a better man of you.',
+      'A gem cannot be polished without friction, nor a man perfected without trials.',
+      'Sometimes even to live is an act of courage.',
+      'He who has a why to live for can bear almost any how.',
+      'What need is there to weep over parts of life? The whole of it calls for tears.',
+      'Most powerful is he who has himself in his own power.',
+      'While we are postponing, life speeds by.',
+      'Enjoy present pleasures in such a way as not to injure future ones.',
+      'You act like mortals in all that you fear, and like immortals in all that you desire.',
+    ],
+    commentaryStyle: 'Seneca writes with rare honesty about the human condition, showing how philosophy heals the soul.',
+  },
 };
 
 /**
@@ -454,7 +576,8 @@ export function getTraditionsForDay(dayNumber: number, primaryTradition: Traditi
     'vijnana', 'tao', 'gita', 'upanishads', 'ashtavakra', 'yogaSutras', 'shivaSutras',
     'dhammapada', 'rumi', 'zenKoan', 'zhuangzi', 'rigVeda', 'cloudOfUnknowing',
     'prajnaparamita', 'suttaNipata', 'avadhutaGita', 'vivekachudamani', 'naradaBhakti',
-    'yogaVasistha', 'conferenceOfBirds', 'darkNight', 'corpusHermeticum', 'kybalion', 'imitationOfChrist'
+    'yogaVasistha', 'conferenceOfBirds', 'darkNight', 'corpusHermeticum', 'kybalion', 'imitationOfChrist',
+    'stoicMeditations', 'stoicDiscourses', 'stoicLetters'
   ];
 
   // Remove primary tradition
@@ -488,6 +611,7 @@ export const TRADITION_FAMILIES = {
   sufi: ['rumi', 'conferenceOfBirds'] as TraditionKey[],
   christianMystic: ['cloudOfUnknowing', 'darkNight', 'imitationOfChrist'] as TraditionKey[],
   hermetic: ['corpusHermeticum', 'kybalion'] as TraditionKey[],
+  stoic: ['stoicMeditations', 'stoicDiscourses', 'stoicLetters'] as TraditionKey[],
 };
 
 /**
@@ -549,6 +673,9 @@ export const TRADITION_SOURCE_MAP: Record<TraditionKey, string> = {
   corpusHermeticum: 'CORPUS_HERMETICUM',
   kybalion: 'KYBALION',
   imitationOfChrist: 'IMITATION_OF_CHRIST',
+  stoicMeditations: 'STOIC_MEDITATIONS',
+  stoicDiscourses: 'STOIC_DISCOURSES',
+  stoicLetters: 'STOIC_LETTERS',
 };
 
 /**
@@ -585,4 +712,7 @@ export const TRADITION_FIELD_MAP: Record<TraditionKey, {
   corpusHermeticum: { ref: 'corpusHermeticumRef', text: 'corpusHermeticumText', commentary: 'corpusHermeticumCommentary', contextKey: 'corpusHermeticum', whyMattersKey: 'corpusHermeticum' },
   kybalion: { ref: 'kybalionRef', text: 'kybalionText', commentary: 'kybalionCommentary', contextKey: 'kybalion', whyMattersKey: 'kybalion' },
   imitationOfChrist: { ref: 'imitationOfChristRef', text: 'imitationOfChristText', commentary: 'imitationOfChristCommentary', contextKey: 'imitationOfChrist', whyMattersKey: 'imitationOfChrist' },
+  stoicMeditations: { ref: 'stoicMeditationsRef', text: 'stoicMeditationsText', commentary: 'stoicMeditationsCommentary', contextKey: 'stoicMeditations', whyMattersKey: 'stoicMeditations' },
+  stoicDiscourses: { ref: 'stoicDiscoursesRef', text: 'stoicDiscoursesText', commentary: 'stoicDiscoursesCommentary', contextKey: 'stoicDiscourses', whyMattersKey: 'stoicDiscourses' },
+  stoicLetters: { ref: 'stoicLettersRef', text: 'stoicLettersText', commentary: 'stoicLettersCommentary', contextKey: 'stoicLetters', whyMattersKey: 'stoicLetters' },
 };

@@ -41,6 +41,9 @@ const TEXT_FIELDS: [keyof DailyEntry, string][] = [
   ['corpusHermeticumText', 'Corpus Hermeticum'],
   ['kybalionText', 'The Kybalion'],
   ['imitationOfChristText', 'Imitation of Christ'],
+  ['stoicMeditationsText', 'Meditations (Marcus Aurelius)'],
+  ['stoicDiscoursesText', 'Discourses (Epictetus)'],
+  ['stoicLettersText', 'Letters to Lucilius (Seneca)'],
 ];
 
 const COMMENTARY_FIELDS: [keyof DailyEntry, string][] = [
@@ -69,6 +72,9 @@ const COMMENTARY_FIELDS: [keyof DailyEntry, string][] = [
   ['corpusHermeticumCommentary', 'Corpus Hermeticum Commentary'],
   ['kybalionCommentary', 'Kybalion Commentary'],
   ['imitationOfChristCommentary', 'Imitation of Christ Commentary'],
+  ['stoicMeditationsCommentary', 'Meditations Commentary'],
+  ['stoicDiscoursesCommentary', 'Discourses Commentary'],
+  ['stoicLettersCommentary', 'Letters Commentary'],
 ];
 
 /** Extract a snippet centered on the query match */

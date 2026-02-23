@@ -24,7 +24,10 @@ export type TraditionRef = {
     | 'DARK_NIGHT'
     | 'CORPUS_HERMETICUM'
     | 'KYBALION'
-    | 'IMITATION_OF_CHRIST';
+    | 'IMITATION_OF_CHRIST'
+    | 'STOIC_MEDITATIONS'
+    | 'STOIC_DISCOURSES'
+    | 'STOIC_LETTERS';
   ref: string;
 };
 
@@ -82,6 +85,9 @@ export type DailyEntry = {
   corpusHermeticumRef?: TraditionRef;
   kybalionRef?: TraditionRef;
   imitationOfChristRef?: TraditionRef;
+  stoicMeditationsRef?: TraditionRef;
+  stoicDiscoursesRef?: TraditionRef;
+  stoicLettersRef?: TraditionRef;
 
   // Sacred text quotes
   vijnanaText?: string;
@@ -109,6 +115,9 @@ export type DailyEntry = {
   corpusHermeticumText?: string;
   kybalionText?: string;
   imitationOfChristText?: string;
+  stoicMeditationsText?: string;
+  stoicDiscoursesText?: string;
+  stoicLettersText?: string;
 
   // Short explanatory commentaries
   vijnanaCommentary?: string;
@@ -136,6 +145,9 @@ export type DailyEntry = {
   corpusHermeticumCommentary?: string;
   kybalionCommentary?: string;
   imitationOfChristCommentary?: string;
+  stoicMeditationsCommentary?: string;
+  stoicDiscoursesCommentary?: string;
+  stoicLettersCommentary?: string;
 
   // Context blurbs for each tradition
   traditionContext?: {
@@ -164,6 +176,9 @@ export type DailyEntry = {
     corpusHermeticum?: string;
     kybalion?: string;
     imitationOfChrist?: string;
+    stoicMeditations?: string;
+    stoicDiscourses?: string;
+    stoicLetters?: string;
   };
 
   // Why this matters explanations
@@ -193,6 +208,9 @@ export type DailyEntry = {
     corpusHermeticum?: string;
     kybalion?: string;
     imitationOfChrist?: string;
+    stoicMeditations?: string;
+    stoicDiscourses?: string;
+    stoicLetters?: string;
   };
 
   integratedReflectionTitle: string;

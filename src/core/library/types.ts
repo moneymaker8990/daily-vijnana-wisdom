@@ -13,7 +13,8 @@ export type Tradition =
   | 'Zen'
   | 'Sufi'
   | 'ChristianMystic'
-  | 'Hermetic';
+  | 'Hermetic'
+  | 'Stoic';
 
 /**
  * The core Verse type - every sacred text passage uses this structure
