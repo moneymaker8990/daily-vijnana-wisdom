@@ -1,12 +1,14 @@
-import { type JournalStats as JournalStatsType, type MoodType } from '@lib/journalStorage';
+import { type JournalStats as JournalStatsType, type MoodType, type JournalEntry } from '@lib/journalStorage';
 import { moodInfo } from '@data/journalPrompts';
+import { MoodTrends } from './MoodTrends';
 
 type JournalStatsProps = {
   stats: JournalStatsType;
+  entries?: JournalEntry[];
   onClose: () => void;
 };
 
-export function JournalStats({ stats, onClose }: JournalStatsProps) {
+export function JournalStats({ stats, entries, onClose }: JournalStatsProps) {
   // Get top 3 moods
   const topMoods = Object.entries(stats.moodDistribution)
     .filter(([_, count]) => count > 0)
@@ -117,6 +119,9 @@ export function JournalStats({ stats, onClose }: JournalStatsProps) {
           </div>
         </div>
       )}
+
+      {/* Mood Trends */}
+      {entries && entries.length >= 5 && <MoodTrends entries={entries} />}
 
       {/* Top Tags */}
       {stats.mostUsedTags.length > 0 && (

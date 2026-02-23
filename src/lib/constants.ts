@@ -22,6 +22,7 @@ export const STORAGE_KEYS = {
   ONBOARDING_COMPLETE: 'mindvanta_onboarding_complete',
   STREAK_DATA: 'mindvanta_streak_data',
   SHOWN_MILESTONES: 'mindvanta_shown_milestones',
+  QUIZ_PROGRESS: 'mindvanta_quiz_progress',
 } as const;
 
 export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

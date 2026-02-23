@@ -6,12 +6,14 @@
 
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
 import { STORAGE_KEYS } from '@lib/constants';
+import { parseFollowUpsFromAI, generateFollowUpSuggestions } from './followUpSuggestions';
 
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
   content: string;
   timestamp: string;
+  followUpSuggestions?: string[];
 }
 
 /**
@@ -75,7 +77,10 @@ Your approach:
 - Keep responses concise (2-4 paragraphs usually)
 - When relevant, reference specific texts or teachers
 
-You're available at any hour—for the 3am questions, the moments of doubt, the sudden insights that need a companion. Respond with care and presence.`;
+You're available at any hour—for the 3am questions, the moments of doubt, the sudden insights that need a companion. Respond with care and presence.
+
+After your response, on a new line, add exactly 3 follow-up questions the seeker might explore next, formatted as:
+FOLLOW_UPS: question one | question two | question three`;
 
 /**
  * Send a message to the Spiritual Guide and get a response
@@ -83,7 +88,7 @@ You're available at any hour—for the 3am questions, the moments of doubt, the 
 export async function sendToSpiritualGuide(
   userMessage: string,
   conversationHistory: ChatMessage[] = []
-): Promise<{ response: string; isAI: boolean }> {
+): Promise<{ response: string; isAI: boolean; suggestions: string[] }> {
   try {
     // Build context from recent messages
     const recentHistory = conversationHistory.slice(-10);
@@ -114,10 +119,18 @@ export async function sendToSpiritualGuide(
 
     const data = await response.json();
     const text = data.interpretation || data.response;
-    if (text) return { response: text, isAI: true };
-    return { response: generateFallbackResponse(userMessage), isAI: false };
+    if (text) {
+      const { cleanResponse, suggestions } = parseFollowUpsFromAI(text);
+      const finalSuggestions = suggestions.length > 0
+        ? suggestions
+        : generateFollowUpSuggestions(userMessage, cleanResponse);
+      return { response: cleanResponse, isAI: true, suggestions: finalSuggestions };
+    }
+    const fallback = generateFallbackResponse(userMessage);
+    return { response: fallback, isAI: false, suggestions: generateFollowUpSuggestions(userMessage, fallback) };
   } catch (error) {
-    return { response: generateFallbackResponse(userMessage), isAI: false };
+    const fallback = generateFallbackResponse(userMessage);
+    return { response: fallback, isAI: false, suggestions: generateFollowUpSuggestions(userMessage, fallback) };
   }
 }
 

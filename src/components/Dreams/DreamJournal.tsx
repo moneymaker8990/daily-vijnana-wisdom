@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { loadDreams, loadDreamsFromCloud, deleteDream, type DreamEntry } from '@lib/dreamStorage';
 import { DreamEntryForm } from './DreamEntryForm';
 import { DreamDetail } from './DreamDetail';
+import { DreamPatterns } from './DreamPatterns';
 import { useAuth } from '../Auth';
 import { ConfirmModal } from '../ui';
 
@@ -97,6 +98,9 @@ export function DreamJournal() {
           <span className="block text-xs text-white/50">Capture before it fades</span>
         </div>
       </button>
+
+      {/* Dream Patterns Panel */}
+      {dreams.length >= 3 && <DreamPatterns dreams={dreams} />}
 
       {/* Dreams List */}
       {dreams.length === 0 ? (

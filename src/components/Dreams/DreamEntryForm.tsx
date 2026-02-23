@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { addDream, updateDream, type DreamEntry } from '@lib/dreamStorage';
+import { suggestTags } from '@lib/dreamPatterns';
 import { VoiceDictationButton } from '../VoiceDictation';
 
 type DreamEntryFormProps = {
@@ -22,7 +23,35 @@ export function DreamEntryForm({ dream, onSave, onCancel }: DreamEntryFormProps)
   const [content, setContent] = useState(dream?.content || '');
   const [date, setDate] = useState(dream?.date || new Date().toISOString().split('T')[0]);
   const [mood, setMood] = useState<DreamEntry['mood']>(dream?.mood);
+  const [tags, setTags] = useState<string[]>(dream?.tags ?? []);
+  const [tagInput, setTagInput] = useState('');
+  const [tagSuggestions, setTagSuggestions] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
+
+  // Auto-suggest tags when content changes
+  useEffect(() => {
+    const suggested = suggestTags(content).filter(t => !tags.includes(t));
+    setTagSuggestions(suggested);
+  }, [content, tags]);
+
+  const addTag = (tag: string) => {
+    const trimmed = tag.trim().toLowerCase();
+    if (trimmed && !tags.includes(trimmed)) {
+      setTags(prev => [...prev, trimmed]);
+    }
+    setTagInput('');
+  };
+
+  const removeTag = (tag: string) => {
+    setTags(prev => prev.filter(t => t !== tag));
+  };
+
+  const handleTagKeyDown = (e: React.KeyboardEvent) => {
+    if ((e.key === 'Enter' || e.key === ',') && tagInput.trim()) {
+      e.preventDefault();
+      addTag(tagInput);
+    }
+  };
 
   // Voice dictation handler - appends to content with proper spacing
   const handleVoiceTranscript = useCallback((transcript: string) => {
@@ -41,9 +70,9 @@ export function DreamEntryForm({ dream, onSave, onCancel }: DreamEntryFormProps)
     setSaving(true);
     try {
       if (dream) {
-        updateDream(dream.id, { title, content, date, mood });
+        updateDream(dream.id, { title, content, date, mood, tags });
       } else {
-        addDream({ title, content, date, mood });
+        addDream({ title, content, date, mood, tags });
       }
       onSave();
     } catch (error) {
@@ -147,6 +176,62 @@ export function DreamEntryForm({ dream, onSave, onCancel }: DreamEntryFormProps)
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Tags */}
+        <div>
+          <label className="block text-xs uppercase tracking-wider text-white/50 mb-2">
+            Tags
+          </label>
+
+          {/* Auto-suggested tags */}
+          {tagSuggestions.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              <span className="text-xs text-white/30">Suggested:</span>
+              {tagSuggestions.map(s => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => addTag(s)}
+                  className="px-2 py-0.5 text-xs bg-violet-500/15 text-violet-300/70 border border-violet-400/20 rounded-full hover:bg-violet-500/25 transition-colors"
+                >
+                  + {s}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Selected tags */}
+          {tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {tags.map(tag => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 bg-violet-500/20 text-violet-300 rounded-full text-xs"
+                >
+                  {tag}
+                  <button
+                    type="button"
+                    onClick={() => removeTag(tag)}
+                    className="text-violet-300/50 hover:text-white ml-0.5"
+                  >
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+
+          <input
+            type="text"
+            value={tagInput}
+            onChange={(e) => setTagInput(e.target.value)}
+            onKeyDown={handleTagKeyDown}
+            placeholder="Add a tag (Enter or comma to add)..."
+            className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm placeholder-white/30 focus:outline-none focus:border-violet-500/50 focus:bg-white/10 transition-all"
+          />
         </div>
 
         {/* Submit */}

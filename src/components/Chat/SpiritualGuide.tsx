@@ -81,7 +81,7 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
     setIsLoading(true);
 
     try {
-      const { response, isAI } = await sendToSpiritualGuide(userMessage.content, messages);
+      const { response, isAI, suggestions } = await sendToSpiritualGuide(userMessage.content, messages);
 
       if (!isAI) {
         toast.info('Using offline guidance — AI unavailable');
@@ -92,6 +92,7 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
         role: 'assistant',
         content: response,
         timestamp: new Date().toISOString(),
+        followUpSuggestions: suggestions,
       };
 
       const finalMessages = [...updatedMessages, assistantMessage];
@@ -203,8 +204,28 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
         )}
 
         {/* Message list */}
-        {messages.map((message) => (
-          <ChatMessage key={message.id} message={message} />
+        {messages.map((message, index) => (
+          <div key={message.id}>
+            <ChatMessage message={message} />
+            {/* Follow-up suggestion pills after last assistant message */}
+            {message.role === 'assistant' &&
+              index === messages.length - 1 &&
+              !isLoading &&
+              message.followUpSuggestions &&
+              message.followUpSuggestions.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2 ml-2">
+                  {message.followUpSuggestions.map((suggestion, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      className="px-3 py-1.5 bg-violet-500/15 border border-violet-400/30 rounded-full text-xs text-violet-200/80 hover:bg-violet-500/25 hover:text-white transition-colors text-left"
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              )}
+          </div>
         ))}
 
         {/* Loading indicator */}

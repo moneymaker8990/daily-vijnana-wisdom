@@ -5,7 +5,7 @@ import type { DreamInterpretation } from './dreamStorage';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
 
 // Shared dream symbol dictionary — 100 entries
-const DREAM_SYMBOLS: Array<{ word: string; meaning: string }> = [
+export const DREAM_SYMBOLS: Array<{ word: string; meaning: string }> = [
   // Original symbols
   { word: 'water', meaning: 'Emotions, the unconscious mind, purification, or transformation' },
   { word: 'flying', meaning: 'Freedom, transcendence, or escape from limitations' },

@@ -102,6 +102,8 @@ function App() {
             onPrev={goToPrev}
             onNext={goToNext}
             onToday={goToToday}
+            onGoToDay={goToDay}
+            onOpenLibrary={() => handleTabChange('library')}
           />
         );
       

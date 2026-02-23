@@ -12,6 +12,9 @@ import type { Verse } from '@core/library/types';
 import { MeditationTimer } from '../Timer/MeditationTimer';
 import { ExplainButton, ExplainPanel } from '../Explain';
 import type { TextExplanation } from '@lib/textExplain';
+import { getQuizForLesson } from '@data/quizzes';
+import { hasCompletedQuiz } from '@lib/quizProgress';
+import { LessonQuiz } from './LessonQuiz';
 
 // Helper to parse duration string like "10-15 minutes" into a number
 function parseDuration(durationStr: string): number {
@@ -29,9 +32,11 @@ type LessonViewProps = {
 export function LessonView({ courseId, lessonId, onBack, onNavigateLesson }: LessonViewProps) {
   const [expandedSection, setExpandedSection] = useState<'intro' | 'verses' | 'reflection' | 'practice' | null>('intro');
   const [showCompleteModal, setShowCompleteModal] = useState(false);
-  
+  const [quizCompleted, setQuizCompleted] = useState(() => hasCompletedQuiz(courseId, lessonId));
+
   const course = getCourseById(courseId);
   const lesson = course?.lessons.find(l => l.id === lessonId);
+  const quizQuestions = getQuizForLesson(courseId, lessonId);
   
   // Update current lesson on mount
   useEffect(() => {
@@ -197,6 +202,24 @@ export function LessonView({ courseId, lessonId, onBack, onNavigateLesson }: Les
           </div>
         </CollapsibleSection>
       </div>
+
+      {/* Knowledge Check */}
+      {quizQuestions && !quizCompleted && (
+        <LessonQuiz
+          courseId={courseId}
+          lessonId={lessonId}
+          questions={quizQuestions}
+          onComplete={() => setQuizCompleted(true)}
+        />
+      )}
+      {quizQuestions && quizCompleted && (
+        <div className="flex items-center gap-2 px-4 py-3 bg-emerald-500/10 border border-emerald-400/20 rounded-xl">
+          <svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span className="text-sm text-emerald-300/80">Knowledge check completed</span>
+        </div>
+      )}
 
       {/* Lesson Navigation */}
       <div className="flex flex-col gap-3 pt-4 border-t border-white/10">

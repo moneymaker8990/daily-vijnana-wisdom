@@ -203,6 +203,7 @@ export function Journal() {
     return (
       <JournalStats
         stats={stats}
+        entries={entries}
         onClose={() => setView('list')}
       />
     );

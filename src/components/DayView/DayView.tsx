@@ -7,12 +7,17 @@ import { ShareButton } from '../Share/ShareButton';
 import { FavoriteButton } from '../Favorites/FavoriteButton';
 import { JourneyProgress } from '../Progress/JourneyProgress';
 import { getTextSize, type TextSize, textSizeClasses } from '@lib/textSize';
+import { WisdomSearch } from './WisdomSearch';
+import { DailyVerseCard } from './DailyVerseCard';
+import { getDataSource } from '@lib/dataSource';
 
 type DayViewProps = {
   entry: DailyEntry;
   onPrev: () => void;
   onNext: () => void;
   onToday: () => void;
+  onGoToDay?: (day: number) => void;
+  onOpenLibrary?: () => void;
 };
 
 function SectionHeader({ children, className = '' }: { children: React.ReactNode; className?: string }) {
@@ -90,27 +95,48 @@ function TraditionCard({
   );
 }
 
-export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
+export function DayView({ entry, onPrev, onNext, onToday, onGoToDay, onOpenLibrary }: DayViewProps) {
   const { dayNumber, theme } = entry;
   const phase = getPhaseForDay(dayNumber);
   const [textSize, setTextSize] = useState<TextSize>('medium');
   const [showProgress, setShowProgress] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [allEntries, setAllEntries] = useState<DailyEntry[]>([]);
 
   useEffect(() => {
     setTextSize(getTextSize());
-    
+
     // Listen for text size changes
     const handleStorage = () => setTextSize(getTextSize());
     window.addEventListener('storage', handleStorage);
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
+  // Lazy-load all entries for search
+  useEffect(() => {
+    if (showSearch && allEntries.length === 0) {
+      getDataSource().getAllEntries().then(setAllEntries);
+    }
+  }, [showSearch, allEntries.length]);
+
   const sizeClasses = textSizeClasses[textSize];
 
   return (
     <div className="space-y-5 sm:space-y-6 md:space-y-8">
       {/* Day Header - Compact */}
-      <section className="text-center pb-4 sm:pb-6 border-b border-white/10">
+      <section className="text-center pb-4 sm:pb-6 border-b border-white/10 relative">
+        {/* Search icon */}
+        {onGoToDay && (
+          <button
+            onClick={() => setShowSearch(true)}
+            className="absolute right-0 top-0 p-2 text-white/30 hover:text-white/70 hover:bg-white/10 rounded-lg transition-colors"
+            aria-label="Search all days"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+        )}
         <button
           onClick={() => setShowProgress(!showProgress)}
           className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-violet-300/70 mb-1 hover:text-violet-300 transition-colors cursor-pointer"
@@ -402,6 +428,9 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
         </div>
       </section>
 
+      {/* Daily Verse from Sacred Library */}
+      <DailyVerseCard dayNumber={dayNumber} onOpenLibrary={onOpenLibrary} />
+
       {/* Integrated Reflection */}
       <section className="bg-gradient-to-br from-white/10 to-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-white/15">
         <SectionHeader>Integrated Reflection</SectionHeader>
@@ -489,6 +518,15 @@ export function DayView({ entry, onPrev, onNext, onToday }: DayViewProps) {
         disablePrev={dayNumber <= 1}
         disableNext={dayNumber >= 365}
       />
+
+      {/* Wisdom Search Modal */}
+      {showSearch && onGoToDay && (
+        <WisdomSearch
+          entries={allEntries}
+          onGoToDay={onGoToDay}
+          onClose={() => setShowSearch(false)}
+        />
+      )}
     </div>
   );
 }

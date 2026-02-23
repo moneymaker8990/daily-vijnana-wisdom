@@ -10,6 +10,7 @@ export type DreamEntry = {
   title?: string;
   mood?: 'peaceful' | 'anxious' | 'confused' | 'joyful' | 'mysterious' | 'neutral';
   symbols?: string[];
+  tags?: string[];
   interpretation?: DreamInterpretation;
   createdAt: string;
   updatedAt: string;
