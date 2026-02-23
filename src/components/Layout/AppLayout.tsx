@@ -5,6 +5,8 @@ import { TextSizeToggle } from '../Settings/TextSizeControl';
 import { Settings } from '../Settings';
 import { UserMenu } from '../Auth';
 import { SpiritualGuide } from '../Chat';
+import { MeditationScreen } from '../Timer/MeditationScreen';
+import { getStreakData } from '@lib/streakTracker';
 
 type TabId = 'daily' | 'courses' | 'library' | 'journal' | 'dreams';
 
@@ -28,13 +30,16 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily', containerR
   const [showFavorites, setShowFavorites] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showSpiritualGuide, setShowSpiritualGuide] = useState(false);
+  const [showMeditation, setShowMeditation] = useState(false);
   const [, forceUpdate] = useState({});
+  const streakData = getStreakData();
 
   // Escape key closes whichever modal is open
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        if (showSpiritualGuide) setShowSpiritualGuide(false);
+        if (showMeditation) setShowMeditation(false);
+        else if (showSpiritualGuide) setShowSpiritualGuide(false);
         else if (showFavorites) setShowFavorites(false);
         else if (showSettings) setShowSettings(false);
         else if (showNotificationSettings) setShowNotificationSettings(false);
@@ -42,7 +47,7 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily', containerR
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [showSpiritualGuide, showFavorites, showSettings, showNotificationSettings]);
+  }, [showMeditation, showSpiritualGuide, showFavorites, showSettings, showNotificationSettings]);
 
   const handleTextSizeChange = () => {
     forceUpdate({});
@@ -108,10 +113,17 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily', containerR
               </button>
             </div>
 
-            {/* Center: Page Title */}
-            <h1 className="text-xl md:text-2xl font-serif font-medium tracking-wide text-white text-center flex-1">
-              {pageTitle}
-            </h1>
+            {/* Center: Page Title + Streak */}
+            <div className="flex items-center justify-center gap-2 flex-1">
+              <h1 className="text-xl md:text-2xl font-serif font-medium tracking-wide text-white text-center">
+                {pageTitle}
+              </h1>
+              {streakData.current > 0 && (
+                <span className="flex items-center gap-0.5 text-xs bg-orange-500/15 text-orange-300/90 px-2 py-0.5 rounded-full border border-orange-400/20" title={`${streakData.current} day streak`}>
+                  🔥 {streakData.current}
+                </span>
+              )}
+            </div>
 
             {/* Right: User Menu */}
             <div className="flex-shrink-0">
@@ -139,6 +151,16 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily', containerR
         <Settings onClose={() => setShowSettings(false)} />
       )}
 
+      {/* Meditation floating button */}
+      <button
+        onClick={() => setShowMeditation(true)}
+        className="fixed bottom-20 left-4 z-40 w-14 h-14 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-full shadow-lg shadow-indigo-500/30 flex items-center justify-center text-white hover:scale-105 transition-transform"
+        title="Meditation Timer"
+        aria-label="Open meditation timer"
+      >
+        <span className="text-2xl">🧘</span>
+      </button>
+
       {/* Spiritual Guide floating button */}
       <button
         onClick={() => setShowSpiritualGuide(true)}
@@ -148,6 +170,11 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily', containerR
       >
         <span className="text-2xl">🙏</span>
       </button>
+
+      {/* Meditation screen */}
+      {showMeditation && (
+        <MeditationScreen onClose={() => setShowMeditation(false)} />
+      )}
 
       {/* Spiritual Guide chat */}
       {showSpiritualGuide && (

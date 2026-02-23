@@ -7,6 +7,9 @@ import { getDataSource } from './lib/dataSource';
 import { STORAGE_KEYS } from '@lib/constants';
 import { TabNavigation, type TabId } from './components/Navigation/TabNavigation';
 import { OfflineIndicator } from './components/ui';
+import { OnboardingFlow } from './components/Onboarding/OnboardingFlow';
+import { MilestoneModal } from './components/ui/MilestoneModal';
+import { recordDailyVisit, checkNewMilestone } from './lib/streakTracker';
 
 const Journal = lazy(() => import('./components/Journal').then(m => ({ default: m.Journal })));
 const StudyHub = lazy(() => import('./components/StudyPathways').then(m => ({ default: m.StudyHub })));
@@ -17,6 +20,10 @@ function App() {
   const { entry, loading, goToNext, goToPrev, goToToday, goToDay } = useDailyEntry();
   const [activeTab, setActiveTab] = useState<TabId>('daily');
   const mainContainerRef = useRef<HTMLDivElement>(null);
+  const [showOnboarding, setShowOnboarding] = useState(
+    () => !localStorage.getItem(STORAGE_KEYS.ONBOARDING_COMPLETE)
+  );
+  const [milestone, setMilestone] = useState<{ days: number; title: string; message: string } | null>(null);
 
   // Scroll to top when tab changes
   const handleTabChange = (tab: TabId) => {
@@ -25,6 +32,19 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'instant' });
     // Also scroll the main container if it exists
     mainContainerRef.current?.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  // Record daily visit and check for milestones
+  useEffect(() => {
+    if (showOnboarding) return;
+    const streak = recordDailyVisit();
+    const m = checkNewMilestone(streak);
+    if (m) setMilestone(m);
+  }, [showOnboarding]);
+
+  const handleOnboardingComplete = () => {
+    localStorage.setItem(STORAGE_KEYS.ONBOARDING_COMPLETE, 'true');
+    setShowOnboarding(false);
   };
 
   // Start notification scheduler on app load
@@ -109,6 +129,10 @@ function App() {
     </div>
   );
 
+  if (showOnboarding) {
+    return <OnboardingFlow onComplete={handleOnboardingComplete} />;
+  }
+
   return (
     <>
       <OfflineIndicator />
@@ -119,6 +143,15 @@ function App() {
       </AppLayout>
 
       <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />
+
+      {milestone && (
+        <MilestoneModal
+          days={milestone.days}
+          title={milestone.title}
+          message={milestone.message}
+          onDismiss={() => setMilestone(null)}
+        />
+      )}
     </>
   );
 }

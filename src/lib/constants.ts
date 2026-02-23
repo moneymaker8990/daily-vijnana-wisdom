@@ -19,6 +19,9 @@ export const STORAGE_KEYS = {
   CHAT_HISTORY: 'mindvanta_chat_history',
   TEXT_EXPLANATIONS: 'mindvanta_text_explanations',
   LEARNING_PROFILE: 'mindvanta_learning_profile',
+  ONBOARDING_COMPLETE: 'mindvanta_onboarding_complete',
+  STREAK_DATA: 'mindvanta_streak_data',
+  SHOWN_MILESTONES: 'mindvanta_shown_milestones',
 } as const;
 
 export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

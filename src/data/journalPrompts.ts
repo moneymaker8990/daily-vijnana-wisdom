@@ -46,7 +46,60 @@ export const journalPrompts: JournalPrompt[] = [
     text: "What technology, tool, or modern convenience made your life easier today?",
     category: 'gratitude'
   },
-  
+  {
+    id: 'grat-6',
+    text: "What hidden blessing has been quietly supporting you that you rarely acknowledge?",
+    category: 'gratitude',
+    followUp: "How would your day feel different if you held this blessing in awareness?"
+  },
+  {
+    id: 'grat-7',
+    text: "Think of an ancestor or someone from the past whose choices made your life possible. What would you say to them?",
+    category: 'gratitude'
+  },
+  {
+    id: 'grat-8',
+    text: "What element of the natural world brought you a moment of awe or peace recently?",
+    category: 'gratitude'
+  },
+  {
+    id: 'grat-9',
+    text: "What mistake or failure from your past are you now able to see as a gift? What did it redirect you toward?",
+    category: 'gratitude',
+    followUp: "How does this shift your relationship with current difficulties?"
+  },
+  {
+    id: 'grat-10',
+    text: "Choose one of your five senses. What is one thing it allowed you to experience today that you're grateful for?",
+    category: 'gratitude'
+  },
+  {
+    id: 'grat-11',
+    text: "When did a stranger's kindness — even a small gesture — unexpectedly brighten your day?",
+    category: 'gratitude'
+  },
+  {
+    id: 'grat-12',
+    text: "What opportunity to rest or slow down appeared recently? Did you take it?",
+    category: 'gratitude'
+  },
+  {
+    id: 'grat-13',
+    text: "What creative ability or talent do you possess that you sometimes take for granted?",
+    category: 'gratitude'
+  },
+  {
+    id: 'grat-14',
+    text: "Think of a difficult person in your life. What unexpected lesson have they taught you?",
+    category: 'gratitude',
+    followUp: "Can you hold gratitude for the teaching even if the experience was painful?"
+  },
+  {
+    id: 'grat-15',
+    text: "Write a brief note of gratitude to the person you will be one year from now. What do you appreciate about your future self's journey?",
+    category: 'gratitude'
+  },
+
   // Reflection
   {
     id: 'ref-1',
@@ -74,7 +127,59 @@ export const journalPrompts: JournalPrompt[] = [
     text: "Where in your life are you holding on too tightly? What would release feel like?",
     category: 'reflection'
   },
-  
+  {
+    id: 'ref-6',
+    text: "What recurring dream or daydream keeps visiting you? What might your unconscious be trying to communicate?",
+    category: 'reflection'
+  },
+  {
+    id: 'ref-7',
+    text: "What patterns do you notice repeating in your relationships? What role do you consistently play?",
+    category: 'reflection',
+    followUp: "Is this role one you've chosen, or one you've inherited?"
+  },
+  {
+    id: 'ref-8',
+    text: "What does your inner critic most often say to you? Whose voice does it sound like?",
+    category: 'reflection'
+  },
+  {
+    id: 'ref-9',
+    text: "What piece of wisdom did you understand as a child that you've since forgotten or overcomplicated?",
+    category: 'reflection'
+  },
+  {
+    id: 'ref-10',
+    text: "What activities or situations quietly drain your energy without you fully realizing it?",
+    category: 'reflection',
+    followUp: "What would your days look like with even one of these removed?"
+  },
+  {
+    id: 'ref-11',
+    text: "If you were to teach a young person the single most important thing you've learned, what would it be?",
+    category: 'reflection'
+  },
+  {
+    id: 'ref-12',
+    text: "Recall a moment when you acted with genuine courage. What made that possible?",
+    category: 'reflection'
+  },
+  {
+    id: 'ref-13',
+    text: "What truths about yourself or your life have you left unspoken? What keeps them silent?",
+    category: 'reflection'
+  },
+  {
+    id: 'ref-14',
+    text: "When you are silent and still, what arises? What does silence reveal that noise conceals?",
+    category: 'reflection'
+  },
+  {
+    id: 'ref-15',
+    text: "How would you describe your current relationship with time? Do you feel you have enough, too little, or that it moves differently than you expect?",
+    category: 'reflection'
+  },
+
   // Growth
   {
     id: 'grow-1',
@@ -102,7 +207,59 @@ export const journalPrompts: JournalPrompt[] = [
     text: "What comfort zone are you being called to expand?",
     category: 'growth'
   },
-  
+  {
+    id: 'grow-6',
+    text: "Where are you standing at the edge of your comfort zone right now? What would one small step beyond it look like?",
+    category: 'growth',
+    followUp: "What is the worst that could realistically happen if you took that step?"
+  },
+  {
+    id: 'grow-7',
+    text: "What belief, habit, or assumption are you ready to unlearn? What would replace it?",
+    category: 'growth'
+  },
+  {
+    id: 'grow-8',
+    text: "Who or what are you withholding forgiveness from — including yourself? What would it take to begin releasing that?",
+    category: 'growth'
+  },
+  {
+    id: 'grow-9',
+    text: "When was the last time you allowed yourself to be truly vulnerable? What did you discover?",
+    category: 'growth'
+  },
+  {
+    id: 'grow-10',
+    text: "What boundary have you been reluctant to set? What fear underlies that reluctance?",
+    category: 'growth'
+  },
+  {
+    id: 'grow-11',
+    text: "What form of creative expression calls to you that you've been neglecting or dismissing?",
+    category: 'growth'
+  },
+  {
+    id: 'grow-12',
+    text: "What is your body trying to tell you right now that your mind has been ignoring?",
+    category: 'growth'
+  },
+  {
+    id: 'grow-13',
+    text: "What has grief or loss taught you that nothing else could have? How has sorrow deepened your capacity for life?",
+    category: 'growth'
+  },
+  {
+    id: 'grow-14',
+    text: "Where in your life is imperfection actually serving you well? What beauty lives in the unfinished?",
+    category: 'growth'
+  },
+  {
+    id: 'grow-15',
+    text: "Have you experienced spiritual doubt recently? What might that doubt be protecting or revealing?",
+    category: 'growth',
+    followUp: "Can doubt and faith coexist?"
+  },
+
   // Mindfulness
   {
     id: 'mind-1',
@@ -129,7 +286,59 @@ export const journalPrompts: JournalPrompt[] = [
     text: "Describe your current breath. Is it deep or shallow? Fast or slow?",
     category: 'mindfulness'
   },
-  
+  {
+    id: 'mind-6',
+    text: "Notice the transitions in your day — waking to rising, indoors to outdoors, work to rest. What happens in those in-between moments?",
+    category: 'mindfulness'
+  },
+  {
+    id: 'mind-7',
+    text: "Eat your next meal with complete attention. Describe one bite — the texture, taste, temperature, and the miracle of nourishment.",
+    category: 'mindfulness'
+  },
+  {
+    id: 'mind-8',
+    text: "The next time someone speaks to you, listen with your whole body. What do you hear beyond their words?",
+    category: 'mindfulness',
+    followUp: "What changes in the conversation when you listen this way?"
+  },
+  {
+    id: 'mind-9',
+    text: "Take a slow, mindful walk — even just across the room. What do you notice about the sensation of each step?",
+    category: 'mindfulness'
+  },
+  {
+    id: 'mind-10',
+    text: "Where is pain or discomfort present in your body right now? Can you simply be with it without trying to fix it?",
+    category: 'mindfulness'
+  },
+  {
+    id: 'mind-11',
+    text: "When was the last time you sat with boredom without reaching for distraction? What might boredom be inviting you toward?",
+    category: 'mindfulness'
+  },
+  {
+    id: 'mind-12',
+    text: "Rest in the space between two thoughts. What lives there? Can you linger?",
+    category: 'mindfulness'
+  },
+  {
+    id: 'mind-13',
+    text: "Notice one judgment that arose today — about yourself, another, or a situation. Can you observe it without believing it?",
+    category: 'mindfulness'
+  },
+  {
+    id: 'mind-14',
+    text: "Take three conscious breaths right now. With each exhale, silently say 'thank you.' What shifts?",
+    category: 'mindfulness'
+  },
+  {
+    id: 'mind-15',
+    text: "Can you become aware of your own awareness? What is it like to notice that you are noticing?",
+    category: 'mindfulness',
+    followUp: "Who or what is doing the noticing?"
+  },
+
   // Wisdom
   {
     id: 'wis-1',
@@ -157,7 +366,59 @@ export const journalPrompts: JournalPrompt[] = [
     text: "What would love do in your current situation?",
     category: 'wisdom'
   },
-  
+  {
+    id: 'wis-6',
+    text: "If you knew you would die in one year, what would you change about how you're living today?",
+    category: 'wisdom',
+    followUp: "Why wait?"
+  },
+  {
+    id: 'wis-7',
+    text: "What pattern does your ego most frequently use to protect you? What is it protecting you from?",
+    category: 'wisdom'
+  },
+  {
+    id: 'wis-8',
+    text: "Where in your life are you confusing surrender with giving up? What is the difference between the two?",
+    category: 'wisdom'
+  },
+  {
+    id: 'wis-9',
+    text: "What paradox are you currently living inside of? Can two contradictory things both be true?",
+    category: 'wisdom'
+  },
+  {
+    id: 'wis-10',
+    text: "What has nature taught you recently that no book or teacher could?",
+    category: 'wisdom'
+  },
+  {
+    id: 'wis-11',
+    text: "How do you understand suffering's role in your life? Is it punishment, teacher, or something else entirely?",
+    category: 'wisdom'
+  },
+  {
+    id: 'wis-12',
+    text: "What exists beyond the categories of right and wrong? Can you touch that space?",
+    category: 'wisdom',
+    followUp: "Rumi wrote: 'Out beyond ideas of wrongdoing and rightdoing, there is a field. I'll meet you there.'"
+  },
+  {
+    id: 'wis-13',
+    text: "What ordinary, everyday activity feels secretly sacred to you? What makes it so?",
+    category: 'wisdom'
+  },
+  {
+    id: 'wis-14',
+    text: "What is the relationship between emptiness and fullness in your experience? Can something be both?",
+    category: 'wisdom'
+  },
+  {
+    id: 'wis-15',
+    text: "What truth or experience in your life lies beyond words? What happens when you try to speak the unspeakable?",
+    category: 'wisdom'
+  },
+
   // Intention
   {
     id: 'int-1',
@@ -184,7 +445,58 @@ export const journalPrompts: JournalPrompt[] = [
     text: "What are you calling into your life right now?",
     category: 'intention'
   },
-  
+  {
+    id: 'int-6',
+    text: "Before rising tomorrow, do a slow body scan from crown to toes. Set one intention based on what your body needs.",
+    category: 'intention'
+  },
+  {
+    id: 'int-7',
+    text: "At the end of today, review: Where did I act with integrity? Where did I fall short? Hold both with compassion.",
+    category: 'intention'
+  },
+  {
+    id: 'int-8',
+    text: "Dedicate the merit of today's practice to someone who is suffering. Who comes to mind, and what do you wish for them?",
+    category: 'intention'
+  },
+  {
+    id: 'int-9',
+    text: "Commit to one act of service today — however small. What will it be, and for whom?",
+    category: 'intention'
+  },
+  {
+    id: 'int-10',
+    text: "Set an intention for a digital sabbath — even for one hour. What will you do with that reclaimed attention?",
+    category: 'intention'
+  },
+  {
+    id: 'int-11',
+    text: "Choose three moments today where you will pause before responding. What happens in that sacred pause?",
+    category: 'intention',
+    followUp: "Notice the difference between reacting and responding."
+  },
+  {
+    id: 'int-12',
+    text: "Set an intention to speak with care today. Before each conversation, silently ask: 'Is it true? Is it kind? Is it necessary?'",
+    category: 'intention'
+  },
+  {
+    id: 'int-13',
+    text: "Practice generous listening today — giving someone your full, undivided presence. What do you notice?",
+    category: 'intention'
+  },
+  {
+    id: 'int-14',
+    text: "Create a small release ritual tonight: write down something you're ready to let go of and tear it up, burn it, or dissolve it in water.",
+    category: 'intention'
+  },
+  {
+    id: 'int-15',
+    text: "Write a brief letter of gratitude to someone — even if you never send it. Let the writing itself be the practice.",
+    category: 'intention'
+  },
+
   // Connection
   {
     id: 'conn-1',
@@ -211,7 +523,58 @@ export const journalPrompts: JournalPrompt[] = [
     text: "What relationship in your life could use more attention?",
     category: 'connection'
   },
-  
+  {
+    id: 'conn-6',
+    text: "Think of your ancestors — known or unknown. What strength or quality do you carry that they passed down?",
+    category: 'connection'
+  },
+  {
+    id: 'conn-7',
+    text: "Step outside and place your bare feet on the earth, or touch a tree. What do you feel? What does connection to the earth mean to you?",
+    category: 'connection'
+  },
+  {
+    id: 'conn-8',
+    text: "Who are the unseen helpers in your life — the people whose labor you benefit from but rarely acknowledge?",
+    category: 'connection'
+  },
+  {
+    id: 'conn-9',
+    text: "Write a forgiveness letter to someone who hurt you. You don't need to send it. What does the writing release?",
+    category: 'connection',
+    followUp: "Forgiveness is not condoning — it is freeing yourself."
+  },
+  {
+    id: 'conn-10',
+    text: "Choose someone you disagree with. Try to see the world entirely through their eyes for five minutes. What do you discover?",
+    category: 'connection'
+  },
+  {
+    id: 'conn-11',
+    text: "Imagine the inner life of a stranger you saw today. What joys, fears, and hopes might they carry?",
+    category: 'connection'
+  },
+  {
+    id: 'conn-12',
+    text: "Where do you feel a sense of genuine belonging? What makes those spaces feel like home?",
+    category: 'connection'
+  },
+  {
+    id: 'conn-13',
+    text: "If you have an animal companion, what have they taught you about presence, loyalty, or joy?",
+    category: 'connection'
+  },
+  {
+    id: 'conn-14',
+    text: "What piece of art, music, or poetry has moved you deeply? What connection did it create within you?",
+    category: 'connection'
+  },
+  {
+    id: 'conn-15',
+    text: "Offer a silent prayer or good wish for someone you'll never meet. What does this act of distant compassion feel like?",
+    category: 'connection'
+  },
+
   // Challenge
   {
     id: 'chal-1',
@@ -237,6 +600,58 @@ export const journalPrompts: JournalPrompt[] = [
     id: 'chal-5',
     text: "What part of yourself are you being called to integrate or accept?",
     category: 'challenge'
+  },
+  {
+    id: 'chal-6',
+    text: "Sit with a feeling of discomfort for five minutes without trying to fix, explain, or escape it. What happens?",
+    category: 'challenge'
+  },
+  {
+    id: 'chal-7',
+    text: "Examine your anger. What deeper emotion — hurt, fear, grief — is it protecting? What happens when you look beneath it?",
+    category: 'challenge',
+    followUp: "Anger is often the bodyguard of more vulnerable feelings."
+  },
+  {
+    id: 'chal-8',
+    text: "When you feel jealousy or envy, what unmet desire is it pointing to? Can jealousy become a compass?",
+    category: 'challenge'
+  },
+  {
+    id: 'chal-9',
+    text: "When loneliness visits, what is it actually asking for — connection with others, or connection with yourself?",
+    category: 'challenge'
+  },
+  {
+    id: 'chal-10',
+    text: "What uncertainty are you currently living with? Can you practice trusting the not-knowing?",
+    category: 'challenge'
+  },
+  {
+    id: 'chal-11',
+    text: "Examine an area where you have privilege. How does acknowledging it change your relationship with gratitude and responsibility?",
+    category: 'challenge'
+  },
+  {
+    id: 'chal-12',
+    text: "If you fully accepted your own mortality today, what would become urgent? What would become irrelevant?",
+    category: 'challenge'
+  },
+  {
+    id: 'chal-13',
+    text: "What part of your shadow — the disowned, hidden self — is asking to be seen? Can you turn toward it with curiosity rather than fear?",
+    category: 'challenge'
+  },
+  {
+    id: 'chal-14',
+    text: "Where in your life are you meeting inner resistance? What would it look like to stop fighting and start listening to it?",
+    category: 'challenge'
+  },
+  {
+    id: 'chal-15',
+    text: "Practice radical acceptance for one hour: whatever arises, meet it with 'This too.' What shifts in your experience?",
+    category: 'challenge',
+    followUp: "Acceptance is not passivity — it is the ground from which wise action grows."
   },
 ];
 
