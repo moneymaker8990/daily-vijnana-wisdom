@@ -10,6 +10,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useVoiceDictation } from '@hooks/useVoiceDictation';
 import { generateAIReflection, type AIReflection } from '@lib/voiceReflection';
+import { ConfirmModal, useToast } from '../ui';
 
 type VoiceJournalModeProps = {
   onClose: () => void;
@@ -28,8 +29,10 @@ export function VoiceJournalMode({ onClose, onSave }: VoiceJournalModeProps) {
   const [showReflection, setShowReflection] = useState(false);
   const [reflection, setReflection] = useState<AIReflection | null>(null);
   const [isGeneratingReflection, setIsGeneratingReflection] = useState(false);
-  
+  const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
+
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const toast = useToast();
   const startTimeRef = useRef<number>(0);
   const totalPausedTimeRef = useRef<number>(0);
   const pauseStartRef = useRef<number>(0);
@@ -100,11 +103,15 @@ export function VoiceJournalMode({ onClose, onSave }: VoiceJournalModeProps) {
     if (transcript.trim().length > 50) {
       setIsGeneratingReflection(true);
       try {
-        const aiReflection = await generateAIReflection(transcript);
+        const { reflection: aiReflection, isAI } = await generateAIReflection(transcript);
         setReflection(aiReflection);
         setShowReflection(true);
+        if (!isAI) {
+          toast.info('Using offline reflection — AI unavailable');
+        }
       } catch (err) {
-        // Reflection generation failed silently
+        toast.error('Could not generate reflection');
+        setShowReflection(true);
       } finally {
         setIsGeneratingReflection(false);
       }
@@ -123,7 +130,15 @@ export function VoiceJournalMode({ onClose, onSave }: VoiceJournalModeProps) {
   };
 
   const handleDiscard = () => {
-    if (transcript && !confirm('Discard this recording?')) return;
+    if (transcript) {
+      setShowDiscardConfirm(true);
+    } else {
+      onClose();
+    }
+  };
+
+  const confirmDiscard = () => {
+    setShowDiscardConfirm(false);
     onClose();
   };
 
@@ -381,6 +396,16 @@ export function VoiceJournalMode({ onClose, onSave }: VoiceJournalModeProps) {
           )}
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={showDiscardConfirm}
+        title="Discard Recording"
+        message="Discard this recording? Your transcript will be lost."
+        confirmLabel="Discard"
+        variant="danger"
+        onConfirm={confirmDiscard}
+        onCancel={() => setShowDiscardConfirm(false)}
+      />
     </div>
   );
 }

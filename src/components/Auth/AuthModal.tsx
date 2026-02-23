@@ -4,7 +4,7 @@
  * Beautiful glass-style authentication modal with email and Google options.
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from './AuthProvider';
 
 type AuthMode = 'signin' | 'signup' | 'forgot';
@@ -25,6 +25,16 @@ export function AuthModal({ isOpen, onClose, initialMode = 'signin' }: AuthModal
   const [loading, setLoading] = useState(false);
 
   const { signIn, signUp, signInGoogle, forgotPassword } = useAuth();
+
+  // Escape key to close
+  useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -98,8 +108,16 @@ export function AuthModal({ isOpen, onClose, initialMode = 'signin' }: AuthModal
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="relative w-full max-w-md bg-gradient-to-br from-slate-900/95 to-indigo-950/95 rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        className="relative w-full max-w-md bg-gradient-to-br from-slate-900/95 to-indigo-950/95 rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
+        onClick={e => e.stopPropagation()}
+      >
         {/* Close button */}
         <button
           onClick={onClose}

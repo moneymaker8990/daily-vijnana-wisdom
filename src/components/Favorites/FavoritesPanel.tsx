@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getFavorites, removeFavorite, type FavoriteItem } from '@lib/favorites';
 import { ShareButton } from '../Share/ShareButton';
 
@@ -16,6 +16,17 @@ export function FavoritesPanel({ isOpen, onClose, onGoToDay }: FavoritesPanelPro
       setFavorites(getFavorites());
     }
   }, [isOpen]);
+
+  // Escape key to close
+  const handleEscape = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') onClose();
+  }, [onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isOpen, handleEscape]);
 
   const handleRemove = (id: string) => {
     removeFavorite(id);
@@ -43,6 +54,7 @@ export function FavoritesPanel({ isOpen, onClose, onGoToDay }: FavoritesPanelPro
           <button
             onClick={onClose}
             className="p-2 text-white/50 hover:text-white/80 hover:bg-white/10 rounded-lg transition-colors"
+            aria-label="Close favorites panel"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -93,6 +105,7 @@ export function FavoritesPanel({ isOpen, onClose, onGoToDay }: FavoritesPanelPro
                         onClick={() => handleRemove(fav.id)}
                         className="p-2 text-white/40 hover:text-rose-400 transition-colors"
                         title="Remove from favorites"
+                        aria-label="Remove from favorites"
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

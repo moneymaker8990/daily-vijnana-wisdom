@@ -7,7 +7,7 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
 export async function interpretDream(
   dreamContent: string,
   mood?: string
-): Promise<DreamInterpretation> {
+): Promise<{ interpretation: DreamInterpretation; isAI: boolean }> {
 
   try {
     // Using the "hyper-processor" function (can be renamed to "interpret-dream" if preferred)
@@ -27,20 +27,20 @@ export async function interpretDream(
     }
 
     const data = await response.json();
-    
+
     // The Edge Function returns { interpretation: string }
     // We need to parse it into our DreamInterpretation format
     if (data.interpretation) {
-      return parseInterpretation(data.interpretation, dreamContent, mood);
+      return { interpretation: parseInterpretation(data.interpretation, dreamContent, mood), isAI: true };
     }
-    
+
     return {
-      ...data,
-      generatedAt: new Date().toISOString(),
+      interpretation: { ...data, generatedAt: new Date().toISOString() },
+      isAI: true,
     };
   } catch (error) {
     // Fallback to mock interpretation
-    return generateMockInterpretation(dreamContent, mood);
+    return { interpretation: generateMockInterpretation(dreamContent, mood), isAI: false };
   }
 }
 

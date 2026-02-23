@@ -23,6 +23,7 @@ import { DailyPromptCard } from './DailyPromptCard';
 import { JournalStatsBar } from './JournalStatsBar';
 import type { AIReflection } from '@lib/voiceReflection';
 import { useAuth } from '../Auth';
+import { ConfirmModal } from '../ui';
 
 type View = 'list' | 'form' | 'detail' | 'calendar' | 'stats' | 'voice';
 
@@ -36,6 +37,7 @@ export function Journal() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [allTags, setAllTags] = useState<string[]>([]);
   const [initialPrompt, setInitialPrompt] = useState<JournalPrompt | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -63,11 +65,16 @@ export function Journal() {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm('Are you sure you want to delete this entry?')) {
-      deleteJournalEntry(id);
+    setDeleteTarget(id);
+  };
+
+  const confirmDelete = () => {
+    if (deleteTarget) {
+      deleteJournalEntry(deleteTarget);
       refreshData();
       setView('list');
       setViewingEntry(null);
+      setDeleteTarget(null);
     }
   };
 
@@ -355,6 +362,16 @@ export function Journal() {
           {filteredEntries.length} {filteredEntries.length === 1 ? 'entry' : 'entries'} found
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={deleteTarget !== null}
+        title="Delete Entry"
+        message="Are you sure you want to delete this journal entry? This cannot be undone."
+        confirmLabel="Delete"
+        variant="danger"
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

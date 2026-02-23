@@ -6,10 +6,7 @@
  */
 
 import { STORAGE_KEYS } from '@lib/constants';
-
-// Supabase configuration (same as dreamAI.ts)
-const SUPABASE_URL = 'https://coihujjfdhpqfwmibfbi.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNvaWh1ampmZGhwcWZ3bWliZmJpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUwNTY4MzgsImV4cCI6MjA4MDYzMjgzOH0.tU3rtto0eb61Z6vBFuJMp0OqlQU1UkM1g9UqksSGOYo';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
 
 export interface TextExplanation {
   meaning: string;
@@ -70,19 +67,19 @@ function getFromCache(key: string): TextExplanation | null {
 export async function explainText(
   text: string,
   source: string
-): Promise<TextExplanation> {
+): Promise<{ explanation: TextExplanation; isAI: boolean }> {
   // Check cache first
   const cacheKey = getCacheKey(text, source);
   const cached = getFromCache(cacheKey);
   if (cached) {
-    return cached;
+    return { explanation: cached, isAI: true }; // cached result was originally AI
   }
 
   // If Supabase is not configured, use mock explanation
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     const mock = generateMockExplanation(text, source);
     saveToCache(cacheKey, mock);
-    return mock;
+    return { explanation: mock, isAI: false };
   }
 
   try {
@@ -114,16 +111,16 @@ Keep the tone warm, insightful, and non-dogmatic. Speak as a guide, not an autho
     }
 
     const data = await response.json();
-    
+
     // Parse the AI response
     const explanation = parseExplanation(data.interpretation || data.response || '', text, source);
     saveToCache(cacheKey, explanation);
-    return explanation;
+    return { explanation, isAI: true };
   } catch (error) {
     // Fallback to mock explanation
     const mock = generateMockExplanation(text, source);
     saveToCache(cacheKey, mock);
-    return mock;
+    return { explanation: mock, isAI: false };
   }
 }
 

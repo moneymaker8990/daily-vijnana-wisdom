@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { updateDream, type DreamEntry, type DreamInterpretation as DreamInterpretationType } from '@lib/dreamStorage';
 import { interpretDream } from '@lib/dreamAI';
+import { useToast } from '../ui';
 
 type DreamInterpretationProps = {
   dream: DreamEntry;
@@ -11,14 +12,22 @@ export function DreamInterpretation({ dream, onBack }: DreamInterpretationProps)
   const [interpretation, setInterpretation] = useState<DreamInterpretationType | null>(dream.interpretation || null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isOffline, setIsOffline] = useState(false);
+  const toast = useToast();
 
   const generateInterpretation = async () => {
     setLoading(true);
     setError(null);
+    setIsOffline(false);
 
     try {
-      const result = await interpretDream(dream.content, dream.mood);
+      const { interpretation: result, isAI } = await interpretDream(dream.content, dream.mood);
       setInterpretation(result);
+      setIsOffline(!isAI);
+
+      if (!isAI) {
+        toast.info('Using offline interpretation — AI unavailable');
+      }
 
       // Save to dream entry
       updateDream(dream.id, { interpretation: result });
@@ -78,6 +87,14 @@ export function DreamInterpretation({ dream, onBack }: DreamInterpretationProps)
       {/* Interpretation Content */}
       {interpretation && !loading && (
         <div className="space-y-6">
+          {/* Offline indicator */}
+          {isOffline && (
+            <div className="flex items-center gap-2 px-3 py-2 bg-amber-500/10 border border-amber-500/20 rounded-lg text-xs text-amber-300">
+              <span>Offline interpretation</span>
+              <span className="text-amber-300/50">— reconnect for AI-powered analysis</span>
+            </div>
+          )}
+
           {/* Summary */}
           <div className="bg-gradient-to-br from-violet-500/10 to-indigo-500/10 rounded-2xl p-6 border border-white/10">
             <h3 className="text-xs uppercase tracking-wider text-violet-300/70 mb-3">Summary</h3>

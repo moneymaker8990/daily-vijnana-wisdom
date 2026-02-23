@@ -65,7 +65,7 @@ async function syncToCloud(entry: JournalEntry): Promise<void> {
       updated_at: entry.updatedAt,
     });
   } catch (error) {
-    // Sync failed silently
+    console.warn('Journal cloud sync failed:', error);
   }
 }
 
@@ -80,7 +80,7 @@ async function deleteFromCloud(entryId: string): Promise<void> {
       .eq('id', entryId)
       .eq('user_id', userId);
   } catch (error) {
-    // Delete sync failed silently
+    console.warn('Journal cloud delete failed:', error);
   }
 }
 

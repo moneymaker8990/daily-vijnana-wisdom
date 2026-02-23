@@ -1,4 +1,4 @@
-import { ReactNode, useState, RefObject } from 'react';
+import { ReactNode, useState, useEffect, RefObject } from 'react';
 import { NotificationSettings } from '../NotificationSettings/NotificationSettings';
 import { FavoritesPanel } from '../Favorites/FavoritesPanel';
 import { TextSizeToggle } from '../Settings/TextSizeControl';
@@ -29,6 +29,20 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily', containerR
   const [showSettings, setShowSettings] = useState(false);
   const [showSpiritualGuide, setShowSpiritualGuide] = useState(false);
   const [, forceUpdate] = useState({});
+
+  // Escape key closes whichever modal is open
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (showSpiritualGuide) setShowSpiritualGuide(false);
+        else if (showFavorites) setShowFavorites(false);
+        else if (showSettings) setShowSettings(false);
+        else if (showNotificationSettings) setShowNotificationSettings(false);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [showSpiritualGuide, showFavorites, showSettings, showNotificationSettings]);
 
   const handleTextSizeChange = () => {
     forceUpdate({});
@@ -61,6 +75,7 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily', containerR
                 onClick={() => setShowFavorites(true)}
                 className="p-2 text-white/40 hover:text-white/80 hover:bg-white/10 rounded-lg transition-colors"
                 title="Saved Passages"
+                aria-label="Saved passages"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -72,6 +87,7 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily', containerR
                 onClick={() => setShowNotificationSettings(true)}
                 className="p-2 text-white/40 hover:text-white/80 hover:bg-white/10 rounded-lg transition-colors"
                 title="Reminder Settings"
+                aria-label="Reminder settings"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -83,6 +99,7 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily', containerR
                 onClick={() => setShowSettings(true)}
                 className="p-2 text-white/40 hover:text-white/80 hover:bg-white/10 rounded-lg transition-colors"
                 title="Settings"
+                aria-label="Settings"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -127,6 +144,7 @@ export function AppLayout({ children, onGoToDay, activeTab = 'daily', containerR
         onClick={() => setShowSpiritualGuide(true)}
         className="fixed bottom-20 right-4 z-40 w-14 h-14 bg-gradient-to-br from-violet-500 to-indigo-600 rounded-full shadow-lg shadow-violet-500/30 flex items-center justify-center text-white hover:scale-105 transition-transform"
         title="Ask the Spiritual Guide"
+        aria-label="Ask the spiritual guide"
       >
         <span className="text-2xl">🙏</span>
       </button>

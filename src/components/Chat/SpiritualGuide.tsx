@@ -17,6 +17,7 @@ import {
 } from '@lib/spiritualGuide';
 import { ChatMessage } from './ChatMessage';
 import { VoiceDictationButtonCompact } from '../VoiceDictation';
+import { ConfirmModal, useToast } from '../ui';
 
 type SpiritualGuideProps = {
   onClose: () => void;
@@ -27,8 +28,10 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const toast = useToast();
 
   // Load chat history on mount
   useEffect(() => {
@@ -43,6 +46,15 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Escape key to close
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onClose]);
 
   // Auto-resize textarea
   useEffect(() => {
@@ -69,8 +81,12 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
     setIsLoading(true);
 
     try {
-      const response = await sendToSpiritualGuide(userMessage.content, messages);
-      
+      const { response, isAI } = await sendToSpiritualGuide(userMessage.content, messages);
+
+      if (!isAI) {
+        toast.info('Using offline guidance — AI unavailable');
+      }
+
       const assistantMessage: ChatMessageType = {
         id: generateMessageId(),
         role: 'assistant',
@@ -82,7 +98,7 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
       setMessages(finalMessages);
       saveChatHistory(finalMessages);
     } catch (error) {
-      // Error handled silently
+      toast.error('Failed to get a response. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -101,11 +117,14 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
   };
 
   const handleClearHistory = () => {
-    if (confirm('Clear all chat history? This cannot be undone.')) {
-      clearChatHistory();
-      setMessages([]);
-      setShowSuggestions(true);
-    }
+    setShowClearConfirm(true);
+  };
+
+  const confirmClearHistory = () => {
+    clearChatHistory();
+    setMessages([]);
+    setShowSuggestions(true);
+    setShowClearConfirm(false);
   };
 
   const handleVoiceTranscript = (text: string) => {
@@ -131,6 +150,7 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
               onClick={handleClearHistory}
               className="p-2 text-white/40 hover:text-white/80 hover:bg-white/10 rounded-lg transition-colors"
               title="Clear history"
+              aria-label="Clear chat history"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -140,6 +160,7 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
           <button
             onClick={onClose}
             className="p-2 text-white/40 hover:text-white/80 hover:bg-white/10 rounded-lg transition-colors"
+            aria-label="Close spiritual guide"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -233,6 +254,7 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
             onClick={handleSend}
             disabled={!input.trim() || isLoading}
             className="p-3 bg-violet-500 hover:bg-violet-400 disabled:bg-white/10 disabled:text-white/30 rounded-xl text-white transition-colors"
+            aria-label="Send message"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -244,6 +266,16 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
           Shift+Enter for new line • Enter to send
         </p>
       </div>
+
+      <ConfirmModal
+        isOpen={showClearConfirm}
+        title="Clear Chat History"
+        message="Clear all chat history? This cannot be undone."
+        confirmLabel="Clear"
+        variant="danger"
+        onConfirm={confirmClearHistory}
+        onCancel={() => setShowClearConfirm(false)}
+      />
     </div>
   );
 }

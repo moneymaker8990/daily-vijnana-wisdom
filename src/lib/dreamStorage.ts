@@ -51,7 +51,7 @@ async function syncToCloud(entry: DreamEntry): Promise<void> {
       interpretation: entry.interpretation || null,
     });
   } catch (error) {
-    // Sync failed silently
+    console.warn('Dream cloud sync failed:', error);
   }
 }
 
@@ -66,7 +66,7 @@ async function deleteFromCloud(entryId: string): Promise<void> {
       .eq('id', entryId)
       .eq('user_id', userId);
   } catch (error) {
-    // Delete sync failed silently
+    console.warn('Dream cloud delete failed:', error);
   }
 }
 

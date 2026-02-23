@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { AppLayout } from './components/Layout/AppLayout';
 import { DayView } from './components/DayView/DayView';
 import { useDailyEntry } from './hooks/useDailyEntry';
@@ -6,10 +6,12 @@ import { startNotificationScheduler, getNotificationSettings } from './lib/notif
 import { getDataSource } from './lib/dataSource';
 import { STORAGE_KEYS } from '@lib/constants';
 import { TabNavigation, type TabId } from './components/Navigation/TabNavigation';
-import { StudyHub } from './components/StudyPathways';
-import { StudyLibrary } from './components/Study/StudyLibrary';
-import { DreamJournal } from './components/Dreams/DreamJournal';
-import { Journal } from './components/Journal';
+import { OfflineIndicator } from './components/ui';
+
+const Journal = lazy(() => import('./components/Journal').then(m => ({ default: m.Journal })));
+const StudyHub = lazy(() => import('./components/StudyPathways').then(m => ({ default: m.StudyHub })));
+const StudyLibrary = lazy(() => import('./components/Study/StudyLibrary').then(m => ({ default: m.StudyLibrary })));
+const DreamJournal = lazy(() => import('./components/Dreams/DreamJournal').then(m => ({ default: m.DreamJournal })));
 
 function App() {
   const { entry, loading, goToNext, goToPrev, goToToday, goToDay } = useDailyEntry();
@@ -100,10 +102,20 @@ function App() {
     }
   };
 
+  const suspenseFallback = (
+    <div className="py-16 text-center">
+      <div className="inline-block w-8 h-8 border-2 border-white/30 border-t-white/80 rounded-full animate-spin mb-4" />
+      <p className="text-white/60 text-sm">Loading...</p>
+    </div>
+  );
+
   return (
     <>
+      <OfflineIndicator />
       <AppLayout onGoToDay={goToDay} activeTab={activeTab} containerRef={mainContainerRef}>
-        {renderContent()}
+        <Suspense fallback={suspenseFallback}>
+          {renderContent()}
+        </Suspense>
       </AppLayout>
 
       <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} />

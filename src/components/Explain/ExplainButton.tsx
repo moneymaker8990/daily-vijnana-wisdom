@@ -6,6 +6,7 @@
 
 import { useState } from 'react';
 import { explainText, type TextExplanation } from '@lib/textExplain';
+import { useToast } from '../ui';
 
 type ExplainButtonProps = {
   text: string;
@@ -16,16 +17,20 @@ type ExplainButtonProps = {
 
 export function ExplainButton({ text, source, onExplanation, isExpanded = false }: ExplainButtonProps) {
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const handleClick = async () => {
     if (loading) return;
-    
+
     setLoading(true);
     try {
-      const explanation = await explainText(text, source);
+      const { explanation, isAI } = await explainText(text, source);
       onExplanation(explanation);
+      if (!isAI) {
+        toast.info('Using offline explanation');
+      }
     } catch (error) {
-      // Explanation fetch failed silently
+      toast.error('Could not load explanation');
     } finally {
       setLoading(false);
     }

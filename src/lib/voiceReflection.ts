@@ -27,7 +27,7 @@ Be warm, non-judgmental, and supportive. Don't be preachy or prescriptive.`;
 /**
  * Generate an AI reflection for a voice journal entry
  */
-export async function generateAIReflection(transcript: string): Promise<AIReflection> {
+export async function generateAIReflection(transcript: string): Promise<{ reflection: AIReflection; isAI: boolean }> {
   try {
     const response = await fetch(`${SUPABASE_URL}/functions/v1/hyper-processor`, {
       method: 'POST',
@@ -47,20 +47,20 @@ export async function generateAIReflection(transcript: string): Promise<AIReflec
     }
 
     const data = await response.json();
-    
+
     // Parse the response - expecting structured data
     if (data.reflection) {
       return {
-        ...data.reflection,
-        generatedAt: new Date().toISOString(),
+        reflection: { ...data.reflection, generatedAt: new Date().toISOString() },
+        isAI: true,
       };
     }
 
     // If we get a text response, try to parse it
     const text = data.interpretation || data.response || '';
-    return parseReflectionFromText(text, transcript);
+    return { reflection: parseReflectionFromText(text, transcript), isAI: true };
   } catch (error) {
-    return generateFallbackReflection(transcript);
+    return { reflection: generateFallbackReflection(transcript), isAI: false };
   }
 }
 

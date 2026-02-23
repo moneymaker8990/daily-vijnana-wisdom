@@ -3,12 +3,14 @@ import { loadDreams, loadDreamsFromCloud, deleteDream, type DreamEntry } from '@
 import { DreamEntryForm } from './DreamEntryForm';
 import { DreamDetail } from './DreamDetail';
 import { useAuth } from '../Auth';
+import { ConfirmModal } from '../ui';
 
 export function DreamJournal() {
   const [dreams, setDreams] = useState<DreamEntry[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingDream, setEditingDream] = useState<DreamEntry | null>(null);
   const [viewingDream, setViewingDream] = useState<DreamEntry | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -31,10 +33,15 @@ export function DreamJournal() {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm('Are you sure you want to delete this dream?')) {
-      deleteDream(id);
+    setDeleteTarget(id);
+  };
+
+  const confirmDelete = () => {
+    if (deleteTarget) {
+      deleteDream(deleteTarget);
       setDreams(loadDreams());
       setViewingDream(null);
+      setDeleteTarget(null);
     }
   };
 
@@ -124,6 +131,16 @@ export function DreamJournal() {
           </p>
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={deleteTarget !== null}
+        title="Delete Dream"
+        message="Are you sure you want to delete this dream? This cannot be undone."
+        confirmLabel="Delete"
+        variant="danger"
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

@@ -83,15 +83,15 @@ You're available at any hour—for the 3am questions, the moments of doubt, the 
 export async function sendToSpiritualGuide(
   userMessage: string,
   conversationHistory: ChatMessage[] = []
-): Promise<string> {
+): Promise<{ response: string; isAI: boolean }> {
   try {
     // Build context from recent messages
     const recentHistory = conversationHistory.slice(-10);
-    const contextMessages = recentHistory.map(m => 
+    const contextMessages = recentHistory.map(m =>
       `${m.role === 'user' ? 'Seeker' : 'Guide'}: ${m.content}`
     ).join('\n\n');
 
-    const fullPrompt = contextMessages 
+    const fullPrompt = contextMessages
       ? `Previous conversation:\n${contextMessages}\n\nSeeker: ${userMessage}`
       : userMessage;
 
@@ -113,9 +113,11 @@ export async function sendToSpiritualGuide(
     }
 
     const data = await response.json();
-    return data.interpretation || data.response || generateFallbackResponse(userMessage);
+    const text = data.interpretation || data.response;
+    if (text) return { response: text, isAI: true };
+    return { response: generateFallbackResponse(userMessage), isAI: false };
   } catch (error) {
-    return generateFallbackResponse(userMessage);
+    return { response: generateFallbackResponse(userMessage), isAI: false };
   }
 }
 
