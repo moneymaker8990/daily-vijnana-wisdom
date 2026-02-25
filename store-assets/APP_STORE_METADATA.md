@@ -173,9 +173,9 @@ meditation, mindfulness, spirituality, wisdom, journal, dream, yoga, buddhism, t
 
 ## Contact Information
 
-**Support Email:** support@mindvanta.app
-**Privacy Email:** privacy@mindvanta.app
-**Website:** https://mindvanta.app
+**Support Email:** support@mindvanta.io
+**Privacy Email:** privacy@mindvanta.io
+**Website:** https://mindvanta.io
 
 ---
 

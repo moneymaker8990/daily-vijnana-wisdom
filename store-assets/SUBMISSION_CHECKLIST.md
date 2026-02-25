@@ -22,7 +22,7 @@
 ### Legal
 - [x] Privacy Policy (public/privacy-policy.html)
 - [x] Terms of Service (public/terms-of-service.html)
-- [ ] Host legal pages at public URL (e.g., https://mindvanta.app/privacy-policy.html)
+- [ ] Host legal pages at public URL (e.g., https://mindvanta.io/privacy-policy.html)
 
 ### App Configuration
 - [x] Version number set to 1.0.0

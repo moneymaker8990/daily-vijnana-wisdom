@@ -89,13 +89,13 @@ Welcome to MindVanta! This initial release includes:
 ---
 
 ## Support URL
-https://mindvanta.app/support
+https://mindvanta.io/support
 
 ## Privacy Policy URL
-https://mindvanta.app/privacy-policy.html
+https://mindvanta.io/privacy-policy.html
 
 ## Marketing URL
-https://mindvanta.app
+https://mindvanta.io
 
 ---
 
