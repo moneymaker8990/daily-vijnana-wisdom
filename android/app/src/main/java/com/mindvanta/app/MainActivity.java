@@ -1,4 +1,4 @@
-package com.stillpoint.app;
+package com.mindvanta.app;
 
 import com.getcapacitor.BridgeActivity;
 

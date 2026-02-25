@@ -89,13 +89,13 @@ Welcome to MindVanta! This initial release includes:
 ---
 
 ## Support URL
-https://stillpoint.app/support
+https://mindvanta.app/support
 
 ## Privacy Policy URL
-https://stillpoint.app/privacy-policy.html
+https://mindvanta.app/privacy-policy.html
 
 ## Marketing URL
-https://stillpoint.app
+https://mindvanta.app
 
 ---
 
