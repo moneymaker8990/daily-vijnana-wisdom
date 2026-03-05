@@ -11,7 +11,19 @@
       "Bash(wc:*)",
       "Bash(gh auth status:*)",
       "Bash(git config:*)",
-      "Bash(git init:*)"
+      "Bash(git init:*)",
+      "Bash(cd:*)",
+      "Bash(head:*)",
+      "Bash(node:*)",
+      "Bash(cd \"C:/Users/caleb/OneDrive/Desktop/Book of Wisdom/daily-vijnana-app\" && npx vercel --prod 2>&1)",
+      "Bash(cd \"C:/Users/caleb/OneDrive/Desktop/Book of Wisdom/daily-vijnana-app\" && npx vercel login 2>&1)",
+      "Bash(cd \"C:/Users/caleb/OneDrive/Desktop/Book of Wisdom/daily-vijnana-app\" && npx vercel whoami 2>&1)",
+      "Bash(cd \"C:/Users/caleb/OneDrive/Desktop/Book of Wisdom/daily-vijnana-app\" && echo | npx vercel login 2>&1)",
+      "WebFetch(domain:mindvanta.com)",
+      "WebFetch(domain:mindvanta.io)",
+      "Bash(grep:*)",
+      "Bash(tail:*)",
+      "Bash(git:*)"
     ]
   }
 }
