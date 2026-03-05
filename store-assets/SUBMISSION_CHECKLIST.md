@@ -2,27 +2,32 @@
 
 ## Pre-Submission Tasks
 
+### Review Evidence
+- [x] Review evidence pack prepared (`store-assets/REVIEW_EVIDENCE_PACK.md`)
+- [x] Device QA matrix completed (`store-assets/DEVICE_QA_MATRIX.md`)
+- [x] Smoke test log completed (`store-assets/SMOKE_TEST_LOG.md`)
+
 ### Developer Accounts
 - [ ] Apple Developer Account ($99/year) - https://developer.apple.com
 - [ ] Google Play Developer Account ($25 one-time) - https://play.google.com/console
 
 ### Icons & Graphics
-- [ ] Generate PNG icons (run `npm install sharp && node scripts/generate-icons.js`)
+- [x] Generate PNG icons (run `npm install sharp && node scripts/generate-icons.cjs`)
 - [ ] Create feature graphic for Google Play (1024x500 PNG)
-- [ ] Verify iOS app icon (1024x1024 PNG)
-- [ ] Verify Android adaptive icon layers
+- [x] Verify iOS app icon (1024x1024 PNG)
+- [x] Verify Android adaptive icon layers
 
 ### Screenshots
-- [ ] iPhone 6.7" screenshots (1290x2796) - 6 images
-- [ ] iPhone 6.5" screenshots (1242x2688) - 6 images
+- [x] iPhone 6.7" screenshots (1290x2796) - 6 images
+- [x] iPhone 6.5" screenshots (1242x2688) - 6 images
 - [ ] iPad Pro screenshots (2048x2732) - 6 images (optional but recommended)
-- [ ] Android phone screenshots (1080x1920+) - 6 images
+- [x] Android phone screenshots (1080x1920+) - 6 images
 - [ ] Android tablet screenshots (optional)
 
 ### Legal
 - [x] Privacy Policy (public/privacy-policy.html)
 - [x] Terms of Service (public/terms-of-service.html)
-- [ ] Host legal pages at public URL (e.g., https://mindvanta.io/privacy-policy.html)
+- [x] Host legal pages at public URL (https://mindvanta.io/privacy-policy.html and https://mindvanta.io/terms-of-service.html)
 
 ### App Configuration
 - [x] Version number set to 1.0.0
@@ -104,7 +109,7 @@ keytool -genkey -v -keystore mindvanta-release.keystore -alias mindvanta -keyalg
 
 ### After Approval
 - [ ] Announce launch on social media
-- [ ] Set up app analytics (optional)
+- [ ] Verify analytics dashboard events are flowing
 - [ ] Monitor crash reports
 - [ ] Respond to user reviews
 

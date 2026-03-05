@@ -4,15 +4,20 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev": "node --max-old-space-size=4096 ./node_modules/vite/bin/vite.js",
+    "build": "node --max-old-space-size=4096 ./node_modules/typescript/bin/tsc && node --max-old-space-size=4096 ./node_modules/vite/bin/vite.js build",
+    "preview": "vite preview",
+    "release:check": "node ./scripts/release-check.mjs",
+    "release:check:strict": "node ./scripts/release-check.mjs --strict",
+    "release:prep": "node ./scripts/release-prep.mjs"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/vite": "^4.1.17",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.1.17",
     "typescript": "~5.9.3",
     "vite": "^7.2.4",
@@ -25,6 +30,8 @@
     "@capacitor/ios": "^7.4.4",
     "@capacitor/local-notifications": "^7.0.3",
     "@capacitor/push-notifications": "^7.0.3",
+    "@revenuecat/purchases-capacitor": "^11.3.2",
+    "@sentry/react": "^10.40.0",
     "@supabase/supabase-js": "^2.87.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

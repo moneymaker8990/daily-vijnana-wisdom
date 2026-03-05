@@ -10,6 +10,7 @@ import { getTextSize, type TextSize, textSizeClasses } from '@lib/textSize';
 import { WisdomSearch } from './WisdomSearch';
 import { DailyVerseCard } from './DailyVerseCard';
 import { getDataSource } from '@lib/dataSource';
+import { InsightGraph } from '../Insights/InsightGraph';
 
 type DayViewProps = {
   entry: DailyEntry;
@@ -18,6 +19,7 @@ type DayViewProps = {
   onToday: () => void;
   onGoToDay?: (day: number) => void;
   onOpenLibrary?: () => void;
+  onNavigateTab?: (tab: 'journal' | 'courses' | 'dreams' | 'library') => void;
 };
 
 function SectionHeader({ children, className = '' }: { children: React.ReactNode; className?: string }) {
@@ -95,7 +97,7 @@ function TraditionCard({
   );
 }
 
-export function DayView({ entry, onPrev, onNext, onToday, onGoToDay, onOpenLibrary }: DayViewProps) {
+export function DayView({ entry, onPrev, onNext, onToday, onGoToDay, onOpenLibrary, onNavigateTab }: DayViewProps) {
   const { dayNumber, theme } = entry;
   const phase = getPhaseForDay(dayNumber);
   const [textSize, setTextSize] = useState<TextSize>('medium');
@@ -170,6 +172,8 @@ export function DayView({ entry, onPrev, onNext, onToday, onGoToDay, onOpenLibra
           <JourneyProgress currentDay={dayNumber} />
         </div>
       )}
+
+      <InsightGraph onNavigateTab={onNavigateTab} />
 
       {/* Tradition Passages */}
       <section>

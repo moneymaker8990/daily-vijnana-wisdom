@@ -14,6 +14,8 @@ import {
   generateMessageId,
   sendToSpiritualGuide,
   getSuggestedQuestions,
+  checkAIConnection,
+  clearAIStatusCache,
 } from '@lib/spiritualGuide';
 import { ChatMessage } from './ChatMessage';
 import { VoiceDictationButtonCompact } from '../VoiceDictation';
@@ -23,23 +25,50 @@ type SpiritualGuideProps = {
   onClose: () => void;
 };
 
+type AIStatus = 'checking' | 'connected' | 'offline';
+
 export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [aiStatus, setAiStatus] = useState<AIStatus>('checking');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const toast = useToast();
 
-  // Load chat history on mount
+  // Load chat history on mount + check AI connection
   useEffect(() => {
     const history = loadChatHistory();
     setMessages(history);
     if (history.length > 0) {
       setShowSuggestions(false);
     }
+
+    // Check AI connection status
+    checkAIConnection().then(ok => {
+      setAiStatus(ok ? 'connected' : 'offline');
+    });
+  }, []);
+
+  // Re-check AI status on network reconnect
+  useEffect(() => {
+    const handleOnline = () => {
+      clearAIStatusCache();
+      setAiStatus('checking');
+      checkAIConnection().then(ok => {
+        setAiStatus(ok ? 'connected' : 'offline');
+      });
+    };
+    const handleOffline = () => setAiStatus('offline');
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
   }, []);
 
   // Scroll to bottom when messages change
@@ -83,7 +112,10 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
     try {
       const { response, isAI, suggestions } = await sendToSpiritualGuide(userMessage.content, messages);
 
-      if (!isAI) {
+      if (isAI) {
+        setAiStatus('connected');
+      } else {
+        setAiStatus('offline');
         toast.info('Using offline guidance — AI unavailable');
       }
 
@@ -99,6 +131,7 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
       setMessages(finalMessages);
       saveChatHistory(finalMessages);
     } catch (error) {
+      setAiStatus('offline');
       toast.error('Failed to get a response. Please try again.');
     } finally {
       setIsLoading(false);
@@ -135,14 +168,33 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
   const suggestedQuestions = getSuggestedQuestions();
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950">
+    <div className="fixed inset-0 z-[60] flex flex-col bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950">
       {/* Header */}
-      <div className="flex-shrink-0 px-4 py-3 bg-black/20 border-b border-white/10 flex items-center justify-between">
+      <div className="flex-shrink-0 px-4 py-3 bg-black/20 border-b border-white/10 flex items-center justify-between safe-area-pt">
         <div className="flex items-center gap-3">
           <span className="text-2xl">🙏</span>
           <div>
             <h2 className="text-lg font-serif text-white">Spiritual Guide</h2>
-            <p className="text-xs text-white/50">Ask anything, anytime</p>
+            <p className="text-xs text-white/50 flex items-center gap-1.5">
+              {aiStatus === 'checking' && (
+                <>
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                  Connecting...
+                </>
+              )}
+              {aiStatus === 'connected' && (
+                <>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  AI connected
+                </>
+              )}
+              {aiStatus === 'offline' && (
+                <>
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+                  Offline — wisdom still available
+                </>
+              )}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -252,7 +304,7 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
       </div>
 
       {/* Input area */}
-      <div className="flex-shrink-0 p-4 bg-black/20 border-t border-white/10">
+      <div className="flex-shrink-0 p-4 bg-black/20 border-t border-white/10 safe-area-pb">
         <div className="flex items-end gap-2">
           {/* Voice input */}
           <VoiceDictationButtonCompact onTranscript={handleVoiceTranscript} />

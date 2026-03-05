@@ -117,7 +117,13 @@ meditation, mindfulness, spirituality, wisdom, journal, dream, yoga, buddhism, t
 - Journal entries (stored locally or in your cloud account)
 - Preferences
 
-**Privacy Policy URL:** https://[your-domain]/privacy-policy.html
+**Privacy Policy URL:** https://mindvanta.io/privacy-policy.html
+**Terms URL:** https://mindvanta.io/terms-of-service.html
+
+**AI Safety Disclosure (Review Notes):**
+- Dream interpretation is reflective guidance only.
+- It is not medical, psychological, or therapeutic advice.
+- No diagnosis or treatment claims are made.
 
 ---
 

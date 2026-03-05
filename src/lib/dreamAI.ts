@@ -133,7 +133,7 @@ export async function interpretDream(
 ): Promise<{ interpretation: DreamInterpretation; isAI: boolean }> {
 
   try {
-    // Using the "hyper-processor" function (can be renamed to "interpret-dream" if preferred)
+    // Uses the unified Supabase Edge Function for AI processing.
     const response = await fetch(`${SUPABASE_URL}/functions/v1/hyper-processor`, {
       method: 'POST',
       headers: {

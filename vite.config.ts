@@ -16,6 +16,29 @@ export default defineConfig({
       '@hooks': resolve(__dirname, 'src/hooks'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('/src/core/library/') || id.includes('/src/data/entries/')) {
+            return 'library';
+          }
+          if (id.includes('/src/components/DayView/')) {
+            return 'daily';
+          }
+          if (id.includes('/src/components/Journal/')) {
+            return 'journal';
+          }
+          if (id.includes('/src/components/Dreams/')) {
+            return 'dreams';
+          }
+          if (id.includes('/src/components/StudyPathways/') || id.includes('/src/components/Study/')) {
+            return 'study';
+          }
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     tailwindcss(),

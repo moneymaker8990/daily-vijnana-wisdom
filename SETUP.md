@@ -1,4 +1,4 @@
-# Daily Vijnana Wisdom - Setup Guide
+# MindVanta - Setup Guide
 
 ## Development Setup
 
@@ -13,29 +13,52 @@
    npm run dev
    ```
 
-## Supabase Setup (for AI Dream Interpretation)
+## Stability (Avoiding PC Shutdowns)
+
+If your PC shuts down or restarts during development/build, reduce system load with these steps:
+
+1. **Work outside OneDrive:**
+   - This repo is currently under a OneDrive path, which can add heavy sync I/O during `npm run dev` and `npm run build`.
+   - Prefer moving/cloning the repo to a non-synced path like `C:\Dev\Book of Wisdom`.
+
+2. **Optional Node memory cap (PowerShell):**
+   ```powershell
+   $env:NODE_OPTIONS="--max-old-space-size=4096"
+   npm run dev
+   ```
+   Use `2048` instead of `4096` if your machine has lower RAM.
+
+3. **Avoid parallel heavy tasks:**
+   - Do not run build + screenshot generation + multiple AI/indexing-heavy tasks at the same time.
+   - Close other heavy desktop apps while building on lower-end hardware.
+
+## Supabase Setup (AI + Cloud Sync)
 
 1. **Create a Supabase project:**
    - Go to [supabase.com](https://supabase.com)
    - Create a new project
 
 2. **Configure environment variables:**
-   Create a `.env` file in the root directory:
+   Create a `.env.local` file in the root directory:
    ```
    VITE_SUPABASE_URL=https://your-project-id.supabase.co
    VITE_SUPABASE_ANON_KEY=your-anon-key
    ```
 
-3. **Deploy Edge Function:**
+3. **Deploy Edge Function (`hyper-processor`):**
    ```bash
    npx supabase login
-   npx supabase link --project-ref your-project-id
-   npx supabase functions deploy interpret-dream
+   npx supabase link --project-ref coihujjfdhpqfwmibfbi
+   npx supabase functions deploy hyper-processor
    ```
 
 4. **Set Claude API Key as secret:**
    - Go to Supabase Dashboard > Project Settings > Edge Functions > Secrets
-   - Add: `ANTHROPIC_API_KEY` = `your-claude-api-key`
+   - Add: `CLAUDE_API_KEY` = `your-claude-api-key`
+
+5. **Apply database schema:**
+   - Open Supabase SQL Editor and run `supabase-schema.sql`
+   - Or use CLI migrations (recommended for repeatable releases)
 
 ## Capacitor Setup (for Native Apps)
 
@@ -77,7 +100,7 @@
 3. Generate feature graphic
 4. Submit for review
 
-## Revenue Cat Setup (for Subscriptions)
+## RevenueCat Setup (for Subscriptions)
 
 1. Create RevenueCat account at [revenuecat.com](https://revenuecat.com)
 2. Configure products in App Store Connect / Play Console

@@ -59,9 +59,12 @@ const tabs: Tab[] = [
 type TabNavigationProps = {
   activeTab: TabId;
   onTabChange: (tab: TabId) => void;
+  hasPremiumAccess?: boolean;
 };
 
-export function TabNavigation({ activeTab, onTabChange }: TabNavigationProps) {
+const PREMIUM_TAB_IDS: TabId[] = ['courses', 'library', 'dreams'];
+
+export function TabNavigation({ activeTab, onTabChange, hasPremiumAccess = false }: TabNavigationProps) {
   return (
     <nav role="navigation" aria-label="Main navigation" className="fixed bottom-0 left-0 right-0 z-50 bg-slate-900/90 backdrop-blur-xl border-t border-white/10 safe-area-pb">
       <div className="max-w-3xl mx-auto px-2">
@@ -79,7 +82,12 @@ export function TabNavigation({ activeTab, onTabChange }: TabNavigationProps) {
               <span className={activeTab === tab.id ? 'scale-110' : ''}>
                 {tab.icon}
               </span>
-              <span className="text-[10px] font-medium">{tab.label}</span>
+              <span className="text-[10px] font-medium flex items-center gap-1">
+                {tab.label}
+                {!hasPremiumAccess && PREMIUM_TAB_IDS.includes(tab.id) && (
+                  <span className="text-[9px] text-white/35" aria-hidden="true">lock</span>
+                )}
+              </span>
               {activeTab === tab.id && (
                 <span className="absolute bottom-0 w-6 h-0.5 bg-violet-500 rounded-full" />
               )}

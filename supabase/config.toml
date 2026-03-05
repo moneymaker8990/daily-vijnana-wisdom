@@ -1,7 +1,7 @@
 # Supabase Configuration for Daily Vijnana Wisdom
 
 [project]
-id = "your-project-id"
+id = "coihujjfdhpqfwmibfbi"
 name = "daily-vijnana-wisdom"
 
 # Database settings (not needed for Edge Functions only)
@@ -27,7 +27,7 @@ port = 54323
 
 # Local development secrets
 # Note: In production, set these via Supabase Dashboard > Settings > Edge Functions > Secrets
-# ANTHROPIC_API_KEY should NEVER be committed to git
+# CLAUDE_API_KEY should NEVER be committed to git
 
 
 

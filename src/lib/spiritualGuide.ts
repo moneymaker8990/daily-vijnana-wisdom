@@ -83,12 +83,96 @@ After your response, on a new line, add exactly 3 follow-up questions the seeker
 FOLLOW_UPS: question one | question two | question three`;
 
 /**
+ * Fetch with timeout and retry
+ */
+async function fetchWithRetry(
+  url: string,
+  options: RequestInit,
+  { retries = 2, timeout = 30000 }: { retries?: number; timeout?: number } = {}
+): Promise<Response> {
+  let lastError: Error | null = null;
+
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeout);
+
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+
+      clearTimeout(timer);
+      return response;
+    } catch (err) {
+      lastError = err instanceof Error ? err : new Error(String(err));
+      // Don't retry on abort (timeout) for the last attempt
+      if (attempt < retries) {
+        // Exponential backoff: 1s, 2s
+        await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+      }
+    }
+  }
+
+  throw lastError ?? new Error('Fetch failed after retries');
+}
+
+/**
+ * AI connection status — cached for 60s
+ */
+let _aiStatusCache: { ok: boolean; checkedAt: number } | null = null;
+
+export async function checkAIConnection(): Promise<boolean> {
+  // Return cached result if recent (within 60s)
+  if (_aiStatusCache && Date.now() - _aiStatusCache.checkedAt < 60000) {
+    return _aiStatusCache.ok;
+  }
+
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
+
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/hyper-processor`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify({ type: 'health-check' }),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timer);
+    // Any response (even 400) means the function is reachable
+    const ok = response.status !== 404 && response.status < 500;
+    _aiStatusCache = { ok, checkedAt: Date.now() };
+    return ok;
+  } catch {
+    _aiStatusCache = { ok: false, checkedAt: Date.now() };
+    return false;
+  }
+}
+
+/**
+ * Clear the AI status cache (e.g. after network reconnect)
+ */
+export function clearAIStatusCache(): void {
+  _aiStatusCache = null;
+}
+
+/**
  * Send a message to the Spiritual Guide and get a response
  */
 export async function sendToSpiritualGuide(
   userMessage: string,
   conversationHistory: ChatMessage[] = []
 ): Promise<{ response: string; isAI: boolean; suggestions: string[] }> {
+  // If we're offline, go straight to fallback
+  if (!navigator.onLine) {
+    const fallback = generateFallbackResponse(userMessage);
+    return { response: fallback, isAI: false, suggestions: generateFollowUpSuggestions(userMessage, fallback) };
+  }
+
   try {
     // Build context from recent messages
     const recentHistory = conversationHistory.slice(-10);
@@ -100,35 +184,48 @@ export async function sendToSpiritualGuide(
       ? `Previous conversation:\n${contextMessages}\n\nSeeker: ${userMessage}`
       : userMessage;
 
-    const response = await fetch(`${SUPABASE_URL}/functions/v1/hyper-processor`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+    const response = await fetchWithRetry(
+      `${SUPABASE_URL}/functions/v1/hyper-processor`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          type: 'spiritual-guide',
+          system: SPIRITUAL_GUIDE_PROMPT,
+          message: fullPrompt,
+        }),
       },
-      body: JSON.stringify({
-        type: 'spiritual-guide',
-        system: SPIRITUAL_GUIDE_PROMPT,
-        message: fullPrompt,
-      }),
-    });
+      { retries: 2, timeout: 30000 }
+    );
 
     if (!response.ok) {
+      const errorText = await response.text().catch(() => '');
+      console.error(`[SpiritualGuide] API error ${response.status}:`, errorText);
       throw new Error(`API error: ${response.status}`);
     }
 
     const data = await response.json();
     const text = data.interpretation || data.response;
     if (text) {
+      // Mark connection as healthy
+      _aiStatusCache = { ok: true, checkedAt: Date.now() };
       const { cleanResponse, suggestions } = parseFollowUpsFromAI(text);
       const finalSuggestions = suggestions.length > 0
         ? suggestions
         : generateFollowUpSuggestions(userMessage, cleanResponse);
       return { response: cleanResponse, isAI: true, suggestions: finalSuggestions };
     }
+
+    // Got a response but no text — edge function might be misconfigured
+    console.warn('[SpiritualGuide] Empty AI response, falling back');
     const fallback = generateFallbackResponse(userMessage);
     return { response: fallback, isAI: false, suggestions: generateFollowUpSuggestions(userMessage, fallback) };
   } catch (error) {
+    console.error('[SpiritualGuide] Request failed:', error);
+    _aiStatusCache = { ok: false, checkedAt: Date.now() };
     const fallback = generateFallbackResponse(userMessage);
     return { response: fallback, isAI: false, suggestions: generateFollowUpSuggestions(userMessage, fallback) };
   }
