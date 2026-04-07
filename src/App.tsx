@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { AppLayout } from './components/Layout/AppLayout';
+import { AssistantProvider } from './components/Assistants';
 import { DayView } from './components/DayView/DayView';
 import { useDailyEntry } from './hooks/useDailyEntry';
 import { startNotificationScheduler, getNotificationSettings } from './lib/notifications';
@@ -300,12 +301,14 @@ function App() {
   }
 
   return (
-    <>
+    <AssistantProvider>
       <OfflineIndicator />
       <AppLayout onGoToDay={goToDay} activeTab={activeTab} containerRef={mainContainerRef}>
-        <Suspense fallback={suspenseFallback}>
-          {renderContent()}
-        </Suspense>
+        <div className="app-content-bottom-safe">
+          <Suspense fallback={suspenseFallback}>
+            {renderContent()}
+          </Suspense>
+        </div>
       </AppLayout>
 
       <TabNavigation activeTab={activeTab} onTabChange={handleTabChange} hasPremiumAccess={premiumEnabled} />
@@ -337,7 +340,7 @@ function App() {
         onLater={handleReviewLater}
         onNoThanks={handleReviewNoThanks}
       />
-    </>
+    </AssistantProvider>
   );
 }
 

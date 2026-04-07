@@ -4,7 +4,7 @@
  * Provides AI-powered spiritual guidance using the Supabase Edge Function.
  */
 
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
+import { getSupabaseFunctionHeaders, hyperProcessorUrl, isSupabaseConfigured } from './supabase';
 import { STORAGE_KEYS } from '@lib/constants';
 import { parseFollowUpsFromAI, generateFollowUpSuggestions } from './followUpSuggestions';
 
@@ -14,6 +14,26 @@ export interface ChatMessage {
   content: string;
   timestamp: string;
   followUpSuggestions?: string[];
+}
+
+export type SpiritualGuideLaunchContext = {
+  draft: string;
+  contextTitle?: string;
+  contextSubtitle?: string;
+  passage?: string;
+};
+
+export function createPassageGuideContext(passage: string, source: string): SpiritualGuideLaunchContext {
+  return {
+    draft: `I'm reading this passage from ${source} and want a grounded explanation that stays clear and practical:
+
+"${passage}"
+
+Help me understand what it means and how I can work with it in daily life.`,
+    contextTitle: source,
+    contextSubtitle: 'Continue with this passage in the Spiritual Guide.',
+    passage,
+  };
 }
 
 /**
@@ -76,6 +96,9 @@ Your approach:
 - Be warm but not sycophantic
 - Keep responses concise (2-4 paragraphs usually)
 - When relevant, reference specific texts or teachers
+- Avoid formulaic therapy-speak or canned validation
+- Do not begin every answer with phrases like "Thank you for sharing" or "What you're asking touches something important"
+- Let each paragraph do a distinct job instead of repeating the same point with different wording
 
 You're available at any hour—for the 3am questions, the moments of doubt, the sudden insights that need a companion. Respond with care and presence.
 
@@ -128,23 +151,25 @@ export async function checkAIConnection(): Promise<boolean> {
     return _aiStatusCache.ok;
   }
 
+  if (!isSupabaseConfigured) {
+    _aiStatusCache = { ok: false, checkedAt: Date.now() };
+    return false;
+  }
+
   try {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 8000);
 
-    const response = await fetch(`${SUPABASE_URL}/functions/v1/hyper-processor`, {
+    const response = await fetch(hyperProcessorUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      },
+      headers: getSupabaseFunctionHeaders(),
       body: JSON.stringify({ type: 'health-check' }),
       signal: controller.signal,
     });
 
     clearTimeout(timer);
-    // Any response (even 400) means the function is reachable
-    const ok = response.status !== 404 && response.status < 500;
+    const data = response.ok ? await response.json().catch(() => null) : null;
+    const ok = response.ok && data?.status === 'ok';
     _aiStatusCache = { ok, checkedAt: Date.now() };
     return ok;
   } catch {
@@ -168,7 +193,7 @@ export async function sendToSpiritualGuide(
   conversationHistory: ChatMessage[] = []
 ): Promise<{ response: string; isAI: boolean; suggestions: string[] }> {
   // If we're offline, go straight to fallback
-  if (!navigator.onLine) {
+  if (!navigator.onLine || !isSupabaseConfigured) {
     const fallback = generateFallbackResponse(userMessage);
     return { response: fallback, isAI: false, suggestions: generateFollowUpSuggestions(userMessage, fallback) };
   }
@@ -185,13 +210,10 @@ export async function sendToSpiritualGuide(
       : userMessage;
 
     const response = await fetchWithRetry(
-      `${SUPABASE_URL}/functions/v1/hyper-processor`,
+      hyperProcessorUrl,
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        },
+        headers: getSupabaseFunctionHeaders(),
         body: JSON.stringify({
           type: 'spiritual-guide',
           system: SPIRITUAL_GUIDE_PROMPT,
@@ -208,7 +230,7 @@ export async function sendToSpiritualGuide(
     }
 
     const data = await response.json();
-    const text = data.interpretation || data.response;
+    const text = typeof data.response === 'string' ? data.response : '';
     if (text) {
       // Mark connection as healthy
       _aiStatusCache = { ok: true, checkedAt: Date.now() };
@@ -220,7 +242,7 @@ export async function sendToSpiritualGuide(
     }
 
     // Got a response but no text — edge function might be misconfigured
-    console.warn('[SpiritualGuide] Empty AI response, falling back');
+    console.warn('[SpiritualGuide] Response missing guide text, falling back');
     const fallback = generateFallbackResponse(userMessage);
     return { response: fallback, isAI: false, suggestions: generateFollowUpSuggestions(userMessage, fallback) };
   } catch (error) {
@@ -391,11 +413,25 @@ Rumi wrote: "Silence is the language of God; all else is poor translation." You 
   }
 
   // Default response
-  return `Thank you for sharing this with me. What you're asking touches something important.
+  const defaultResponses = [
+    `Let's stay close to the question instead of rushing past it.
 
-In my experience, the deepest answers often come not from external sources, but from sitting quietly with the question itself. Let it be there without rushing to resolve it.
+Often the mind wants an immediate conclusion, but a living question can be more useful than a fast answer. Sit with what feels most charged, tender, or unresolved here.
 
-If you'd like, we can explore this together. What feels most alive in this question for you right now?`;
+If you want, tell me which part of this feels most immediate right now, and we'll start there.`,
+    `There may not be a single clean answer yet, and that is okay.
+
+Sometimes clarity arrives when we stop trying to force the whole picture and listen for the one part that is asking for attention first.
+
+What in this situation feels most true in your body when you become quiet?`,
+    `Before we solve anything, let's notice what this question is doing in you.
+
+Does it bring tightness, grief, urgency, relief, longing? That first honest signal is often wiser than the mind's rehearsed explanation.
+
+Name that part, and we can work from something real rather than something polished.`
+  ];
+
+  return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
 }
 
 /**

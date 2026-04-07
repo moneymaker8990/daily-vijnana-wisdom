@@ -186,6 +186,24 @@ html {
   padding-top: env(safe-area-inset-top, 0);
 }
 
+.app-shell-clearance {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 7rem);
+}
+
+.app-content-bottom-safe {
+  padding-bottom: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .app-shell-clearance {
+    padding-bottom: 6rem;
+  }
+
+  .app-content-bottom-safe {
+    padding-bottom: 0;
+  }
+}
+
 /* Custom scrollbar variant */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;

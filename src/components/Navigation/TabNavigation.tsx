@@ -66,9 +66,9 @@ const PREMIUM_TAB_IDS: TabId[] = ['courses', 'library', 'dreams'];
 
 export function TabNavigation({ activeTab, onTabChange, hasPremiumAccess = false }: TabNavigationProps) {
   return (
-    <nav role="navigation" aria-label="Main navigation" className="fixed bottom-0 left-0 right-0 z-50 bg-slate-900/90 backdrop-blur-xl border-t border-white/10 safe-area-pb">
+    <nav role="navigation" aria-label="Main navigation" className="fixed bottom-0 left-0 right-0 z-50 bg-slate-900/92 backdrop-blur-xl border-t border-white/10 safe-area-pb shadow-[0_-12px_32px_rgba(15,23,42,0.45)]">
       <div className="max-w-3xl mx-auto px-2">
-        <div className="flex items-center justify-between py-2">
+        <div className="flex min-h-[4.75rem] items-center justify-between py-2">
           {tabs.map((tab) => (
             <button
               key={tab.id}

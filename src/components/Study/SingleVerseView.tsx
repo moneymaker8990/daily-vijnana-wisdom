@@ -3,6 +3,8 @@ import type { LibraryText, LibraryVerse } from '@data/library/types';
 import { FavoriteButton } from '../Favorites/FavoriteButton';
 import { ShareButton } from '../Share/ShareButton';
 import { ExplainButton, ExplainPanel } from '../Explain';
+import { useAssistants } from '../Assistants';
+import { createPassageGuideContext } from '@lib/spiritualGuide';
 import type { TextExplanation } from '@lib/textExplain';
 
 export type SingleVerseViewProps = {
@@ -29,6 +31,7 @@ export function SingleVerseView({
   onToggleBookmark,
 }: SingleVerseViewProps) {
   const [explanation, setExplanation] = useState<TextExplanation | null>(null);
+  const { openSpiritualGuide } = useAssistants();
 
   // Clear explanation when verse changes
   useEffect(() => {
@@ -125,7 +128,15 @@ export function SingleVerseView({
         </div>
 
         {/* AI Explanation Panel */}
-        {explanation && <ExplainPanel explanation={explanation} onClose={() => setExplanation(null)} />}
+        {explanation && (
+          <ExplainPanel
+            explanation={explanation}
+            onClose={() => setExplanation(null)}
+            onContinueWithGuide={() =>
+              openSpiritualGuide(createPassageGuideContext(verse.text, text.title))
+            }
+          />
+        )}
       </div>
 
       {/* Navigation */}

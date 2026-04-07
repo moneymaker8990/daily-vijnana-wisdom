@@ -2,7 +2,7 @@
 // This will call the Supabase Edge Function for Claude AI interpretation
 
 import type { DreamInterpretation } from './dreamStorage';
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
+import { getSupabaseFunctionHeaders, hyperProcessorUrl, isSupabaseConfigured } from './supabase';
 
 // Shared dream symbol dictionary — 100 entries
 export const DREAM_SYMBOLS: Array<{ word: string; meaning: string }> = [
@@ -131,17 +131,20 @@ export async function interpretDream(
   dreamContent: string,
   mood?: string
 ): Promise<{ interpretation: DreamInterpretation; isAI: boolean }> {
+  if (!isSupabaseConfigured) {
+    return { interpretation: generateMockInterpretation(dreamContent, mood), isAI: false };
+  }
 
   try {
     // Uses the unified Supabase Edge Function for AI processing.
-    const response = await fetch(`${SUPABASE_URL}/functions/v1/hyper-processor`, {
+    const response = await fetch(hyperProcessorUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      },
+      headers: getSupabaseFunctionHeaders(),
       body: JSON.stringify({
-        dream: dreamContent + (mood ? ` (Mood: ${mood})` : ''),
+        type: 'dream-interpretation',
+        dream: dreamContent,
+        mood,
+        message: dreamContent,
       }),
     });
 

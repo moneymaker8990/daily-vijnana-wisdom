@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import type { LibraryText } from '@data/library/types';
-import { updateReadingProgress, toggleBookmark, isBookmarked, getReadingProgress } from '@lib/readingProgress';
+import { updateReadingProgress, toggleBookmark, isBookmarked } from '@lib/readingProgress';
 import { ALL_SOURCES } from '@core/library/registry';
 import { SingleVerseView } from './SingleVerseView';
 import { ListView } from './ListView';
@@ -29,14 +29,6 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
   const source = getSource(text.title);
   const sourceId = source?.id || text.title.toLowerCase().replace(/\s+/g, '-');
   const verse = text.verses[currentIndex];
-
-  // Show intro automatically on first visit (when no reading progress exists)
-  useEffect(() => {
-    const progress = getReadingProgress(sourceId);
-    if (!progress && source?.historicalIntro) {
-      setShowIntro(true);
-    }
-  }, [sourceId, source]);
 
   // Check bookmark status on mount and when verse changes
   useEffect(() => {
@@ -161,6 +153,15 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
       <div className="text-center">
         <h2 className="text-xl md:text-2xl font-serif text-white">{text.title}</h2>
         <p className="text-sm text-white/50">{text.subtitle}</p>
+        {source?.historicalIntro && !showIntro && (
+          <button
+            onClick={() => setShowIntro(true)}
+            className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/60 transition-colors hover:bg-white/10 hover:text-white/80"
+          >
+            <span aria-hidden="true">i</span>
+            <span>Read the historical introduction</span>
+          </button>
+        )}
       </div>
 
       {/* Historical Introduction */}

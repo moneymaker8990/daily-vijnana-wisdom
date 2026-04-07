@@ -8,6 +8,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import {
   type ChatMessage as ChatMessageType,
+  type SpiritualGuideLaunchContext,
   loadChatHistory,
   saveChatHistory,
   clearChatHistory,
@@ -17,26 +18,30 @@ import {
   checkAIConnection,
   clearAIStatusCache,
 } from '@lib/spiritualGuide';
+import { useVisualViewport } from '@hooks/useVisualViewport';
 import { ChatMessage } from './ChatMessage';
 import { VoiceDictationButtonCompact } from '../VoiceDictation';
 import { ConfirmModal, useToast } from '../ui';
 
 type SpiritualGuideProps = {
   onClose: () => void;
+  launchContext?: SpiritualGuideLaunchContext | null;
 };
 
 type AIStatus = 'checking' | 'connected' | 'offline';
 
-export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
+export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuideProps) {
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [aiStatus, setAiStatus] = useState<AIStatus>('checking');
+  const [activeLaunchContext, setActiveLaunchContext] = useState<SpiritualGuideLaunchContext | null>(launchContext);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const toast = useToast();
+  const { height, offsetTop, keyboardInset } = useVisualViewport();
 
   // Load chat history on mount + check AI connection
   useEffect(() => {
@@ -92,6 +97,29 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
       inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 120)}px`;
     }
   }, [input]);
+
+  useEffect(() => {
+    if (!launchContext) {
+      return;
+    }
+
+    setActiveLaunchContext(launchContext);
+    setInput(launchContext.draft);
+    setShowSuggestions(false);
+
+    window.setTimeout(() => {
+      inputRef.current?.focus();
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 120);
+  }, [launchContext]);
+
+  useEffect(() => {
+    if (keyboardInset <= 0) {
+      return;
+    }
+
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [keyboardInset]);
 
   const handleSend = useCallback(async () => {
     if (!input.trim() || isLoading) return;
@@ -166,9 +194,18 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
   };
 
   const suggestedQuestions = getSuggestedQuestions();
+  const panelStyle = height > 0
+    ? {
+        top: offsetTop,
+        height,
+      }
+    : undefined;
 
   return (
-    <div className="fixed inset-0 z-[60] flex flex-col bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950">
+    <div
+      className="fixed inset-x-0 top-0 z-[60] flex flex-col overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950"
+      style={panelStyle}
+    >
       {/* Header */}
       <div className="flex-shrink-0 px-4 py-3 bg-black/20 border-b border-white/10 flex items-center justify-between safe-area-pt">
         <div className="flex items-center gap-3">
@@ -222,8 +259,41 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
         </div>
       </div>
 
+      {activeLaunchContext && (
+        <div className="flex-shrink-0 border-b border-white/10 bg-white/5 px-4 py-3">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-violet-300/70">Reading context</p>
+              {activeLaunchContext.contextTitle && (
+                <p className="mt-1 text-sm font-medium text-white">{activeLaunchContext.contextTitle}</p>
+              )}
+              {activeLaunchContext.contextSubtitle && (
+                <p className="mt-1 text-xs text-white/50">{activeLaunchContext.contextSubtitle}</p>
+              )}
+              {activeLaunchContext.passage && (
+                <p className="mt-2 text-sm text-white/70 italic line-clamp-3">
+                  "{activeLaunchContext.passage}"
+                </p>
+              )}
+            </div>
+            <button
+              onClick={() => setActiveLaunchContext(null)}
+              className="p-1 text-white/30 hover:text-white/70 transition-colors rounded"
+              aria-label="Dismiss reading context"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Messages area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div
+        className="flex-1 overflow-y-auto overscroll-contain px-4 pt-4 pb-6 space-y-4"
+        style={{ scrollPaddingBottom: keyboardInset > 0 ? 192 : 128 }}
+      >
         {/* Welcome message if no history */}
         {messages.length === 0 && (
           <div className="text-center py-8">
@@ -304,7 +374,7 @@ export function SpiritualGuide({ onClose }: SpiritualGuideProps) {
       </div>
 
       {/* Input area */}
-      <div className="flex-shrink-0 p-4 bg-black/20 border-t border-white/10 safe-area-pb">
+      <div className="flex-shrink-0 bg-black/20 border-t border-white/10 px-4 pt-4 pb-4 safe-area-pb">
         <div className="flex items-end gap-2">
           {/* Voice input */}
           <VoiceDictationButtonCompact onTranscript={handleVoiceTranscript} />

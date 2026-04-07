@@ -6,7 +6,7 @@
  */
 
 import { STORAGE_KEYS } from '@lib/constants';
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
+import { getSupabaseFunctionHeaders, hyperProcessorUrl, isSupabaseConfigured } from './supabase';
 
 export interface TextExplanation {
   meaning: string;
@@ -19,13 +19,15 @@ interface ExplanationCache {
   [key: string]: TextExplanation;
 }
 
+const EXPLANATION_CACHE_VERSION = 'v2';
+
 /**
  * Generate a cache key for a verse
  */
 function getCacheKey(text: string, source: string): string {
   // Use first 100 chars of text + source as key
   const textKey = text.substring(0, 100).replace(/[^a-zA-Z0-9]/g, '');
-  return `${source}_${textKey}`;
+  return `${EXPLANATION_CACHE_VERSION}_${source}_${textKey}`;
 }
 
 /**
@@ -76,19 +78,16 @@ export async function explainText(
   }
 
   // If Supabase is not configured, use mock explanation
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  if (!isSupabaseConfigured) {
     const mock = generateMockExplanation(text, source);
     saveToCache(cacheKey, mock);
     return { explanation: mock, isAI: false };
   }
 
   try {
-    const response = await fetch(`${SUPABASE_URL}/functions/v1/hyper-processor`, {
+    const response = await fetch(hyperProcessorUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      },
+      headers: getSupabaseFunctionHeaders(),
       body: JSON.stringify({
         type: 'explain',
         text: text,
@@ -102,7 +101,11 @@ Please provide:
 2. CONTEXT: The traditional or historical context that helps understand it (1-2 sentences)
 3. PRACTICAL APPLICATION: How someone might apply this teaching in daily life (1-2 sentences)
 
-Keep the tone warm, insightful, and non-dogmatic. Speak as a guide, not an authority.`,
+Rules:
+- Start directly with the insight. Do not use generic openings like "this passage teaches" or "this passage invites us" unless truly necessary.
+- Give each section a different job. Do not restate the same idea three times in slightly different words.
+- Avoid repeating the passage's main metaphor or signature phrase verbatim more than once.
+- Keep the tone warm, concrete, and non-dogmatic. Speak as a guide, not an authority.`,
       }),
     });
 
@@ -111,9 +114,14 @@ Keep the tone warm, insightful, and non-dogmatic. Speak as a guide, not an autho
     }
 
     const data = await response.json();
+    const aiText = typeof data.response === 'string' ? data.response : '';
+
+    if (!aiText) {
+      throw new Error('Explain response missing response text');
+    }
 
     // Parse the AI response
-    const explanation = parseExplanation(data.interpretation || data.response || '', text, source);
+    const explanation = parseExplanation(aiText, text, source);
     saveToCache(cacheKey, explanation);
     return { explanation, isAI: true };
   } catch (error) {

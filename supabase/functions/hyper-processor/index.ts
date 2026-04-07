@@ -117,7 +117,7 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    const { type, system, message, dream, prompt } = body;
+    const { type, system, message, dream, prompt, text, source } = body;
 
     if (dream && !type) {
       return await handleDream(claudeApiKey, dream);
@@ -130,8 +130,11 @@ Deno.serve(async (req: Request) => {
       case "dream-interpretation":
         return await handleDream(claudeApiKey, dream || message || "");
       case "explain":
-        if (!prompt && !message) throw new Error("prompt or message is required");
-        return await handleExplain(claudeApiKey, prompt || message || "");
+        if (!prompt && !text && !message) throw new Error("prompt, text, or message is required");
+        return await handleExplain(
+          claudeApiKey,
+          prompt || `Explain this passage from ${source || "a sacred text"} in a warm, practical, and non-dogmatic way:\n\n"${text || message || ""}"`
+        );
       case "voice-reflection":
         if (!message) throw new Error("message is required");
         return await handleVoiceReflection(claudeApiKey, system || "", message);

@@ -8,7 +8,7 @@ export type IntroductionPanelProps = {
 };
 
 export function IntroductionPanel({ intro, source, onClose }: IntroductionPanelProps) {
-  const [expandedSection, setExpandedSection] = useState<string | null>('origin');
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
   const sections = [
     { id: 'origin', title: 'Origins', icon: '🌍', content: intro.origin },
@@ -24,7 +24,7 @@ export function IntroductionPanel({ intro, source, onClose }: IntroductionPanelP
         <div className="flex items-start justify-between">
           <div>
             <span className="text-3xl mb-2 block">{source.icon || '📜'}</span>
-            <h3 className="text-lg font-serif text-white mb-1">About This Text</h3>
+            <h3 className="text-lg font-serif text-white mb-1">Historical Introduction</h3>
             <div className="flex items-center gap-3 text-xs text-white/50">
               {source.period && <span>{source.period}</span>}
               {source.originalLanguage && (
@@ -46,6 +46,10 @@ export function IntroductionPanel({ intro, source, onClose }: IntroductionPanelP
           </button>
         </div>
       </div>
+
+      <p className="text-sm text-white/55 leading-relaxed">
+        Open the section you need instead of reading the same framing all at once.
+      </p>
 
       {/* Expandable Sections */}
       <div className="space-y-2">

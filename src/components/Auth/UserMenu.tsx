@@ -8,7 +8,11 @@ import { useState, useRef, useEffect } from 'react';
 import { useAuth } from './AuthProvider';
 import { AuthModal } from './AuthModal';
 
-export function UserMenu() {
+type UserMenuProps = {
+  compact?: boolean;
+};
+
+export function UserMenu({ compact = false }: UserMenuProps) {
   const { user, loading, logout } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -36,7 +40,9 @@ export function UserMenu() {
       <>
         <button
           onClick={() => setShowAuthModal(true)}
-          className="px-3 py-1.5 bg-violet-500/20 border border-violet-500/30 rounded-lg text-violet-300 text-sm font-medium hover:bg-violet-500/30 transition-all"
+          className={`bg-violet-500/20 border border-violet-500/30 rounded-lg text-violet-300 font-medium hover:bg-violet-500/30 transition-all ${
+            compact ? 'px-2.5 py-1 text-xs' : 'px-3 py-1.5 text-sm'
+          }`}
         >
           Sign In
         </button>
@@ -67,7 +73,9 @@ export function UserMenu() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setShowMenu(!showMenu)}
-        className="flex items-center gap-2 p-1 rounded-full hover:bg-white/10 transition-colors"
+        className={`flex items-center gap-2 rounded-full hover:bg-white/10 transition-colors ${
+          compact ? 'p-0.5' : 'p-1'
+        }`}
       >
         {avatarUrl ? (
           <img

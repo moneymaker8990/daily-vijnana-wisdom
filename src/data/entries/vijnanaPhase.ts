@@ -29,7 +29,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       stoicMeditations: 'The private journal of the Roman Emperor Marcus Aurelius, written during military campaigns on the Danube frontier (~170-180 CE).',
     },
     vijnanaText: 'Beloved, the awareness that permeates all things is the root of all experience. Rest in that which witnesses.',
-    vijnanaCommentary: 'This opening verse invites you to recognize that awareness is not something you have—it is what you are. Every thought, sensation, and emotion appears within this awareness, like waves in the ocean.',
+    vijnanaCommentary: 'This opening instruction shifts the emphasis from what you experience to what is noticing experience. Thoughts, moods, and sensations keep changing, but the fact of noticing remains steady through all of them.',
     whyThisMatters: {
       vijnana: 'This teaching interrupts the habit of identifying with mental content and points you back to the awareness that is always already present.',
       tao: 'The Tao reminds us that the deepest truths slip away when we try to cage them in concepts—relaxing the grip of the conceptual mind opens direct experience.',
@@ -43,7 +43,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     stoicMeditationsText: 'Look within. Within is the fountain of good, and it will ever bubble up, if you will ever dig.',
     stoicMeditationsCommentary: 'The Roman Emperor, burdened with the weight of empire, discovered the same truth as the Kashmiri sages: the source of all goodness lies within awareness itself.',
     integratedReflectionTitle: 'Resting as the Field',
-    integratedReflectionBody: 'All sensations, emotions, and cravings arise within the vast space of awareness. You are not the movements—you are the field that holds them. Think of the moment just before falling asleep—when thoughts slow and the usual sense of "me" softens. That spaciousness is not a special state; it is what you are. Today, return again and again to the quiet center that requires no explanation. This is your first day of a 365-day journey.',
+    integratedReflectionBody: 'The first step is not self-improvement but recognition. Before any plan, mood, or reaction takes over, there is already a simple knowing that registers what is happening. You do not need to manufacture that presence; you only need to stop overlooking it. Today, when life speeds up, return to the one fact that does not wobble: something here is aware of all of it.',
     meditation: {
       title: 'Resting in the Field',
       steps: [
@@ -55,7 +55,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       ],
       suggestedMinutes: 7,
     },
-    meditationContext: 'This foundational practice establishes the orientation for the entire journey: recognizing yourself as the aware space in which experience unfolds.',
+    meditationContext: 'Use this as your orientation for the whole journey. The practice is less about calming everything down and more about remembering what notices whatever is here.',
     prayer: 'Let me move through today with gentleness and spaciousness. May I act from clarity and return to awareness when I forget.',
     dailyAction: 'When irritation or tension arises, pause and recognize it as a wave passing through awareness.',
     dailyActionContext: 'Try this during a minor frustration. The goal is not to suppress the feeling but to notice: "Ah, irritation is here. I am the awareness that notices this."',
@@ -77,7 +77,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       stoicDiscourses: 'Lectures of the former slave turned philosopher Epictetus, recorded by his student Arrian at Nicopolis (~108 CE).',
     },
     vijnanaText: 'Between the inhalation and exhalation shines the light of consciousness.',
-    vijnanaCommentary: 'The breath is always moving between two poles. In the tiny pause between them, the mind has a chance to rest. This verse points you to that pause as a doorway.',
+    vijnanaCommentary: 'Breath gives you a natural hinge point many times each minute. In that small suspension, momentum eases and attention has a chance to settle before the next movement begins.',
     whyThisMatters: {
       vijnana: 'The pause interrupts habitual mental momentum. In that gap, the nervous system downshifts and awareness shines unobstructed.',
       tao: 'Recognizing interdependence softens rigid thinking and opens you to flow.',
@@ -91,7 +91,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     stoicDiscoursesText: 'It is not things that disturb us, but our judgments about things.',
     stoicDiscoursesCommentary: 'Epictetus, the former slave, discovered what the tantric sages also knew: between stimulus and response there is a gap. In that gap lies our freedom to choose.',
     integratedReflectionTitle: 'The Sacred Gap',
-    integratedReflectionBody: 'The pause between breaths is a doorway into clarity. In stillness, the mud settles; in the gap, awareness brightens. You know this feeling—that brief moment after a sneeze, or when you step outside into cold air. The mind stops. Something opens. Your strength today is timing—pausing when it is time to pause, and moving only when the movement is true.',
+    integratedReflectionBody: 'Not every insight arrives through effort. Sometimes the cleanest moment is the brief one between doing and doing again. The pause in the breath is useful precisely because it is ordinary: it can be found in a meeting, in traffic, or halfway through a hard sentence. Let today be shaped by small, honest pauses that keep you from being dragged by your first impulse.',
     meditation: {
       title: 'The Sacred Gap',
       steps: [
@@ -103,7 +103,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       ],
       suggestedMinutes: 7,
     },
-    meditationContext: 'This practice trains you to find stillness within movement. The gaps between breaths are natural meditation spaces.',
+    meditationContext: 'Rather than waiting for life to get quiet, this practice teaches you to find stillness inside a living rhythm that is already happening.',
     prayer: 'May I discover strength in stillness. May clarity arise in the pauses between breaths.',
     dailyAction: 'When you feel reactive, insert one full breath—inhale, pause, exhale, pause—before responding.',
     dailyActionContext: 'Let the gap choose your response. Notice if even this small pause changes what you say or do.',
@@ -125,7 +125,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       stoicLetters: '124 moral letters written by Seneca to his friend Lucilius in his final years (~63-65 CE), blending practical advice with profound wisdom.',
     },
     vijnanaText: 'At the moment of feeling pleasure or pain, become absorbed in that very feeling. There, find the infinite.',
-    vijnanaCommentary: 'Intensity—whether blissful or painful—cracks the shell of ordinary experience. When you fully enter it without resistance, you discover pure awareness at its core.',
+    vijnanaCommentary: 'Strong sensation strips away abstraction. For a moment there is less story, less commentary, and more direct contact with what is actually happening.',
     whyThisMatters: {
       vijnana: 'Strong sensation collapses the narrative mind. When you dive in rather than recoil, you bypass the ego\'s commentary and touch presence directly.',
       tao: 'Resistance tightens the body and narrows awareness. Releasing the fight opens the field.',
@@ -139,7 +139,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     stoicLettersText: 'Difficulties strengthen the mind, as labor does the body.',
     stoicLettersCommentary: 'Seneca, writing in his final years, understood that intensity is not the enemy of wisdom but its forge. The Stoic meets difficulty as a craftsman meets raw material.',
     integratedReflectionTitle: 'The Doorway of Intensity',
-    integratedReflectionBody: 'Every intense sensation is an invitation. When you allow yourself to fully enter the intensity without resistance or grasping, you discover that at its core is pure awareness itself. Think of stubbing your toe—for a split second, there is only the sensation, no "you" experiencing it. That split second is the doorway. Today, practice meeting what arises with complete presence.',
+    integratedReflectionBody: 'Intensity usually makes us contract, narrate, or flee. This teaching suggests another move: get curious before you get defensive. In the first raw second of pain, delight, or embarrassment, experience is often simpler than the story that follows it. Today, notice whether staying close to the feeling changes your relationship to it before the mind turns it into a drama.',
     meditation: {
       title: 'Intensity as Portal',
       steps: [
@@ -151,7 +151,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       ],
       suggestedMinutes: 5,
     },
-    meditationContext: 'This practice transforms your relationship with strong feelings. Instead of avoiding or grasping, you learn to meet intensity as a teacher.',
+    meditationContext: 'This is training in contact rather than avoidance. You learn to stay near a strong feeling long enough to discover its texture without being ruled by it.',
     prayer: 'May I meet each wave of experience with openness. May intensity become my teacher, not my master.',
     dailyAction: 'Choose one strong sensation today—discomfort, emotion, or pleasure. Instead of reacting, dive into its center.',
     dailyActionContext: 'This could be a headache, excitement, or frustration. The practice is the same: full presence without resistance.',
@@ -173,7 +173,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       stoicMeditations: 'The private journal of the Roman Emperor Marcus Aurelius, written during military campaigns on the Danube frontier (~170-180 CE).',
     },
     vijnanaText: 'Focus on the fire rising through the body, becoming lighter until consumed by the flames of awareness.',
-    vijnanaCommentary: 'There is a subtle warmth at the base of the spine. When attention rests there, the fire climbs—burning through dullness, illuminating the inner world.',
+    vijnanaCommentary: 'The verse uses the image of fire to point toward aliveness, alertness, and upward movement. Attention itself becomes the spark that gathers scattered energy into a more vivid presence.',
     whyThisMatters: {
       vijnana: 'This practice works with the body\'s own energy. Attention is the spark; what rises is aliveness itself.',
       tao: 'The inner fire is not manufactured. It is recognized. This relieves the exhausting effort of self-improvement.',
@@ -187,7 +187,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     stoicMeditationsText: 'The soul becomes dyed with the color of its thoughts.',
     stoicMeditationsCommentary: 'Marcus Aurelius knew that the inner fire is stoked by the quality of our attention. What you dwell on shapes what you become.',
     integratedReflectionTitle: 'Ignited from Within',
-    integratedReflectionBody: 'There is a subtle warmth at the base of the spine, a spark waiting to rise. When attention is placed there with devotion, the fire climbs—burning through dullness, dissolving heaviness, illuminating the inner world. You may have felt this after deep laughter or sudden inspiration—a warmth spreading upward, a sense of lightness. This is not visualization but recognition of what is already present.',
+    integratedReflectionBody: 'Some days the problem is not suffering but dullness. Everything feels heavy, delayed, and half-awake. This practice meets that state by gathering attention low in the body and inviting wakefulness to spread from there. If you have ever felt a sudden lift after laughter, music, or a good idea, you already know the flavor. Today, work with that upward current instead of waiting passively for energy to return.',
     meditation: {
       title: 'Rising Fire',
       steps: [
@@ -200,7 +200,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       ],
       suggestedMinutes: 10,
     },
-    meditationContext: 'This practice works with the subtle energy body. You may or may not feel physical warmth—what matters is the attention itself.',
+    meditationContext: 'Treat the imagery as a way to focus and enliven attention. Some people feel warmth clearly, others simply feel more awake and organized.',
     prayer: 'May the inner fire purify all that is heavy in me. May I rise into lightness while remaining grounded.',
     dailyAction: 'Notice moments of sluggishness today. Briefly bring attention to the base of your spine, imagining warmth rising.',
     dailyActionContext: 'Even a few seconds of this attention can shift your energy. You are not creating fire—you are remembering it.',
@@ -222,7 +222,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       stoicDiscourses: 'Lectures of the former slave turned philosopher Epictetus, recorded by his student Arrian at Nicopolis (~108 CE).',
     },
     vijnanaText: 'When the mind is dissolved in the void, beyond thoughts, there is pure consciousness.',
-    vijnanaCommentary: 'Thoughts appear endlessly, like clouds passing through sky. But what if you could rest in the sky itself? The void is fullness without content.',
+    vijnanaCommentary: 'The instruction is not to destroy thought but to stop mistaking thought for the whole of experience. When a thought fades, what remains is not blankness but open capacity.',
     whyThisMatters: {
       vijnana: 'The thinking mind creates a constant sense of self. Resting in the gap between thoughts reveals awareness without the usual "me."',
       tao: 'Impartiality dissolves the grip of preference. When nothing is rejected, the nervous system relaxes.',
@@ -236,7 +236,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     stoicDiscoursesText: 'Of all existing things some are in our power, and others are not in our power.',
     stoicDiscoursesCommentary: 'The opening of the Enchiridion mirrors the tantric insight: when you release what is not yours to control, the void reveals itself as freedom.',
     integratedReflectionTitle: 'Beyond the Stream of Thought',
-    integratedReflectionBody: 'Thoughts appear endlessly, like clouds passing through sky. But what if you could rest in the sky itself? The void is not emptiness as absence—it is fullness without content, presence without object. You have touched this in the gap after a question, before the answer forms. When thought pauses, even for a moment, you glimpse what has always been here.',
+    integratedReflectionBody: 'Most of the day is spent leaning into the next thought as if it were essential. This practice asks you to notice the moment when a thought ends and nothing urgent replaces it. That interval may be brief, but it changes the scale of your experience. You see that awareness does not vanish when thinking pauses. Today, let that simple discovery loosen the pressure to keep producing an inner monologue.',
     meditation: {
       title: 'Void Awareness',
       steps: [
@@ -249,7 +249,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       ],
       suggestedMinutes: 8,
     },
-    meditationContext: 'This practice reveals that you are not your thoughts. The space between thoughts is always available as a refuge.',
+    meditationContext: 'Think of this as learning where to rest when the mind is noisy. You are discovering a quieter layer that does not depend on getting every thought to behave.',
     prayer: 'May I touch the silence beneath all noise. May I recognize the void not as emptiness but as my true home.',
     dailyAction: 'Three times today, pause whatever you are doing. Notice a thought, let it go, and rest for three breaths in the space it leaves behind.',
     dailyActionContext: 'Set a gentle reminder if helpful. The practice takes only seconds but reveals something timeless.',
@@ -271,7 +271,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       stoicLetters: '124 moral letters written by Seneca to his friend Lucilius in his final years (~63-65 CE), blending practical advice with profound wisdom.',
     },
     vijnanaText: 'Contemplate the space within your body as if it were a vast, empty sky. In that sky, rest.',
-    vijnanaCommentary: 'Your body is not solid—it is mostly space. When you feel into this spaciousness, the sense of being a dense, bounded object softens.',
+    vijnanaCommentary: 'This verse loosens the habit of feeling compressed inside your own outline. By sensing inwardly rather than only at the surface, the body begins to feel less like a container and more like an open volume.',
     whyThisMatters: {
       vijnana: 'Feeling spacious inside loosens the grip of tension and anxiety. The body relaxes when it stops feeling cramped.',
       tao: 'Receptivity allows experience to flow through without sticking. This is the key to emotional resilience.',
@@ -285,7 +285,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     stoicLettersText: 'Nothing, to my way of thinking, is a better proof of a well-ordered mind than a man\'s ability to stop just where he is and pass some time in his own company.',
     stoicLettersCommentary: 'Seneca knew that the inner sky is discovered not through escape but through stillness. The spaciousness within is available to anyone willing to sit with themselves.',
     integratedReflectionTitle: 'Spaciousness Within',
-    integratedReflectionBody: 'Most of us live as if we were solid, dense objects moving through the world. But your body is mostly space—atoms with vast distances between them. When you contemplate this inner sky, the usual sense of being cramped and confined begins to soften. Think of how relief feels—shoulders drop, chest opens, breath deepens. That is spaciousness remembering itself. Today, discover the roominess within.',
+    integratedReflectionBody: 'Tension often makes the body feel crowded from the inside. Chest tightens, jaw narrows, thoughts stack up. This practice counters that by restoring a sense of room. Instead of identifying with the pressure, you notice the space that can hold the pressure without collapsing around it. Today, whenever you feel closed in, look for interior room rather than an immediate escape route.',
     meditation: {
       title: 'Inner Sky Meditation',
       steps: [
@@ -298,7 +298,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       ],
       suggestedMinutes: 10,
     },
-    meditationContext: 'This practice shifts your sense of identity from the body\'s boundaries to the spaciousness within. It can relieve physical and emotional claustrophobia.',
+    meditationContext: 'The goal is not to float away from the body but to feel the body as more spacious and breathable than your tension suggests.',
     prayer: 'May I discover the sky within me. May I offer room to all that arises.',
     dailyAction: 'When you feel tight or confined today, pause and sense the space inside your chest. Breathe into it.',
     dailyActionContext: 'This can be done even in a crowded room or stressful meeting. No one needs to know you are finding the sky within.',
@@ -320,7 +320,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       stoicMeditations: 'The private journal of the Roman Emperor Marcus Aurelius, written during military campaigns on the Danube frontier (~170-180 CE).',
     },
     vijnanaText: 'At the moment of sneezing, in terror, at the edge of an abyss—there consciousness shines.',
-    vijnanaCommentary: 'Extreme moments interrupt the usual mind. In that interruption, awareness is revealed. The edge of sleep is one such threshold.',
+    vijnanaCommentary: 'Threshold moments are useful because the usual sense of self has not fully reassembled there. The edge of sleep offers this interruption gently, night after night.',
     whyThisMatters: {
       vijnana: 'The transition into sleep is a natural gap in self-construction. The ego loosens its grip, and what remains is pure awareness.',
       tao: 'Selflessness at the edge of sleep reveals what survives the dissolution of "me."',
@@ -334,7 +334,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     stoicMeditationsText: 'Think of yourself as dead. You have lived your life. Now take what is left and live it properly.',
     stoicMeditationsCommentary: 'Marcus practiced a daily dissolution of the self—imagining death to awaken to life. The threshold of sleep is a rehearsal for this ultimate letting go.',
     integratedReflectionTitle: 'The Threshold of Consciousness',
-    integratedReflectionBody: 'There is a moment each night when waking has dissolved but sleep has not yet come. In that liminal space, something interesting happens: the usual sense of self relaxes, and awareness shines without an object. You may have noticed this when drifting off—the body heavy, the mind empty, yet something is still aware. Tonight, try to catch this threshold. It is a natural doorway into presence.',
+    integratedReflectionBody: 'The transition into sleep is one of the few times each day when control naturally weakens. Plans stop gripping so hard, the body becomes heavy, and identity grows less verbal. Rather than treating that as dead time, tonight approach it as a subtle practice period. You are not trying to stay awake heroically; you are learning to notice what remains present while waking begins to dissolve.',
     meditation: {
       title: 'Threshold Awareness',
       steps: [
@@ -346,7 +346,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       ],
       suggestedMinutes: 15,
     },
-    meditationContext: 'This practice is done at night, in bed. It reveals that awareness continues even as the waking mind dissolves.',
+    meditationContext: 'Bring a light touch to this one. It is a bedside experiment in noticing continuity, not another performance task to succeed at.',
     prayer: 'May I meet the threshold with curiosity. May sleep become a teacher of presence.',
     dailyAction: 'Tonight, as you fall asleep, set an intention to notice the moment when waking ends and sleep has not yet begun.',
     dailyActionContext: 'You may not succeed at first. The practice is in the intention itself—bringing awareness to an usually unconscious transition.',
@@ -368,7 +368,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       stoicDiscourses: 'Lectures of the former slave turned philosopher Epictetus, recorded by his student Arrian at Nicopolis (~108 CE).',
     },
     vijnanaText: 'When desire arises, observe it fully without acting. In that gap, the Self is revealed.',
-    vijnanaCommentary: 'Desire is not the enemy—unconscious reaction to desire is. When you observe desire without immediately acting, you discover the awareness that is watching.',
+    vijnanaCommentary: 'Wanting becomes revealing when you stop obeying it automatically. The important move is not suppression but enough stillness to see the urge clearly before it recruits your body.',
     whyThisMatters: {
       vijnana: 'The gap between impulse and action is where freedom lives. Observing desire trains you to respond rather than react.',
       tao: 'When you stop fighting desire, the nervous system calms. Energy that was wasted in struggle becomes available.',
@@ -382,7 +382,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     stoicDiscoursesText: 'Wealth consists not in having great possessions, but in having few wants.',
     stoicDiscoursesCommentary: 'Epictetus, who owned almost nothing, was one of the freest men in Rome. Observing desire without acting reveals that true wealth is inner sufficiency.',
     integratedReflectionTitle: 'The Gap Before Acting',
-    integratedReflectionBody: 'Desire is energy—not good or bad, but powerful. When desire arises and you immediately act, you never see the desire itself. But when you pause, observe, and let the desire be without acting, something remarkable happens: you discover the one who is aware of desire. Notice this the next time you reach for your phone—the urge, the pull, the automatic hand. Pause. Watch. This is not suppression; it is witnessing.',
+    integratedReflectionBody: 'Most cravings feel persuasive because they move faster than our attention. The hand reaches, the tab opens, the snack disappears, and only afterward do we realize we were pulled. Today, slow that chain down. Let one desire come fully into view before you decide what to do with it. That brief gap gives dignity back to choice and shows that wanting is something you can witness, not just obey.',
     meditation: {
       title: 'Observing Desire',
       steps: [
@@ -395,7 +395,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       ],
       suggestedMinutes: 8,
     },
-    meditationContext: 'This practice does not condemn desire. It uses desire as a mirror to reveal the awareness behind all wanting.',
+    meditationContext: 'The point is not to become desireless in one sitting. It is to study wanting closely enough that it stops running the whole room.',
     prayer: 'May I meet my desires with curiosity rather than combat. May wanting become a doorway to the one who is beyond want.',
     dailyAction: 'When a craving arises today—for food, distraction, validation—pause before acting. Observe the craving for ten seconds.',
     dailyActionContext: 'Notice if the craving changes when observed. Notice who is doing the observing. That one is free.',
@@ -417,7 +417,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       stoicLetters: '124 moral letters written by Seneca to his friend Lucilius in his final years (~63-65 CE), blending practical advice with profound wisdom.',
     },
     vijnanaText: 'Listen to the sound of any instrument until the sound dissolves into silence. In that silence, be.',
-    vijnanaCommentary: 'Sound has a beginning, a middle, and an end. When you follow sound to its end, you arrive at the silence that was always there underneath.',
+    vijnanaCommentary: 'Listening carefully reveals that sound is a temporary event, not the whole field. When the ear follows a sound all the way through, the surrounding quiet becomes easier to notice.',
     whyThisMatters: {
       vijnana: 'Following sound to its end trains attention to rest in what remains—the silence that was never interrupted.',
       tao: 'Silence is not the absence of sound but its ground. Recognizing this shifts identity from content to context.',
@@ -431,7 +431,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     stoicLettersText: 'The mind that is anxious about future events is miserable.',
     stoicLettersCommentary: 'Seneca observed that mental noise—anxiety about the future, regret about the past—drowns out the silence that is always present. When we stop, the silence returns.',
     integratedReflectionTitle: 'The Silence Beneath Sound',
-    integratedReflectionBody: 'Every sound emerges from silence and returns to it. When you truly listen, you are not just hearing the sound—you are hearing the silence in which sound appears. Notice this after a loud noise ends—the car passes, the door closes. What remains is not nothing; it is presence. Today, use any sound as a vehicle to arrive at the quiet that holds it.',
+    integratedReflectionBody: 'Hearing usually pulls us outward toward whatever is making the noise. This practice reverses that habit. Instead of chasing the source, stay with the fading edge of the sound itself. Notice how quickly quiet returns once you stop leaning forward mentally. Today, let ordinary noises become reminders that stillness is not elsewhere; it is the background they keep briefly visiting.',
     meditation: {
       title: 'Sound to Silence',
       steps: [
@@ -444,7 +444,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       ],
       suggestedMinutes: 7,
     },
-    meditationContext: 'This practice uses hearing as a meditation object. Sound becomes a bridge to the silence you already are.',
+    meditationContext: 'Use whatever sounds are actually present. You do not need a perfect meditation bell when traffic, footsteps, and household noise can all do the work.',
     prayer: 'May I hear the silence within all sounds. May my listening become a form of prayer.',
     dailyAction: 'Choose one sound today and follow it until it fades. Rest in the silence that follows.',
     dailyActionContext: 'This could be a doorbell, a car passing, or even your own sigh. The practice takes moments but opens timelessness.',
@@ -466,7 +466,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       stoicMeditations: 'The private journal of the Roman Emperor Marcus Aurelius, written during military campaigns on the Danube frontier (~170-180 CE).',
     },
     vijnanaText: 'Chant any letter of the alphabet, focusing on the moment before and after the sound. There is the void.',
-    vijnanaCommentary: 'The sound arises from silence and returns to it. By focusing on those transition points, you touch the source.',
+    vijnanaCommentary: 'A spoken sound makes transitions easier to feel. You can notice the gathering before the voice begins, the vibration while it lasts, and the settling afterward.',
     whyThisMatters: {
       vijnana: 'Attention to the gaps trains the mind to rest in what underlies all experience.',
       tao: 'Embracing unity means recognizing the silent ground beneath all multiplicity.',
@@ -480,7 +480,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
     stoicMeditationsText: 'Confine yourself to the present.',
     stoicMeditationsCommentary: 'Marcus Aurelius practiced presence through simplification—returning to this moment, this breath, this sound. The sacred letter is another way to confine oneself to what is.',
     integratedReflectionTitle: 'Before and After the Sound',
-    integratedReflectionBody: 'Every utterance has three parts: the silence before, the sound itself, and the silence after. Most of us focus only on the sound. But watch what happens when you say your own name aloud—there is a stillness before, the vibration, and then stillness again. Today, expand your attention to include the bookends. This simple shift reveals the ground of being.',
+    integratedReflectionBody: 'Speech often feels continuous because we pay attention only to meaning. This practice broadens the frame so you can sense the whole event: intention gathering, sound emerging, and quiet returning. Try it with a simple letter or with your own name spoken softly. The exercise is humble, but it changes the way language occupies your body. Today, notice how much peace lives in the moments surrounding what you say.',
     meditation: {
       title: 'Sacred Letter Practice',
       steps: [
@@ -493,7 +493,7 @@ export const VIJNANA_PHASE_ENTRIES: DailyEntry[] = [
       ],
       suggestedMinutes: 10,
     },
-    meditationContext: 'This practice is part of the mantra tradition. Any letter can be sacred when used with full attention.',
+    meditationContext: 'Nothing special is required here. A single ordinary sound becomes powerful when you give equal attention to its arising, its fading, and the quiet that contains both.',
     prayer: 'May my words arise from silence and return to silence. May I speak only what deepens presence.',
     dailyAction: 'Before speaking today, pause and feel the silence. After speaking, pause again and return to it.',
     dailyActionContext: 'This can be done even in conversation—a brief moment of inner silence before and after you speak.',

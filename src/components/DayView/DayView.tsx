@@ -467,7 +467,7 @@ export function DayView({ entry, onPrev, onNext, onToday, onGoToDay, onOpenLibra
 
       {/* Integrated Reflection */}
       <section className="bg-gradient-to-br from-white/10 to-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-white/15">
-        <SectionHeader>Integrated Reflection</SectionHeader>
+        <SectionHeader>Today's Reflection</SectionHeader>
         <h4 className={`${textSize === 'large' ? 'text-lg sm:text-xl md:text-2xl' : 'text-base sm:text-lg md:text-xl'} font-serif text-white mb-2 sm:mb-3`}>
           {entry.integratedReflectionTitle}
         </h4>

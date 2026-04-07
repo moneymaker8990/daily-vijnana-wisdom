@@ -86,7 +86,7 @@ export function StudyLibrary() {
       {/* Subheader - main title is in AppLayout */}
       <div className="text-center pb-4 border-b border-white/10">
         <p className="text-sm text-white/60">
-          Complete texts from seven wisdom traditions
+          Browse complete texts by tradition, period, and reading progress
         </p>
       </div>
 
@@ -163,6 +163,7 @@ function SourceCard({ source, onSelect, progress, actualVerseCount }: SourceCard
   const progressPercent = progress
     ? Math.round((progress.lastVerseIndex / actualVerseCount) * 100)
     : 0;
+  const traditionLabel = getTraditionLabel(source.tradition);
 
   return (
     <button
@@ -180,18 +181,15 @@ function SourceCard({ source, onSelect, progress, actualVerseCount }: SourceCard
               {source.name}
             </h3>
           </div>
-          <p className="text-xs text-white/50 mb-2 line-clamp-1">
-            {source.description}
-          </p>
+          <div className="mb-2 flex flex-wrap items-center gap-2 text-[11px] text-white/45">
+            <span className="rounded-full bg-white/5 px-2 py-1">{traditionLabel}</span>
+            {source.period && (
+              <span className="rounded-full bg-white/5 px-2 py-1">{source.period}</span>
+            )}
+          </div>
 
           <div className="flex items-center gap-3 text-xs text-white/40">
             <span>{actualVerseCount} verses</span>
-            {source.period && (
-              <>
-                <span className="text-white/20">•</span>
-                <span>{source.period}</span>
-              </>
-            )}
             {progress && progressPercent > 0 && (
               <>
                 <span className="text-white/20">•</span>
