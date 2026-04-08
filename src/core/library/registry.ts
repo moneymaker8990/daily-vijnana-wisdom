@@ -15,6 +15,9 @@ import { upanishadVerses } from './verses/upanishadVerses';
 import { ashtavakraVerses } from './verses/ashtavakraVerses';
 import { yogaSutraVerses } from './verses/yogaSutraVerses';
 import { shivaSutraVerses } from './verses/shivaSutraVerses';
+import { spandaKarikaVerses } from './verses/spandaKarikaVerses';
+import { pratyabhijnahridayamVerses } from './verses/pratyabhijnahridayamVerses';
+import { tantralokaVerses } from './verses/tantralokaVerses';
 import { rigVedaVerses } from './verses/rigVedaVerses';
 import { dhammapadaVerses } from './verses/dhammapadaVerses';
 import { zenKoansVerses } from './verses/zenKoansVerses';
@@ -48,6 +51,9 @@ export const ALL_VERSES: Verse[] = [
   ...ashtavakraVerses,
   ...yogaSutraVerses,
   ...shivaSutraVerses,
+  ...spandaKarikaVerses,
+  ...pratyabhijnahridayamVerses,
+  ...tantralokaVerses,
   ...rigVedaVerses,
   ...dhammapadaVerses,
   ...zenKoansVerses,
@@ -188,6 +194,57 @@ export const ALL_SOURCES: Source[] = [
       author: 'Revealed to Vasugupta; considered a direct transmission from Shiva (consciousness itself). The commentary tradition was developed by masters including Ksemaraja and Abhinavagupta, whose elaborations help unlock the compressed meaning of each sutra.',
       significance: 'The Shiva Sutras present a non-dual tantra distinct from both Vedanta and Buddhist approaches. Here, the world is not illusion but the creative expression of consciousness. The body and senses become instruments of realization rather than obstacles. This recognition-based path influenced later teachings across traditions.',
       howToRead: 'Each sutra is extremely condensed—a seed containing vast teaching. Read with a good commentary (Ksemaraja\'s is classical). Focus on the three "awakenings" that structure the text: Shambhavopaya (the way of Shiva), Shaktopaya (the way of energy), and Anavopaya (the individual way). Let each sutra become a meditation object.',
+    },
+  },
+  {
+    id: 'spanda-karika',
+    name: 'Spanda Karika',
+    tradition: 'Tantric',
+    totalVerses: 12,
+    description: 'A concise Kashmir Shaivism text on the subtle pulse of consciousness, teaching how stillness and movement share one living source.',
+    originalLanguage: 'Sanskrit',
+    period: '9th century CE',
+    translator: 'Adapted from traditional translations',
+    icon: '🌊',
+    historicalIntro: {
+      origin: 'The Spanda Karika emerged in the early flowering of Kashmir Shaivism and is traditionally linked to the teachings of Vasugupta and his lineage. It distills the insight that ultimate reality is not inert, but vibrantly alive as the subtle throb or pulse called spanda.',
+      author: 'The text is usually attributed to Kallata, a direct disciple in the Vasugupta lineage, though some traditions link its core insight more directly to Vasugupta himself. However scholars sort the authorship, the work clearly stands in the earliest stream of non-dual Shaiva thought.',
+      significance: 'Spanda matters because it reframes spiritual life around living participation rather than withdrawal. Consciousness is not merely the witness behind experience; it is the very pulse within thought, sensation, creativity, and action.',
+      howToRead: 'Read the verses as contemplative prompts rather than as abstract metaphysics. The practical question is always the same: can you feel the living pulse of awareness in stillness, in emotion, and in ordinary activity?',
+    },
+  },
+  {
+    id: 'pratyabhijnahridayam',
+    name: 'Pratyabhijnahridayam',
+    tradition: 'Tantric',
+    totalVerses: 12,
+    description: 'Kshemaraja\'s short manual of recognition, explaining how infinite consciousness appears as the individual and how it can remember itself.',
+    originalLanguage: 'Sanskrit',
+    period: '11th century CE',
+    translator: 'Adapted from traditional translations',
+    icon: '💓',
+    historicalIntro: {
+      origin: 'Pratyabhijnahridayam, “The Heart of Recognition,” was composed in medieval Kashmir as a concise doorway into the recognition school of Shaivism. It condenses a sophisticated philosophical tradition into a more approachable series of aphoristic teachings.',
+      author: 'The work is attributed to Kshemaraja, one of the great commentators of Kashmir Shaivism and a disciple in the lineage of Abhinavagupta. He was especially gifted at turning dense doctrine into language practitioners could actually use.',
+      significance: 'Its power lies in its clarity: bondage is not a real fall from divinity but a contraction or forgetting of what consciousness already is. Liberation, then, is recognition rather than acquisition.',
+      howToRead: 'Read it with the language of remembrance in mind. Each verse asks you to notice where you contract into a smaller identity and how awareness might recognize itself again in the middle of ordinary life.',
+    },
+  },
+  {
+    id: 'tantraloka-selections',
+    name: 'Tantraloka (Selections)',
+    tradition: 'Tantric',
+    totalVerses: 12,
+    description: 'Curated passages from Abhinavagupta\'s vast tantric synthesis, emphasizing embodied practice, ritual, and recognition as one path.',
+    originalLanguage: 'Sanskrit',
+    period: '10th-11th century CE',
+    translator: 'Adapted from traditional translations',
+    icon: '🪔',
+    historicalIntro: {
+      origin: 'Tantraloka, “Light on Tantra,” was written in Kashmir as Abhinavagupta\'s grand synthesis of ritual, philosophy, yoga, and contemplative insight. It gathers many streams of tantric practice into a single, luminous vision.',
+      author: 'Abhinavagupta was the towering polymath of Kashmir Shaivism: philosopher, exegete, poet, aesthetician, and practitioner. His work shaped how later generations understood the unity of doctrine and practice in the Shaiva tradition.',
+      significance: 'Tantraloka is significant because it refuses the split between the highest realization and embodied life. Ritual, mantra, breath, relationship, and direct awareness are all shown as valid expressions of one awakened field.',
+      howToRead: 'Approach selections slowly and practically. Rather than trying to master the whole system, notice how Abhinavagupta keeps redirecting outer practice toward inner recognition and whole-life integration.',
     },
   },
   {

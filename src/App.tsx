@@ -6,6 +6,7 @@ import { useDailyEntry } from './hooks/useDailyEntry';
 import { startNotificationScheduler, getNotificationSettings } from './lib/notifications';
 import { getDataSource } from './lib/dataSource';
 import { STORAGE_KEYS } from '@lib/constants';
+import { loadUserState } from './lib/storage';
 import { TabNavigation, type TabId } from './components/Navigation/TabNavigation';
 import { OfflineIndicator, PaywallModal, ReviewPromptModal, useToast } from './components/ui';
 import { OnboardingFlow } from './components/Onboarding/OnboardingFlow';
@@ -27,6 +28,7 @@ import {
   markReviewPromptShown,
   shouldShowReviewPrompt,
 } from './lib/reviewPrompt';
+import { LOGIN_SYNC_ERROR_EVENT } from './lib/dataSync';
 
 const Journal = lazy(() => import('./components/Journal').then(m => ({ default: m.Journal })));
 const StudyHub = lazy(() => import('./components/StudyPathways').then(m => ({ default: m.StudyHub })));
@@ -37,8 +39,8 @@ const FIRST_DREAM_TRACKED_KEY = 'mindvanta_first_dream_tracked';
 const NUDGE_SHOWN_PREFIX = 'mindvanta_weekly_nudge_';
 
 function App() {
-  const { entry, loading, goToNext, goToPrev, goToToday, goToDay } = useDailyEntry();
-  const { info } = useToast();
+  const { entry, loading, goToNext, goToPrev, goToToday, goToDay, userCurrentDay } = useDailyEntry();
+  const { info, error: showError } = useToast();
   const [activeTab, setActiveTab] = useState<TabId>('daily');
   const mainContainerRef = useRef<HTMLDivElement>(null);
   const onboardingStartTracked = useRef(false);
@@ -142,6 +144,17 @@ function App() {
   }, [showOnboarding, activeTab]);
 
   useEffect(() => {
+    const handleLoginSyncError = () => {
+      showError('Some cloud data could not be synced. Your local progress is still available on this device.');
+    };
+
+    window.addEventListener(LOGIN_SYNC_ERROR_EVENT, handleLoginSyncError);
+    return () => {
+      window.removeEventListener(LOGIN_SYNC_ERROR_EVENT, handleLoginSyncError);
+    };
+  }, [showError]);
+
+  useEffect(() => {
     syncEntitlements().then((state) => {
       setPremiumEnabled(state.tier === 'premium');
     });
@@ -207,13 +220,8 @@ function App() {
     if (settings.enabled) {
       const ds = getDataSource();
       startNotificationScheduler(async () => {
-        // Get current day from localStorage
-        const stored = localStorage.getItem(STORAGE_KEYS.USER_STATE);
-        if (stored) {
-          const state = JSON.parse(stored);
-          return ds.getEntryByDay(state.currentDay);
-        }
-        return ds.getEntryByDay(1);
+        const state = loadUserState();
+        return ds.getEntryByDay(state?.currentDay ?? 1);
       });
     }
 
@@ -224,12 +232,8 @@ function App() {
         if (currentSettings.enabled) {
           const ds = getDataSource();
           startNotificationScheduler(async () => {
-            const stored = localStorage.getItem(STORAGE_KEYS.USER_STATE);
-            if (stored) {
-              const state = JSON.parse(stored);
-              return ds.getEntryByDay(state.currentDay);
-            }
-            return ds.getEntryByDay(1);
+            const state = loadUserState();
+            return ds.getEntryByDay(state?.currentDay ?? 1);
           });
         }
       }
@@ -263,6 +267,7 @@ function App() {
         ) : (
           <DayView
             entry={entry}
+            userCurrentDay={userCurrentDay}
             onPrev={goToPrev}
             onNext={goToNext}
             onToday={goToToday}

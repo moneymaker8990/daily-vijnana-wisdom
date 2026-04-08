@@ -53,7 +53,7 @@ export interface Course {
 export interface StudyProgress {
   courseId: string;
   completedLessons: string[];
-  currentLesson: string;
+  currentLesson: string | null;
   startedAt: string;
   lastAccessedAt?: string;
 }

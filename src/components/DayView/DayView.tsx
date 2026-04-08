@@ -14,6 +14,7 @@ import { InsightGraph } from '../Insights/InsightGraph';
 
 type DayViewProps = {
   entry: DailyEntry;
+  userCurrentDay: number;
   onPrev: () => void;
   onNext: () => void;
   onToday: () => void;
@@ -97,7 +98,16 @@ function TraditionCard({
   );
 }
 
-export function DayView({ entry, onPrev, onNext, onToday, onGoToDay, onOpenLibrary, onNavigateTab }: DayViewProps) {
+export function DayView({
+  entry,
+  userCurrentDay,
+  onPrev,
+  onNext,
+  onToday,
+  onGoToDay,
+  onOpenLibrary,
+  onNavigateTab,
+}: DayViewProps) {
   const { dayNumber, theme } = entry;
   const phase = getPhaseForDay(dayNumber);
   const [textSize, setTextSize] = useState<TextSize>('medium');
@@ -169,7 +179,7 @@ export function DayView({ entry, onPrev, onNext, onToday, onGoToDay, onOpenLibra
       {/* Progress tracker (collapsible) */}
       {showProgress && (
         <div className="animate-fadeIn">
-          <JourneyProgress currentDay={dayNumber} />
+          <JourneyProgress currentDay={userCurrentDay} viewingDay={dayNumber} />
         </div>
       )}
 
@@ -255,6 +265,36 @@ export function DayView({ entry, onPrev, onNext, onToday, onGoToDay, onOpenLibra
               text={entry.shivaSutraText}
               commentary={entry.shivaSutraCommentary}
               context={entry.traditionContext?.shivaSutras}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.spandaKarikaText && (
+            <TraditionCard
+              title="Spanda Karika"
+              text={entry.spandaKarikaText}
+              commentary={entry.spandaKarikaCommentary}
+              context={entry.traditionContext?.spandaKarika}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.pratyabhijnahridayamText && (
+            <TraditionCard
+              title="Pratyabhijnahridayam"
+              text={entry.pratyabhijnahridayamText}
+              commentary={entry.pratyabhijnahridayamCommentary}
+              context={entry.traditionContext?.pratyabhijnahridayam}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.tantralokaText && (
+            <TraditionCard
+              title="Tantraloka"
+              text={entry.tantralokaText}
+              commentary={entry.tantralokaCommentary}
+              context={entry.traditionContext?.tantraloka}
               dayNumber={dayNumber}
               textSize={textSize}
             />

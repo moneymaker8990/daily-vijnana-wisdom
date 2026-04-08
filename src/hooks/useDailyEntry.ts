@@ -111,15 +111,16 @@ export function useDailyEntry() {
     }
     
     setEntry(e);
-    
-    // If navigating beyond current progress, update progress
-    if (day > userCurrentDay) {
-      setUserCurrentDay(day);
-      saveUserState({
-        currentDay: day,
-        lastVisited: new Date().toISOString(),
-      });
+
+    const nextUserCurrentDay = day > userCurrentDay ? day : userCurrentDay;
+    if (nextUserCurrentDay !== userCurrentDay) {
+      setUserCurrentDay(nextUserCurrentDay);
     }
+
+    saveUserState({
+      currentDay: nextUserCurrentDay,
+      lastVisited: new Date().toISOString(),
+    });
   };
 
   const goToNext = () => {

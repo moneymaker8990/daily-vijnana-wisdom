@@ -7,6 +7,69 @@
 import type { StudyProgress, AllStudyProgress } from './types';
 import { STORAGE_KEYS } from '@lib/constants';
 
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every(item => typeof item === 'string');
+}
+
+function normalizeStudyProgressRecord(value: unknown, fallbackCourseId?: string): StudyProgress | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+
+  const record = value as Record<string, unknown>;
+  const courseId = typeof record.courseId === 'string' ? record.courseId : fallbackCourseId;
+  const completedLessons = isStringArray(record.completedLessons) ? record.completedLessons : [];
+  const currentLesson = typeof record.currentLesson === 'string' ? record.currentLesson : null;
+  const startedAt = typeof record.startedAt === 'string' ? record.startedAt : new Date().toISOString();
+  const lastAccessedAt = typeof record.lastAccessedAt === 'string' ? record.lastAccessedAt : undefined;
+
+  if (!courseId) {
+    return null;
+  }
+
+  return {
+    courseId,
+    completedLessons,
+    currentLesson,
+    startedAt,
+    lastAccessedAt,
+  };
+}
+
+function normalizeStoredProgress(value: unknown): AllStudyProgress {
+  if (Array.isArray(value)) {
+    const courses = value.reduce<Record<string, StudyProgress>>((acc, item) => {
+      const normalized = normalizeStudyProgressRecord(item);
+      if (normalized) {
+        acc[normalized.courseId] = normalized;
+      }
+      return acc;
+    }, {});
+
+    return { courses };
+  }
+
+  if (value && typeof value === 'object' && 'courses' in value) {
+    const maybeCourses = (value as { courses?: unknown }).courses;
+    if (maybeCourses && typeof maybeCourses === 'object' && !Array.isArray(maybeCourses)) {
+      const courses = Object.entries(maybeCourses as Record<string, unknown>).reduce<Record<string, StudyProgress>>(
+        (acc, [courseId, item]) => {
+          const normalized = normalizeStudyProgressRecord(item, courseId);
+          if (normalized) {
+            acc[courseId] = normalized;
+          }
+          return acc;
+        },
+        {}
+      );
+
+      return { courses };
+    }
+  }
+
+  return { courses: {} };
+}
+
 /**
  * Get all study progress from localStorage
  */
@@ -14,7 +77,7 @@ export function getAllProgress(): AllStudyProgress {
   try {
     const stored = localStorage.getItem(STORAGE_KEYS.STUDY_PROGRESS);
     if (stored) {
-      return JSON.parse(stored);
+      return normalizeStoredProgress(JSON.parse(stored));
     }
   } catch (error) {
     // Error reading study progress handled silently
@@ -27,7 +90,7 @@ export function getAllProgress(): AllStudyProgress {
  */
 export function saveAllProgress(progress: AllStudyProgress): void {
   try {
-    localStorage.setItem(STORAGE_KEYS.STUDY_PROGRESS, JSON.stringify(progress));
+    localStorage.setItem(STORAGE_KEYS.STUDY_PROGRESS, JSON.stringify(normalizeStoredProgress(progress)));
   } catch (error) {
     // Error saving study progress handled silently
   }

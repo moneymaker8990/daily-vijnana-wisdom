@@ -8,6 +8,7 @@
  */
 
 import type { User } from '@supabase/supabase-js';
+import { track } from '@lib/analytics';
 
 // Re-export all sync modules
 export {
@@ -54,34 +55,78 @@ import { syncFavorites, uploadLocalFavorites } from './favoritesSync';
 import { syncStudyProgress, uploadLocalStudyProgress } from './studySync';
 import { syncUserPreferences } from './preferencesSync';
 
+export const LOGIN_SYNC_ERROR_EVENT = 'mindvanta:login-sync-error';
+
+type SyncTask = {
+  name: string;
+  run: () => Promise<unknown>;
+};
+
+type LoginSyncResult = {
+  ok: boolean;
+  failedScopes: string[];
+};
+
+function reportSyncFailures(failedScopes: string[]): void {
+  if (failedScopes.length === 0) {
+    return;
+  }
+
+  console.error('[sync] login sync failed for scopes:', failedScopes.join(', '));
+  track('login_sync_failed', { failed_scopes: failedScopes.join(',') });
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(
+      new CustomEvent(LOGIN_SYNC_ERROR_EVENT, {
+        detail: { failedScopes },
+      })
+    );
+  }
+}
+
+async function runSyncTasks(tasks: SyncTask[]): Promise<string[]> {
+  const results = await Promise.allSettled(tasks.map(task => task.run()));
+
+  return results.reduce<string[]>((failures, result, index) => {
+    if (result.status === 'rejected') {
+      failures.push(tasks[index].name);
+      console.error(`[sync] ${tasks[index].name} failed`, result.reason);
+    }
+    return failures;
+  }, []);
+}
+
 /**
  * Sync all data when user logs in.
  * Merges localStorage data with cloud data, preferring newer data.
  */
-export async function syncAllOnLogin(user: User): Promise<void> {
-  try {
-    // Upload any localStorage data that doesn't exist in cloud
-    await uploadLocalDataToCloud(user);
+export async function syncAllOnLogin(user: User): Promise<LoginSyncResult> {
+  const uploadFailures = await uploadLocalDataToCloud(user);
+  const fetchFailures = await runSyncTasks([
+    { name: 'journal_download', run: () => syncJournalEntries(user) },
+    { name: 'dream_download', run: () => syncDreamEntries(user) },
+    { name: 'favorites_download', run: () => syncFavorites(user) },
+    { name: 'study_download', run: () => syncStudyProgress(user) },
+    { name: 'preferences_download', run: () => syncUserPreferences(user) },
+  ]);
 
-    // Then fetch latest from cloud (will update localStorage)
-    await Promise.all([
-      syncJournalEntries(user),
-      syncDreamEntries(user),
-      syncFavorites(user),
-      syncStudyProgress(user),
-      syncUserPreferences(user),
-    ]);
-  } catch {
-    // Silently handle sync errors
-  }
+  const failedScopes = [...uploadFailures, ...fetchFailures];
+  reportSyncFailures(failedScopes);
+
+  return {
+    ok: failedScopes.length === 0,
+    failedScopes,
+  };
 }
 
 /**
  * Upload local data to cloud on first login
  */
-async function uploadLocalDataToCloud(user: User): Promise<void> {
-  await uploadLocalJournalEntries(user);
-  await uploadLocalDreamEntries(user);
-  await uploadLocalFavorites(user);
-  await uploadLocalStudyProgress(user);
+async function uploadLocalDataToCloud(user: User): Promise<string[]> {
+  return runSyncTasks([
+    { name: 'journal_upload', run: () => uploadLocalJournalEntries(user) },
+    { name: 'dream_upload', run: () => uploadLocalDreamEntries(user) },
+    { name: 'favorites_upload', run: () => uploadLocalFavorites(user) },
+    { name: 'study_upload', run: () => uploadLocalStudyProgress(user) },
+  ]);
 }

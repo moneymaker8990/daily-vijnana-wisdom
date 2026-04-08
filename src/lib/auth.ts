@@ -5,7 +5,7 @@
  */
 
 import { supabase } from './supabase';
-import type { User, Session, AuthError } from '@supabase/supabase-js';
+import type { User, Session, AuthError, AuthChangeEvent } from '@supabase/supabase-js';
 
 export type AuthUser = User;
 export type AuthSession = Session;
@@ -113,11 +113,13 @@ export async function updatePassword(newPassword: string): Promise<{ error: Auth
 /**
  * Listen to auth state changes
  */
-export function onAuthStateChange(callback: (user: User | null, session: Session | null) => void) {
+export function onAuthStateChange(
+  callback: (event: AuthChangeEvent, user: User | null, session: Session | null) => void
+) {
   const {
     data: { subscription },
   } = supabase.auth.onAuthStateChange((_event, session) => {
-    callback(session?.user ?? null, session);
+    callback(_event, session?.user ?? null, session);
   });
 
   return subscription;

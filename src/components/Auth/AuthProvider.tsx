@@ -4,7 +4,7 @@
  * Provides auth state and methods to the entire app.
  */
 
-import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useRef, type ReactNode } from 'react';
 import {
   type AuthUser,
   type AuthSession,
@@ -48,6 +48,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [session, setSession] = useState<AuthSession | null>(null);
   const [loading, setLoading] = useState(true);
+  const initializedRef = useRef(false);
+  const currentUserIdRef = useRef<string | null>(null);
 
   // Initialize auth state
   useEffect(() => {
@@ -59,10 +61,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         ]);
         setUser(currentUser);
         setSession(currentSession);
+        currentUserIdRef.current = currentUser?.id ?? null;
+        initializedRef.current = true;
         
         // Sync data if user is already logged in
         if (currentUser) {
-          syncAllOnLogin(currentUser);
+          void syncAllOnLogin(currentUser);
         }
       } catch (error) {
         // Auth initialization error handled silently
@@ -74,15 +78,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
     initAuth();
 
     // Subscribe to auth changes
-    const subscription = onAuthStateChange((newUser, newSession) => {
-      const wasLoggedOut = !user;
+    const subscription = onAuthStateChange((event, newUser, newSession) => {
+      const previousUserId = currentUserIdRef.current;
+      const nextUserId = newUser?.id ?? null;
+
+      currentUserIdRef.current = nextUserId;
       setUser(newUser);
       setSession(newSession);
       setLoading(false);
       
-      // Sync data when user logs in (was logged out, now logged in)
-      if (newUser && wasLoggedOut) {
-        syncAllOnLogin(newUser);
+      if (!initializedRef.current) {
+        return;
+      }
+
+      const shouldSync =
+        Boolean(newUser) &&
+        nextUserId !== previousUserId &&
+        (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED');
+
+      // Sync data only on real login/account transitions, not every repeated auth callback.
+      if (newUser && shouldSync) {
+        void syncAllOnLogin(newUser);
       }
     });
 

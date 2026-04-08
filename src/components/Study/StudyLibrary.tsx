@@ -76,9 +76,13 @@ export function StudyLibrary() {
     return acc;
   }, {} as Record<string, Source[]>);
 
-  const traditionOrder = ['Hindu', 'Buddhist', 'Taoist', 'Tantric', 'Zen', 'Sufi', 'ChristianMystic', 'Hermetic'];
+  const traditionOrder = ['Hindu', 'Tantric', 'Buddhist', 'Taoist', 'Zen', 'Sufi', 'ChristianMystic', 'Hermetic', 'Stoic'];
+  const getTraditionOrder = (tradition: string) => {
+    const index = traditionOrder.indexOf(tradition);
+    return index === -1 ? Number.MAX_SAFE_INTEGER : index;
+  };
   const sortedTraditions = Object.keys(sourcesByTradition).sort(
-    (a, b) => traditionOrder.indexOf(a) - traditionOrder.indexOf(b)
+    (a, b) => getTraditionOrder(a) - getTraditionOrder(b)
   );
 
   return (
@@ -221,13 +225,14 @@ function SourceCard({ source, onSelect, progress, actualVerseCount }: SourceCard
 function getTraditionIcon(tradition: string): string {
   const icons: Record<string, string> = {
     'Hindu': '🙏',
+    'Tantric': '🕉️',
     'Buddhist': '☸️',
     'Taoist': '☯️',
-    'Tantric': '🕉️',
     'Zen': '🌀',
     'Sufi': '🌹',
     'ChristianMystic': '✝️',
     'Hermetic': '⚗️',
+    'Stoic': '🏛️',
   };
   return icons[tradition] || '📜';
 }
@@ -235,13 +240,14 @@ function getTraditionIcon(tradition: string): string {
 function getTraditionLabel(tradition: string): string {
   const labels: Record<string, string> = {
     'Hindu': 'Hindu Tradition',
+    'Tantric': 'Tantric Tradition',
     'Buddhist': 'Buddhist Tradition',
     'Taoist': 'Taoist Tradition',
-    'Tantric': 'Tantric Tradition',
     'Zen': 'Zen Tradition',
     'Sufi': 'Sufi Tradition',
     'ChristianMystic': 'Christian Mysticism',
     'Hermetic': 'Hermetic Tradition',
+    'Stoic': 'Stoic Tradition',
   };
   return labels[tradition] || tradition;
 }

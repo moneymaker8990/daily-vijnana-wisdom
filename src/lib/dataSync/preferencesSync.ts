@@ -5,6 +5,8 @@
 import { supabase } from '../supabase';
 import type { User } from '@supabase/supabase-js';
 import { STORAGE_KEYS } from '@lib/constants';
+import { getPrimaryNotificationTime, getNotificationSettings, buildNotificationSettings, saveNotificationSettings } from '@lib/notifications';
+import { loadUserState, saveUserState } from '@lib/storage';
 
 export interface UserPreferencesSync {
   currentDay: number;
@@ -15,15 +17,15 @@ export interface UserPreferencesSync {
 
 export async function syncUserPreferences(user: User | null): Promise<UserPreferencesSync> {
   if (!user) {
-    const storedState = localStorage.getItem(STORAGE_KEYS.USER_STATE);
     const storedTextSize = localStorage.getItem(STORAGE_KEYS.TEXT_SIZE);
-    const storedNotifications = localStorage.getItem(STORAGE_KEYS.NOTIFICATION_SETTINGS);
+    const storedState = loadUserState();
+    const storedNotifications = getNotificationSettings();
 
     return {
-      currentDay: storedState ? JSON.parse(storedState).currentDay : 1,
+      currentDay: storedState?.currentDay ?? 1,
       textSize: storedTextSize || 'medium',
-      notificationEnabled: storedNotifications ? JSON.parse(storedNotifications).enabled : false,
-      notificationTime: storedNotifications ? JSON.parse(storedNotifications).time : null,
+      notificationEnabled: storedNotifications.enabled,
+      notificationTime: getPrimaryNotificationTime(storedNotifications),
     };
   }
 
@@ -34,12 +36,13 @@ export async function syncUserPreferences(user: User | null): Promise<UserPrefer
     .single();
 
   if (error || !data) {
-    const storedState = localStorage.getItem(STORAGE_KEYS.USER_STATE);
+    const storedState = loadUserState();
+    const storedNotifications = getNotificationSettings();
     return {
-      currentDay: storedState ? JSON.parse(storedState).currentDay : 1,
+      currentDay: storedState?.currentDay ?? 1,
       textSize: localStorage.getItem(STORAGE_KEYS.TEXT_SIZE) || 'medium',
-      notificationEnabled: false,
-      notificationTime: null,
+      notificationEnabled: storedNotifications.enabled,
+      notificationTime: getPrimaryNotificationTime(storedNotifications),
     };
   }
 
@@ -50,12 +53,13 @@ export async function syncUserPreferences(user: User | null): Promise<UserPrefer
     notificationTime: data.notification_time,
   };
 
-  localStorage.setItem(STORAGE_KEYS.USER_STATE, JSON.stringify({ currentDay: prefs.currentDay }));
+  const existingState = loadUserState();
+  saveUserState({
+    currentDay: prefs.currentDay,
+    lastVisited: existingState?.lastVisited ?? new Date().toISOString(),
+  });
   localStorage.setItem(STORAGE_KEYS.TEXT_SIZE, prefs.textSize);
-  localStorage.setItem(STORAGE_KEYS.NOTIFICATION_SETTINGS, JSON.stringify({
-    enabled: prefs.notificationEnabled,
-    time: prefs.notificationTime,
-  }));
+  await saveNotificationSettings(buildNotificationSettings(prefs.notificationEnabled, prefs.notificationTime));
 
   return prefs;
 }
@@ -65,18 +69,23 @@ export async function saveUserPreferences(
   prefs: Partial<UserPreferencesSync>
 ): Promise<void> {
   if (prefs.currentDay !== undefined) {
-    localStorage.setItem(STORAGE_KEYS.USER_STATE, JSON.stringify({ currentDay: prefs.currentDay }));
+    const existingState = loadUserState();
+    saveUserState({
+      currentDay: prefs.currentDay,
+      lastVisited: existingState?.lastVisited ?? new Date().toISOString(),
+    });
   }
   if (prefs.textSize !== undefined) {
     localStorage.setItem(STORAGE_KEYS.TEXT_SIZE, prefs.textSize);
   }
   if (prefs.notificationEnabled !== undefined || prefs.notificationTime !== undefined) {
-    const current = localStorage.getItem(STORAGE_KEYS.NOTIFICATION_SETTINGS);
-    const currentParsed = current ? JSON.parse(current) : { enabled: false, time: null };
-    localStorage.setItem(STORAGE_KEYS.NOTIFICATION_SETTINGS, JSON.stringify({
-      enabled: prefs.notificationEnabled ?? currentParsed.enabled,
-      time: prefs.notificationTime ?? currentParsed.time,
-    }));
+    const currentSettings = getNotificationSettings();
+    await saveNotificationSettings(
+      buildNotificationSettings(
+        prefs.notificationEnabled ?? currentSettings.enabled,
+        prefs.notificationTime ?? getPrimaryNotificationTime(currentSettings)
+      )
+    );
   }
 
   if (user) {

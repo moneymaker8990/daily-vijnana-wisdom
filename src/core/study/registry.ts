@@ -15,6 +15,7 @@ import { actionWithoutAttachmentCourse } from './courses/themed/actionWithoutAtt
 
 // Import tradition courses  
 import { advaitaEssentialsCourse } from './courses/tradition/advaitaEssentials';
+import { kashmirShaivismCourse } from './courses/tradition/kashmirShaivism';
 import { wayOfTaoCourse } from './courses/tradition/wayOfTao';
 import { buddhasPathCourse } from './courses/tradition/buddhasPath';
 import { sufiHeartCourse } from './courses/tradition/sufiHeart';
@@ -38,6 +39,7 @@ export const ALL_COURSES: Course[] = [
   actionWithoutAttachmentCourse,
   // Tradition Deep Dives
   advaitaEssentialsCourse,
+  kashmirShaivismCourse,
   wayOfTaoCourse,
   buddhasPathCourse,
   sufiHeartCourse,

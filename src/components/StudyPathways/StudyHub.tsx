@@ -5,10 +5,11 @@
  */
 
 import { useState, useEffect } from 'react';
-import { getAllCourses, getCoursesByPathway } from '@core/study/registry';
+import { getAllCourses, getCourseById, getCoursesByPathway } from '@core/study/registry';
 import { PATHWAY_INFO } from '@core/study/types';
 import { getCourseProgress, getCourseCompletionPercent } from '@core/study/progress';
 import type { Course, PathwayType } from '@core/study/types';
+import { STORAGE_KEYS } from '@lib/constants';
 import { CourseCard } from './CourseCard';
 import { CourseView } from './CourseView';
 import { LessonView } from './LessonView';
@@ -18,9 +19,66 @@ type ViewState =
   | { type: 'course'; courseId: string }
   | { type: 'lesson'; courseId: string; lessonId: string };
 
+type PersistedStudyHubState = {
+  viewState: ViewState;
+  activePathway: PathwayType | 'all';
+};
+
+function isValidPathway(value: unknown): value is PathwayType | 'all' {
+  return value === 'all' || PATHWAY_INFO.some(pathway => pathway.type === value);
+}
+
+function isValidViewState(value: unknown): value is ViewState {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const view = value as Record<string, unknown>;
+  if (view.type === 'hub') {
+    return true;
+  }
+
+  if (view.type === 'course' && typeof view.courseId === 'string') {
+    return Boolean(getCourseById(view.courseId));
+  }
+
+  if (
+    view.type === 'lesson' &&
+    typeof view.courseId === 'string' &&
+    typeof view.lessonId === 'string'
+  ) {
+    const course = getCourseById(view.courseId);
+    return Boolean(course?.lessons.some(lesson => lesson.id === view.lessonId));
+  }
+
+  return false;
+}
+
+function loadPersistedStudyHubState(): PersistedStudyHubState {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.STUDY_HUB_STATE);
+    if (!raw) {
+      return { viewState: { type: 'hub' }, activePathway: 'all' };
+    }
+
+    const parsed = JSON.parse(raw) as {
+      viewState?: unknown;
+      activePathway?: unknown;
+    };
+
+    return {
+      viewState: isValidViewState(parsed.viewState) ? parsed.viewState : { type: 'hub' },
+      activePathway: isValidPathway(parsed.activePathway) ? parsed.activePathway : 'all',
+    };
+  } catch {
+    return { viewState: { type: 'hub' }, activePathway: 'all' };
+  }
+}
+
 export function StudyHub() {
-  const [viewState, setViewState] = useState<ViewState>({ type: 'hub' });
-  const [activePathway, setActivePathway] = useState<PathwayType | 'all'>('all');
+  const [initialState] = useState(loadPersistedStudyHubState);
+  const [viewState, setViewState] = useState<ViewState>(initialState.viewState);
+  const [activePathway, setActivePathway] = useState<PathwayType | 'all'>(initialState.activePathway);
   const [, forceUpdate] = useState({});
 
   // Refresh progress when returning to hub
@@ -29,6 +87,16 @@ export function StudyHub() {
       forceUpdate({});
     }
   }, [viewState.type]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      STORAGE_KEYS.STUDY_HUB_STATE,
+      JSON.stringify({
+        viewState,
+        activePathway,
+      } satisfies PersistedStudyHubState)
+    );
+  }, [activePathway, viewState]);
 
   const handleSelectCourse = (courseId: string) => {
     setViewState({ type: 'course', courseId });

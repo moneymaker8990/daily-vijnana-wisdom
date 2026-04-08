@@ -4,7 +4,8 @@
 
 import { supabase } from '../supabase';
 import type { User } from '@supabase/supabase-js';
-import { STORAGE_KEYS } from '@lib/constants';
+import { getAllProgress, saveAllProgress } from '@core/study/progress';
+import type { AllStudyProgress, StudyProgress } from '@core/study/types';
 
 export interface StudyProgressSync {
   courseId: string;
@@ -13,10 +14,42 @@ export interface StudyProgressSync {
   startedAt: string;
 }
 
+function toSyncProgress(progress: StudyProgress): StudyProgressSync {
+  return {
+    courseId: progress.courseId,
+    currentLesson: progress.currentLesson,
+    completedLessons: progress.completedLessons,
+    startedAt: progress.startedAt,
+  };
+}
+
+function fromSyncProgress(progress: StudyProgressSync): StudyProgress {
+  return {
+    courseId: progress.courseId,
+    currentLesson: progress.currentLesson,
+    completedLessons: progress.completedLessons,
+    startedAt: progress.startedAt,
+    lastAccessedAt: new Date().toISOString(),
+  };
+}
+
+function getLocalStudyProgressForSync(): StudyProgressSync[] {
+  return Object.values(getAllProgress().courses).map(toSyncProgress);
+}
+
+function saveCloudProgressLocally(progress: StudyProgressSync[]): void {
+  const allProgress: AllStudyProgress = {
+    courses: progress.reduce<Record<string, StudyProgress>>((acc, item) => {
+      acc[item.courseId] = fromSyncProgress(item);
+      return acc;
+    }, {}),
+  };
+  saveAllProgress(allProgress);
+}
+
 export async function syncStudyProgress(user: User | null): Promise<StudyProgressSync[]> {
   if (!user) {
-    const stored = localStorage.getItem(STORAGE_KEYS.STUDY_PROGRESS);
-    return stored ? JSON.parse(stored) : [];
+    return getLocalStudyProgressForSync();
   }
 
   const { data: cloudProgress, error } = await supabase
@@ -25,8 +58,7 @@ export async function syncStudyProgress(user: User | null): Promise<StudyProgres
     .eq('user_id', user.id);
 
   if (error) {
-    const stored = localStorage.getItem(STORAGE_KEYS.STUDY_PROGRESS);
-    return stored ? JSON.parse(stored) : [];
+    return getLocalStudyProgressForSync();
   }
 
   const progress: StudyProgressSync[] = (cloudProgress || []).map(p => ({
@@ -36,7 +68,7 @@ export async function syncStudyProgress(user: User | null): Promise<StudyProgres
     startedAt: p.started_at,
   }));
 
-  localStorage.setItem(STORAGE_KEYS.STUDY_PROGRESS, JSON.stringify(progress));
+  saveCloudProgressLocally(progress);
   return progress;
 }
 
@@ -44,16 +76,9 @@ export async function saveStudyProgress(
   user: User | null,
   progress: StudyProgressSync
 ): Promise<void> {
-  const stored = localStorage.getItem(STORAGE_KEYS.STUDY_PROGRESS);
-  const allProgress: StudyProgressSync[] = stored ? JSON.parse(stored) : [];
-  const existingIndex = allProgress.findIndex(p => p.courseId === progress.courseId);
-
-  if (existingIndex >= 0) {
-    allProgress[existingIndex] = progress;
-  } else {
-    allProgress.push(progress);
-  }
-  localStorage.setItem(STORAGE_KEYS.STUDY_PROGRESS, JSON.stringify(allProgress));
+  const localProgress = getAllProgress();
+  localProgress.courses[progress.courseId] = fromSyncProgress(progress);
+  saveAllProgress(localProgress);
 
   if (user) {
     await supabase
@@ -69,17 +94,14 @@ export async function saveStudyProgress(
 }
 
 export async function uploadLocalStudyProgress(user: User): Promise<void> {
-  const localProgress = localStorage.getItem(STORAGE_KEYS.STUDY_PROGRESS);
-  if (localProgress) {
-    const progress: StudyProgressSync[] = JSON.parse(localProgress);
-    for (const p of progress) {
-      await supabase.from('study_progress').upsert({
-        user_id: user.id,
-        course_id: p.courseId,
-        current_lesson: p.currentLesson,
-        completed_lessons: p.completedLessons,
-        started_at: p.startedAt,
-      });
-    }
+  const progress = getLocalStudyProgressForSync();
+  for (const item of progress) {
+    await supabase.from('study_progress').upsert({
+      user_id: user.id,
+      course_id: item.courseId,
+      current_lesson: item.currentLesson,
+      completed_lessons: item.completedLessons,
+      started_at: item.startedAt,
+    });
   }
 }

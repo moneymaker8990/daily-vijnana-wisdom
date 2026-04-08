@@ -8,6 +8,9 @@ export type TraditionRef = {
     | 'ASHTAVAKRA'
     | 'YOGA_SUTRA'
     | 'SHIVA_SUTRA'
+    | 'SPANDA_KARIKA'
+    | 'PRATYABHIJNAHRIDAYAM'
+    | 'TANTRALOKA'
     | 'DHAMMAPADA'
     | 'RUMI'
     | 'ZEN_KOAN'
@@ -68,6 +71,9 @@ export type DailyEntry = {
   ashtavakraRef?: TraditionRef;
   yogaSutraRef?: TraditionRef;
   shivaSutraRef?: TraditionRef;
+  spandaKarikaRef?: TraditionRef;
+  pratyabhijnahridayamRef?: TraditionRef;
+  tantralokaRef?: TraditionRef;
   dhammapadaRef?: TraditionRef;
   rumiRef?: TraditionRef;
   zenKoanRef?: TraditionRef;
@@ -98,6 +104,9 @@ export type DailyEntry = {
   ashtavakraText?: string;
   yogaSutraText?: string;
   shivaSutraText?: string;
+  spandaKarikaText?: string;
+  pratyabhijnahridayamText?: string;
+  tantralokaText?: string;
   dhammapadaText?: string;
   rumiText?: string;
   zenKoanText?: string;
@@ -128,6 +137,9 @@ export type DailyEntry = {
   ashtavakraCommentary?: string;
   yogaSutraCommentary?: string;
   shivaSutraCommentary?: string;
+  spandaKarikaCommentary?: string;
+  pratyabhijnahridayamCommentary?: string;
+  tantralokaCommentary?: string;
   dhammapadaCommentary?: string;
   rumiCommentary?: string;
   zenKoanCommentary?: string;
@@ -159,6 +171,9 @@ export type DailyEntry = {
     ashtavakra?: string;
     yogaSutras?: string;
     shivaSutras?: string;
+    spandaKarika?: string;
+    pratyabhijnahridayam?: string;
+    tantraloka?: string;
     dhammapada?: string;
     rumi?: string;
     zenKoan?: string;
@@ -191,6 +206,9 @@ export type DailyEntry = {
     ashtavakra?: string;
     yogaSutras?: string;
     shivaSutras?: string;
+    spandaKarika?: string;
+    pratyabhijnahridayam?: string;
+    tantraloka?: string;
     dhammapada?: string;
     rumi?: string;
     zenKoan?: string;

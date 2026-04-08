@@ -179,11 +179,14 @@ export function getRelatedContent(currentCourseId: string): string[] {
 
 function getCourseTraiditions(course: Course): string[] {
   // Extract traditions from course title, description, and lessons
-  const text = `${course.title} ${course.description}`.toLowerCase();
+  const lessonText = course.lessons
+    .map(lesson => `${lesson.title} ${lesson.introduction} ${lesson.traditionalContext ?? ''}`)
+    .join(' ');
+  const text = `${course.title} ${course.description} ${lessonText}`.toLowerCase();
   
   const traditions = [
     'advaita', 'vedanta', 'buddhist', 'zen', 'taoist', 'christian', 
-    'sufi', 'yoga', 'tantra', 'hindu', 'mystic'
+    'sufi', 'yoga', 'tantra', 'kashmir', 'shaivism', 'shaiva', 'spanda', 'pratyabhijna', 'hindu', 'mystic'
   ];
   
   return traditions.filter(t => text.includes(t));

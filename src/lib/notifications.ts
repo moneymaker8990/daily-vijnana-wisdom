@@ -11,30 +11,69 @@ export type NotificationSettings = {
 
 const DEFAULT_TIMES = ['08:00', '12:00', '20:00'];
 
+function isValidTime(value: unknown): value is string {
+  return typeof value === 'string' && /^\d{2}:\d{2}$/.test(value);
+}
+
+function normalizeNotificationSettings(value: unknown): NotificationSettings {
+  if (!value || typeof value !== 'object') {
+    return {
+      enabled: false,
+      times: DEFAULT_TIMES,
+      lastNotifiedDay: 0,
+    };
+  }
+
+  const raw = value as Record<string, unknown>;
+  const times = Array.isArray(raw.times)
+    ? raw.times.filter(isValidTime)
+    : isValidTime(raw.time)
+    ? [raw.time]
+    : DEFAULT_TIMES;
+
+  const lastNotifiedDay = typeof raw.lastNotifiedDay === 'number' && Number.isFinite(raw.lastNotifiedDay)
+    ? raw.lastNotifiedDay
+    : 0;
+
+  return {
+    enabled: Boolean(raw.enabled),
+    times: times.length > 0 ? times : DEFAULT_TIMES,
+    lastNotifiedDay,
+  };
+}
+
+export function getPrimaryNotificationTime(settings: NotificationSettings): string | null {
+  return settings.times[0] ?? null;
+}
+
+export function buildNotificationSettings(enabled: boolean, primaryTime?: string | null): NotificationSettings {
+  return normalizeNotificationSettings({
+    enabled,
+    times: primaryTime ? [primaryTime] : DEFAULT_TIMES,
+  });
+}
+
 export function getNotificationSettings(): NotificationSettings {
   try {
     const stored = localStorage.getItem(STORAGE_KEYS.NOTIFICATION_SETTINGS);
     if (stored) {
-      return JSON.parse(stored);
+      return normalizeNotificationSettings(JSON.parse(stored));
     }
   } catch (e) {
     // Error reading notification settings
   }
-  return {
-    enabled: false,
-    times: DEFAULT_TIMES,
-    lastNotifiedDay: 0,
-  };
+  return normalizeNotificationSettings(null);
 }
 
 export async function saveNotificationSettings(settings: NotificationSettings): Promise<void> {
   try {
-    localStorage.setItem(STORAGE_KEYS.NOTIFICATION_SETTINGS, JSON.stringify(settings));
+    const normalized = normalizeNotificationSettings(settings);
+    localStorage.setItem(STORAGE_KEYS.NOTIFICATION_SETTINGS, JSON.stringify(normalized));
     
     // Schedule or cancel native daily reminders
     if (Capacitor.isNativePlatform()) {
-      if (settings.enabled && settings.times.length > 0) {
-        await scheduleDailyReminders(settings.times);
+      if (normalized.enabled && normalized.times.length > 0) {
+        await scheduleDailyReminders(normalized.times);
       } else {
         await cancelDailyReminders();
       }

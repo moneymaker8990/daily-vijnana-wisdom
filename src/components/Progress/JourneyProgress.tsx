@@ -1,12 +1,14 @@
 type JourneyProgressProps = {
   currentDay: number;
+  viewingDay?: number;
   totalDays?: number;
 };
 
-export function JourneyProgress({ currentDay, totalDays = 365 }: JourneyProgressProps) {
+export function JourneyProgress({ currentDay, viewingDay, totalDays = 365 }: JourneyProgressProps) {
   const progress = (currentDay / totalDays) * 100;
   const weeksComplete = Math.floor(currentDay / 7);
   const monthsApprox = Math.floor(currentDay / 30);
+  const isReviewingPastDay = typeof viewingDay === 'number' && viewingDay !== currentDay;
 
   return (
     <div className="bg-white/5 rounded-xl p-4 border border-white/10">
@@ -14,6 +16,12 @@ export function JourneyProgress({ currentDay, totalDays = 365 }: JourneyProgress
         <h4 className="text-xs uppercase tracking-[0.15em] text-white/50">Your Journey</h4>
         <span className="text-xs text-violet-300/70">{progress.toFixed(1)}%</span>
       </div>
+
+      {isReviewingPastDay && (
+        <p className="text-xs text-white/50 mb-3">
+          Progress is saved through Day {currentDay}. You are currently viewing Day {viewingDay}.
+        </p>
+      )}
 
       {/* Progress bar */}
       <div className="relative h-2 bg-white/10 rounded-full overflow-hidden mb-3">
@@ -37,7 +45,7 @@ export function JourneyProgress({ currentDay, totalDays = 365 }: JourneyProgress
       <div className="grid grid-cols-3 gap-2 text-center">
         <div className="bg-white/5 rounded-lg py-2">
           <p className="text-lg font-light text-white">{currentDay}</p>
-          <p className="text-[10px] text-white/40 uppercase tracking-wider">Days</p>
+          <p className="text-[10px] text-white/40 uppercase tracking-wider">Saved Day</p>
         </div>
         <div className="bg-white/5 rounded-lg py-2">
           <p className="text-lg font-light text-white">{weeksComplete}</p>
