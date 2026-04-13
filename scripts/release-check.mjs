@@ -26,6 +26,7 @@ const requiredFiles = [
 
 const requiredEnvKeys = ['VITE_SUPABASE_URL', 'VITE_SUPABASE_ANON_KEY'];
 const recommendedEnvKeys = ['VITE_SENTRY_DSN', 'VITE_BILLING_MODE'];
+const securityEnvKeys = ['VITE_APP_BASE_URL'];
 const revenueCatEnvKeys = [
   'VITE_REVENUECAT_API_KEY_IOS',
   'VITE_REVENUECAT_API_KEY_ANDROID',
@@ -71,6 +72,19 @@ if (billingMode === 'revenuecat') {
     console.log(`${ok ? 'OK' : 'MISSING'}  env:${key}`);
     if (!ok) failed = true;
   }
+}
+
+if (strict) {
+  console.log('');
+  for (const key of securityEnvKeys) {
+    const ok = envText.includes(`${key}=`);
+    console.log(`${ok ? 'OK' : 'MISSING'}  env:${key}`);
+    if (!ok) failed = true;
+  }
+
+  const scaffoldMode = billingMode === 'scaffold';
+  console.log(`${scaffoldMode ? 'BLOCKED' : 'OK'}  billing_mode:${billingMode || '(unset)'}`);
+  if (scaffoldMode) failed = true;
 }
 
 if (strict) {

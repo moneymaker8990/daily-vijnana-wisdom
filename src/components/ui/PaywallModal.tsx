@@ -1,23 +1,30 @@
 import { useEffect, useRef } from 'react';
+import { isNativePlatform } from '../../lib/subscription';
 
 type PaywallModalProps = {
   isOpen: boolean;
-  triggerContext: string;
+  triggerContext?: string;
   isBusy?: boolean;
+  isSignedIn?: boolean;
   onActivate: () => void;
   onRestore: () => void;
+  onSignIn?: () => void;
   onClose: () => void;
 };
 
 export function PaywallModal({
   isOpen,
-  triggerContext,
+  triggerContext: _triggerContext,
   isBusy = false,
+  isSignedIn = true,
   onActivate,
   onRestore,
+  onSignIn,
   onClose,
 }: PaywallModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const isWeb = !isNativePlatform();
+  const needsSignIn = isWeb && !isSignedIn;
 
   useEffect(() => {
     if (isOpen) closeRef.current?.focus();
@@ -54,16 +61,18 @@ export function PaywallModal({
           Continue with deeper study pathways, full sacred library access, and advanced dream insights.
         </p>
 
-        <div className="text-xs text-white/40 mb-5">
-          Trigger: {triggerContext}
-        </div>
-
         <div className="space-y-2 mb-5 text-sm text-white/70">
           <div>- Full study pathway access</div>
           <div>- Complete sacred library collection</div>
           <div>- Advanced dream interpretation depth</div>
-          <div>- Cross-device continuity (future billing integration)</div>
+          <div>- Cross-device continuity</div>
         </div>
+
+        {needsSignIn && (
+          <p className="text-xs text-amber-400/80 mb-4">
+            Sign in to subscribe and unlock premium features.
+          </p>
+        )}
 
         <div className="flex gap-3">
           <button
@@ -74,13 +83,24 @@ export function PaywallModal({
           >
             Not now
           </button>
-          <button
-            onClick={onActivate}
-            disabled={isBusy}
-            className="flex-1 rounded-xl bg-violet-500 hover:bg-violet-400 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-500/30 transition-all"
-          >
-            {isBusy ? 'Processing...' : 'Upgrade'}
-          </button>
+
+          {needsSignIn ? (
+            <button
+              onClick={onSignIn}
+              disabled={isBusy}
+              className="flex-1 rounded-xl bg-violet-500 hover:bg-violet-400 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-500/30 transition-all"
+            >
+              Sign in
+            </button>
+          ) : (
+            <button
+              onClick={onActivate}
+              disabled={isBusy}
+              className="flex-1 rounded-xl bg-violet-500 hover:bg-violet-400 py-2.5 text-sm font-medium text-white shadow-lg shadow-violet-500/30 transition-all"
+            >
+              {isBusy ? 'Processing...' : 'Upgrade'}
+            </button>
+          )}
         </div>
         <button
           onClick={onRestore}

@@ -169,7 +169,7 @@ export async function checkAIConnection(): Promise<boolean> {
 
     clearTimeout(timer);
     const data = response.ok ? await response.json().catch(() => null) : null;
-    const ok = response.ok && data?.status === 'ok';
+    const ok = response.ok && data?.status === 'ok' && data?.ai_configured === true;
     _aiStatusCache = { ok, checkedAt: Date.now() };
     return ok;
   } catch {

@@ -6,7 +6,7 @@ Repeatable process for iOS and Android releases.
 
 - Release manager: `Caleb`
 - QA sign-off owner: `Release engineering`
-- Target submission date: `2026-03-11`
+- Target submission date: `2026-04-12`
 
 ## Prerequisites
 

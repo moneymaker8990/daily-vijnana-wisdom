@@ -30,6 +30,8 @@ It will also use `window.RevenueCatPurchases` if present, so existing custom bri
 
 The adapter maps active entitlements to premium access and persists state in local storage for app startup recovery.
 
+> Production note: the app forces `revenuecat` mode in production builds and blocks scaffold purchases.
+
 ## Validation checklist
 
 - Purchase success unlocks premium-gated tabs (`courses`, `library`, `dreams`)

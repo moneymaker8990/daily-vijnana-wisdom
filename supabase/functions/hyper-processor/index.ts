@@ -1,9 +1,31 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+const allowedOrigin = Deno.env.get("ALLOWED_ORIGIN") ?? "*";
+
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": allowedOrigin,
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
+
+const MAX_MESSAGE_CHARS = 12000;
+
+function sanitizeInput(value: unknown, fieldName: string): string {
+  if (typeof value !== "string") {
+    throw new Error(`${fieldName} must be a string`);
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    throw new Error(`${fieldName} is required`);
+  }
+
+  if (trimmed.length > MAX_MESSAGE_CHARS) {
+    throw new Error(`${fieldName} must be <= ${MAX_MESSAGE_CHARS} characters`);
+  }
+
+  return trimmed;
+}
 
 async function callClaude(
   apiKey: string,
@@ -96,12 +118,27 @@ async function handleVoiceReflection(
 }
 
 Deno.serve(async (req: Request) => {
+  if (req.method !== "POST" && req.method !== "OPTIONS") {
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
+      status: 405,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
 
   try {
     const body = await req.json();
+
+    if (body.type === "health-check") {
+      const hasKey = Boolean(Deno.env.get("CLAUDE_API_KEY"));
+      return new Response(JSON.stringify({ status: "ok", ai_configured: hasKey }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const claudeApiKey = Deno.env.get("CLAUDE_API_KEY");
 
     if (!claudeApiKey) {
@@ -111,36 +148,43 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    if (body.type === "health-check") {
-      return new Response(JSON.stringify({ status: "ok" }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
     const { type, system, message, dream, prompt, text, source } = body;
 
     if (dream && !type) {
-      return await handleDream(claudeApiKey, dream);
+      return await handleDream(claudeApiKey, sanitizeInput(dream, "dream"));
     }
 
     switch (type) {
       case "spiritual-guide":
-        if (!message) throw new Error("message is required");
-        return await handleSpiritualGuide(claudeApiKey, system || "", message);
+        return await handleSpiritualGuide(
+          claudeApiKey,
+          typeof system === "string" ? system : "",
+          sanitizeInput(message, "message")
+        );
       case "dream-interpretation":
-        return await handleDream(claudeApiKey, dream || message || "");
+        return await handleDream(claudeApiKey, sanitizeInput(dream || message, "dream"));
       case "explain":
         if (!prompt && !text && !message) throw new Error("prompt, text, or message is required");
         return await handleExplain(
           claudeApiKey,
-          prompt || `Explain this passage from ${source || "a sacred text"} in a warm, practical, and non-dogmatic way:\n\n"${text || message || ""}"`
+          sanitizeInput(
+            prompt || `Explain this passage from ${source || "a sacred text"} in a warm, practical, and non-dogmatic way:\n\n"${text || message || ""}"`,
+            "prompt"
+          )
         );
       case "voice-reflection":
-        if (!message) throw new Error("message is required");
-        return await handleVoiceReflection(claudeApiKey, system || "", message);
+        return await handleVoiceReflection(
+          claudeApiKey,
+          typeof system === "string" ? system : "",
+          sanitizeInput(message, "message")
+        );
       default:
         if (system && message) {
-          return await handleSpiritualGuide(claudeApiKey, system, message);
+          return await handleSpiritualGuide(
+            claudeApiKey,
+            sanitizeInput(system, "system"),
+            sanitizeInput(message, "message")
+          );
         }
         return new Response(JSON.stringify({ error: `Unknown request type: ${type || "(none)"}` }), {
           status: 400,

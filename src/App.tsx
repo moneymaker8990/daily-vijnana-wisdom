@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, lazy, Suspense } from 'react';
+import { useEffect, useState, useRef, useCallback, lazy, Suspense } from 'react';
 import { AppLayout } from './components/Layout/AppLayout';
 import { AssistantProvider } from './components/Assistants';
 import { DayView } from './components/DayView/DayView';
@@ -28,7 +28,8 @@ import {
   markReviewPromptShown,
   shouldShowReviewPrompt,
 } from './lib/reviewPrompt';
-import { LOGIN_SYNC_ERROR_EVENT } from './lib/dataSync';
+import { supabase } from './lib/supabase';
+import { signInWithGoogle } from './lib/auth';
 
 const Journal = lazy(() => import('./components/Journal').then(m => ({ default: m.Journal })));
 const StudyHub = lazy(() => import('./components/StudyPathways').then(m => ({ default: m.StudyHub })));
@@ -54,6 +55,41 @@ function App() {
   const [paywallContext, setPaywallContext] = useState('generic');
   const [showReviewPrompt, setShowReviewPrompt] = useState(false);
   const [milestone, setMilestone] = useState<{ days: number; title: string; message: string } | null>(null);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setIsSignedIn(!!data.session);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsSignedIn(!!session);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const checkout = params.get('checkout');
+    if (!checkout) return;
+
+    window.history.replaceState({}, '', window.location.pathname);
+
+    if (checkout === 'success') {
+      syncEntitlements().then((state) => {
+        setPremiumEnabled(state.tier === 'premium');
+        if (state.tier === 'premium') {
+          info('Premium unlocked — welcome aboard!');
+          track('purchase_success', { trigger: 'stripe_checkout_return' });
+        } else {
+          info('Payment received — your subscription is being activated.');
+          track('checkout_success_sync_pending');
+        }
+      });
+    } else if (checkout === 'cancelled') {
+      info('Checkout cancelled. You can upgrade any time.');
+      track('checkout_cancelled');
+    }
+  }, []);
 
   const maybeOpenReviewPrompt = () => {
     const inputs = getValueMomentInputs();
@@ -144,17 +180,6 @@ function App() {
   }, [showOnboarding, activeTab]);
 
   useEffect(() => {
-    const handleLoginSyncError = () => {
-      showError('Some cloud data could not be synced. Your local progress is still available on this device.');
-    };
-
-    window.addEventListener(LOGIN_SYNC_ERROR_EVENT, handleLoginSyncError);
-    return () => {
-      window.removeEventListener(LOGIN_SYNC_ERROR_EVENT, handleLoginSyncError);
-    };
-  }, [showError]);
-
-  useEffect(() => {
     syncEntitlements().then((state) => {
       setPremiumEnabled(state.tier === 'premium');
     });
@@ -164,6 +189,13 @@ function App() {
     setPaywallBusy(true);
     const result = await purchasePremium();
     setPaywallBusy(false);
+
+    if (result.redirectUrl) {
+      track('paywall_cta_click', { trigger: paywallContext, mode: 'stripe' });
+      window.location.href = result.redirectUrl;
+      return;
+    }
+
     if (result.ok) {
       setPremiumEnabled(true);
       setShowPaywall(false);
@@ -175,7 +207,7 @@ function App() {
     }
 
     track('purchase_fail', { trigger: paywallContext, reason: result.error ?? 'unknown' });
-    info('Purchase could not be completed. Please try again.');
+    info(result.error || 'Purchase could not be completed. Please try again.');
   };
 
   const handleRestorePurchases = async () => {
@@ -192,6 +224,16 @@ function App() {
     info(result.error ?? 'No purchases to restore.');
     track('restore_fail', { reason: result.error ?? 'unknown' });
   };
+
+  const handlePaywallSignIn = useCallback(async () => {
+    setPaywallBusy(true);
+    const { error } = await signInWithGoogle();
+    setPaywallBusy(false);
+    if (error) {
+      showError('Sign-in failed. Please try again.');
+      track('paywall_signin_fail', { reason: error.message });
+    }
+  }, [showError]);
 
   const handleReviewRateNow = () => {
     markReviewPromptAccepted();
@@ -330,9 +372,11 @@ function App() {
       <PaywallModal
         isOpen={showPaywall}
         isBusy={paywallBusy}
+        isSignedIn={isSignedIn}
         triggerContext={paywallContext}
         onActivate={handleActivatePremium}
         onRestore={handleRestorePurchases}
+        onSignIn={handlePaywallSignIn}
         onClose={() => {
           setShowPaywall(false);
           track('paywall_close_no_action', { trigger: paywallContext });

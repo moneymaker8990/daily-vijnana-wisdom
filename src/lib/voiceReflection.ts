@@ -4,7 +4,7 @@
  * Generates AI-powered reflections after voice journal entries.
  */
 
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
+import { getSupabaseFunctionHeaders, hyperProcessorUrl, isSupabaseConfigured } from './supabase';
 
 export interface AIReflection {
   summary: string;
@@ -28,13 +28,14 @@ Be warm, non-judgmental, and supportive. Don't be preachy or prescriptive.`;
  * Generate an AI reflection for a voice journal entry
  */
 export async function generateAIReflection(transcript: string): Promise<{ reflection: AIReflection; isAI: boolean }> {
+  if (!isSupabaseConfigured) {
+    return { reflection: generateFallbackReflection(transcript), isAI: false };
+  }
+
   try {
-    const response = await fetch(`${SUPABASE_URL}/functions/v1/hyper-processor`, {
+    const response = await fetch(hyperProcessorUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      },
+      headers: getSupabaseFunctionHeaders(),
       body: JSON.stringify({
         type: 'voice-reflection',
         system: REFLECTION_PROMPT,

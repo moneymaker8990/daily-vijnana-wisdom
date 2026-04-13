@@ -63,7 +63,7 @@ Explore a curated collection of spiritual texts:
 • Offline reading
 
 **FEATURES**
-✓ Completely free to use
+✓ Free core features with optional premium subscription
 ✓ Works offline
 ✓ Private and secure - your data stays on your device
 ✓ Optional cloud sync across devices
@@ -95,7 +95,7 @@ meditation, mindfulness, spirituality, wisdom, journal, dream, yoga, buddhism, t
 **Content Descriptors:**
 - No objectionable content
 - No user-generated content sharing
-- No in-app purchases
+- In-app purchases (optional premium subscription)
 - No advertising
 
 ---
@@ -106,11 +106,13 @@ meditation, mindfulness, spirituality, wisdom, journal, dream, yoga, buddhism, t
 - Email (optional, for account creation)
 - Usage data (anonymous analytics)
 
+**Data Collected (Linked to You):**
+- Purchases (subscription status via RevenueCat)
+
 **Data Not Collected:**
 - Location
 - Contacts
 - Identifiers
-- Purchases
 - Browsing history
 
 **Data Linked to You:**

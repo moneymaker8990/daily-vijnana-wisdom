@@ -1,15 +1,16 @@
 import { STORAGE_KEYS } from './constants';
 import { Capacitor } from '@capacitor/core';
 import { Purchases } from '@revenuecat/purchases-capacitor';
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
 
 export type AppTab = 'daily' | 'courses' | 'library' | 'journal' | 'dreams';
 export type EntitlementTier = 'free' | 'premium';
-export type BillingMode = 'scaffold' | 'revenuecat';
+export type BillingMode = 'scaffold' | 'revenuecat' | 'stripe';
 
 export type EntitlementState = {
   tier: EntitlementTier;
   activatedAt?: string;
-  source?: 'scaffold' | 'revenuecat';
+  source?: 'scaffold' | 'revenuecat' | 'stripe';
   productId?: string;
   lastSyncedAt?: string;
 };
@@ -18,6 +19,7 @@ type PurchaseResult = {
   ok: boolean;
   state: EntitlementState;
   error?: string;
+  redirectUrl?: string;
 };
 
 type RevenueCatInfo = {
@@ -47,8 +49,18 @@ const DEFAULT_ENTITLEMENT_ID = 'premium';
 const DEFAULT_REVENUECAT_OFFERING = 'default';
 let revenueCatConfigured = false;
 
+export function isNativePlatform(): boolean {
+  const platform = Capacitor.getPlatform();
+  return platform === 'ios' || platform === 'android';
+}
+
 function getBillingMode(): BillingMode {
-  return import.meta.env.VITE_BILLING_MODE === 'revenuecat' ? 'revenuecat' : 'scaffold';
+  if (isNativePlatform()) {
+    const configuredMode = import.meta.env.VITE_BILLING_MODE === 'revenuecat' ? 'revenuecat' : 'scaffold';
+    if (import.meta.env.PROD) return 'revenuecat';
+    return configuredMode;
+  }
+  return 'stripe';
 }
 
 function getRevenueCatApiKey(): string | null {
@@ -133,8 +145,48 @@ export function hasPremiumAccess(): boolean {
   return getEntitlementState().tier === 'premium';
 }
 
+async function getAuthToken(): Promise<string | null> {
+  const { data } = await supabase.auth.getSession();
+  return data.session?.access_token ?? null;
+}
+
+export async function createStripeCheckoutSession(priceId?: string): Promise<PurchaseResult> {
+  const token = await getAuthToken();
+  if (!token) {
+    return { ok: false, error: 'Sign in to subscribe', state: getEntitlementState() };
+  }
+
+  const url = `${SUPABASE_URL}/functions/v1/stripe-checkout`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      apikey: SUPABASE_ANON_KEY,
+    },
+    body: JSON.stringify({ priceId: priceId || undefined }),
+  });
+
+  if (!response.ok) {
+    const body = await response.json().catch(() => ({}));
+    return {
+      ok: false,
+      error: (body as Record<string, string>).error || 'Could not create checkout session',
+      state: getEntitlementState(),
+    };
+  }
+
+  const { url: checkoutUrl } = (await response.json()) as { url: string };
+  return { ok: true, redirectUrl: checkoutUrl, state: getEntitlementState() };
+}
+
 export async function purchasePremium(productId: string = DEFAULT_PRODUCT_ID): Promise<PurchaseResult> {
   const mode = getBillingMode();
+
+  if (mode === 'stripe') {
+    return createStripeCheckoutSession();
+  }
+
   if (mode === 'revenuecat') {
     try {
       const sdk = await getRevenueCatBridge();
@@ -144,9 +196,13 @@ export async function purchasePremium(productId: string = DEFAULT_PRODUCT_ID): P
       const info = await sdk.purchasePackage(productId);
       const state = mapRevenueCatToEntitlement(info, productId);
       return { ok: state.tier === 'premium', state };
-    } catch (error) {
+    } catch {
       return { ok: false, error: 'Purchase failed', state: getEntitlementState() };
     }
+  }
+
+  if (import.meta.env.PROD) {
+    return { ok: false, error: 'Scaffold billing is disabled in production', state: getEntitlementState() };
   }
 
   const state = saveEntitlementState({
@@ -161,6 +217,16 @@ export async function purchasePremium(productId: string = DEFAULT_PRODUCT_ID): P
 
 export async function restorePurchases(): Promise<PurchaseResult> {
   const mode = getBillingMode();
+
+  if (mode === 'stripe') {
+    const serverState = await syncEntitlementsFromServer();
+    return {
+      ok: serverState.tier === 'premium',
+      state: serverState,
+      error: serverState.tier === 'premium' ? undefined : 'No active subscription found',
+    };
+  }
+
   if (mode === 'revenuecat') {
     try {
       const sdk = await getRevenueCatBridge();
@@ -175,13 +241,51 @@ export async function restorePurchases(): Promise<PurchaseResult> {
     }
   }
 
-  // Scaffold restore: use existing local entitlement if present.
   const state = getEntitlementState();
   return { ok: state.tier === 'premium', state, error: state.tier === 'premium' ? undefined : 'No purchases found' };
 }
 
+async function syncEntitlementsFromServer(): Promise<EntitlementState> {
+  const token = await getAuthToken();
+  if (!token) return getEntitlementState();
+
+  try {
+    const url = `${SUPABASE_URL}/functions/v1/check-entitlement`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        apikey: SUPABASE_ANON_KEY,
+      },
+    });
+
+    if (!response.ok) return getEntitlementState();
+
+    const data = (await response.json()) as {
+      tier: EntitlementTier;
+      source: string | null;
+      current_period_end: string | null;
+    };
+
+    return saveEntitlementState({
+      tier: data.tier,
+      source: (data.source as EntitlementState['source']) ?? undefined,
+      activatedAt: data.tier === 'premium' ? new Date().toISOString() : undefined,
+      lastSyncedAt: new Date().toISOString(),
+    });
+  } catch {
+    return getEntitlementState();
+  }
+}
+
 export async function syncEntitlements(): Promise<EntitlementState> {
-  if (getBillingMode() !== 'revenuecat') {
+  const mode = getBillingMode();
+
+  if (mode === 'stripe') {
+    return syncEntitlementsFromServer();
+  }
+
+  if (mode !== 'revenuecat') {
     return getEntitlementState();
   }
 

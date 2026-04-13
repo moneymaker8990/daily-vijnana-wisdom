@@ -63,7 +63,7 @@ npx cap open ios
 - [ ] Create new app in App Store Connect
 - [ ] Fill in app metadata (see APP_STORE_METADATA.md)
 - [ ] Upload screenshots
-- [ ] Set pricing (Free)
+- [ ] Set pricing (Free with In-App Purchases)
 - [ ] Configure age rating
 - [ ] Add privacy policy URL
 - [ ] Submit for review

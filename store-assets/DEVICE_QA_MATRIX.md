@@ -5,8 +5,8 @@ Use this matrix as release evidence before submitting to App Store / Play.
 ## Test Scope
 
 - Build: `v1.0.0`
-- Candidate date: `2026-03-04`
-- Tester: `Cursor Agent (release prep run)`
+- Candidate date: `2026-04-12`
+- Tester: `Cursor Agent (ship-readiness hardening pass)`
 
 ## Device Coverage Matrix
 
@@ -36,5 +36,5 @@ Use this matrix as release evidence before submitting to App Store / Play.
 ## Sign-off
 
 - QA owner: `Release engineering`
-- Date: `2026-03-04`
-- Release decision: `NO-GO (physical device validation still pending)`
+- Date: `2026-04-12`
+- Release decision: `CONDITIONAL-GO (hardening applied; physical device validation required before final submit)`

@@ -259,6 +259,41 @@ export interface Database {
           updated_at?: string;
         };
       };
+      user_entitlements: {
+        Row: {
+          id: string;
+          user_id: string;
+          tier: 'free' | 'premium';
+          source: 'stripe' | 'revenuecat' | 'manual' | null;
+          stripe_customer_id: string | null;
+          stripe_subscription_id: string | null;
+          current_period_end: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          tier?: 'free' | 'premium';
+          source?: 'stripe' | 'revenuecat' | 'manual' | null;
+          stripe_customer_id?: string | null;
+          stripe_subscription_id?: string | null;
+          current_period_end?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          tier?: 'free' | 'premium';
+          source?: 'stripe' | 'revenuecat' | 'manual' | null;
+          stripe_customer_id?: string | null;
+          stripe_subscription_id?: string | null;
+          current_period_end?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
