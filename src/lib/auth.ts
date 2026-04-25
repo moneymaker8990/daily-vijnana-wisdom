@@ -10,6 +10,15 @@ import type { User, Session, AuthError, AuthChangeEvent } from '@supabase/supaba
 export type AuthUser = User;
 export type AuthSession = Session;
 
+/** Production base URL for OAuth and password-reset redirects (Vercel). Falls back to the current page origin. */
+function getAuthRedirectOrigin(): string {
+  const fromEnv = import.meta.env.VITE_APP_BASE_URL;
+  if (typeof fromEnv === 'string' && fromEnv.trim().length > 0) {
+    return fromEnv.trim().replace(/\/$/, '');
+  }
+  return window.location.origin;
+}
+
 export interface AuthResult {
   user: User | null;
   session: Session | null;
@@ -55,7 +64,7 @@ export async function signInWithGoogle(): Promise<{ error: AuthError | null }> {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: window.location.origin,
+      redirectTo: getAuthRedirectOrigin(),
     },
   });
 
@@ -95,7 +104,7 @@ export async function getCurrentSession(): Promise<Session | null> {
  */
 export async function resetPassword(email: string): Promise<{ error: AuthError | null }> {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${window.location.origin}/reset-password`,
+    redirectTo: `${getAuthRedirectOrigin()}/reset-password`,
   });
   return { error };
 }
