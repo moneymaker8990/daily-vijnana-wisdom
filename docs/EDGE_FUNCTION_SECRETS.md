@@ -20,7 +20,7 @@ supabase secrets set KEY=value
 
 | Secret | Description | Default |
 |--------|-------------|---------|
-| `ALLOWED_ORIGIN` | CORS `Access-Control-Allow-Origin` header value | `*` (any origin) |
+| `ALLOWED_ORIGIN` | CORS `Access-Control-Allow-Origin` for browser calls to `stripe-checkout` and `check-entitlement` | `*` in dev; in production use your site origin. **Comma-separate** multiple origins, e.g. `https://mindvanta.io,https://www.mindvanta.io`. The deployed functions also treat **www** and **apex** as the same site when one is listed. |
 
 ## Required for web subscriptions (`stripe-checkout`, `stripe-webhook`)
 

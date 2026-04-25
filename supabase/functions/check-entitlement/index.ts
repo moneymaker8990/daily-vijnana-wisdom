@@ -1,29 +1,29 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
+import { buildCorsHeaders } from "../_shared/cors.ts";
 
-const allowedOrigin = Deno.env.get("ALLOWED_ORIGIN") ?? "*";
+function corsHeaders(req: Request) {
+  return buildCorsHeaders(req, "GET, OPTIONS");
+}
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": allowedOrigin,
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
-};
-
-function jsonResponse(body: Record<string, unknown>, status = 200): Response {
+function jsonResponse(
+  body: Record<string, unknown>,
+  status = 200,
+  req: Request
+): Response {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
+    headers: { ...corsHeaders(req), "Content-Type": "application/json" },
   });
 }
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders(req) });
   }
 
   if (req.method !== "GET") {
-    return jsonResponse({ error: "Method not allowed" }, 405);
+    return jsonResponse({ error: "Method not allowed" }, 405, req);
   }
 
   try {
@@ -32,7 +32,7 @@ Deno.serve(async (req: Request) => {
 
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
-      return jsonResponse({ error: "Missing authorization header" }, 401);
+      return jsonResponse({ error: "Missing authorization header" }, 401, req);
     }
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey, {
@@ -45,7 +45,7 @@ Deno.serve(async (req: Request) => {
     } = await supabase.auth.getUser();
 
     if (userError || !user) {
-      return jsonResponse({ error: "Unauthorized" }, 401);
+      return jsonResponse({ error: "Unauthorized" }, 401, req);
     }
 
     const { data, error } = await supabase
@@ -56,14 +56,18 @@ Deno.serve(async (req: Request) => {
 
     if (error) {
       console.error("check-entitlement query error:", error);
-      return jsonResponse({ error: "Database error" }, 500);
+      return jsonResponse({ error: "Database error" }, 500, req);
     }
 
-    return jsonResponse({
-      tier: data?.tier ?? "free",
-      source: data?.source ?? null,
-      current_period_end: data?.current_period_end ?? null,
-    });
+    return jsonResponse(
+      {
+        tier: data?.tier ?? "free",
+        source: data?.source ?? null,
+        current_period_end: data?.current_period_end ?? null,
+      },
+      200,
+      req
+    );
   } catch (error) {
     console.error("check-entitlement error:", error);
     return jsonResponse(
@@ -71,7 +75,8 @@ Deno.serve(async (req: Request) => {
         error:
           error instanceof Error ? error.message : "Internal server error",
       },
-      500
+      500,
+      req
     );
   }
 });
