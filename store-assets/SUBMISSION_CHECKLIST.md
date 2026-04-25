@@ -13,7 +13,7 @@
 
 ### Icons & Graphics
 - [x] Generate PNG icons (run `npm install sharp && node scripts/generate-icons.cjs`)
-- [ ] Create feature graphic for Google Play (1024x500 PNG)
+- [x] Create feature graphic for Google Play (1024x500 PNG) — run `npm run assets:feature-graphic`, output at `store-assets/feature-graphic.png`
 - [x] Verify iOS app icon (1024x1024 PNG)
 - [x] Verify Android adaptive icon layers
 

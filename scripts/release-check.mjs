@@ -85,6 +85,34 @@ if (strict) {
   const scaffoldMode = billingMode === 'scaffold';
   console.log(`${scaffoldMode ? 'BLOCKED' : 'OK'}  billing_mode:${billingMode || '(unset)'}`);
   if (scaffoldMode) failed = true;
+
+  console.log('');
+  const placeholderPatterns = [
+    /REPLACE_BEFORE_SHIP/i,
+    /^\s*=\s*your[_-]/im,
+    /=your_/,
+    /=sk_test_/,
+    /=pk_test_/,
+    /=whsec_test_/,
+  ];
+  const envLines = envText.split(/\r?\n/).filter((line) => {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) return false;
+    if (trimmed.startsWith('VERCEL_OIDC_TOKEN=')) return false;
+    return trimmed.includes('=');
+  });
+  const placeholderLines = envLines.filter((line) =>
+    placeholderPatterns.some((pattern) => pattern.test(line))
+  );
+  if (placeholderLines.length > 0) {
+    failed = true;
+    for (const line of placeholderLines) {
+      const key = line.split('=')[0];
+      console.log(`PLACEHOLDER  env:${key.trim()}`);
+    }
+  } else {
+    console.log('OK  env:no_placeholder_values');
+  }
 }
 
 if (strict) {

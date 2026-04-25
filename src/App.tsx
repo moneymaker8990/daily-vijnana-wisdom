@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback, lazy, Suspense } from 'react';
+import { Capacitor } from '@capacitor/core';
 import { AppLayout } from './components/Layout/AppLayout';
 import { AssistantProvider } from './components/Assistants';
 import { DayView } from './components/DayView/DayView';
@@ -38,6 +39,20 @@ const DreamJournal = lazy(() => import('./components/Dreams/DreamJournal').then(
 const FIRST_JOURNAL_TRACKED_KEY = 'mindvanta_first_journal_tracked';
 const FIRST_DREAM_TRACKED_KEY = 'mindvanta_first_dream_tracked';
 const NUDGE_SHOWN_PREFIX = 'mindvanta_weekly_nudge_';
+
+// Replace the numeric App Store id below with the real id assigned by App Store Connect after first submission.
+const APP_STORE_REVIEW_URL =
+  'https://apps.apple.com/app/id0000000000?action=write-review';
+const PLAY_STORE_REVIEW_URL =
+  'https://play.google.com/store/apps/details?id=com.mindvanta.app&showAllReviews=true';
+const WEB_REVIEW_URL = 'https://mindvanta.io';
+
+function getReviewUrl(): string {
+  const platform = Capacitor.getPlatform();
+  if (platform === 'ios') return APP_STORE_REVIEW_URL;
+  if (platform === 'android') return PLAY_STORE_REVIEW_URL;
+  return WEB_REVIEW_URL;
+}
 
 function App() {
   const { entry, loading, goToNext, goToPrev, goToToday, goToDay, userCurrentDay } = useDailyEntry();
@@ -238,8 +253,9 @@ function App() {
   const handleReviewRateNow = () => {
     markReviewPromptAccepted();
     setShowReviewPrompt(false);
-    track('review_prompt_accepted');
-    window.open('https://mindvanta.io', '_blank', 'noopener,noreferrer');
+    const platform = Capacitor.getPlatform();
+    track('review_prompt_accepted', { platform });
+    window.open(getReviewUrl(), '_blank', 'noopener,noreferrer');
   };
 
   const handleReviewLater = () => {

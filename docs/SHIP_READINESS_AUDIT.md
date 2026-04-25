@@ -21,21 +21,20 @@ This audit translates "finish line" work into concrete go-live gates for AI reli
 ## 2) Payment Structure
 
 ### Current architecture
-- Billing modes:
-  - `scaffold` (local entitlement for development)
-  - `revenuecat` (real purchase/restore flow)
+- **Native (iOS / Android)**: `revenuecat` — App Store / Play Store subscriptions through RevenueCat (`src/lib/subscription.ts`). Production builds always use this path; scaffold is blocked in production.
+- **Web (PWA / Vercel)**: `stripe` — Stripe Checkout + `stripe-checkout` / `stripe-webhook` / `check-entitlement` Edge Functions (see [BILLING_SETUP.md](./BILLING_SETUP.md)).
+- **scaffold** — Local-only premium unlock for dev; not valid for production.
 
 ### Required to ship
-- Set `VITE_BILLING_MODE=revenuecat`.
-- Set RevenueCat keys:
-  - `VITE_REVENUECAT_API_KEY_IOS`
-  - `VITE_REVENUECAT_API_KEY_ANDROID`
-  - `VITE_REVENUECAT_ENTITLEMENT_ID`
-  - `VITE_REVENUECAT_OFFERING_ID`
+- **Native apps**: set RevenueCat public SDK keys and product metadata:
+  - `VITE_REVENUECAT_API_KEY_IOS`, `VITE_REVENUECAT_API_KEY_ANDROID`
+  - `VITE_REVENUECAT_ENTITLEMENT_ID`, `VITE_REVENUECAT_OFFERING_ID`
+- **Web**: set `VITE_STRIPE_PUBLISHABLE_KEY` client-side; set Stripe and Supabase service secrets per [EDGE_FUNCTION_SECRETS.md](./EDGE_FUNCTION_SECRETS.md) and run DB migrations for `user_entitlements`.
+- `release:check --strict` must see non-scaffold billing configuration and `VITE_APP_BASE_URL` (see [scripts/release-check.mjs](../scripts/release-check.mjs)).
 
 ### Hardening added
-- Production builds now force `revenuecat` mode and block scaffold purchases.
-- `release:check --strict` now fails if billing mode is scaffold.
+- Native production builds force real store billing; scaffold purchases are disabled in production.
+- `release:check --strict` fails if `VITE_BILLING_MODE=scaffold` and scans env/store docs for submission placeholders.
 
 ## 3) Security Baseline
 
@@ -58,6 +57,8 @@ This audit translates "finish line" work into concrete go-live gates for AI reli
 ```bash
 npm run build
 npm run release:check:strict
+# Or full automated gate (typecheck, unit tests, build, strict preflight):
+npm run ship:preflight
 ```
 
-If strict preflight passes and native purchase tests pass on both iOS + Android sandbox accounts, app is ready for final store submission.
+If strict preflight passes, web Stripe flow is verified, and native purchase tests pass on iOS and Android sandbox accounts, the app is ready for final store submission.

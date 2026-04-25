@@ -45,16 +45,17 @@ If your PC shuts down or restarts during development/build, reduce system load w
    VITE_SUPABASE_ANON_KEY=your-anon-key
    ```
 
-3. **Deploy Edge Function (`hyper-processor`):**
+3. **Deploy Edge Functions:**
    ```bash
    npx supabase login
    npx supabase link --project-ref coihujjfdhpqfwmibfbi
    npx supabase functions deploy hyper-processor
+   npx supabase functions deploy stripe-checkout
+   npx supabase functions deploy stripe-webhook
+   npx supabase functions deploy check-entitlement
    ```
 
-4. **Set Claude API Key as secret:**
-   - Go to Supabase Dashboard > Project Settings > Edge Functions > Secrets
-   - Add: `CLAUDE_API_KEY` = `your-claude-api-key`
+4. **Set Edge Function secrets** — see [docs/EDGE_FUNCTION_SECRETS.md](./docs/EDGE_FUNCTION_SECRETS.md) for the full list (CLAUDE_API_KEY, ALLOWED_ORIGIN, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRICE_ID_MONTHLY, APP_BASE_URL, SUPABASE_SERVICE_ROLE_KEY).
 
 5. **Apply database schema:**
    - Open Supabase SQL Editor and run `supabase-schema.sql`
@@ -62,29 +63,25 @@ If your PC shuts down or restarts during development/build, reduce system load w
 
 ## Capacitor Setup (for Native Apps)
 
-1. **Install Capacitor:**
-   ```bash
-   npm install @capacitor/core @capacitor/cli @capacitor/ios @capacitor/android
-   npx cap init "Daily Vijnana Wisdom" "com.vijnana.daily"
-   ```
+The `ios/` and `android/` folders are already checked in; you do **not** need to re-init Capacitor. App identity is already set:
 
-2. **Build the web app:**
-   ```bash
-   npm run build
-   ```
+- `appId`: `app.mindvanta.main`
+- `appName`: `MindVanta`
+- iOS bundle identifier: `app.mindvanta.main`
+- Android applicationId: `com.mindvanta.app` (see [docs/NATIVE_RELEASE.md](./docs/NATIVE_RELEASE.md) for the one-time bundle-ID reconciliation decision)
 
-3. **Add platforms:**
-   ```bash
-   npx cap add ios
-   npx cap add android
-   ```
+Typical flow:
 
-4. **Sync and open:**
-   ```bash
-   npx cap sync
-   npx cap open ios    # Opens Xcode
-   npx cap open android # Opens Android Studio
-   ```
+```bash
+npm run build
+npm run sync-versions          # sync package.json version into native projects
+npm run sync-versions -- --bump-build   # also bump native build numbers
+npx cap sync
+npx cap open ios               # Opens Xcode
+npx cap open android           # Opens Android Studio
+```
+
+For the full signed-release flow see [docs/NATIVE_RELEASE.md](./docs/NATIVE_RELEASE.md).
 
 ## App Store Submission
 

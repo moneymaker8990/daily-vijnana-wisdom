@@ -9,19 +9,30 @@
     "preview": "vite preview",
     "release:check": "node ./scripts/release-check.mjs",
     "release:check:strict": "node ./scripts/release-check.mjs --strict",
-    "release:prep": "node ./scripts/release-prep.mjs"
+    "release:prep": "node ./scripts/release-prep.mjs",
+    "ship:preflight": "npm run typecheck && npm test -- --run && npm run build && npm run release:check:strict",
+    "sync-versions": "node ./scripts/sync-versions.mjs",
+    "verify:urls": "node ./scripts/verify-public-urls.mjs",
+    "assets:feature-graphic": "node ./scripts/generate-feature-graphic.cjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "@tailwindcss/vite": "^4.1.17",
+    "@types/node": "^24.0.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "jsdom": "^26.0.0",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.1.17",
     "typescript": "~5.9.3",
     "vite": "^7.2.4",
-    "vite-plugin-pwa": "^1.2.0"
+    "vite-plugin-pwa": "^1.2.0",
+    "vitest": "^3.0.0"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.4",
