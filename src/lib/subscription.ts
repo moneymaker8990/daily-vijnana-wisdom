@@ -151,33 +151,41 @@ async function getAuthToken(): Promise<string | null> {
 }
 
 export async function createStripeCheckoutSession(priceId?: string): Promise<PurchaseResult> {
-  const token = await getAuthToken();
-  if (!token) {
-    return { ok: false, error: 'Sign in to subscribe', state: getEntitlementState() };
-  }
+  try {
+    const token = await getAuthToken();
+    if (!token) {
+      return { ok: false, error: 'Sign in to subscribe', state: getEntitlementState() };
+    }
 
-  const url = `${SUPABASE_URL}/functions/v1/stripe-checkout`;
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-      apikey: SUPABASE_ANON_KEY,
-    },
-    body: JSON.stringify({ priceId: priceId || undefined }),
-  });
+    const url = `${SUPABASE_URL}/functions/v1/stripe-checkout`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        apikey: SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({ priceId: priceId || undefined }),
+    });
 
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const body = await response.json().catch(() => ({}));
+      return {
+        ok: false,
+        error: (body as Record<string, string>).error || 'Could not create checkout session',
+        state: getEntitlementState(),
+      };
+    }
+
+    const { url: checkoutUrl } = (await response.json()) as { url: string };
+    return { ok: true, redirectUrl: checkoutUrl, state: getEntitlementState() };
+  } catch (e) {
     return {
       ok: false,
-      error: (body as Record<string, string>).error || 'Could not create checkout session',
+      error: e instanceof Error ? e.message : 'Network error. Check your connection and try again.',
       state: getEntitlementState(),
     };
   }
-
-  const { url: checkoutUrl } = (await response.json()) as { url: string };
-  return { ok: true, redirectUrl: checkoutUrl, state: getEntitlementState() };
 }
 
 export async function purchasePremium(productId: string = DEFAULT_PRODUCT_ID): Promise<PurchaseResult> {

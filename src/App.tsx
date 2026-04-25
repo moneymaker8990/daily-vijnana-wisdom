@@ -46,6 +46,23 @@ const APP_STORE_REVIEW_URL =
 const PLAY_STORE_REVIEW_URL =
   'https://play.google.com/store/apps/details?id=com.mindvanta.app&showAllReviews=true';
 const WEB_REVIEW_URL = 'https://mindvanta.io';
+const PURCHASE_TIMEOUT_MS = 90_000;
+
+function withTimeout<T>(promise: Promise<T>, ms: number, message: string): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error(message)), ms);
+    promise.then(
+      (v) => {
+        clearTimeout(t);
+        resolve(v);
+      },
+      (e) => {
+        clearTimeout(t);
+        reject(e);
+      }
+    );
+  });
+}
 
 function getReviewUrl(): string {
   const platform = Capacitor.getPlatform();
@@ -202,51 +219,83 @@ function App() {
 
   const handleActivatePremium = async () => {
     setPaywallBusy(true);
-    const result = await purchasePremium();
-    setPaywallBusy(false);
+    try {
+      const result = await withTimeout(
+        purchasePremium(),
+        PURCHASE_TIMEOUT_MS,
+        'This is taking too long. Check your connection and try again.'
+      );
 
-    if (result.redirectUrl) {
-      track('paywall_cta_click', { trigger: paywallContext, mode: 'stripe' });
-      window.location.href = result.redirectUrl;
-      return;
+      if (result.redirectUrl) {
+        track('paywall_cta_click', { trigger: paywallContext, mode: 'stripe' });
+        window.location.href = result.redirectUrl;
+        return;
+      }
+
+      if (result.ok) {
+        setPremiumEnabled(true);
+        setShowPaywall(false);
+        info('Premium unlocked successfully.');
+        track('paywall_cta_click', { trigger: paywallContext, mode: result.state.source ?? 'unknown' });
+        track('trial_start', { trigger: paywallContext, product_id: result.state.productId ?? 'default' });
+        track('purchase_success', { trigger: paywallContext, product_id: result.state.productId ?? 'default' });
+        return;
+      }
+
+      track('purchase_fail', { trigger: paywallContext, reason: result.error ?? 'unknown' });
+      info(result.error || 'Purchase could not be completed. Please try again.');
+    } catch (e) {
+      const message = e instanceof Error ? e.message : 'Upgrade failed. Please try again.';
+      info(message);
+      track('purchase_fail', { trigger: paywallContext, reason: message });
+    } finally {
+      setPaywallBusy(false);
     }
-
-    if (result.ok) {
-      setPremiumEnabled(true);
-      setShowPaywall(false);
-      info('Premium unlocked successfully.');
-      track('paywall_cta_click', { trigger: paywallContext, mode: result.state.source ?? 'unknown' });
-      track('trial_start', { trigger: paywallContext, product_id: result.state.productId ?? 'default' });
-      track('purchase_success', { trigger: paywallContext, product_id: result.state.productId ?? 'default' });
-      return;
-    }
-
-    track('purchase_fail', { trigger: paywallContext, reason: result.error ?? 'unknown' });
-    info(result.error || 'Purchase could not be completed. Please try again.');
   };
 
   const handleRestorePurchases = async () => {
     setPaywallBusy(true);
-    const result = await restorePurchases();
-    setPaywallBusy(false);
-    if (result.ok) {
-      setPremiumEnabled(true);
-      setShowPaywall(false);
-      info('Purchases restored.');
-      track('restore_success', { source: result.state.source ?? 'unknown' });
-      return;
+    try {
+      const result = await withTimeout(
+        restorePurchases(),
+        PURCHASE_TIMEOUT_MS,
+        'This is taking too long. Check your connection and try again.'
+      );
+      if (result.ok) {
+        setPremiumEnabled(true);
+        setShowPaywall(false);
+        info('Purchases restored.');
+        track('restore_success', { source: result.state.source ?? 'unknown' });
+        return;
+      }
+      info(result.error ?? 'No purchases to restore.');
+      track('restore_fail', { reason: result.error ?? 'unknown' });
+    } catch (e) {
+      const message = e instanceof Error ? e.message : 'Restore failed. Please try again.';
+      info(message);
+      track('restore_fail', { reason: message });
+    } finally {
+      setPaywallBusy(false);
     }
-    info(result.error ?? 'No purchases to restore.');
-    track('restore_fail', { reason: result.error ?? 'unknown' });
   };
 
   const handlePaywallSignIn = useCallback(async () => {
     setPaywallBusy(true);
-    const { error } = await signInWithGoogle();
-    setPaywallBusy(false);
-    if (error) {
-      showError('Sign-in failed. Please try again.');
-      track('paywall_signin_fail', { reason: error.message });
+    try {
+      const { error } = await withTimeout(
+        signInWithGoogle(),
+        PURCHASE_TIMEOUT_MS,
+        'Sign-in is taking too long. Try again.'
+      );
+      if (error) {
+        showError('Sign-in failed. Please try again.');
+        track('paywall_signin_fail', { reason: error.message });
+      }
+    } catch (e) {
+      showError(e instanceof Error ? e.message : 'Sign-in failed. Please try again.');
+      track('paywall_signin_fail', { reason: String(e) });
+    } finally {
+      setPaywallBusy(false);
     }
   }, [showError]);
 
