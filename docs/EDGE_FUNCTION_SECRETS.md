@@ -1,5 +1,7 @@
 # Edge Function Secrets
 
+> **End-to-end runbook (migrations + secrets + deploy + health check):** [SUPABASE_PHASE_B_RUNBOOK.md](./SUPABASE_PHASE_B_RUNBOOK.md)
+
 All Supabase Edge Functions read secrets from the Supabase environment, **not** from client-side `.env` files.
 
 Set them in the Supabase Dashboard (Project Settings > Edge Functions > Secrets) or via the CLI:

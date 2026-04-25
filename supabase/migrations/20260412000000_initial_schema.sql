@@ -1,8 +1,5 @@
 -- MindVanta Database Schema
--- Run this SQL in your Supabase SQL Editor to create all necessary tables
-
--- Enable Row Level Security
-ALTER DATABASE postgres SET "app.jwt_secret" TO 'your-jwt-secret';
+-- Supabase Auth JWT is managed by the platform; do not set app.jwt_secret here.
 
 -- Journal Entries Table
 CREATE TABLE IF NOT EXISTS journal_entries (

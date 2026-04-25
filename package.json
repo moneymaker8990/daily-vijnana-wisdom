@@ -17,7 +17,11 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:ai-health": "node ./scripts/test-hyper-processor-health.mjs",
+    "supabase:link": "npx supabase link --project-ref coihujjfdhpqfwmibfbi",
+    "supabase:db:push": "npx supabase db push",
+    "supabase:functions:deploy:all": "npx supabase functions deploy hyper-processor && npx supabase functions deploy stripe-checkout && npx supabase functions deploy stripe-webhook && npx supabase functions deploy check-entitlement"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
