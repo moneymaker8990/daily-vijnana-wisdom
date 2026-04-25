@@ -2,6 +2,15 @@
 -- Stores premium subscription state synced from Stripe (web) and RevenueCat (native).
 -- The webhook edge functions upsert rows here; the client reads via check-entitlement.
 
+-- Ensure trigger helper exists (remote DBs may predate the initial_schema migration).
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE TABLE IF NOT EXISTS user_entitlements (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL UNIQUE,
