@@ -10,34 +10,13 @@ import type { User, Session, AuthError, AuthChangeEvent } from '@supabase/supaba
 export type AuthUser = User;
 export type AuthSession = Session;
 
-/**
- * Base URL for OAuth and password-reset redirects.
- * Must be your real app (Vercel/custom domain), never the Supabase project URL — otherwise after
- * Google sign-in the browser opens `*.supabase.co` and shows "No API key found in request".
- */
+/** Production base URL for OAuth and password-reset redirects (Vercel). Falls back to the current page origin. */
 function getAuthRedirectOrigin(): string {
-  const trim = (s: string) => s.trim().replace(/\/+$/, '');
   const fromEnv = import.meta.env.VITE_APP_BASE_URL;
-  let base: string;
   if (typeof fromEnv === 'string' && fromEnv.trim().length > 0) {
-    base = trim(fromEnv);
-  } else {
-    base = typeof window !== 'undefined' ? window.location.origin : '';
+    return fromEnv.trim().replace(/\/$/, '');
   }
-  try {
-    const { hostname } = new URL(base || 'https://invalid');
-    if (hostname.endsWith('.supabase.co')) {
-      if (import.meta.env.DEV) {
-        console.warn(
-          '[auth] VITE_APP_BASE_URL must be your app URL (e.g. https://your-app.vercel.app), not *.supabase.co. Using current origin.'
-        );
-      }
-      return typeof window !== 'undefined' ? window.location.origin : base;
-    }
-  } catch {
-    return typeof window !== 'undefined' ? window.location.origin : base;
-  }
-  return base || (typeof window !== 'undefined' ? window.location.origin : '');
+  return window.location.origin;
 }
 
 export interface AuthResult {
@@ -82,12 +61,10 @@ export async function signInWithEmail(email: string, password: string): Promise<
  * Sign in with Google OAuth
  */
 export async function signInWithGoogle(): Promise<{ error: AuthError | null }> {
-  const origin = getAuthRedirectOrigin();
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      // Full app URL; query/hash tokens are appended by Supabase Auth
-      redirectTo: origin ? `${origin}/` : undefined,
+      redirectTo: getAuthRedirectOrigin(),
     },
   });
 
