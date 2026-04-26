@@ -48,7 +48,7 @@ supabase functions deploy stripe-reconcile
 supabase functions deploy check-entitlement
 ```
 
-`stripe-reconcile` is optional at runtime but recommended: after Checkout, the client calls it with the `session_id` from the return URL so `user_entitlements` is written even if the webhook is slow or failed.
+`stripe-reconcile` writes `user_entitlements` when: (1) the client posts `{ "sessionId": "cs_..." }` after Checkout, or (2) the client posts `{ "lookupByEmail": true }` on “Restore purchases” to match the signed-in user’s **email** to a Stripe customer and active subscription (if the row was never created by the webhook).
 
 ## Verifying the setup
 
