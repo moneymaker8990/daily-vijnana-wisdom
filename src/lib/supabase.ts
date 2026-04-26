@@ -10,9 +10,26 @@ import { createClient } from '@supabase/supabase-js';
 // Falls back to placeholder values to prevent app crash (features requiring Supabase will fail gracefully)
 const PLACEHOLDER_SUPABASE_URL = 'https://placeholder.supabase.co';
 const PLACEHOLDER_SUPABASE_ANON_KEY = 'placeholder-key';
-// Trim: trailing spaces in Vercel/env copiers cause 401 "Invalid API key" on the Edge gateway.
-const SUPABASE_URL = String(import.meta.env.VITE_SUPABASE_URL || PLACEHOLDER_SUPABASE_URL).trim();
-const SUPABASE_ANON_KEY = String(import.meta.env.VITE_SUPABASE_ANON_KEY || PLACEHOLDER_SUPABASE_ANON_KEY).trim();
+
+/** Trim; strip one pair of surrounding quotes (common Vercel copy-paste mistakes). */
+function normalizeSupabaseEnv(raw: string): string {
+  let s = raw.trim();
+  if (
+    (s.startsWith('"') && s.endsWith('"')) ||
+    (s.startsWith("'") && s.endsWith("'"))
+  ) {
+    s = s.slice(1, -1).trim();
+  }
+  return s;
+}
+
+// Bad env values break the Edge gateway (401). normalizeSupabaseEnv reduces foot-guns.
+const SUPABASE_URL = normalizeSupabaseEnv(
+  String(import.meta.env.VITE_SUPABASE_URL || PLACEHOLDER_SUPABASE_URL)
+);
+const SUPABASE_ANON_KEY = normalizeSupabaseEnv(
+  String(import.meta.env.VITE_SUPABASE_ANON_KEY || PLACEHOLDER_SUPABASE_ANON_KEY)
+);
 /** Trailing slash on project URL breaks `/functions/v1/...` joins in some envs. */
 const SUPABASE_ORIGIN = SUPABASE_URL.replace(/\/+$/, '');
 

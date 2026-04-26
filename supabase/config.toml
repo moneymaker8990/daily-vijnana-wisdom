@@ -361,6 +361,21 @@ authorization_url_path = "/oauth/consent"
 # Allow dynamic client registration
 allow_dynamic_registration = false
 
+# Edge Functions: turn off the platform "legacy JWT" gate (401 before your code runs) when the
+# project uses new JWT signing keys. Auth remains enforced inside each function.
+# Redeploy after changing: npx supabase functions deploy
+# https://supabase.com/docs/guides/troubleshooting/edge-function-401-error-response
+[functions.hyper-processor]
+verify_jwt = false
+[functions.check-entitlement]
+verify_jwt = false
+[functions.stripe-checkout]
+verify_jwt = false
+[functions.stripe-reconcile]
+verify_jwt = false
+[functions.stripe-webhook]
+verify_jwt = false
+
 [edge_runtime]
 enabled = true
 # Supported request policies: `oneshot`, `per_worker`.
