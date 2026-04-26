@@ -167,7 +167,7 @@ export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuide
     setIsLoading(true);
 
     try {
-      const { response, isAI, suggestions } = await sendToSpiritualGuide(userMessage.content, messages);
+      const { response, suggestions } = await sendToSpiritualGuide(userMessage.content, messages);
 
       // Keep "connected" after any successful send while the browser is online. Do **not** call
       // `checkAIConnection` here: a back-to-back health `invoke` often false-negatives right after
@@ -178,11 +178,8 @@ export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuide
         setAiStatus('offline');
       }
 
-      if (!isAI && navigator.onLine) {
-        toast.info('The live model could not complete that reply, so we used built-in guidance.');
-      } else if (!isAI && !navigator.onLine) {
-        toast.info('Using offline guidance — you appear to be offline.');
-      }
+      // No toast for fallback vs model: `isAI` can be wrong if the edge JSON shape drifts, and
+      // the header already shows online/offline. Built-in guidance is still shown in the thread.
 
       const assistantMessage: ChatMessageType = {
         id: generateMessageId(),

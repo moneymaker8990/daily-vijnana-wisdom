@@ -22,6 +22,31 @@ export function getLastAIConnectionError(): string | null {
   return _lastAIConnectionError;
 }
 
+/**
+ * `functions.invoke` usually returns the Edge JSON body as `data`, but in some cases
+ * the shape can differ. Extract the assistant text we care about.
+ */
+function extractModelTextFromInvokeData(data: unknown): string {
+  if (data == null) return '';
+  if (typeof data === 'string') return data;
+  if (typeof data !== 'object') return '';
+  const o = data as Record<string, unknown>;
+  if (typeof o.response === 'string') {
+    return o.response;
+  }
+  const r = o.response;
+  if (r && typeof r === 'object' && 'text' in r) {
+    const t = (r as { text?: unknown }).text;
+    if (typeof t === 'string') return t;
+  }
+  const inner = o.data;
+  if (inner && typeof inner === 'object') {
+    const d = inner as Record<string, unknown>;
+    if (typeof d.response === 'string') return d.response;
+  }
+  return '';
+}
+
 function describeInvokeError(err: unknown): string {
   if (err instanceof FunctionsHttpError) {
     const c = err.context;
@@ -258,15 +283,17 @@ export async function sendToSpiritualGuide(
       throw new Error('API error');
     }
 
-    const text = typeof data.response === 'string' ? data.response : '';
-    if (text) {
+    const text = extractModelTextFromInvokeData(data).trim();
+    if (text.length > 0) {
       // Mark connection as healthy
       _aiStatusCache = { ok: true, checkedAt: Date.now() };
       const { cleanResponse, suggestions } = parseFollowUpsFromAI(text);
+      // If the model only output FOLLOW_UPS: (nothing before the marker), keep full text
+      const display = cleanResponse.trim().length > 0 ? cleanResponse : text;
       const finalSuggestions = suggestions.length > 0
         ? suggestions
-        : generateFollowUpSuggestions(userMessage, cleanResponse);
-      return { response: cleanResponse, isAI: true, suggestions: finalSuggestions };
+        : generateFollowUpSuggestions(userMessage, display);
+      return { response: display, isAI: true, suggestions: finalSuggestions };
     }
 
     // Got a response but no text — edge function might be misconfigured
