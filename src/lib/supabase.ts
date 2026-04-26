@@ -54,6 +54,8 @@ export const supabase = createClient(SUPABASE_ORIGIN, SUPABASE_ANON_KEY, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true,
+    // Browser SPAs + Google OAuth: PKCE is what Supabase recommends; implicit often fails on return.
+    flowType: 'pkce',
   },
 });
 
