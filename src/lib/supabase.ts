@@ -12,13 +12,15 @@ const PLACEHOLDER_SUPABASE_URL = 'https://placeholder.supabase.co';
 const PLACEHOLDER_SUPABASE_ANON_KEY = 'placeholder-key';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || PLACEHOLDER_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || PLACEHOLDER_SUPABASE_ANON_KEY;
+/** Trailing slash on project URL breaks `/functions/v1/...` joins in some envs. */
+const SUPABASE_ORIGIN = String(SUPABASE_URL).replace(/\/+$/, '');
 
 // Check if Supabase is properly configured
 export const isSupabaseConfigured = Boolean(
   import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
-export const hyperProcessorUrl = `${SUPABASE_URL}/functions/v1/hyper-processor`;
+export const hyperProcessorUrl = `${SUPABASE_ORIGIN}/functions/v1/hyper-processor`;
 
 export function getSupabaseFunctionHeaders(): HeadersInit {
   return {
@@ -29,7 +31,7 @@ export function getSupabaseFunctionHeaders(): HeadersInit {
 }
 
 // Create single Supabase client instance
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+export const supabase = createClient(SUPABASE_ORIGIN, SUPABASE_ANON_KEY, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,

@@ -17,6 +17,7 @@ import {
   getSuggestedQuestions,
   checkAIConnection,
   clearAIStatusCache,
+  getLastAIConnectionError,
 } from '@lib/spiritualGuide';
 import { useVisualViewport } from '@hooks/useVisualViewport';
 import { ChatMessage } from './ChatMessage';
@@ -37,6 +38,7 @@ export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuide
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [aiStatus, setAiStatus] = useState<AIStatus>('checking');
+  const [aiErrorHint, setAiErrorHint] = useState<string | null>(null);
   const [activeLaunchContext, setActiveLaunchContext] = useState<SpiritualGuideLaunchContext | null>(launchContext);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -53,8 +55,9 @@ export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuide
 
     // Fresh check when opening (avoid 60s cache of a prior failed browser CORS check)
     clearAIStatusCache();
-    checkAIConnection().then(ok => {
+    checkAIConnection().then((ok) => {
       setAiStatus(ok ? 'connected' : 'offline');
+      setAiErrorHint(ok ? null : getLastAIConnectionError());
     });
   }, []);
 
@@ -63,8 +66,9 @@ export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuide
     const handleOnline = () => {
       clearAIStatusCache();
       setAiStatus('checking');
-      checkAIConnection().then(ok => {
+      checkAIConnection().then((ok) => {
         setAiStatus(ok ? 'connected' : 'offline');
+        setAiErrorHint(ok ? null : getLastAIConnectionError());
       });
     };
     const handleOffline = () => setAiStatus('offline');
@@ -234,19 +238,28 @@ export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuide
               )}
             </p>
             {aiStatus === 'offline' && (
-              <button
-                type="button"
-                onClick={() => {
-                  clearAIStatusCache();
-                  setAiStatus('checking');
-                  void checkAIConnection().then((ok) => {
-                    setAiStatus(ok ? 'connected' : 'offline');
-                  });
-                }}
-                className="mt-1 text-[11px] text-violet-300/90 hover:text-violet-200 underline-offset-2 hover:underline"
-              >
-                Retry connection
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={() => {
+                    clearAIStatusCache();
+                    setAiStatus('checking');
+                    setAiErrorHint(null);
+                    void checkAIConnection().then((ok) => {
+                      setAiStatus(ok ? 'connected' : 'offline');
+                      setAiErrorHint(ok ? null : getLastAIConnectionError());
+                    });
+                  }}
+                  className="mt-1 text-[11px] text-violet-300/90 hover:text-violet-200 underline-offset-2 hover:underline"
+                >
+                  Retry connection
+                </button>
+                {aiErrorHint && (
+                  <p className="mt-1 text-[10px] text-white/40 max-w-[220px] leading-snug" title={aiErrorHint}>
+                    {aiErrorHint}
+                  </p>
+                )}
+              </>
             )}
           </div>
         </div>

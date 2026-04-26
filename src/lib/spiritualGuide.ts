@@ -4,9 +4,39 @@
  * Provides AI-powered spiritual guidance using the Supabase Edge Function.
  */
 
-import { getSupabaseFunctionHeaders, hyperProcessorUrl, isSupabaseConfigured } from './supabase';
+import { FunctionsFetchError, FunctionsHttpError } from '@supabase/functions-js';
+import { supabase, SUPABASE_ANON_KEY, isSupabaseConfigured } from './supabase';
 import { STORAGE_KEYS } from '@lib/constants';
 import { parseFollowUpsFromAI, generateFollowUpSuggestions } from './followUpSuggestions';
+
+function hyperHeaders(): Record<string, string> {
+  return {
+    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+    apikey: SUPABASE_ANON_KEY,
+  };
+}
+
+let _lastAIConnectionError: string | null = null;
+
+export function getLastAIConnectionError(): string | null {
+  return _lastAIConnectionError;
+}
+
+function describeInvokeError(err: unknown): string {
+  if (err instanceof FunctionsHttpError) {
+    const c = err.context;
+    if (c instanceof Response) {
+      return `HTTP ${c.status} ${c.statusText || ''}`.trim();
+    }
+  }
+  if (err instanceof FunctionsFetchError) {
+    return 'Network error';
+  }
+  if (err instanceof Error) {
+    return err.message;
+  }
+  return 'Unknown error';
+}
 
 export interface ChatMessage {
   id: string;
@@ -106,54 +136,9 @@ After your response, on a new line, add exactly 3 follow-up questions the seeker
 FOLLOW_UPS: question one | question two | question three`;
 
 /**
- * Fetch with timeout and retry
- */
-async function fetchWithRetry(
-  url: string,
-  options: RequestInit,
-  { retries = 2, timeout = 30000 }: { retries?: number; timeout?: number } = {}
-): Promise<Response> {
-  let lastError: Error | null = null;
-
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    try {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), timeout);
-
-      const response = await fetch(url, {
-        ...options,
-        signal: controller.signal,
-      });
-
-      clearTimeout(timer);
-      return response;
-    } catch (err) {
-      lastError = err instanceof Error ? err : new Error(String(err));
-      // Don't retry on abort (timeout) for the last attempt
-      if (attempt < retries) {
-        // Exponential backoff: 1s, 2s
-        await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
-      }
-    }
-  }
-
-  throw lastError ?? new Error('Fetch failed after retries');
-}
-
-/**
  * AI connection status — cached for 60s
  */
 let _aiStatusCache: { ok: boolean; checkedAt: number } | null = null;
-
-function parseHealthJson(raw: string): { status?: string; ai_configured?: unknown } | null {
-  const t = raw.trim();
-  if (!t) return null;
-  try {
-    return JSON.parse(t) as { status?: string; ai_configured?: unknown };
-  } catch {
-    return null;
-  }
-}
 
 function isHealthPayloadOk(data: { status?: string; ai_configured?: unknown } | null): boolean {
   if (!data || data.status !== 'ok') return false;
@@ -164,26 +149,26 @@ function isHealthPayloadOk(data: { status?: string; ai_configured?: unknown } | 
   return false;
 }
 
-/** One health attempt (20s) — allows Edge cold start; no-store avoids stale CDN responses. */
+/** One health check via the same code path as other Supabase clients (avoids 401/URL mismatch on raw fetch). */
 async function checkAIConnectionOnce(): Promise<boolean> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 20_000);
-  try {
-    const response = await fetch(hyperProcessorUrl, {
-      method: 'POST',
-      headers: getSupabaseFunctionHeaders(),
-      body: JSON.stringify({ type: 'health-check' }),
-      signal: controller.signal,
-      cache: 'no-store',
-    });
-    const text = await response.text();
-    const data = parseHealthJson(text);
-    return response.ok && isHealthPayloadOk(data);
-  } catch {
+  const { data, error } = await supabase.functions.invoke<{
+    status?: string;
+    ai_configured?: unknown;
+  }>('hyper-processor', {
+    body: { type: 'health-check' },
+    headers: hyperHeaders(),
+    timeout: 20_000,
+  });
+  if (error) {
+    _lastAIConnectionError = describeInvokeError(error);
     return false;
-  } finally {
-    clearTimeout(timer);
   }
+  if (isHealthPayloadOk(data as { status?: string; ai_configured?: unknown } | null)) {
+    _lastAIConnectionError = null;
+    return true;
+  }
+  _lastAIConnectionError = 'AI service not ready';
+  return false;
 }
 
 export async function checkAIConnection(): Promise<boolean> {
@@ -243,27 +228,36 @@ export async function sendToSpiritualGuide(
       ? `Previous conversation:\n${contextMessages}\n\nSeeker: ${userMessage}`
       : userMessage;
 
-    const response = await fetchWithRetry(
-      hyperProcessorUrl,
-      {
-        method: 'POST',
-        headers: getSupabaseFunctionHeaders(),
-        body: JSON.stringify({
-          type: 'spiritual-guide',
-          system: SPIRITUAL_GUIDE_PROMPT,
-          message: fullPrompt,
-        }),
-      },
-      { retries: 2, timeout: 30000 }
-    );
+    const body = {
+      type: 'spiritual-guide' as const,
+      system: SPIRITUAL_GUIDE_PROMPT,
+      message: fullPrompt,
+    };
+    const headers = hyperHeaders();
 
-    if (!response.ok) {
-      const errorText = await response.text().catch(() => '');
-      console.error(`[SpiritualGuide] API error ${response.status}:`, errorText);
-      throw new Error(`API error: ${response.status}`);
+    let data: { response?: string } | null = null;
+    let lastSendError: unknown;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      if (attempt > 0) {
+        await new Promise((r) => setTimeout(r, 1000 * attempt));
+      }
+      const res = await supabase.functions.invoke<{ response?: string }>('hyper-processor', {
+        body,
+        headers,
+        timeout: 30_000,
+      });
+      if (!res.error && res.data) {
+        data = res.data;
+        break;
+      }
+      lastSendError = res.error;
     }
 
-    const data = await response.json();
+    if (!data) {
+      console.error('[SpiritualGuide] Request failed after retries:', lastSendError);
+      throw new Error('API error');
+    }
+
     const text = typeof data.response === 'string' ? data.response : '';
     if (text) {
       // Mark connection as healthy
