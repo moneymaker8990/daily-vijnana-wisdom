@@ -39,6 +39,6 @@ export const supabase = createClient(SUPABASE_ORIGIN, SUPABASE_ANON_KEY, {
   },
 });
 
-// Export URL for other uses
-export { SUPABASE_URL, SUPABASE_ANON_KEY };
+// Export URL for other uses (prefer supabaseApiOrigin for joining `/functions/v1/...` paths)
+export { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_ORIGIN as supabaseApiOrigin };
 

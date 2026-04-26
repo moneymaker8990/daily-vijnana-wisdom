@@ -1,7 +1,7 @@
 import { STORAGE_KEYS } from './constants';
 import { Capacitor } from '@capacitor/core';
 import { Purchases } from '@revenuecat/purchases-capacitor';
-import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from './supabase';
+import { supabase, supabaseApiOrigin, SUPABASE_ANON_KEY } from './supabase';
 
 export type AppTab = 'daily' | 'courses' | 'library' | 'journal' | 'dreams';
 export type EntitlementTier = 'free' | 'premium';
@@ -145,7 +145,15 @@ export function hasPremiumAccess(): boolean {
   return getEntitlementState().tier === 'premium';
 }
 
+/**
+ * User JWT for Edge Functions. Uses getUser() first so the session is validated/refreshed;
+ * getSession() alone can return a stale access_token and cause HTTP 401 on functions.
+ */
 async function getAuthToken(): Promise<string | null> {
+  const { data: userRes, error: userErr } = await supabase.auth.getUser();
+  if (userErr || !userRes.user) {
+    return null;
+  }
   const { data } = await supabase.auth.getSession();
   return data.session?.access_token ?? null;
 }
@@ -157,7 +165,7 @@ export async function createStripeCheckoutSession(priceId?: string): Promise<Pur
       return { ok: false, error: 'Sign in to subscribe', state: getEntitlementState() };
     }
 
-    const url = `${SUPABASE_URL}/functions/v1/stripe-checkout`;
+    const url = `${supabaseApiOrigin}/functions/v1/stripe-checkout`;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -290,7 +298,7 @@ export async function reconcileStripeCheckoutSession(sessionId: string): Promise
   const token = await getAuthToken();
   if (!token) return false;
   try {
-    const url = `${SUPABASE_URL}/functions/v1/stripe-reconcile`;
+    const url = `${supabaseApiOrigin}/functions/v1/stripe-reconcile`;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -320,7 +328,7 @@ export async function reconcileStripeByEmailFromServer(): Promise<StripeReconcil
   const token = await getAuthToken();
   if (!token) return { synced: false, code: 'request_failed' };
   try {
-    const url = `${SUPABASE_URL}/functions/v1/stripe-reconcile`;
+    const url = `${supabaseApiOrigin}/functions/v1/stripe-reconcile`;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -364,7 +372,7 @@ async function syncEntitlementsFromServer(): Promise<EntitlementState> {
   if (!token) return getEntitlementState();
 
   try {
-    const url = `${SUPABASE_URL}/functions/v1/check-entitlement`;
+    const url = `${supabaseApiOrigin}/functions/v1/check-entitlement`;
     const response = await fetch(url, {
       method: 'GET',
       headers: {
