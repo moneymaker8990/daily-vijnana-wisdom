@@ -51,7 +51,8 @@ export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuide
       setShowSuggestions(false);
     }
 
-    // Check AI connection status
+    // Fresh check when opening (avoid 60s cache of a prior failed browser CORS check)
+    clearAIStatusCache();
     checkAIConnection().then(ok => {
       setAiStatus(ok ? 'connected' : 'offline');
     });

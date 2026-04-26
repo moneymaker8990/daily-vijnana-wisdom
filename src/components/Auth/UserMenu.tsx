@@ -7,6 +7,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from './AuthProvider';
 import { AuthModal } from './AuthModal';
+import { ProfileModal } from '../ui';
 
 type UserMenuProps = {
   compact?: boolean;
@@ -16,6 +17,7 @@ export function UserMenu({ compact = false }: UserMenuProps) {
   const { user, loading, logout } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Close menu on outside click
@@ -102,9 +104,10 @@ export function UserMenu({ compact = false }: UserMenuProps) {
           {/* Menu items */}
           <div className="py-1">
             <button
+              type="button"
               onClick={() => {
                 setShowMenu(false);
-                // Could open settings/profile page
+                setShowProfileModal(true);
               }}
               className="w-full px-4 py-2 text-left text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors flex items-center gap-3"
             >
@@ -115,9 +118,10 @@ export function UserMenu({ compact = false }: UserMenuProps) {
             </button>
             
             <button
+              type="button"
               onClick={() => {
                 setShowMenu(false);
-                // Could open sync status
+                setShowProfileModal(true);
               }}
               className="w-full px-4 py-2 text-left text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors flex items-center gap-3"
             >
@@ -142,6 +146,12 @@ export function UserMenu({ compact = false }: UserMenuProps) {
           </div>
         </div>
       )}
+
+      <ProfileModal
+        isOpen={showProfileModal}
+        user={user}
+        onClose={() => setShowProfileModal(false)}
+      />
     </div>
   );
 }

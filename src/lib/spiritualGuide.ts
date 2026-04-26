@@ -146,8 +146,9 @@ async function fetchWithRetry(
 let _aiStatusCache: { ok: boolean; checkedAt: number } | null = null;
 
 export async function checkAIConnection(): Promise<boolean> {
-  // Return cached result if recent (within 60s)
-  if (_aiStatusCache && Date.now() - _aiStatusCache.checkedAt < 60000) {
+  // Cache successes 60s; cache failures only 10s so mobile/CORS fixes don't require a long wait
+  const ttl = _aiStatusCache?.ok ? 60000 : 10000;
+  if (_aiStatusCache && Date.now() - _aiStatusCache.checkedAt < ttl) {
     return _aiStatusCache.ok;
   }
 
