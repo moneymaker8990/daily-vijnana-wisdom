@@ -6,7 +6,7 @@
  */
 
 import { STORAGE_KEYS } from '@lib/constants';
-import { getSupabaseFunctionHeaders, hyperProcessorUrl, isSupabaseConfigured } from './supabase';
+import { invokeHyperProcessor, isSupabaseConfigured } from './supabase';
 
 export interface TextExplanation {
   meaning: string;
@@ -85,14 +85,11 @@ export async function explainText(
   }
 
   try {
-    const response = await fetch(hyperProcessorUrl, {
-      method: 'POST',
-      headers: getSupabaseFunctionHeaders(),
-      body: JSON.stringify({
-        type: 'explain',
-        text: text,
-        source: source,
-        prompt: `You are a wise spiritual teacher explaining sacred texts. Explain this passage from ${source} in a way that is accessible yet preserves its depth:
+    const { data, error: invokeError } = await invokeHyperProcessor<{ response?: string }>({
+      type: 'explain',
+      text: text,
+      source: source,
+      prompt: `You are a wise spiritual teacher explaining sacred texts. Explain this passage from ${source} in a way that is accessible yet preserves its depth:
 
 "${text}"
 
@@ -106,14 +103,11 @@ Rules:
 - Give each section a different job. Do not restate the same idea three times in slightly different words.
 - Avoid repeating the passage's main metaphor or signature phrase verbatim more than once.
 - Keep the tone warm, concrete, and non-dogmatic. Speak as a guide, not an authority.`,
-      }),
     });
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
+    if (invokeError || !data) {
+      throw new Error('API error');
     }
-
-    const data = await response.json();
     const aiText = typeof data.response === 'string' ? data.response : '';
 
     if (!aiText) {

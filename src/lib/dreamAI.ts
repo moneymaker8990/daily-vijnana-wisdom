@@ -2,7 +2,7 @@
 // This will call the Supabase Edge Function for Claude AI interpretation
 
 import type { DreamInterpretation } from './dreamStorage';
-import { getSupabaseFunctionHeaders, hyperProcessorUrl, isSupabaseConfigured } from './supabase';
+import { invokeHyperProcessor, isSupabaseConfigured } from './supabase';
 
 // Shared dream symbol dictionary — 100 entries
 export const DREAM_SYMBOLS: Array<{ word: string; meaning: string }> = [
@@ -136,23 +136,21 @@ export async function interpretDream(
   }
 
   try {
-    // Uses the unified Supabase Edge Function for AI processing.
-    const response = await fetch(hyperProcessorUrl, {
-      method: 'POST',
-      headers: getSupabaseFunctionHeaders(),
-      body: JSON.stringify({
-        type: 'dream-interpretation',
-        dream: dreamContent,
-        mood,
-        message: dreamContent,
-      }),
+    const { data, error } = await invokeHyperProcessor<{
+      interpretation?: string;
+    }>({
+      type: 'dream-interpretation',
+      dream: dreamContent,
+      mood,
+      message: dreamContent,
     });
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
+    if (error) {
+      throw new Error('API error');
     }
-
-    const data = await response.json();
+    if (!data) {
+      throw new Error('API error');
+    }
 
     // The Edge Function returns { interpretation: string }
     // We need to parse it into our DreamInterpretation format
@@ -161,7 +159,11 @@ export async function interpretDream(
     }
 
     return {
-      interpretation: { ...data, generatedAt: new Date().toISOString() },
+      interpretation: parseInterpretation(
+        'This dream may be inviting reflection on the themes and feelings that felt strongest when you woke.',
+        dreamContent,
+        mood
+      ),
       isAI: true,
     };
   } catch (error) {

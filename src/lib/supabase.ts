@@ -10,10 +10,11 @@ import { createClient } from '@supabase/supabase-js';
 // Falls back to placeholder values to prevent app crash (features requiring Supabase will fail gracefully)
 const PLACEHOLDER_SUPABASE_URL = 'https://placeholder.supabase.co';
 const PLACEHOLDER_SUPABASE_ANON_KEY = 'placeholder-key';
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || PLACEHOLDER_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || PLACEHOLDER_SUPABASE_ANON_KEY;
+// Trim: trailing spaces in Vercel/env copiers cause 401 "Invalid API key" on the Edge gateway.
+const SUPABASE_URL = String(import.meta.env.VITE_SUPABASE_URL || PLACEHOLDER_SUPABASE_URL).trim();
+const SUPABASE_ANON_KEY = String(import.meta.env.VITE_SUPABASE_ANON_KEY || PLACEHOLDER_SUPABASE_ANON_KEY).trim();
 /** Trailing slash on project URL breaks `/functions/v1/...` joins in some envs. */
-const SUPABASE_ORIGIN = String(SUPABASE_URL).replace(/\/+$/, '');
+const SUPABASE_ORIGIN = SUPABASE_URL.replace(/\/+$/, '');
 
 // Check if Supabase is properly configured
 export const isSupabaseConfigured = Boolean(
@@ -38,6 +39,18 @@ export const supabase = createClient(SUPABASE_ORIGIN, SUPABASE_ANON_KEY, {
     detectSessionInUrl: true,
   },
 });
+
+/**
+ * Public AI edge function — same code path as Spiritual Guide (avoids raw fetch / header gaps).
+ */
+export async function invokeHyperProcessor<T>(body: Record<string, unknown>): Promise<{ data: T | null; error: unknown }> {
+  const { data, error } = await supabase.functions.invoke<T>('hyper-processor', {
+    body,
+    headers: getSupabaseFunctionHeaders() as Record<string, string>,
+    timeout: 30_000,
+  });
+  return { data, error };
+}
 
 // Export URL for other uses (prefer supabaseApiOrigin for joining `/functions/v1/...` paths)
 export { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_ORIGIN as supabaseApiOrigin };

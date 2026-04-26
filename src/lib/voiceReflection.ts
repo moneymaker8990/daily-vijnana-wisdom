@@ -4,7 +4,7 @@
  * Generates AI-powered reflections after voice journal entries.
  */
 
-import { getSupabaseFunctionHeaders, hyperProcessorUrl, isSupabaseConfigured } from './supabase';
+import { invokeHyperProcessor, isSupabaseConfigured } from './supabase';
 
 export interface AIReflection {
   summary: string;
@@ -33,26 +33,25 @@ export async function generateAIReflection(transcript: string): Promise<{ reflec
   }
 
   try {
-    const response = await fetch(hyperProcessorUrl, {
-      method: 'POST',
-      headers: getSupabaseFunctionHeaders(),
-      body: JSON.stringify({
-        type: 'voice-reflection',
-        system: REFLECTION_PROMPT,
-        message: transcript,
-      }),
+    const { data, error: invokeError } = await invokeHyperProcessor<{
+      reflection?: unknown;
+      interpretation?: string;
+      response?: string;
+    }>({
+      type: 'voice-reflection',
+      system: REFLECTION_PROMPT,
+      message: transcript,
     });
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
+    if (invokeError || !data) {
+      throw new Error('API error');
     }
-
-    const data = await response.json();
 
     // Parse the response - expecting structured data
     if (data.reflection) {
+      const r = data.reflection as Partial<AIReflection> & { generatedAt?: string };
       return {
-        reflection: { ...data.reflection, generatedAt: new Date().toISOString() },
+        reflection: { ...r, generatedAt: new Date().toISOString() } as AIReflection,
         isAI: true,
       };
     }

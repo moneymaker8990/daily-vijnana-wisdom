@@ -146,34 +146,75 @@ export function hasPremiumAccess(): boolean {
 }
 
 /**
- * User JWT for Edge Functions. Uses getUser() first so the session is validated/refreshed;
- * getSession() alone can return a stale access_token and cause HTTP 401 on functions.
+ * Short-lived user JWT for Edge Functions. Refreshes when the access token is near expiry
+ * or getUser() fails, then optional second attempt after 401.
  */
 async function getAuthToken(): Promise<string | null> {
-  const { data: userRes, error: userErr } = await supabase.auth.getUser();
-  if (userErr || !userRes.user) {
-    return null;
+  const { data: s0, error: se } = await supabase.auth.getSession();
+  if (se || !s0.session) return null;
+
+  const at = s0.session.expires_at;
+  const expMs = typeof at === 'number' ? at * 1000 : null;
+  const needsRefresh = expMs === null || expMs < Date.now() + 120_000;
+
+  if (needsRefresh) {
+    const { data: r } = await supabase.auth.refreshSession();
+    if (r.session?.access_token) return r.session.access_token;
   }
-  const { data } = await supabase.auth.getSession();
-  return data.session?.access_token ?? null;
+
+  const { data: u, error: ue } = await supabase.auth.getUser();
+  if (ue || !u.user) {
+    const { data: r2 } = await supabase.auth.refreshSession();
+    return r2.session?.access_token ?? s0.session.access_token;
+  }
+
+  const { data: s2 } = await supabase.auth.getSession();
+  return s2.session?.access_token ?? s0.session.access_token;
+}
+
+/** Call a user-gated edge function; retry once on 401 after refreshSession. */
+async function userFetch(
+  functionName: 'stripe-checkout' | 'check-entitlement' | 'stripe-reconcile',
+  init: { method: 'GET' | 'POST'; body?: object }
+): Promise<Response> {
+  const url = `${supabaseApiOrigin}/functions/v1/${functionName}`;
+  const withToken = (token: string) => {
+    const h: Record<string, string> = {
+      Authorization: `Bearer ${token}`,
+      apikey: SUPABASE_ANON_KEY,
+    };
+    if (init.method === 'POST') h['Content-Type'] = 'application/json';
+    return fetch(url, {
+      method: init.method,
+      headers: h,
+      body: init.method === 'POST' && init.body !== undefined ? JSON.stringify(init.body) : undefined,
+    });
+  };
+
+  let token = await getAuthToken();
+  if (!token) {
+    return new Response(JSON.stringify({ error: 'Not authenticated' }), { status: 401 });
+  }
+  let res = await withToken(token);
+  if (res.status === 401) {
+    await supabase.auth.refreshSession();
+    token = await getAuthToken();
+    if (token) {
+      res = await withToken(token);
+    }
+  }
+  return res;
 }
 
 export async function createStripeCheckoutSession(priceId?: string): Promise<PurchaseResult> {
   try {
-    const token = await getAuthToken();
-    if (!token) {
+    if (!(await getAuthToken())) {
       return { ok: false, error: 'Sign in to subscribe', state: getEntitlementState() };
     }
 
-    const url = `${supabaseApiOrigin}/functions/v1/stripe-checkout`;
-    const response = await fetch(url, {
+    const response = await userFetch('stripe-checkout', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-        apikey: SUPABASE_ANON_KEY,
-      },
-      body: JSON.stringify({ priceId: priceId || undefined }),
+      body: { priceId: priceId || undefined },
     });
 
     if (!response.ok) {
@@ -295,18 +336,11 @@ export async function restorePurchases(): Promise<PurchaseResult> {
  * verifies the Checkout Session and upserts `user_entitlements` (backup to webhooks).
  */
 export async function reconcileStripeCheckoutSession(sessionId: string): Promise<boolean> {
-  const token = await getAuthToken();
-  if (!token) return false;
+  if (!(await getAuthToken())) return false;
   try {
-    const url = `${supabaseApiOrigin}/functions/v1/stripe-reconcile`;
-    const response = await fetch(url, {
+    const response = await userFetch('stripe-reconcile', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-        apikey: SUPABASE_ANON_KEY,
-      },
-      body: JSON.stringify({ sessionId: sessionId.trim() }),
+      body: { sessionId: sessionId.trim() },
     });
     if (!response.ok) return false;
     const data = (await response.json()) as { ok?: boolean };
@@ -325,18 +359,11 @@ type StripeReconcileByEmailResult =
  * Used for web "Restore purchases" when the async webhook never updated the database.
  */
 export async function reconcileStripeByEmailFromServer(): Promise<StripeReconcileByEmailResult> {
-  const token = await getAuthToken();
-  if (!token) return { synced: false, code: 'request_failed' };
+  if (!(await getAuthToken())) return { synced: false, code: 'request_failed' };
   try {
-    const url = `${supabaseApiOrigin}/functions/v1/stripe-reconcile`;
-    const response = await fetch(url, {
+    const response = await userFetch('stripe-reconcile', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-        apikey: SUPABASE_ANON_KEY,
-      },
-      body: JSON.stringify({ lookupByEmail: true }),
+      body: { lookupByEmail: true },
     });
     const data = (await response.json()) as { ok?: boolean; error?: string };
     if (!response.ok) return { synced: false, code: 'request_failed' };
@@ -368,18 +395,10 @@ export async function syncEntitlementsWithRetries(
 }
 
 async function syncEntitlementsFromServer(): Promise<EntitlementState> {
-  const token = await getAuthToken();
-  if (!token) return getEntitlementState();
+  if (!(await getAuthToken())) return getEntitlementState();
 
   try {
-    const url = `${supabaseApiOrigin}/functions/v1/check-entitlement`;
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        apikey: SUPABASE_ANON_KEY,
-      },
-    });
+    const response = await userFetch('check-entitlement', { method: 'GET' });
 
     if (!response.ok) return getEntitlementState();
 
