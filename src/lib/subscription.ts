@@ -227,7 +227,36 @@ export async function restorePurchases(): Promise<PurchaseResult> {
   const mode = getBillingMode();
 
   if (mode === 'stripe') {
-    const serverState = await syncEntitlementsFromServer();
+    let serverState = await syncEntitlementsFromServer();
+    if (serverState.tier !== 'premium') {
+      const fromStripe = await reconcileStripeByEmailFromServer();
+      if (fromStripe.synced) {
+        serverState = await syncEntitlementsFromServer();
+      } else {
+        if (fromStripe.code === 'no_stripe_customer') {
+          return {
+            ok: false,
+            state: serverState,
+            error:
+              'No Stripe customer for this sign-in email. Use the same email you used in Checkout, or contact support with your receipt.',
+          };
+        }
+        if (fromStripe.code === 'no_active_subscription') {
+          return {
+            ok: false,
+            state: serverState,
+            error: 'No active subscription found in Stripe for this account. Check billing in Stripe, or the email on your account matches Checkout.',
+          };
+        }
+        if (fromStripe.code === 'no_email') {
+          return {
+            ok: false,
+            state: serverState,
+            error: 'Add an email to your account, then try Restore again.',
+          };
+        }
+      }
+    }
     return {
       ok: serverState.tier === 'premium',
       state: serverState,
@@ -276,6 +305,40 @@ export async function reconcileStripeCheckoutSession(sessionId: string): Promise
     return data.ok === true;
   } catch {
     return false;
+  }
+}
+
+type StripeReconcileByEmailResult =
+  | { synced: true }
+  | { synced: false; code: 'no_stripe_customer' | 'no_active_subscription' | 'no_email' | 'request_failed' };
+
+/**
+ * Find Stripe customer + active subscription by the signed-in user's email, then write user_entitlements.
+ * Used for web "Restore purchases" when the async webhook never updated the database.
+ */
+export async function reconcileStripeByEmailFromServer(): Promise<StripeReconcileByEmailResult> {
+  const token = await getAuthToken();
+  if (!token) return { synced: false, code: 'request_failed' };
+  try {
+    const url = `${SUPABASE_URL}/functions/v1/stripe-reconcile`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        apikey: SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({ lookupByEmail: true }),
+    });
+    const data = (await response.json()) as { ok?: boolean; error?: string };
+    if (!response.ok) return { synced: false, code: 'request_failed' };
+    if (data.ok === true) return { synced: true };
+    if (data.error === 'no_stripe_customer') return { synced: false, code: 'no_stripe_customer' };
+    if (data.error === 'no_active_subscription') return { synced: false, code: 'no_active_subscription' };
+    if (data.error === 'no_email') return { synced: false, code: 'no_email' };
+    return { synced: false, code: 'request_failed' };
+  } catch {
+    return { synced: false, code: 'request_failed' };
   }
 }
 
