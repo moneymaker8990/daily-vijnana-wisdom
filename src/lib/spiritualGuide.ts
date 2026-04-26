@@ -145,6 +145,47 @@ async function fetchWithRetry(
  */
 let _aiStatusCache: { ok: boolean; checkedAt: number } | null = null;
 
+function parseHealthJson(raw: string): { status?: string; ai_configured?: unknown } | null {
+  const t = raw.trim();
+  if (!t) return null;
+  try {
+    return JSON.parse(t) as { status?: string; ai_configured?: unknown };
+  } catch {
+    return null;
+  }
+}
+
+function isHealthPayloadOk(data: { status?: string; ai_configured?: unknown } | null): boolean {
+  if (!data || data.status !== 'ok') return false;
+  const v = data.ai_configured;
+  if (v === true) return true;
+  if (v === 'true' || v === 1) return true;
+  if (typeof v === 'string' && v.toLowerCase() === 'true') return true;
+  return false;
+}
+
+/** One health attempt (20s) — allows Edge cold start; no-store avoids stale CDN responses. */
+async function checkAIConnectionOnce(): Promise<boolean> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 20_000);
+  try {
+    const response = await fetch(hyperProcessorUrl, {
+      method: 'POST',
+      headers: getSupabaseFunctionHeaders(),
+      body: JSON.stringify({ type: 'health-check' }),
+      signal: controller.signal,
+      cache: 'no-store',
+    });
+    const text = await response.text();
+    const data = parseHealthJson(text);
+    return response.ok && isHealthPayloadOk(data);
+  } catch {
+    return false;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export async function checkAIConnection(): Promise<boolean> {
   // Cache successes 60s; cache failures only 10s so mobile/CORS fixes don't require a long wait
   const ttl = _aiStatusCache?.ok ? 60000 : 10000;
@@ -157,26 +198,18 @@ export async function checkAIConnection(): Promise<boolean> {
     return false;
   }
 
-  try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 8000);
-
-    const response = await fetch(hyperProcessorUrl, {
-      method: 'POST',
-      headers: getSupabaseFunctionHeaders(),
-      body: JSON.stringify({ type: 'health-check' }),
-      signal: controller.signal,
-    });
-
-    clearTimeout(timer);
-    const data = response.ok ? await response.json().catch(() => null) : null;
-    const ok = response.ok && data?.status === 'ok' && data?.ai_configured === true;
-    _aiStatusCache = { ok, checkedAt: Date.now() };
-    return ok;
-  } catch {
-    _aiStatusCache = { ok: false, checkedAt: Date.now() };
-    return false;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (attempt > 0) {
+      await new Promise((r) => setTimeout(r, 500 * attempt));
+    }
+    if (await checkAIConnectionOnce()) {
+      _aiStatusCache = { ok: true, checkedAt: Date.now() };
+      return true;
+    }
   }
+
+  _aiStatusCache = { ok: false, checkedAt: Date.now() };
+  return false;
 }
 
 /**

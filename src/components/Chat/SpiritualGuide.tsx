@@ -233,6 +233,21 @@ export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuide
                 </>
               )}
             </p>
+            {aiStatus === 'offline' && (
+              <button
+                type="button"
+                onClick={() => {
+                  clearAIStatusCache();
+                  setAiStatus('checking');
+                  void checkAIConnection().then((ok) => {
+                    setAiStatus(ok ? 'connected' : 'offline');
+                  });
+                }}
+                className="mt-1 text-[11px] text-violet-300/90 hover:text-violet-200 underline-offset-2 hover:underline"
+              >
+                Retry connection
+              </button>
+            )}
           </div>
         </div>
         <div className="flex items-center gap-2">
