@@ -109,34 +109,34 @@ export function AuthModal({ isOpen, onClose, initialMode = 'signin' }: AuthModal
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 box-border flex items-start sm:items-center justify-center overflow-y-auto overscroll-behavior-contain bg-black/60 backdrop-blur-sm px-4 py-2 pt-[max(0.5rem,env(safe-area-inset-top))] pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:p-4 sm:pt-[max(1rem,env(safe-area-inset-top))] sm:pb-[max(1rem,env(safe-area-inset-bottom))]"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
     >
       <div
-        className="relative w-full max-w-md bg-gradient-to-br from-slate-900/95 to-indigo-950/95 rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
+        className="relative my-1 w-full min-h-0 max-w-md max-h-[min(92dvh,calc(100dvh-0.5rem))] flex flex-col overflow-hidden bg-gradient-to-br from-slate-900/95 to-indigo-950/95 rounded-2xl border border-white/10 shadow-2xl sm:my-4 sm:max-h-[min(85dvh,900px)]"
         onClick={e => e.stopPropagation()}
       >
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-white/40 hover:text-white/80 transition-colors"
+          className="absolute top-3 right-3 z-10 p-2 text-white/40 hover:text-white/80 transition-colors sm:top-4 sm:right-4"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
-        {/* Header */}
-        <div className="p-6 pb-4 text-center">
-          <div className="text-3xl mb-2">🙏</div>
-          <h2 className="text-xl font-serif text-white">
+        {/* Header — minimal vertical space on small screens so inputs stay in view without scrolling */}
+        <div className="shrink-0 px-4 pt-3 pb-1.5 text-center sm:p-6 sm:pb-4">
+          <div className="text-xl leading-none sm:mb-2 sm:text-3xl">🙏</div>
+          <h2 className="text-base font-serif leading-tight text-white sm:text-xl">
             {mode === 'signin' && 'Welcome Back'}
             {mode === 'signup' && 'Begin Your Journey'}
             {mode === 'forgot' && 'Reset Password'}
           </h2>
-          <p className="text-sm text-white/50 mt-1">
+          <p className="mt-0.5 text-xs leading-snug text-white/50 sm:mt-1 sm:text-sm">
             {mode === 'signin' && 'Sign in to sync your spiritual journey'}
             {mode === 'signup' && 'Create an account to save your progress'}
             {mode === 'forgot' && "We'll send you a reset link"}
@@ -144,7 +144,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'signin' }: AuthModal
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="px-6 pb-6 space-y-4">
+        <form onSubmit={handleSubmit} className="min-h-0 flex-1 overflow-y-auto overscroll-behavior-contain px-4 pb-4 space-y-3 sm:px-6 sm:pb-6 sm:space-y-4">
           {/* Error/Success messages */}
           {error && (
             <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-300">
