@@ -115,7 +115,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'signin' }: AuthModal
       aria-modal="true"
     >
       <div
-        className="relative my-1 w-full min-h-0 max-w-md max-h-[min(92dvh,calc(100dvh-0.5rem))] flex flex-col overflow-hidden bg-gradient-to-br from-slate-900/95 to-indigo-950/95 rounded-2xl border border-white/10 shadow-2xl sm:my-4 sm:max-h-[min(85dvh,900px)]"
+        className="relative my-1 w-full min-h-0 max-w-md max-h-[min(92dvh,calc(100dvh-0.5rem))] flex flex-col max-sm:flex-col-reverse overflow-hidden bg-gradient-to-br from-slate-900/95 to-indigo-950/95 rounded-2xl border border-white/10 shadow-2xl sm:my-4 sm:max-h-[min(85dvh,900px)]"
         onClick={e => e.stopPropagation()}
       >
         {/* Close button */}
@@ -128,8 +128,8 @@ export function AuthModal({ isOpen, onClose, initialMode = 'signin' }: AuthModal
           </svg>
         </button>
 
-        {/* Header — minimal vertical space on small screens so inputs stay in view without scrolling */}
-        <div className="shrink-0 px-4 pt-3 pb-1.5 text-center sm:p-6 sm:pb-4">
+        {/* On small screens the flex column is reversed so email/Google appear first; border separates from title below */}
+        <div className="shrink-0 border-white/10 px-4 pb-1.5 text-center max-sm:mt-0 max-sm:border-t max-sm:pt-4 max-sm:pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:border-t-0 sm:p-6 sm:pt-3 sm:pb-4">
           <div className="text-xl leading-none sm:mb-2 sm:text-3xl">🙏</div>
           <h2 className="text-base font-serif leading-tight text-white sm:text-xl">
             {mode === 'signin' && 'Welcome Back'}
@@ -144,7 +144,10 @@ export function AuthModal({ isOpen, onClose, initialMode = 'signin' }: AuthModal
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="min-h-0 flex-1 overflow-y-auto overscroll-behavior-contain px-4 pb-4 space-y-3 sm:px-6 sm:pb-6 sm:space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="min-h-0 flex-1 overflow-y-auto overscroll-behavior-contain px-4 pt-3 pb-4 space-y-3 sm:px-6 sm:pt-0 sm:pb-6 sm:space-y-4"
+        >
           {/* Error/Success messages */}
           {error && (
             <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-sm text-red-300">
