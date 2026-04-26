@@ -10,13 +10,13 @@ import type { User, Session, AuthError, AuthChangeEvent } from '@supabase/supaba
 export type AuthUser = User;
 export type AuthSession = Session;
 
-/** Production base URL for OAuth and password-reset redirects (Vercel). Falls back to the current page origin. */
-function getAuthRedirectOrigin(): string {
-  const fromEnv = import.meta.env.VITE_APP_BASE_URL;
-  if (typeof fromEnv === 'string' && fromEnv.trim().length > 0) {
-    return fromEnv.trim().replace(/\/$/, '');
-  }
-  return window.location.origin;
+/**
+ * Where Supabase should send the browser after Google OAuth and password-reset links.
+ * Always the **current** page origin (same tab that started sign-in).
+ * Do not use VITE_APP_BASE_URL here — a wrong value breaks OAuth (redirect mismatch / wrong host).
+ */
+function getAppOriginForAuthRedirects(): string {
+  return window.location.origin.replace(/\/$/, '');
 }
 
 export interface AuthResult {
@@ -64,7 +64,7 @@ export async function signInWithGoogle(): Promise<{ error: AuthError | null }> {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: getAuthRedirectOrigin(),
+      redirectTo: getAppOriginForAuthRedirects(),
     },
   });
 
@@ -104,7 +104,7 @@ export async function getCurrentSession(): Promise<Session | null> {
  */
 export async function resetPassword(email: string): Promise<{ error: AuthError | null }> {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${getAuthRedirectOrigin()}/reset-password`,
+    redirectTo: `${getAppOriginForAuthRedirects()}/reset-password`,
   });
   return { error };
 }

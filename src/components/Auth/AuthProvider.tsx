@@ -5,10 +5,11 @@
  */
 
 import { createContext, useContext, useEffect, useState, useCallback, useRef, type ReactNode } from 'react';
-import { supabase } from '@lib/supabase';
 import {
   type AuthUser,
   type AuthSession,
+  getCurrentUser,
+  getCurrentSession,
   onAuthStateChange,
   signInWithEmail,
   signInWithGoogle,
@@ -50,34 +51,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const initializedRef = useRef(false);
   const currentUserIdRef = useRef<string | null>(null);
 
-  // Initialize auth state — use getSession() only (not getUser in parallel with getSession).
-  // After OAuth, the session is established from the URL on first getSession; getUser() can
-  // briefly disagree and leave the app looking signed-out.
+  // Initialize auth state
   useEffect(() => {
-    let cancelled = false;
     const initAuth = async () => {
       try {
-        const {
-          data: { session },
-          error,
-        } = await supabase.auth.getSession();
-        if (cancelled) return;
-        if (error) {
-          return;
-        }
-        setSession(session);
-        setUser(session?.user ?? null);
-        currentUserIdRef.current = session?.user?.id ?? null;
+        const [currentUser, currentSession] = await Promise.all([
+          getCurrentUser(),
+          getCurrentSession(),
+        ]);
+        setUser(currentUser);
+        setSession(currentSession);
+        currentUserIdRef.current = currentUser?.id ?? null;
         initializedRef.current = true;
-        if (session?.user) {
-          void syncAllOnLogin(session.user);
+
+        if (currentUser) {
+          void syncAllOnLogin(currentUser);
         }
       } catch {
         // Auth initialization error handled silently
       } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
@@ -109,7 +102,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     });
 
     return () => {
-      cancelled = true;
       subscription.unsubscribe();
     };
   }, []);
