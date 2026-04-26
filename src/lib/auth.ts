@@ -65,9 +65,6 @@ export async function signInWithGoogle(): Promise<{ error: AuthError | null }> {
     provider: 'google',
     options: {
       redirectTo: getAppOriginForAuthRedirects(),
-      queryParams: {
-        prompt: 'select_account',
-      },
     },
   });
 
