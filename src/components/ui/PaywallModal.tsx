@@ -68,6 +68,15 @@ export function PaywallModal({
           <div>- Cross-device continuity</div>
         </div>
 
+        {isWeb && !needsSignIn && (
+          <p className="text-xs text-white/55 leading-relaxed mb-4 border border-white/10 rounded-xl px-3 py-2.5 bg-white/5">
+            <span className="text-emerald-400/90 font-medium">7-day free trial</span>
+            {' — '}
+            Checkout will ask for a card; you are not charged until the trial ends. Cancel before the trial
+            ends to avoid being charged.
+          </p>
+        )}
+
         {needsSignIn && (
           <p className="text-xs text-amber-400/80 mb-4">
             Sign in to subscribe and unlock premium features.
