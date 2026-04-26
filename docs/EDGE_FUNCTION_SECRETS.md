@@ -29,6 +29,7 @@ supabase secrets set KEY=value
 | `STRIPE_SECRET_KEY` | Stripe secret API key | [dashboard.stripe.com/apikeys](https://dashboard.stripe.com/apikeys) |
 | `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret | Create a webhook endpoint in Stripe Dashboard, copy the signing secret |
 | `STRIPE_PRICE_ID_MONTHLY` | Default Stripe Price ID for monthly premium | Create a product + price in Stripe Dashboard, copy the `price_xxx` ID |
+| `STRIPE_TRIAL_PERIOD_DAYS` | (Optional) e.g. `7` to add a card-on-file free trial on Checkout subscriptions | Set on the `stripe-checkout` function; `trialing` is already treated as premium in webhooks |
 | `APP_BASE_URL` | Base URL for checkout success/cancel redirects | `https://mindvanta.io` |
 
 ## Deploying edge functions

@@ -72,14 +72,25 @@ Deno.serve(async (req: Request) => {
     const appBaseUrl =
       Deno.env.get("APP_BASE_URL") || "https://mindvanta.io";
 
+    // Optional: set STRIPE_TRIAL_PERIOD_DAYS=7 (Supabase function secret) for a card-on-file
+    // free trial. Stripe will create the subscription in `trialing` status; your webhook
+    // already maps `trialing` → premium in user_entitlements.
+    const rawTrial = Deno.env.get("STRIPE_TRIAL_PERIOD_DAYS");
+    const trialPeriodDays = rawTrial ? parseInt(rawTrial, 10) : 0;
+    const subscriptionData: {
+      metadata: { supabase_user_id: string };
+      trial_period_days?: number;
+    } = { metadata: { supabase_user_id: user.id } };
+    if (Number.isFinite(trialPeriodDays) && trialPeriodDays > 0) {
+      subscriptionData.trial_period_days = Math.min(365, Math.floor(trialPeriodDays));
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       customer_email: user.email,
       client_reference_id: user.id,
       metadata: { supabase_user_id: user.id },
-      subscription_data: {
-        metadata: { supabase_user_id: user.id },
-      },
+      subscription_data: subscriptionData,
       line_items: [{ price: stripePriceId, quantity: 1 }],
       success_url:
         successUrl || `${appBaseUrl}?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
