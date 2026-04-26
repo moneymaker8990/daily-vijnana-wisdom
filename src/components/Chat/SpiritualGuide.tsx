@@ -42,6 +42,7 @@ export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuide
   const [activeLaunchContext, setActiveLaunchContext] = useState<SpiritualGuideLaunchContext | null>(launchContext);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const offlineDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const toast = useToast();
   const { height, offsetTop, keyboardInset } = useVisualViewport();
 
@@ -61,9 +62,13 @@ export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuide
     });
   }, []);
 
-  // Re-check AI status on network reconnect
+  // Re-check AI status on network reconnect; debounce `offline` — it fires spuriously on mobile/PWA.
   useEffect(() => {
     const handleOnline = () => {
+      if (offlineDebounceRef.current) {
+        clearTimeout(offlineDebounceRef.current);
+        offlineDebounceRef.current = null;
+      }
       clearAIStatusCache();
       setAiStatus('checking');
       checkAIConnection().then((ok) => {
@@ -71,11 +76,30 @@ export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuide
         setAiErrorHint(ok ? null : getLastAIConnectionError());
       });
     };
-    const handleOffline = () => setAiStatus('offline');
+    const handleOffline = () => {
+      if (offlineDebounceRef.current) {
+        clearTimeout(offlineDebounceRef.current);
+      }
+      offlineDebounceRef.current = setTimeout(() => {
+        offlineDebounceRef.current = null;
+        if (!navigator.onLine) {
+          setAiStatus('offline');
+        } else {
+          clearAIStatusCache();
+          void checkAIConnection().then((ok) => {
+            setAiStatus(ok ? 'connected' : 'offline');
+            setAiErrorHint(ok ? null : getLastAIConnectionError());
+          });
+        }
+      }, 400);
+    };
 
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
     return () => {
+      if (offlineDebounceRef.current) {
+        clearTimeout(offlineDebounceRef.current);
+      }
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
@@ -145,19 +169,19 @@ export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuide
     try {
       const { response, isAI, suggestions } = await sendToSpiritualGuide(userMessage.content, messages);
 
-      if (isAI) {
+      // Keep "connected" after any successful send while the browser is online. Do **not** call
+      // `checkAIConnection` here: a back-to-back health `invoke` often false-negatives right after
+      // a long `hyper-processor` call and incorrectly flips the badge to offline.
+      if (navigator.onLine) {
         setAiStatus('connected');
       } else {
-        // `isAI: false` only means this reply used local/fallback text — not necessarily that
-        // the edge is down. Re-check the real health signal instead of always showing "offline."
-        clearAIStatusCache();
-        const edgeHealthy = await checkAIConnection();
-        setAiStatus(edgeHealthy ? 'connected' : 'offline');
-        toast.info(
-          edgeHealthy
-            ? 'The live model could not complete that reply, so we used built-in guidance.'
-            : 'Using offline guidance — AI service unavailable right now.',
-        );
+        setAiStatus('offline');
+      }
+
+      if (!isAI && navigator.onLine) {
+        toast.info('The live model could not complete that reply, so we used built-in guidance.');
+      } else if (!isAI && !navigator.onLine) {
+        toast.info('Using offline guidance — you appear to be offline.');
       }
 
       const assistantMessage: ChatMessageType = {
