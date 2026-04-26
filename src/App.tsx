@@ -103,6 +103,10 @@ function App() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    // Never strip the query string while Supabase OAuth/magic-link params may be present.
+    if (params.get('code') || params.get('error') || params.get('error_description')) {
+      return;
+    }
     const checkout = params.get('checkout');
     if (!checkout) return;
 

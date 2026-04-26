@@ -54,6 +54,10 @@ export const supabase = createClient(SUPABASE_ORIGIN, SUPABASE_ANON_KEY, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true,
+    // GoTrue + Google return `?code=`; the client must use PKCE so the code verifier
+    // is stored and the code can be exchanged. `implicit` (the JS default) never
+    // stores a verifier, so OAuth completion silently fails or errors.
+    flowType: 'pkce',
   },
 });
 
