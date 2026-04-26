@@ -44,8 +44,11 @@ supabase functions deploy
 supabase functions deploy hyper-processor
 supabase functions deploy stripe-checkout
 supabase functions deploy stripe-webhook
+supabase functions deploy stripe-reconcile
 supabase functions deploy check-entitlement
 ```
+
+`stripe-reconcile` is optional at runtime but recommended: after Checkout, the client calls it with the `session_id` from the return URL so `user_entitlements` is written even if the webhook is slow or failed.
 
 ## Verifying the setup
 

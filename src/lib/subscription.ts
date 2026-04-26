@@ -253,6 +253,49 @@ export async function restorePurchases(): Promise<PurchaseResult> {
   return { ok: state.tier === 'premium', state, error: state.tier === 'premium' ? undefined : 'No purchases found' };
 }
 
+/**
+ * After Stripe redirect, the webhook can lag. This calls a server function that
+ * verifies the Checkout Session and upserts `user_entitlements` (backup to webhooks).
+ */
+export async function reconcileStripeCheckoutSession(sessionId: string): Promise<boolean> {
+  const token = await getAuthToken();
+  if (!token) return false;
+  try {
+    const url = `${SUPABASE_URL}/functions/v1/stripe-reconcile`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        apikey: SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({ sessionId: sessionId.trim() }),
+    });
+    if (!response.ok) return false;
+    const data = (await response.json()) as { ok?: boolean };
+    return data.ok === true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Poll server until premium or max attempts (webhook + Stripe can be a few seconds behind).
+ */
+export async function syncEntitlementsWithRetries(
+  maxAttempts = 20,
+  delayMs = 1500
+): Promise<EntitlementState> {
+  for (let i = 0; i < maxAttempts; i++) {
+    const state = await syncEntitlements();
+    if (state.tier === 'premium') return state;
+    if (i < maxAttempts - 1) {
+      await new Promise((r) => setTimeout(r, delayMs));
+    }
+  }
+  return syncEntitlements();
+}
+
 async function syncEntitlementsFromServer(): Promise<EntitlementState> {
   const token = await getAuthToken();
   if (!token) return getEntitlementState();

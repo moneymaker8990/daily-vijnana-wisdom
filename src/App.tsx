@@ -18,9 +18,11 @@ import {
   getPaywallTriggerContext,
   hasPremiumAccess,
   purchasePremium,
+  reconcileStripeCheckoutSession,
   restorePurchases,
   shouldGateTab,
   syncEntitlements,
+  syncEntitlementsWithRetries,
 } from './lib/subscription';
 import {
   getValueMomentInputs,
@@ -104,19 +106,27 @@ function App() {
     const checkout = params.get('checkout');
     if (!checkout) return;
 
+    const sessionId = params.get('session_id');
+
     window.history.replaceState({}, '', window.location.pathname);
 
     if (checkout === 'success') {
-      syncEntitlements().then((state) => {
+      void (async () => {
+        if (sessionId) {
+          await reconcileStripeCheckoutSession(sessionId);
+        }
+        const state = await syncEntitlementsWithRetries(20, 1500);
         setPremiumEnabled(state.tier === 'premium');
         if (state.tier === 'premium') {
           info('Premium unlocked — welcome aboard!');
           track('purchase_success', { trigger: 'stripe_checkout_return' });
         } else {
-          info('Payment received — your subscription is being activated.');
+          info(
+            'We could not confirm your subscription yet. Tap “Restore purchases” on the paywall, or wait a minute and refresh.'
+          );
           track('checkout_success_sync_pending');
         }
-      });
+      })();
     } else if (checkout === 'cancelled') {
       info('Checkout cancelled. You can upgrade any time.');
       track('checkout_cancelled');

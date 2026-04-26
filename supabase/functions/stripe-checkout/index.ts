@@ -75,7 +75,11 @@ Deno.serve(async (req: Request) => {
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       customer_email: user.email,
+      client_reference_id: user.id,
       metadata: { supabase_user_id: user.id },
+      subscription_data: {
+        metadata: { supabase_user_id: user.id },
+      },
       line_items: [{ price: stripePriceId, quantity: 1 }],
       success_url:
         successUrl || `${appBaseUrl}?checkout=success&session_id={CHECKOUT_SESSION_ID}`,

@@ -41,9 +41,17 @@ async function upsertEntitlement(
   }
 }
 
-function resolveUserId(obj: Stripe.Subscription | Stripe.Checkout.Session): string | null {
-  const meta = obj.metadata;
-  return meta?.supabase_user_id ?? null;
+function resolveUserIdFromSubscription(sub: Stripe.Subscription): string | null {
+  return sub.metadata?.supabase_user_id ?? null;
+}
+
+/** Checkout Session: prefer metadata, then client_reference_id (set by stripe-checkout for reliability). */
+function resolveUserIdFromSession(session: Stripe.Checkout.Session): string | null {
+  return (
+    session.metadata?.supabase_user_id ??
+    (session.client_reference_id || null) ??
+    null
+  );
 }
 
 Deno.serve(async (req: Request) => {
@@ -70,8 +78,16 @@ Deno.serve(async (req: Request) => {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
-        const userId = resolveUserId(session);
-        if (!userId || !session.subscription) break;
+        const userId = resolveUserIdFromSession(session);
+        if (!userId || !session.subscription) {
+          if (!userId) {
+            console.error("checkout.session.completed: missing supabase user id in metadata/client_reference_id");
+          }
+          if (!session.subscription) {
+            console.error("checkout.session.completed: missing subscription on session");
+          }
+          break;
+        }
 
         const subscription = await stripe.subscriptions.retrieve(
           session.subscription as string
@@ -91,8 +107,11 @@ Deno.serve(async (req: Request) => {
 
       case "customer.subscription.updated": {
         const subscription = event.data.object as Stripe.Subscription;
-        const userId = resolveUserId(subscription);
-        if (!userId) break;
+        const userId = resolveUserIdFromSubscription(subscription);
+        if (!userId) {
+          console.warn("customer.subscription.updated: no supabase_user_id in subscription metadata, skipping");
+          break;
+        }
 
         const isActive =
           subscription.status === "active" ||
@@ -112,7 +131,7 @@ Deno.serve(async (req: Request) => {
 
       case "customer.subscription.deleted": {
         const subscription = event.data.object as Stripe.Subscription;
-        const userId = resolveUserId(subscription);
+        const userId = resolveUserIdFromSubscription(subscription);
         if (!userId) break;
 
         await upsertEntitlement(
