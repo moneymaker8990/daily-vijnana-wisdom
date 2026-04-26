@@ -148,8 +148,16 @@ export function SpiritualGuide({ onClose, launchContext = null }: SpiritualGuide
       if (isAI) {
         setAiStatus('connected');
       } else {
-        setAiStatus('offline');
-        toast.info('Using offline guidance — AI unavailable');
+        // `isAI: false` only means this reply used local/fallback text — not necessarily that
+        // the edge is down. Re-check the real health signal instead of always showing "offline."
+        clearAIStatusCache();
+        const edgeHealthy = await checkAIConnection();
+        setAiStatus(edgeHealthy ? 'connected' : 'offline');
+        toast.info(
+          edgeHealthy
+            ? 'The live model could not complete that reply, so we used built-in guidance.'
+            : 'Using offline guidance — AI service unavailable right now.',
+        );
       }
 
       const assistantMessage: ChatMessageType = {

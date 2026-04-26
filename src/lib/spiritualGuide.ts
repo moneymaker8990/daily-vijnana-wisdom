@@ -275,7 +275,8 @@ export async function sendToSpiritualGuide(
     return { response: fallback, isAI: false, suggestions: generateFollowUpSuggestions(userMessage, fallback) };
   } catch (error) {
     console.error('[SpiritualGuide] Request failed:', error);
-    _aiStatusCache = { ok: false, checkedAt: Date.now() };
+    // Do not write `_aiStatusCache = { ok: false }` here: a single failed chat would poison
+    // the global 10s health cache and make the UI look "offline" even when the edge is up.
     const fallback = generateFallbackResponse(userMessage);
     return { response: fallback, isAI: false, suggestions: generateFollowUpSuggestions(userMessage, fallback) };
   }
