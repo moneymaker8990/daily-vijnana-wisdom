@@ -96,12 +96,15 @@ export async function saveStudyProgress(
 export async function uploadLocalStudyProgress(user: User): Promise<void> {
   const progress = getLocalStudyProgressForSync();
   for (const item of progress) {
-    await supabase.from('study_progress').upsert({
+    const { error } = await supabase.from('study_progress').upsert({
       user_id: user.id,
       course_id: item.courseId,
       current_lesson: item.currentLesson,
       completed_lessons: item.completedLessons,
       started_at: item.startedAt,
     });
+    if (error) {
+      throw error;
+    }
   }
 }

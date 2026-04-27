@@ -96,19 +96,41 @@ async function runSyncTasks(tasks: SyncTask[]): Promise<string[]> {
   }, []);
 }
 
+/** When an upload scope fails, skip the matching download so we do not replace local data with incomplete cloud state. */
+const UPLOAD_FAILURE_SKIPS_DOWNLOAD: Record<string, string> = {
+  journal_upload: 'journal_download',
+  dream_upload: 'dream_download',
+  favorites_upload: 'favorites_download',
+  study_upload: 'study_download',
+};
+
+/** @internal Exported for unit tests. */
+export function downloadNamesToSkipAfterUploadFailures(uploadFailures: string[]): Set<string> {
+  const skip = new Set<string>();
+  for (const name of uploadFailures) {
+    const download = UPLOAD_FAILURE_SKIPS_DOWNLOAD[name];
+    if (download) skip.add(download);
+  }
+  return skip;
+}
+
 /**
  * Sync all data when user logs in.
  * Merges localStorage data with cloud data, preferring newer data.
  */
 export async function syncAllOnLogin(user: User): Promise<LoginSyncResult> {
   const uploadFailures = await uploadLocalDataToCloud(user);
-  const fetchFailures = await runSyncTasks([
+  const skipDownloads = downloadNamesToSkipAfterUploadFailures(uploadFailures);
+
+  const downloadTasks: SyncTask[] = [
     { name: 'journal_download', run: () => syncJournalEntries(user) },
     { name: 'dream_download', run: () => syncDreamEntries(user) },
     { name: 'favorites_download', run: () => syncFavorites(user) },
     { name: 'study_download', run: () => syncStudyProgress(user) },
     { name: 'preferences_download', run: () => syncUserPreferences(user) },
-  ]);
+  ].filter((t) => !skipDownloads.has(t.name));
+
+  const fetchFailures = await runSyncTasks(downloadTasks);
 
   const failedScopes = [...uploadFailures, ...fetchFailures];
   reportSyncFailures(failedScopes);

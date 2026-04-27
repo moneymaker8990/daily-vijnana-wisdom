@@ -105,7 +105,7 @@ export async function uploadLocalDreamEntries(user: User): Promise<void> {
   if (localDreams) {
     const entries: DreamEntrySync[] = JSON.parse(localDreams);
     for (const entry of entries) {
-      await supabase.from('dream_entries').upsert({
+      const { error } = await supabase.from('dream_entries').upsert({
         id: entry.id,
         user_id: user.id,
         title: entry.title || null,
@@ -114,6 +114,9 @@ export async function uploadLocalDreamEntries(user: User): Promise<void> {
         mood: entry.mood || null,
         interpretation: entry.interpretation || null,
       });
+      if (error) {
+        throw error;
+      }
     }
   }
 }

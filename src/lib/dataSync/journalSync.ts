@@ -110,7 +110,7 @@ export async function uploadLocalJournalEntries(user: User): Promise<void> {
   if (localJournals) {
     const entries: JournalEntrySync[] = JSON.parse(localJournals);
     for (const entry of entries) {
-      await supabase.from('journal_entries').upsert({
+      const { error } = await supabase.from('journal_entries').upsert({
         id: entry.id,
         user_id: user.id,
         title: entry.title || null,
@@ -123,6 +123,9 @@ export async function uploadLocalJournalEntries(user: User): Promise<void> {
         is_private: entry.isPrivate || false,
         created_at: entry.date,
       });
+      if (error) {
+        throw error;
+      }
     }
   }
 }

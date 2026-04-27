@@ -93,13 +93,16 @@ export async function uploadLocalFavorites(user: User): Promise<void> {
   if (localFavorites) {
     const favorites: FavoriteSync[] = JSON.parse(localFavorites);
     for (const fav of favorites) {
-      await supabase.from('favorites').upsert({
+      const { error } = await supabase.from('favorites').upsert({
         user_id: user.id,
         day_number: fav.dayNumber,
         source: fav.source,
         title: fav.title,
         text: fav.text,
       });
+      if (error) {
+        throw error;
+      }
     }
   }
 }
