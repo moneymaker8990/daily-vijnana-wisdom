@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -21,6 +21,73 @@ function resolveProductionBuildId(): string {
   const trimmed = sha.trim()
   if (trimmed.length >= 7) return trimmed.slice(0, 12)
   return `${pkg.version}-local`
+}
+
+/** Replaces Vite’s module entry with an inline script that can clear SW/cache before inject. */
+function extractViteModuleScript(html: string): { full: string; src: string } | null {
+  const re = /<script\b[^>]*>[\s\S]*?<\/script>/gi
+  let m: RegExpExecArray | null
+  while ((m = re.exec(html)) !== null) {
+    const tag = m[0]
+    if (!/\btype\s*=\s*["']module["']/i.test(tag)) continue
+    const srcM = /\bsrc\s*=\s*["']([^"']+)["']/i.exec(tag)
+    if (!srcM) continue
+    return { full: tag, src: srcM[1] }
+  }
+  return null
+}
+
+function buildBootstrapInlineScript(buildId: string, entrySrc: string): string {
+  const BUILD_ID = JSON.stringify(buildId)
+  const ENTRY = JSON.stringify(entrySrc)
+  return [
+    '(function(){',
+    `var BUILD_ID=${BUILD_ID};`,
+    `var ENTRY=${ENTRY};`,
+    "var KEY='mindvanta_build_id';",
+    'function loadApp(){',
+    'function inject(){',
+    "var s=document.createElement('script');",
+    "s.type='module';",
+    's.src=ENTRY;',
+    "s.crossOrigin='anonymous';",
+    'document.body.appendChild(s);',
+    '}',
+    "if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',inject,{once:true});}else{inject();}",
+    '}',
+    "if(BUILD_ID==='dev'){loadApp();return;}",
+    'var prev=null;try{prev=localStorage.getItem(KEY);}catch(e){}',
+    'if(prev===BUILD_ID){loadApp();return;}',
+    'var hadReg=false;var hadCaches=false;',
+    'Promise.all([',
+    "'serviceWorker' in navigator?navigator.serviceWorker.getRegistrations().then(function(regs){hadReg=regs.length>0;return Promise.all(regs.map(function(r){return r.unregister();}))}):Promise.resolve(),",
+    "'caches' in window?caches.keys().then(function(keys){hadCaches=keys.length>0;return Promise.all(keys.map(function(k){return caches.delete(k);}))}):Promise.resolve()",
+    ']).then(function(){',
+    'try{localStorage.setItem(KEY,BUILD_ID);}catch(e){}',
+    'var fresh=prev===null&&!hadReg&&!hadCaches;',
+    'if(fresh){loadApp();return;}',
+    'window.location.reload();',
+    '}).catch(function(){',
+    'try{localStorage.setItem(KEY,BUILD_ID);}catch(e){}',
+    'loadApp();',
+    '});',
+    '})();',
+  ].join('')
+}
+
+function mindvantaBootstrapPlugin(buildId: string): Plugin {
+  return {
+    name: 'mindvanta-bootstrap',
+    transformIndexHtml: {
+      order: 'post',
+      handler(html) {
+        const found = extractViteModuleScript(html)
+        if (!found) return html
+        const inline = buildBootstrapInlineScript(buildId, found.src)
+        return html.replace(found.full, `<script>${inline}</script>`)
+      },
+    },
+  }
 }
 
 // https://vite.dev/config/
@@ -141,6 +208,21 @@ export default defineConfig(({ mode }) => {
         globPatterns: ['**/*.{css,ico,png,svg,woff2}'],
         runtimeCaching: [
           {
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'pages-network-first',
+              networkTimeoutSeconds: 5,
+              expiration: {
+                maxEntries: 32,
+                maxAgeSeconds: 60 * 60 * 24,
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: 'CacheFirst',
             options: {
@@ -170,7 +252,8 @@ export default defineConfig(({ mode }) => {
           }
         ]
       }
-    })
+    }),
+    mindvantaBootstrapPlugin(productionBuildId),
     ],
   }
 })

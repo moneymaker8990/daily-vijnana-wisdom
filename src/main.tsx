@@ -6,6 +6,9 @@ import { ErrorBoundary, ToastProvider } from './components/ui';
 import { prepareCacheForCurrentBuild } from './lib/cacheMigration';
 import './index.css';
 
+/** DevTools: filter by "MindVanta" or check Network for 404 on `/assets/index-*.js` if the screen stays purple. */
+console.debug('[MindVanta] build', import.meta.env.VITE_BUILD_ID);
+
 function showFatal(message: string, detail?: string) {
   const root = document.getElementById('root');
   if (!root) return;
