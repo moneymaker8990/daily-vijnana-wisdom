@@ -2,6 +2,7 @@ import type { LibraryText } from './types';
 
 export const YOGA_SUTRAS: LibraryText = {
   id: 'yogaSutras',
+  registrySourceId: 'yoga-sutras',
   title: 'Yoga Sutras of Patanjali',
   subtitle: 'The Science of Stilling the Mind',
   description: 'The foundational text of Classical Yoga, compiled around 400 CE. These 196 aphorisms present a systematic path for the cessation of mental fluctuations and the realization of the true Self.',

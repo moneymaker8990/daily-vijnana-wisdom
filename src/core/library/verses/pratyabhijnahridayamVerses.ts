@@ -1,7 +1,8 @@
 /**
- * Pratyabhijnahridayam - Selections on recognition
+ * Pratyabhijñāhṛdayam (Heart of Recognition) — full sutra set in-app
  *
- * Adapted from traditional translations associated with Kshemaraja's text.
+ * Twenty contemplative aphorisms associated with Kṣemarāja’s manual, paraphrased
+ * and adapted from traditional translations—not a scholarly critical edition.
  */
 
 import type { Verse } from '../types';
@@ -10,7 +11,7 @@ export const pratyabhijnahridayamVerses: Verse[] = [
   {
     id: 'pratyabhijna-1',
     sourceId: 'pratyabhijnahridayam',
-    sourceName: 'Pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
     tradition: 'Tantric',
     chapter: 1,
     verseNumber: 1,
@@ -23,7 +24,7 @@ export const pratyabhijnahridayamVerses: Verse[] = [
   {
     id: 'pratyabhijna-2',
     sourceId: 'pratyabhijnahridayam',
-    sourceName: 'Pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
     tradition: 'Tantric',
     chapter: 1,
     verseNumber: 3,
@@ -35,7 +36,7 @@ export const pratyabhijnahridayamVerses: Verse[] = [
   {
     id: 'pratyabhijna-3',
     sourceId: 'pratyabhijnahridayam',
-    sourceName: 'Pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
     tradition: 'Tantric',
     chapter: 1,
     verseNumber: 5,
@@ -47,7 +48,7 @@ export const pratyabhijnahridayamVerses: Verse[] = [
   {
     id: 'pratyabhijna-4',
     sourceId: 'pratyabhijnahridayam',
-    sourceName: 'Pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
     tradition: 'Tantric',
     chapter: 1,
     verseNumber: 7,
@@ -59,7 +60,7 @@ export const pratyabhijnahridayamVerses: Verse[] = [
   {
     id: 'pratyabhijna-5',
     sourceId: 'pratyabhijnahridayam',
-    sourceName: 'Pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
     tradition: 'Tantric',
     chapter: 1,
     verseNumber: 10,
@@ -71,7 +72,7 @@ export const pratyabhijnahridayamVerses: Verse[] = [
   {
     id: 'pratyabhijna-6',
     sourceId: 'pratyabhijnahridayam',
-    sourceName: 'Pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
     tradition: 'Tantric',
     chapter: 2,
     verseNumber: 2,
@@ -83,7 +84,7 @@ export const pratyabhijnahridayamVerses: Verse[] = [
   {
     id: 'pratyabhijna-7',
     sourceId: 'pratyabhijnahridayam',
-    sourceName: 'Pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
     tradition: 'Tantric',
     chapter: 2,
     verseNumber: 4,
@@ -95,7 +96,7 @@ export const pratyabhijnahridayamVerses: Verse[] = [
   {
     id: 'pratyabhijna-8',
     sourceId: 'pratyabhijnahridayam',
-    sourceName: 'Pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
     tradition: 'Tantric',
     chapter: 2,
     verseNumber: 6,
@@ -107,7 +108,7 @@ export const pratyabhijnahridayamVerses: Verse[] = [
   {
     id: 'pratyabhijna-9',
     sourceId: 'pratyabhijnahridayam',
-    sourceName: 'Pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
     tradition: 'Tantric',
     chapter: 2,
     verseNumber: 9,
@@ -119,7 +120,7 @@ export const pratyabhijnahridayamVerses: Verse[] = [
   {
     id: 'pratyabhijna-10',
     sourceId: 'pratyabhijnahridayam',
-    sourceName: 'Pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
     tradition: 'Tantric',
     chapter: 3,
     verseNumber: 1,
@@ -131,7 +132,7 @@ export const pratyabhijnahridayamVerses: Verse[] = [
   {
     id: 'pratyabhijna-11',
     sourceId: 'pratyabhijnahridayam',
-    sourceName: 'Pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
     tradition: 'Tantric',
     chapter: 3,
     verseNumber: 4,
@@ -143,7 +144,7 @@ export const pratyabhijnahridayamVerses: Verse[] = [
   {
     id: 'pratyabhijna-12',
     sourceId: 'pratyabhijnahridayam',
-    sourceName: 'Pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
     tradition: 'Tantric',
     chapter: 3,
     verseNumber: 7,
@@ -151,5 +152,105 @@ export const pratyabhijnahridayamVerses: Verse[] = [
     translator: 'Adapted from traditional translations',
     tags: ['recognition', 'shiva', 'sacred', 'integration'],
     difficulty: 3,
+  },
+  {
+    id: 'pratyabhijna-13',
+    sourceId: 'pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
+    tradition: 'Tantric',
+    chapter: 1,
+    verseNumber: 2,
+    text: 'Ignorance is not a second absolute; it is the self-forgetfulness by which the one consciousness seems fragmented.',
+    translator: 'Adapted from traditional translations',
+    tags: ['recognition', 'ignorance', 'consciousness'],
+    difficulty: 3,
+    commentary: 'Bondage is analyzed as mis-knowing rather than as a foreign substance added to the soul.',
+  },
+  {
+    id: 'pratyabhijna-14',
+    sourceId: 'pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
+    tradition: 'Tantric',
+    chapter: 1,
+    verseNumber: 4,
+    text: 'The five acts—manifesting, sustaining, dissolving, concealing, and revealing grace—are the living rhythm of awareness itself.',
+    translator: 'Adapted from traditional translations',
+    tags: ['recognition', 'shiva', 'grace', 'cosmos'],
+    difficulty: 4,
+    commentary: 'Creation and dissolution are understood as movements within one conscious reality, not mechanical forces outside it.',
+  },
+  {
+    id: 'pratyabhijna-15',
+    sourceId: 'pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
+    tradition: 'Tantric',
+    chapter: 1,
+    verseNumber: 6,
+    text: 'What seems “outside” is like a city reflected in a mirror: vivid, ordered, yet nowhere separate from the reflective ground.',
+    translator: 'Adapted from traditional translations',
+    tags: ['recognition', 'world', 'nonduality'],
+    difficulty: 3,
+  },
+  {
+    id: 'pratyabhijna-16',
+    sourceId: 'pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
+    tradition: 'Tantric',
+    chapter: 1,
+    verseNumber: 8,
+    text: 'True knowledge removes the felt wall between knower and known; what remains is self-luminous recognition.',
+    translator: 'Adapted from traditional translations',
+    tags: ['recognition', 'knowledge', 'liberation'],
+    difficulty: 3,
+  },
+  {
+    id: 'pratyabhijna-17',
+    sourceId: 'pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
+    tradition: 'Tantric',
+    chapter: 2,
+    verseNumber: 1,
+    text: 'Turning attention toward its source, the practitioner steadies the play of breath and thought in the light of the Self.',
+    translator: 'Adapted from traditional translations',
+    tags: ['recognition', 'practice', 'breath'],
+    difficulty: 3,
+    commentary: 'The “śākta” dimension: śakti as the path of refined energy and attention returning home.',
+  },
+  {
+    id: 'pratyabhijna-18',
+    sourceId: 'pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
+    tradition: 'Tantric',
+    chapter: 2,
+    verseNumber: 3,
+    text: 'When the dichotomy of pleasure and pain thins, what stands forth is the single taste of awareness knowing itself.',
+    translator: 'Adapted from traditional translations',
+    tags: ['recognition', 'equanimity', 'nonduality'],
+    difficulty: 3,
+  },
+  {
+    id: 'pratyabhijna-19',
+    sourceId: 'pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
+    tradition: 'Tantric',
+    chapter: 2,
+    verseNumber: 5,
+    text: 'The limited subject and the unlimited Lord are not two substances meeting; they are contraction and expansion of one awareness.',
+    translator: 'Adapted from traditional translations',
+    tags: ['recognition', 'self', 'shiva'],
+    difficulty: 4,
+  },
+  {
+    id: 'pratyabhijna-20',
+    sourceId: 'pratyabhijnahridayam',
+    sourceName: 'Pratyabhijñāhṛdayam',
+    tradition: 'Tantric',
+    chapter: 3,
+    verseNumber: 3,
+    text: 'Established in recognition, one acts, feels, and ages in the world while the heart rests in the freedom that needs no proof.',
+    translator: 'Adapted from traditional translations',
+    tags: ['recognition', 'liberation', 'daily-life'],
+    difficulty: 2,
+    commentary: 'Jīvanmukti in this language: freedom lived, not only imagined after death.',
   },
 ];

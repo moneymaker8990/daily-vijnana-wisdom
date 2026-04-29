@@ -1,17 +1,14 @@
 /**
- * Kashmir Shaivism - Tradition Deep Dive
- *
- * A guided introduction to recognition, spanda, and embodied non-duality
- * through Vijnana Bhairava Tantra, Shiva Sutras, Spanda Karika,
- * Pratyabhijnahridayam, and Tantraloka.
+ * Entering Nondual Tantra — Kashmir Shaivism / Trika guided path
  */
 
 import type { Course } from '@core/study/types';
 
 export const kashmirShaivismCourse: Course = {
   id: 'kashmir-shaivism',
-  title: 'Kashmir Shaivism',
-  description: 'Study the recognition-based non-dual tradition of Kashmir Shaivism through the Shiva Sutras, Vijnana Bhairava Tantra, Spanda Karika, Pratyabhijnahridayam, and selected Tantraloka passages. This course emphasizes awareness, living energy, recognition, and embodied practice.',
+  title: 'Entering Nondual Tantra',
+  description:
+    'A guided path through nondual Shaiva Tantra (Kashmir Shaivism / Trika): what “tantra” means here, Śiva and Śakti, the three upāyas, recognition, spanda, and practice with the Vijñāna Bhairava. Designed for study and contemplative integration—not pop spirituality.',
   icon: '🔱',
   pathwayType: 'tradition',
   difficulty: 3,
@@ -19,191 +16,175 @@ export const kashmirShaivismCourse: Course = {
   lessons: [
     {
       id: 'ks-1',
-      title: 'Orientation: A Living Non-Dual Tradition',
-      introduction: `Kashmir Shaivism is one of the great non-dual traditions of India, but its tone is distinct from more world-denying approaches. It does not merely say that consciousness is real. It also says that consciousness is vibrantly alive, creative, and already present within body, sensation, language, thought, and ordinary life.
+      title: 'What Tantra Actually Means',
+      introduction: `In this app, “tantra” does not mean pop-culture sexual tantra or vague mystique. This section focuses on **nondual Śaiva Tantra**, especially the Kashmir (Trika) streams that treat awareness and its dynamic power as central.
 
-In this course, five texts work together:
+Tantra here names a family of contemplative methods and philosophies that take **direct experience** seriously: breath, sound, body, emotion, sleep, and attention are not distractions from the sacred—they are places where recognition can happen.
 
-• **Shiva Sutras** declares the central insight with radical brevity.
-• **Vijnana Bhairava Tantra** turns daily experience into direct gateways.
-• **Spanda Karika** reveals consciousness as a living pulse or throb.
-• **Pratyabhijnahridayam** explains bondage and liberation as forgetting and recognition.
-• **Tantraloka** integrates practice, ritual, and embodied life.
-
-The point is not to become someone else. It is to recognize what awareness already is, and to live from that recognition with more steadiness and intimacy.`,
-      verses: [
-        'ss-1-1',
-        'vbt-2',
-        'spanda-1',
-        'pratyabhijna-1',
-        'tantraloka-1',
-      ],
+Your aim in this path is neither belief nor performance. It is **clearer perception**: noticing the field of awareness in which thoughts, sensations, and world-appearance already occur.`,
+      verses: [],
       reflectionQuestions: [
-        'What draws you toward a path that treats awareness as both stillness and living energy?',
-        'What shifts when spiritual life includes body, sensation, and ordinary experience instead of rejecting them?',
-        'Which of these five texts feels most immediately alive to you at first glance?',
+        'What misconceptions about “tantra” have you picked up from culture or media?',
+        'What would it mean to treat spiritual life as honest experiment rather than identity?',
+        'What draws you toward a path that honors both stillness and embodied life?',
       ],
       practice: {
-        title: 'Arriving in the Field',
+        title: 'Clarify your intention',
         duration: '10 minutes',
         instructions: [
-          'Sit comfortably and let your body settle.',
-          'Notice that awareness is already here before you do anything spiritual.',
-          'Feel the breath, the body, and the sounds around you all appearing in one field.',
-          'Silently repeat: "Nothing is outside awareness."',
-          'Rest for a few minutes without forcing any special state.',
+          'Sit comfortably. Feel the breath and the contact of the body with the floor or chair.',
+          'Silently note: “I am here to look carefully, not to impress anyone.”',
+          'Recall one idea from this introduction that feels grounding.',
+          'Rest for a few minutes without forcing a special state.',
         ],
       },
     },
     {
       id: 'ks-2',
-      title: 'Consciousness Is the Self',
-      introduction: `The Shiva Sutras opens with one of the cleanest declarations in world spirituality: consciousness is the Self. That sentence is simple enough to memorize and difficult enough to live from for a lifetime.
+      title: 'Śiva and Śakti',
+      introduction: `**Śiva** names pure awareness—the open, knowing field in which everything appears. **Śakti** names its living dynamism: energy, creativity, attention’s movement, the pulse of experience.
 
-Kashmir Shaivism does not treat this as abstract philosophy. If consciousness is what you most deeply are, then every experience already happens inside what you are. Practice becomes less about manufacturing transcendence and more about noticing what is always prior to fluctuation.
+Nondual Shaiva traditions refuse a harsh split between “spirit” and “world.” The body and the cosmos are understood as **expression**, not as a prison to escape. Practice is not mainly about becoming pure in a moralistic sense; it is about **recognition** of what is already true prior to struggle.
 
-The Vijnana Bhairava supports this by pointing to breath-gaps, thresholds, and moments of vivid immediacy where the usual story of self loosens and awareness becomes easier to recognize directly.`,
-      verses: [
-        'ss-1-1',
-        'ss-1-7',
-        'vbt-5',
-        'vbt-32',
-        'pratyabhijna-9',
-      ],
+The Vijñāna Bhairava opens in the voice of the Goddess asking precise questions—because awakening here is relational and intimate, not cold theory.`,
+      verses: ['vbt-1', 'ss-1-1', 'ss-1-19', 'pratyabhijna-1'],
       reflectionQuestions: [
-        'When you say "I am aware," what exactly feels most true in that sentence?',
-        'What changes when you notice awareness first and your story second?',
-        'Can you sense awareness in the gap before the mind comments on experience?',
+        'When you hear “Śiva,” can you translate it experimentally as “the fact of being aware” rather than a distant deity only?',
+        'Where do you feel śakti most plainly today—as aliveness, emotion, curiosity, or pressure?',
+        'What changes when the world is met as expression rather than only as threat or temptation?',
       ],
       practice: {
-        title: 'Gap Recognition',
+        title: 'Rest as the field',
         duration: '12 minutes',
         instructions: [
-          'Follow the natural breath without trying to control it.',
-          'Notice the small turn between inhale and exhale.',
-          'Let attention rest in that turn for a moment at a time.',
-          'When thought pulls you away, return to the next natural pause.',
-          'End by noticing that awareness was present through every breath and every distraction.',
+          'Sit quietly. Let sounds, sensations, and thoughts arise and pass.',
+          'Every few breaths, silently ask: “What is aware of this?”',
+          'Do not demand an answer; notice the simplicity before the story.',
+          'End by feeling that listening includes both stillness and movement.',
         ],
       },
     },
     {
       id: 'ks-3',
-      title: 'Spanda: The Living Pulse',
-      introduction: `Kashmir Shaivism is not satisfied with describing awareness as silent witness alone. The Spanda tradition says awareness is also dynamic, alive, and pulsing as every movement of experience. Spanda does not mean gross vibration you have to manufacture. It points to the subtle aliveness already running through attention, sensation, creativity, and perception.
+      title: 'Awareness, Energy, and the Body',
+      introduction: `Kashmir Shaivism is sometimes called “idealist” in academic language, but practitioners experience it as **embodied**: awareness is not trapped behind the eyes; it saturates sensation.
 
-This is one of the reasons the tradition feels so intimate and modern. It honors stillness without turning stillness into deadness. The living pulse is found in the middle of ordinary life, not only in withdrawal from it.`,
-      verses: [
-        'spanda-2',
-        'spanda-4',
-        'spanda-5',
-        'spanda-8',
-        'spanda-12',
-      ],
+Energy (śakti) is not a belief about “vibes.” It is the palpable **aliveness** of attention—warmth, vibration, emotional color, the hum beneath thought. The body becomes a **tuning instrument**, not an enemy.
+
+The Vijñāna Bhairava repeatedly turns ordinary moments (taste, touch, fatigue, space) into contemplative doorways. That practicality is the tradition’s generosity.`,
+      verses: ['vbt-27', 'vbt-48', 'vbt-6', 'tantraloka-4'],
       reflectionQuestions: [
-        'Where do you feel aliveness most immediately in your own experience?',
-        'How is living awareness different from mere mental busyness?',
-        'What would it mean to trust movement without losing stillness?',
+        'Where do you habitually treat the body as an obstacle rather than a place of knowing?',
+        'What happens when you feel sensation without immediately explaining it?',
+        'Can aliveness be known without exaggeration or drama?',
       ],
       practice: {
-        title: 'Feeling the Pulse',
+        title: 'Sensation as doorway',
         duration: '15 minutes',
         instructions: [
-          'Sit upright and bring attention to your hands, chest, or breath.',
-          'Rather than searching for something dramatic, feel for subtle aliveness.',
-          'Notice tingling, warmth, movement, or sheer presence.',
-          'Let this aliveness be known without labeling it too quickly.',
-          'Rest in the sense that stillness and movement belong to one field.',
+          'Choose one neutral sensation (hands, feet, or breath).',
+          'For five minutes, feel texture, temperature, and subtle vibration.',
+          'When the mind labels, return to raw sensation.',
+          'Close by noticing that awareness and aliveness were never separate.',
         ],
       },
     },
     {
       id: 'ks-4',
-      title: 'Recognition and Contraction',
-      introduction: `The recognition school explains bondage with unusual elegance. Nothing essential happens to consciousness; it simply contracts into a smaller sense of self and forgets its own fullness. Liberation is therefore recognition, not acquisition.
+      title: 'The Three Upāyas',
+      introduction: `The Shiva Sutras are structured around **three modes of practice** (upāyas)—not random chapters:
 
-Pratyabhijnahridayam is especially helpful here because it explains how memory, thought, limitation, and identity arise without making them enemies. The point is not to despise contraction, but to see through it often enough that it stops defining the whole of who you are.`,
-      verses: [
-        'pratyabhijna-2',
-        'pratyabhijna-3',
-        'pratyabhijna-6',
-        'pratyabhijna-10',
-        'ss-3-45',
-      ],
+• **Śāmbhavopāya** — Direct resting in awareness: recognition-first.
+• **Śāktopāya** — The path of śakti: mantra, refined thought, luminous attention.
+• **Āṇavopāya** — Embodied means: breath, body, method—helpful when the mind needs structure.
+
+These are **different skills**, not ranks of worth. Most people use more than one over a lifetime.`,
+      verses: ['ss-1-1', 'ss-2-1', 'ss-3-22', 'ss-3-8'],
       reflectionQuestions: [
-        'How do you experience contraction in your own life: as fear, defensiveness, hurry, certainty, or something else?',
-        'What helps you remember a larger field when you feel narrowed down?',
-        'How is recognition different from trying to improve the contracted self?',
+        'Which upāya sounds most natural to you right now—direct, mantra/attention, or embodied?',
+        'When does “direct” practice become subtle avoidance of feeling?',
+        'When does method become a substitute for honesty?',
       ],
       practice: {
-        title: 'Recognize the Contraction',
-        duration: '15 minutes',
+        title: 'Name your current means',
+        duration: '12 minutes',
         instructions: [
-          'Bring to mind a recent moment of contraction or stress.',
-          'Feel where it lives in the body and how it narrows attention.',
-          'Without fighting it, ask: "What knows this contraction?"',
-          'Let attention widen slightly around the contraction instead of drilling into it.',
-          'Finish by resting as the awareness that included both contraction and widening.',
+          'Read the three upāyas slowly once.',
+          'Choose one to emphasize for the next twenty-four hours.',
+          'For śāmbhava: pause three times and ask “What knows this?”',
+          'For śākta: use one minute of silent mantra or listening attention.',
+          'For āṇava: follow ten conscious breaths before one routine task.',
         ],
       },
     },
     {
       id: 'ks-5',
-      title: 'Embodied Practice and the Sacred Everyday',
-      introduction: `Tantraloka shows why Kashmir Shaivism cannot be reduced to bare metaphysics. Breath, mantra, ritual, posture, relationship, beauty, and daily action all matter. Yet Abhinavagupta keeps redirecting each form of practice back to recognition, so that outer form serves inner awakening instead of replacing it.
+      title: 'Recognition: You Are Not Separate',
+      introduction: `**Pratyabhijñā** (recognition) teaches that bondage is largely **contraction and forgetting**—not a permanent stain. What you are is not a tiny object cut off from reality.
 
-This prevents a split between "spiritual moments" and "real life." The shrine is not somewhere else. Awareness itself becomes the temple, and practice becomes a way of participating more consciously in what is already sacred.`,
-      verses: [
-        'tantraloka-3',
-        'tantraloka-4',
-        'tantraloka-5',
-        'tantraloka-9',
-        'vbt-45',
-      ],
+Liberation is remembering the **whole field**. Thoughts and feelings can still arise; what changes is the felt truth of their context.
+
+This is not arrogance (“I am God” as slogan) but humility: seeing through the brittle story of separation.`,
+      verses: ['pratyabhijna-2', 'pratyabhijna-6', 'pratyabhijna-11', 'ss-1-14'],
       reflectionQuestions: [
-        'Which forms of practice help you become more present rather than more performative?',
-        'How might the body become an ally in awakening instead of a problem to overcome?',
-        'What everyday act could become sacred if done from recognition?',
+        'Where do you feel most separate from life when stressed?',
+        'What helps you remember a wider context without bypassing pain?',
+        'How is recognition different from positive self-talk?',
       ],
       practice: {
-        title: 'One Ordinary Act as Practice',
-        duration: 'Throughout the day',
+        title: 'Widen around a contraction',
+        duration: '15 minutes',
         instructions: [
-          'Choose one ordinary action today such as washing a cup, walking, or opening a door.',
-          'Slow down slightly before beginning it.',
-          'Feel the body, breath, and attention involved in the action.',
-          'Silently note: "This too happens in awareness."',
-          'Repeat with the same action later in the day and notice whether it feels more intimate or less mechanical.',
+          'Recall a recent moment of stress or defensiveness.',
+          'Sense where it lives in the body.',
+          'Ask softly: “What knows this?” and let attention include both tightness and space.',
+          'Rest without forcing the contraction to disappear.',
         ],
       },
     },
     {
       id: 'ks-6',
-      title: 'Whole-Life Integration',
-      introduction: `The mature fruit of Kashmir Shaivism is not escape from life but freedom within participation. Awareness is recognized in stillness, then in movement, then in the full complexity of relationship and responsibility. The world does not have to disappear for recognition to become stable.
+      title: 'Spanda: The Pulse of Consciousness',
+      introduction: `**Spanda** is the subtle **pulse** of consciousness—not a theatrical vibration, but the living fact that awareness is never dead. Stillness and movement interweave.
 
-The tradition’s boldness lies here: what you seek is present in the middle of life, not only outside of it. Recognition becomes less an event and more a way of inhabiting the day.`,
-      verses: [
-        'spanda-9',
-        'pratyabhijna-11',
-        'tantraloka-10',
-        'tantraloka-12',
-        'ss-3-14',
-      ],
+In the Spanda selections, look for pointers to the **gap between thoughts**, emotion as revelation, and freedom **in** activity rather than only away from it.`,
+      verses: ['spanda-2', 'spanda-4', 'spanda-5', 'spanda-11'],
       reflectionQuestions: [
-        'What would a more recognition-shaped day actually look like for you?',
-        'Where do you still assume that ordinary life and spiritual life are separate?',
-        'Which line from this course feels like one you want to carry forward?',
+        'Can you sense a quiet aliveness beneath mental chatter?',
+        'How is this different from anxious agitation?',
+        'Where does stillness feel alive rather than numb?',
       ],
       practice: {
-        title: 'Carry the Recognition',
-        duration: '20 minutes plus daily recall',
+        title: 'Feel the inner pulse',
+        duration: '15 minutes',
         instructions: [
-          'Sit quietly and review the main arc of the course: awareness, pulse, contraction, recognition, embodiment, integration.',
-          'Choose one phrase that feels alive to you, such as "Consciousness is the Self" or "Nothing is outside awareness."',
-          'Sit with that phrase for several minutes, not as a slogan but as a pointer.',
-          'For the rest of the day, return to it during transitions between tasks.',
-          'At night, reflect on where recognition felt natural and where it was forgotten.',
+          'Sit upright, hands resting loosely.',
+          'Notice heartbeat, breath, or subtle tingling without hunting intensity.',
+          'Let the focus be “alive stillness” rather than a blank void.',
+          'For the last minutes, carry ordinary hearing without commentary.',
+        ],
+      },
+    },
+    {
+      id: 'ks-7',
+      title: 'Practice from the Vijñāna Bhairava',
+      introduction: `The **Vijñāna Bhairava** is this library’s flagship practice text: 112 experiments in attention. Categories (breath, sound, body, etc.) help you browse by **how** you want to work today.
+
+Pick **one** technique and stay with it for a season. The text rewards repetition and sincerity more than quantity.`,
+      verses: ['vbt-2', 'vbt-9', 'vbt-45', 'vbt-72', 'vbt-112'],
+      reflectionQuestions: [
+        'Which category of practice fits your temperament this week?',
+        'What is the smallest daily dose of practice you can actually keep?',
+        'How will you know if a technique is clarifying rather than dissociating?',
+      ],
+      practice: {
+        title: 'Choose one gateway',
+        duration: '20 minutes',
+        instructions: [
+          'Open the Vijñāna Bhairava in the Sacred Library.',
+          'Choose one verse that confuses you slightly—in a good way.',
+          'Try it gently for fifteen minutes without optimizing.',
+          'Journal three sentences about what happened, without judging “success.”',
         ],
       },
     },

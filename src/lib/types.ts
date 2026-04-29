@@ -11,6 +11,7 @@ export type TraditionRef = {
     | 'SPANDA_KARIKA'
     | 'PRATYABHIJNAHRIDAYAM'
     | 'TANTRALOKA'
+    | 'PARAMARTHASARA'
     | 'DHAMMAPADA'
     | 'RUMI'
     | 'ZEN_KOAN'
@@ -74,6 +75,7 @@ export type DailyEntry = {
   spandaKarikaRef?: TraditionRef;
   pratyabhijnahridayamRef?: TraditionRef;
   tantralokaRef?: TraditionRef;
+  paramarthasaraRef?: TraditionRef;
   dhammapadaRef?: TraditionRef;
   rumiRef?: TraditionRef;
   zenKoanRef?: TraditionRef;
@@ -107,6 +109,7 @@ export type DailyEntry = {
   spandaKarikaText?: string;
   pratyabhijnahridayamText?: string;
   tantralokaText?: string;
+  paramarthasaraText?: string;
   dhammapadaText?: string;
   rumiText?: string;
   zenKoanText?: string;
@@ -140,6 +143,7 @@ export type DailyEntry = {
   spandaKarikaCommentary?: string;
   pratyabhijnahridayamCommentary?: string;
   tantralokaCommentary?: string;
+  paramarthasaraCommentary?: string;
   dhammapadaCommentary?: string;
   rumiCommentary?: string;
   zenKoanCommentary?: string;
@@ -174,6 +178,7 @@ export type DailyEntry = {
     spandaKarika?: string;
     pratyabhijnahridayam?: string;
     tantraloka?: string;
+    paramarthasara?: string;
     dhammapada?: string;
     rumi?: string;
     zenKoan?: string;
@@ -209,6 +214,7 @@ export type DailyEntry = {
     spandaKarika?: string;
     pratyabhijnahridayam?: string;
     tantraloka?: string;
+    paramarthasara?: string;
     dhammapada?: string;
     rumi?: string;
     zenKoan?: string;

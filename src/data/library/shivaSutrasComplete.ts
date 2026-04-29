@@ -2,6 +2,7 @@ import type { LibraryText } from './types';
 
 export const SHIVA_SUTRAS: LibraryText = {
   id: 'shivaSutras',
+  registrySourceId: 'shiva-sutras',
   title: 'Shiva Sutras',
   subtitle: 'The Supreme Awakening',
   description: 'Revealed to the sage Vasugupta in a dream, these 77 sutras form the foundation of Kashmir Shaivism. They describe consciousness as the supreme reality and provide methods for recognizing one\'s nature as Shiva—pure awareness itself.',

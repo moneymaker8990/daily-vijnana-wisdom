@@ -271,7 +271,7 @@ export function DayView({
           )}
           {entry.spandaKarikaText && (
             <TraditionCard
-              title="Spanda Karika"
+              title="Spanda Kārikā (selections)"
               text={entry.spandaKarikaText}
               commentary={entry.spandaKarikaCommentary}
               context={entry.traditionContext?.spandaKarika}
@@ -281,7 +281,7 @@ export function DayView({
           )}
           {entry.pratyabhijnahridayamText && (
             <TraditionCard
-              title="Pratyabhijnahridayam"
+              title="Pratyabhijñāhṛdayam"
               text={entry.pratyabhijnahridayamText}
               commentary={entry.pratyabhijnahridayamCommentary}
               context={entry.traditionContext?.pratyabhijnahridayam}
@@ -291,10 +291,20 @@ export function DayView({
           )}
           {entry.tantralokaText && (
             <TraditionCard
-              title="Tantraloka"
+              title="Tantrāloka (selections)"
               text={entry.tantralokaText}
               commentary={entry.tantralokaCommentary}
               context={entry.traditionContext?.tantraloka}
+              dayNumber={dayNumber}
+              textSize={textSize}
+            />
+          )}
+          {entry.paramarthasaraText && (
+            <TraditionCard
+              title="Paramārthasāra (study themes)"
+              text={entry.paramarthasaraText}
+              commentary={entry.paramarthasaraCommentary}
+              context={entry.traditionContext?.paramarthasara}
               dayNumber={dayNumber}
               textSize={textSize}
             />

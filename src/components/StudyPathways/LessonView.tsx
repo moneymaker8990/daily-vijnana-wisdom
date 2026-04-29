@@ -131,25 +131,27 @@ export function LessonView({ courseId, lessonId, onBack, onNavigateLesson }: Les
         </CollapsibleSection>
 
         {/* Sacred Verses */}
-        <CollapsibleSection
-          title={`Sacred Verses (${verseObjects.length})`}
-          icon="🙏"
-          isOpen={expandedSection === 'verses'}
-          onToggle={() => toggleSection('verses')}
-        >
-          <div className="space-y-4">
-            {verseObjects.map((verse, index) => (
-              <VerseCard key={verse.id} verse={verse} index={index + 1} />
-            ))}
-            
-            {lesson.traditionalContext && (
-              <div className="mt-4 p-4 bg-violet-500/10 rounded-xl border border-violet-500/20">
-                <p className="text-xs text-violet-300/70 uppercase tracking-wider mb-2">Traditional Context</p>
-                <p className="text-sm text-white/70 italic">{lesson.traditionalContext}</p>
-              </div>
-            )}
-          </div>
-        </CollapsibleSection>
+        {lesson.verses.length > 0 && (
+          <CollapsibleSection
+            title={`Sacred Verses (${verseObjects.length})`}
+            icon="🙏"
+            isOpen={expandedSection === 'verses'}
+            onToggle={() => toggleSection('verses')}
+          >
+            <div className="space-y-4">
+              {verseObjects.map((verse, index) => (
+                <VerseCard key={verse.id} verse={verse} index={index + 1} />
+              ))}
+
+              {lesson.traditionalContext && (
+                <div className="mt-4 p-4 bg-violet-500/10 rounded-xl border border-violet-500/20">
+                  <p className="text-xs text-violet-300/70 uppercase tracking-wider mb-2">Traditional Context</p>
+                  <p className="text-sm text-white/70 italic">{lesson.traditionalContext}</p>
+                </div>
+              )}
+            </div>
+          </CollapsibleSection>
+        )}
 
         {/* Reflection Questions */}
         <CollapsibleSection

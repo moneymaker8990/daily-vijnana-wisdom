@@ -161,7 +161,6 @@ function App() {
     }
   };
 
-  // Scroll to top when tab changes
   const handleTabChange = (tab: TabId) => {
     if (shouldGateTab(tab)) {
       const trigger = getPaywallTriggerContext(tab);
@@ -177,6 +176,17 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'instant' });
     // Also scroll the main container if it exists
     mainContainerRef.current?.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  const openNondualTantraStudyPath = () => {
+    localStorage.setItem(
+      STORAGE_KEYS.STUDY_HUB_STATE,
+      JSON.stringify({
+        viewState: { type: 'course', courseId: 'kashmir-shaivism' },
+        activePathway: 'tradition',
+      })
+    );
+    handleTabChange('courses');
   };
 
   // Record daily visit and check for milestones
@@ -405,7 +415,7 @@ function App() {
         return <StudyHub />;
       
       case 'library':
-        return <StudyLibrary />;
+        return <StudyLibrary onOpenNondualTantraPath={openNondualTantraStudyPath} />;
 
       case 'dreams':
         return <DreamJournal />;

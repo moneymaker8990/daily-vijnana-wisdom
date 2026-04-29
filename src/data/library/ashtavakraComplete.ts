@@ -2,6 +2,7 @@ import type { LibraryText } from './types';
 
 export const ASHTAVAKRA_GITA: LibraryText = {
   id: 'ashtavakra',
+  registrySourceId: 'ashtavakra-gita',
   title: 'Ashtavakra Gita',
   subtitle: 'The Song of Pure Awareness',
   description: 'A radical non-dual dialogue between the sage Ashtavakra and King Janaka. It presents the most direct teaching of Advaita Vedanta—that you are already free, already the Self, and liberation requires only recognition of what has always been true.',

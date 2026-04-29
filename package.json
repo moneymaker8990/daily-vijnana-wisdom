@@ -21,7 +21,7 @@
     "test:ai-health": "node ./scripts/test-hyper-processor-health.mjs",
     "supabase:link": "npx supabase link --project-ref coihujjfdhpqfwmibfbi",
     "supabase:db:push": "npx supabase db push",
-    "supabase:functions:deploy:all": "npx supabase functions deploy hyper-processor && npx supabase functions deploy stripe-checkout && npx supabase functions deploy stripe-webhook && npx supabase functions deploy check-entitlement"
+    "supabase:functions:deploy:all": "npx supabase functions deploy hyper-processor --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi && npx supabase functions deploy check-entitlement --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi && npx supabase functions deploy stripe-checkout --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi && npx supabase functions deploy stripe-reconcile --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi && npx supabase functions deploy stripe-webhook --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",

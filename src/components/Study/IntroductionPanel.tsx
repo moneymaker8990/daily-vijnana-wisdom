@@ -2,20 +2,28 @@ import { useState } from 'react';
 import type { HistoricalIntro } from '@core/library/types';
 
 export type IntroductionPanelProps = {
-  intro: HistoricalIntro;
-  source: { name: string; period?: string; originalLanguage?: string; icon?: string };
+  intro?: HistoricalIntro;
+  source: {
+    name: string;
+    period?: string;
+    originalLanguage?: string;
+    icon?: string;
+    pedagogicalNote?: string;
+  };
   onClose: () => void;
 };
 
 export function IntroductionPanel({ intro, source, onClose }: IntroductionPanelProps) {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
-  const sections = [
-    { id: 'origin', title: 'Origins', icon: '🌍', content: intro.origin },
-    { id: 'author', title: 'Author & Transmission', icon: '✍️', content: intro.author },
-    { id: 'significance', title: 'Significance', icon: '💎', content: intro.significance },
-    { id: 'howToRead', title: 'How to Read', icon: '📖', content: intro.howToRead },
-  ];
+  const sections = intro
+    ? [
+        { id: 'origin', title: 'Origins', icon: '🌍', content: intro.origin },
+        { id: 'author', title: 'Author & Transmission', icon: '✍️', content: intro.author },
+        { id: 'significance', title: 'Significance', icon: '💎', content: intro.significance },
+        { id: 'howToRead', title: 'How to Read', icon: '📖', content: intro.howToRead },
+      ]
+    : [];
 
   return (
     <div className="space-y-4 animate-fadeIn">
@@ -24,7 +32,9 @@ export function IntroductionPanel({ intro, source, onClose }: IntroductionPanelP
         <div className="flex items-start justify-between">
           <div>
             <span className="text-3xl mb-2 block">{source.icon || '📜'}</span>
-            <h3 className="text-lg font-serif text-white mb-1">Historical Introduction</h3>
+            <h3 className="text-lg font-serif text-white mb-1">
+              {intro ? 'Historical Introduction' : 'About this text'}
+            </h3>
             <div className="flex items-center gap-3 text-xs text-white/50">
               {source.period && <span>{source.period}</span>}
               {source.originalLanguage && (
@@ -47,9 +57,18 @@ export function IntroductionPanel({ intro, source, onClose }: IntroductionPanelP
         </div>
       </div>
 
-      <p className="text-sm text-white/55 leading-relaxed">
-        Open the section you need instead of reading the same framing all at once.
-      </p>
+      {intro && (
+        <p className="text-sm text-white/55 leading-relaxed">
+          Open the section you need instead of reading the same framing all at once.
+        </p>
+      )}
+
+      {source.pedagogicalNote && (
+        <div className="rounded-xl border border-violet-500/25 bg-violet-500/10 p-4">
+          <p className="text-xs uppercase tracking-wider text-violet-200/80 mb-2">Study orientation</p>
+          <p className="text-sm text-white/85 leading-relaxed whitespace-pre-line">{source.pedagogicalNote}</p>
+        </div>
+      )}
 
       {/* Expandable Sections */}
       <div className="space-y-2">

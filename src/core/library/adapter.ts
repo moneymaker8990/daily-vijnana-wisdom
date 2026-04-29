@@ -21,7 +21,27 @@ function verseToLibraryVerse(verse: Verse, index: number): LibraryVerse {
     text: verse.text,
     commentary: verse.commentary,
     keywords: verse.tags,
+    practiceCategory: verse.practiceCategory,
+    plainLanguage: verse.plainLanguage,
+    practiceInstructions: verse.practiceInstructions,
+    reflectionPrompt: verse.reflectionPrompt,
+    modernLifeApplication: verse.modernLifeApplication,
+    journalQuestion: verse.journalQuestion,
+    contentKind: verse.contentKind,
   };
+}
+
+const SHIVA_SUTRA_CHAPTER_TITLES: Record<number, string> = {
+  1: 'Śāmbhavopāya — Direct path of awareness',
+  2: 'Śāktopāya — Energy, mantra, and refined thought',
+  3: 'Āṇavopāya — Embodied path of breath, body, and method',
+};
+
+function chapterTitleForSource(sourceId: string, chapterNum: number): string {
+  if (sourceId === 'shiva-sutras') {
+    return SHIVA_SUTRA_CHAPTER_TITLES[chapterNum] ?? `Chapter ${chapterNum}`;
+  }
+  return `Chapter ${chapterNum}`;
 }
 
 /**
@@ -48,9 +68,10 @@ export function sourceToLibraryText(source: Source): LibraryText {
       .sort(([a], [b]) => (a as number) - (b as number));
     
     sortedChapters.forEach(([chapterNum, chapterVerses]) => {
+      const n = chapterNum as number;
       chapters.push({
-        number: chapterNum as number,
-        title: `Chapter ${chapterNum}`,
+        number: n,
+        title: chapterTitleForSource(source.id, n),
         verseCount: chapterVerses.length,
       });
     });
@@ -83,8 +104,9 @@ export function sourceToLibraryText(source: Source): LibraryText {
   
   return {
     id: legacyId,
+    registrySourceId: source.id,
     title: source.name,
-    subtitle: source.period || '',
+    subtitle: source.subtitle ?? source.period ?? '',
     description: source.description,
     origin: `${source.originalLanguage || ''} ${source.period || ''}`.trim(),
     totalVerses: source.totalVerses,

@@ -1,13 +1,13 @@
 /**
  * Shared Wisdom Texts for Daily Rotation
  *
- * Contains quotes from all 24 sacred traditions for use across all 365 days.
+ * Contains quotes from all traditions for use across all 365 days.
  * Each tradition has multiple texts that rotate to ensure variety.
  */
 
 export type TraditionKey =
   | 'vijnana' | 'tao' | 'gita' | 'upanishads' | 'ashtavakra' | 'yogaSutras' | 'shivaSutras'
-  | 'spandaKarika' | 'pratyabhijnahridayam' | 'tantraloka'
+  | 'spandaKarika' | 'pratyabhijnahridayam' | 'tantraloka' | 'paramarthasara'
   | 'dhammapada' | 'rumi' | 'zenKoan' | 'zhuangzi' | 'rigVeda' | 'cloudOfUnknowing'
   | 'prajnaparamita' | 'suttaNipata' | 'avadhutaGita' | 'vivekachudamani' | 'naradaBhakti'
   | 'yogaVasistha' | 'conferenceOfBirds' | 'darkNight' | 'corpusHermeticum' | 'kybalion' | 'imitationOfChrist'
@@ -24,8 +24,9 @@ export interface TraditionData {
 export const WISDOM_TRADITIONS: Record<TraditionKey, TraditionData> = {
   // === TANTRIC/KASHMIRI ===
   vijnana: {
-    name: 'Vijnana Bhairava Tantra',
-    context: 'A medieval Kashmiri text offering 112 gateways into presence through breath, sensation, and the immediacy of experience.',
+    name: 'Vijñāna Bhairava Tantra',
+    context:
+      'Nondual Shaiva Tantra from Kashmir: 112 contemplative gateways using breath, sound, the senses, and ordinary moments as doorways into awareness.',
     whyMatters: 'This teaching interrupts habitual patterns and opens direct contact with awareness.',
     texts: [
       'The awareness that permeates all things is the root of all experience. Rest in that which witnesses.',
@@ -58,8 +59,9 @@ export const WISDOM_TRADITIONS: Record<TraditionKey, TraditionData> = {
   },
 
   spandaKarika: {
-    name: 'Spanda Karika',
-    context: 'A foundational Kashmir Shaivism text describing reality as the subtle pulse or throb of living consciousness.',
+    name: 'Spanda Kārikā (selections)',
+    context:
+      'Selections from a foundational Kashmir Shaivism work on spanda—the subtle pulse of consciousness in stillness and movement.',
     whyMatters: 'Spanda teaches that awareness is not static withdrawal but the living energy present within thought, sensation, and action.',
     texts: [
       'The universe is the flashing forth of the living pulse of consciousness.',
@@ -75,8 +77,9 @@ export const WISDOM_TRADITIONS: Record<TraditionKey, TraditionData> = {
   },
 
   pratyabhijnahridayam: {
-    name: 'Pratyabhijnahridayam',
-    context: 'Kshemaraja\'s short manual of recognition, explaining how infinite consciousness appears as the limited individual and remembers itself.',
+    name: 'Pratyabhijñāhṛdayam',
+    context:
+      'Kṣemarāja’s “Heart of Recognition”: how consciousness appears as the individual and remembers itself—liberation as recognition, not acquisition.',
     whyMatters: 'This text reframes liberation as recognition rather than acquisition: you are remembering what you never stopped being.',
     texts: [
       'Consciousness, absolutely free and self-luminous, is the cause of the universe.',
@@ -92,9 +95,11 @@ export const WISDOM_TRADITIONS: Record<TraditionKey, TraditionData> = {
   },
 
   tantraloka: {
-    name: 'Tantraloka',
-    context: 'Abhinavagupta\'s great synthesis of Kashmir Shaiva practice, showing ritual, embodiment, mantra, and direct awareness as one path.',
-    whyMatters: 'Tantraloka refuses to split realization from life, revealing practice, body, and world as expressions of awakened participation.',
+    name: 'Tantrāloka (selections)',
+    context:
+      'Brief selections from Abhinavagupta’s vast synthesis—not the full Tantrāloka—pointing to ritual, mantra, embodiment, and recognition as one path.',
+    whyMatters:
+      'These excerpts refuse a split between realization and life, hinting how practice and world can express one awakened field.',
     texts: [
       'The highest worship is to rest in the light of awareness from which all practice arises.',
       'Outer practice bears fruit when it awakens inner recognition.',
@@ -106,6 +111,29 @@ export const WISDOM_TRADITIONS: Record<TraditionKey, TraditionData> = {
       'Nothing in life is spiritually irrelevant when it is gathered back into awakened presence.',
     ],
     commentaryStyle: 'Abhinavagupta turns tantric practice back toward recognition and whole-life integration.',
+  },
+
+  paramarthasara: {
+    name: 'Paramārthasāra (study themes)',
+    context:
+      'Educational themes associated with Abhinavagupta’s “Essence of the Highest Reality”—app commentary for orientation, not a substitute for reading qualified translations.',
+    whyMatters:
+      'These notes help you see how nondual Shaiva teaching weaves practice, recognition, and everyday life without splitting spirit from world.',
+    texts: [
+      'Experience always appears to someone: notice the open fact of knowing before analysis begins.',
+      'The world is not worthless illusion; appearances are the display of one reality, like waves and ocean.',
+      'Bondage is often contraction and forgetting; freedom is remembering the field in which experience already happens.',
+      'Śakti is not a belief about “energy”—it is the living dynamism of attention, sensation, and creative appearing.',
+      'Practice gathers the scattered mind back toward its source without pretending life is an enemy.',
+      'Ritual and mantra, when understood inwardly, can point awareness back to non-separation.',
+      'The body is not rejected; it is met as part of the path when known within the wider field.',
+      'Nothing in ordinary life is spiritually irrelevant when experience is felt within awakened presence.',
+      'Knowing that binds is possession and defense; recognition welcomes a softer knowing that can include not-knowing.',
+      'Grace is often described as gift or clearing—while still asking for your honest participation.',
+      'Integration over escape: meet relationships and limits with a steadier ground of noticing.',
+      'You will forget and remember many times; the path includes gentle return to the field of awareness.',
+    ],
+    commentaryStyle: 'This note orients study toward recognition; compare with teachers and published translations when you go deeper.',
   },
 
   // === TAOIST ===
@@ -626,7 +654,7 @@ export function getTraditionsForDay(dayNumber: number, primaryTradition: Traditi
   // All traditions except the primary
   const allTraditions: TraditionKey[] = [
     'vijnana', 'tao', 'gita', 'upanishads', 'ashtavakra', 'yogaSutras', 'shivaSutras',
-    'spandaKarika', 'pratyabhijnahridayam', 'tantraloka',
+    'spandaKarika', 'pratyabhijnahridayam', 'tantraloka', 'paramarthasara',
     'dhammapada', 'rumi', 'zenKoan', 'zhuangzi', 'rigVeda', 'cloudOfUnknowing',
     'prajnaparamita', 'suttaNipata', 'avadhutaGita', 'vivekachudamani', 'naradaBhakti',
     'yogaVasistha', 'conferenceOfBirds', 'darkNight', 'corpusHermeticum', 'kybalion', 'imitationOfChrist',
@@ -656,7 +684,7 @@ export function getTraditionsForDay(dayNumber: number, primaryTradition: Traditi
  * Tradition groupings for thematic alignment
  */
 export const TRADITION_FAMILIES = {
-  tantric: ['vijnana', 'shivaSutras', 'spandaKarika', 'pratyabhijnahridayam', 'tantraloka'] as TraditionKey[],
+  tantric: ['vijnana', 'shivaSutras', 'spandaKarika', 'pratyabhijnahridayam', 'tantraloka', 'paramarthasara'] as TraditionKey[],
   taoist: ['tao', 'zhuangzi'] as TraditionKey[],
   vedantic: ['upanishads', 'gita', 'ashtavakra', 'avadhutaGita', 'vivekachudamani', 'yogaVasistha'] as TraditionKey[],
   yogic: ['yogaSutras', 'naradaBhakti', 'rigVeda'] as TraditionKey[],
@@ -721,6 +749,7 @@ export const TRADITION_SOURCE_MAP: Record<TraditionKey, string> = {
   spandaKarika: 'SPANDA_KARIKA',
   pratyabhijnahridayam: 'PRATYABHIJNAHRIDAYAM',
   tantraloka: 'TANTRALOKA',
+  paramarthasara: 'PARAMARTHASARA',
   dhammapada: 'DHAMMAPADA',
   rumi: 'RUMI',
   zenKoan: 'ZEN_KOAN',
@@ -763,6 +792,7 @@ export const TRADITION_FIELD_MAP: Record<TraditionKey, {
   spandaKarika: { ref: 'spandaKarikaRef', text: 'spandaKarikaText', commentary: 'spandaKarikaCommentary', contextKey: 'spandaKarika', whyMattersKey: 'spandaKarika' },
   pratyabhijnahridayam: { ref: 'pratyabhijnahridayamRef', text: 'pratyabhijnahridayamText', commentary: 'pratyabhijnahridayamCommentary', contextKey: 'pratyabhijnahridayam', whyMattersKey: 'pratyabhijnahridayam' },
   tantraloka: { ref: 'tantralokaRef', text: 'tantralokaText', commentary: 'tantralokaCommentary', contextKey: 'tantraloka', whyMattersKey: 'tantraloka' },
+  paramarthasara: { ref: 'paramarthasaraRef', text: 'paramarthasaraText', commentary: 'paramarthasaraCommentary', contextKey: 'paramarthasara', whyMattersKey: 'paramarthasara' },
   dhammapada: { ref: 'dhammapadaRef', text: 'dhammapadaText', commentary: 'dhammapadaCommentary', contextKey: 'dhammapada', whyMattersKey: 'dhammapada' },
   rumi: { ref: 'rumiRef', text: 'rumiText', commentary: 'rumiCommentary', contextKey: 'rumi', whyMattersKey: 'rumi' },
   zenKoan: { ref: 'zenKoanRef', text: 'zenKoanText', commentary: 'zenKoanCommentary', contextKey: 'zenKoan', whyMattersKey: 'zenKoan' },

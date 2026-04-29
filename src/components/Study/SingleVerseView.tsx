@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { LibraryText, LibraryVerse } from '@data/library/types';
+import type { VbtPracticeCategory } from '@core/library/types';
+import { VBT_CATEGORY_LABELS } from '@core/library/verses/vbtVersePracticeCategories';
 import { FavoriteButton } from '../Favorites/FavoriteButton';
 import { ShareButton } from '../Share/ShareButton';
 import { ExplainButton, ExplainPanel } from '../Explain';
@@ -58,14 +60,65 @@ export function SingleVerseView({
 
       {/* Verse Content */}
       <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-6 border border-white/10">
-        <p className="text-lg md:text-xl text-white/90 leading-relaxed font-serif italic">
-          "{verse.text}"
+        {verse.contentKind === 'educational_note' && (
+          <p className="text-xs text-amber-200/85 mb-3 leading-relaxed">
+            Educational summary for study — not presented as a verbatim scripture translation.
+          </p>
+        )}
+
+        {verse.practiceCategory && (
+          <p className="text-[11px] text-violet-300/70 mb-3 uppercase tracking-wider">
+            Practice focus: {VBT_CATEGORY_LABELS[verse.practiceCategory as VbtPracticeCategory]}
+          </p>
+        )}
+
+        <p
+          className={`text-lg md:text-xl text-white/90 leading-relaxed font-serif ${
+            verse.contentKind === 'educational_note' ? '' : 'italic'
+          }`}
+        >
+          {verse.contentKind === 'educational_note' ? verse.text : `“${verse.text}”`}
         </p>
+
+        {verse.plainLanguage && (
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <h4 className="text-xs uppercase tracking-wider text-violet-300/70 mb-2">In plain language</h4>
+            <p className="text-sm md:text-base text-white/75 leading-relaxed">{verse.plainLanguage}</p>
+          </div>
+        )}
 
         {verse.commentary && (
           <div className="mt-6 pt-6 border-t border-white/10">
             <h4 className="text-xs uppercase tracking-wider text-violet-300/70 mb-2">Commentary</h4>
             <p className="text-sm md:text-base text-white/70 leading-relaxed">{verse.commentary}</p>
+          </div>
+        )}
+
+        {verse.practiceInstructions && (
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <h4 className="text-xs uppercase tracking-wider text-emerald-300/70 mb-2">Contemplative practice</h4>
+            <p className="text-sm md:text-base text-white/75 leading-relaxed">{verse.practiceInstructions}</p>
+          </div>
+        )}
+
+        {verse.reflectionPrompt && (
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <h4 className="text-xs uppercase tracking-wider text-sky-300/70 mb-2">Reflection</h4>
+            <p className="text-sm md:text-base text-white/75 leading-relaxed italic">{verse.reflectionPrompt}</p>
+          </div>
+        )}
+
+        {verse.modernLifeApplication && (
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <h4 className="text-xs uppercase tracking-wider text-white/50 mb-2">Everyday life</h4>
+            <p className="text-sm md:text-base text-white/75 leading-relaxed">{verse.modernLifeApplication}</p>
+          </div>
+        )}
+
+        {verse.journalQuestion && (
+          <div className="mt-6 pt-6 border-t border-white/10">
+            <h4 className="text-xs uppercase tracking-wider text-white/50 mb-2">Journal</h4>
+            <p className="text-sm md:text-base text-white/75 leading-relaxed">{verse.journalQuestion}</p>
           </div>
         )}
 

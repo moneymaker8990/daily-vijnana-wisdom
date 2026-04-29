@@ -2,6 +2,7 @@ import type { LibraryText } from './types';
 
 export const VIJNANA_BHAIRAVA_TANTRA: LibraryText = {
   id: 'vijnana',
+  registrySourceId: 'vijnana-bhairava-tantra',
   title: 'Vijnana Bhairava Tantra',
   subtitle: '112 Meditation Techniques',
   description: 'An ancient Kashmiri Shaiva text presenting 112 dharanas (meditation techniques) for experiencing the nature of consciousness. Structured as a dialogue between Shiva and Shakti.',

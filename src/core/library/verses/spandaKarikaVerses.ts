@@ -1,7 +1,7 @@
 /**
- * Spanda Karika - Selections on the living pulse of consciousness
+ * Spanda Kārikā — selections on the living pulse of consciousness
  *
- * Adapted from traditional translations associated with Kashmir Shaivism.
+ * Curated excerpts (not the full kārikā text). Adapted from traditional translations.
  */
 
 import type { Verse } from '../types';
@@ -10,7 +10,7 @@ export const spandaKarikaVerses: Verse[] = [
   {
     id: 'spanda-1',
     sourceId: 'spanda-karika',
-    sourceName: 'Spanda Karika',
+    sourceName: 'Spanda Kārikā — Selections',
     tradition: 'Tantric',
     chapter: 1,
     verseNumber: 1,
@@ -23,7 +23,7 @@ export const spandaKarikaVerses: Verse[] = [
   {
     id: 'spanda-2',
     sourceId: 'spanda-karika',
-    sourceName: 'Spanda Karika',
+    sourceName: 'Spanda Kārikā — Selections',
     tradition: 'Tantric',
     chapter: 1,
     verseNumber: 2,
@@ -35,7 +35,7 @@ export const spandaKarikaVerses: Verse[] = [
   {
     id: 'spanda-3',
     sourceId: 'spanda-karika',
-    sourceName: 'Spanda Karika',
+    sourceName: 'Spanda Kārikā — Selections',
     tradition: 'Tantric',
     chapter: 1,
     verseNumber: 5,
@@ -47,7 +47,7 @@ export const spandaKarikaVerses: Verse[] = [
   {
     id: 'spanda-4',
     sourceId: 'spanda-karika',
-    sourceName: 'Spanda Karika',
+    sourceName: 'Spanda Kārikā — Selections',
     tradition: 'Tantric',
     chapter: 1,
     verseNumber: 6,
@@ -60,7 +60,7 @@ export const spandaKarikaVerses: Verse[] = [
   {
     id: 'spanda-5',
     sourceId: 'spanda-karika',
-    sourceName: 'Spanda Karika',
+    sourceName: 'Spanda Kārikā — Selections',
     tradition: 'Tantric',
     chapter: 1,
     verseNumber: 8,
@@ -72,7 +72,7 @@ export const spandaKarikaVerses: Verse[] = [
   {
     id: 'spanda-6',
     sourceId: 'spanda-karika',
-    sourceName: 'Spanda Karika',
+    sourceName: 'Spanda Kārikā — Selections',
     tradition: 'Tantric',
     chapter: 1,
     verseNumber: 12,
@@ -84,7 +84,7 @@ export const spandaKarikaVerses: Verse[] = [
   {
     id: 'spanda-7',
     sourceId: 'spanda-karika',
-    sourceName: 'Spanda Karika',
+    sourceName: 'Spanda Kārikā — Selections',
     tradition: 'Tantric',
     chapter: 2,
     verseNumber: 1,
@@ -96,7 +96,7 @@ export const spandaKarikaVerses: Verse[] = [
   {
     id: 'spanda-8',
     sourceId: 'spanda-karika',
-    sourceName: 'Spanda Karika',
+    sourceName: 'Spanda Kārikā — Selections',
     tradition: 'Tantric',
     chapter: 2,
     verseNumber: 3,
@@ -108,7 +108,7 @@ export const spandaKarikaVerses: Verse[] = [
   {
     id: 'spanda-9',
     sourceId: 'spanda-karika',
-    sourceName: 'Spanda Karika',
+    sourceName: 'Spanda Kārikā — Selections',
     tradition: 'Tantric',
     chapter: 2,
     verseNumber: 5,
@@ -120,7 +120,7 @@ export const spandaKarikaVerses: Verse[] = [
   {
     id: 'spanda-10',
     sourceId: 'spanda-karika',
-    sourceName: 'Spanda Karika',
+    sourceName: 'Spanda Kārikā — Selections',
     tradition: 'Tantric',
     chapter: 3,
     verseNumber: 2,
@@ -132,7 +132,7 @@ export const spandaKarikaVerses: Verse[] = [
   {
     id: 'spanda-11',
     sourceId: 'spanda-karika',
-    sourceName: 'Spanda Karika',
+    sourceName: 'Spanda Kārikā — Selections',
     tradition: 'Tantric',
     chapter: 3,
     verseNumber: 6,
@@ -144,7 +144,7 @@ export const spandaKarikaVerses: Verse[] = [
   {
     id: 'spanda-12',
     sourceId: 'spanda-karika',
-    sourceName: 'Spanda Karika',
+    sourceName: 'Spanda Kārikā — Selections',
     tradition: 'Tantric',
     chapter: 3,
     verseNumber: 8,

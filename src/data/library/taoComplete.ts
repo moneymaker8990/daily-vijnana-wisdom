@@ -2,6 +2,7 @@ import type { LibraryText } from './types';
 
 export const TAO_TE_CHING: LibraryText = {
   id: 'tao',
+  registrySourceId: 'tao-te-ching',
   title: 'Tao Te Ching',
   subtitle: 'The Way and Its Power',
   description: 'The foundational text of Taoism, attributed to Lao Tzu. It offers profound wisdom on living in harmony with the natural way of things through simplicity, humility, and effortless action.',

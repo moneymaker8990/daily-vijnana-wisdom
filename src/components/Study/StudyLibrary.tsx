@@ -6,39 +6,79 @@ import type { LibraryText } from '@data/library/types';
 import { TextReader } from './TextReader';
 import { getReadingProgress, type ReadingProgress } from '@lib/readingProgress';
 
-export function StudyLibrary() {
+type StudyLibraryProps = {
+  onOpenNondualTantraPath?: () => void;
+};
+
+/** Normalize any edge cases so Nondual Tantra UX always attaches to Kashmir-lineage sources. */
+function isTantricSource(source: Source): boolean {
+  return source.tradition.trim() === 'Tantric';
+}
+
+/** Stable browse order for the Nondual Tantra shelf (flagship → core sūtras → selections → study themes). */
+const NONDUAL_TEXT_ORDER: string[] = [
+  'vijnana-bhairava-tantra',
+  'shiva-sutras',
+  'spanda-karika',
+  'pratyabhijnahridayam',
+  'tantraloka-selections',
+  'paramarthasara-selections',
+];
+
+function nondualSectionSort(a: Source, b: Source): number {
+  const ia = NONDUAL_TEXT_ORDER.indexOf(a.id);
+  const ib = NONDUAL_TEXT_ORDER.indexOf(b.id);
+  const ra = ia === -1 ? 1000 : ia;
+  const rb = ib === -1 ? 1000 : ib;
+  if (ra !== rb) return ra - rb;
+  return a.name.localeCompare(b.name);
+}
+
+function sourceMatchesSearch(source: Source, query: string): boolean {
+  if (!query.trim()) return true;
+  const q = query.toLowerCase();
+  const haystack = [
+    source.name,
+    source.description,
+    source.tradition,
+    source.subtitle ?? '',
+    ...(source.searchKeywords ?? []),
+  ]
+    .join(' ')
+    .toLowerCase();
+  return haystack.includes(q);
+}
+
+export function StudyLibrary({ onOpenNondualTantraPath }: StudyLibraryProps) {
   const [selectedText, setSelectedText] = useState<LibraryText | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [sources, setSources] = useState<Source[]>([]);
   const [libraryTexts, setLibraryTexts] = useState<LibraryText[]>([]);
   const [progress, setProgress] = useState<Record<string, ReadingProgress>>({});
+  const [nondualIntroOpen, setNondualIntroOpen] = useState(false);
 
-  // Load sources and progress on mount
   useEffect(() => {
     const allSources = getAllSources();
     setSources(allSources);
-    
+
     const allTexts = getAllLibraryTexts();
     setLibraryTexts(allTexts);
-    
-    // Load reading progress for all sources
+
     const progressMap: Record<string, ReadingProgress> = {};
-    allSources.forEach(source => {
+    allSources.forEach((source) => {
       const p = getReadingProgress(source.id);
       if (p) progressMap[source.id] = p;
     });
     setProgress(progressMap);
   }, []);
 
-  // Handle text selection with bookmark resume
   const handleSelectText = (source: Source) => {
-    const text = libraryTexts.find(t => t.title === source.name);
+    const text = libraryTexts.find((t) => t.registrySourceId === source.id || t.title === source.name);
     if (text) {
       setSelectedText(text);
     }
   };
 
-  // Get initial verse from bookmark
   const getInitialVerse = (sourceId: string): number => {
     const p = progress[sourceId];
     if (p?.lastVerseIndex !== undefined) {
@@ -48,33 +88,28 @@ export function StudyLibrary() {
   };
 
   if (selectedText) {
-    // Find the source ID from the selected text
-    const source = sources.find(s => s.name === selectedText.title);
+    const source = sources.find((s) => s.id === selectedText.registrySourceId || s.name === selectedText.title);
     const initialVerse = source ? getInitialVerse(source.id) : 0;
-    
+
     return (
-      <TextReader
-        text={selectedText}
-        onBack={() => setSelectedText(null)}
-        initialVerse={initialVerse}
-      />
+      <TextReader text={selectedText} onBack={() => setSelectedText(null)} initialVerse={initialVerse} />
     );
   }
 
-  // Filter sources based on search
-  const filteredSources = sources.filter(source => 
-    source.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    source.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    source.tradition.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredSources = sources.filter((source) => sourceMatchesSearch(source, searchQuery));
 
-  // Group sources by tradition
-  const sourcesByTradition = filteredSources.reduce((acc, source) => {
-    const tradition = source.tradition;
-    if (!acc[tradition]) acc[tradition] = [];
-    acc[tradition].push(source);
-    return acc;
-  }, {} as Record<string, Source[]>);
+  const tantricSources = filteredSources.filter(isTantricSource).sort(nondualSectionSort);
+  const nonTantricSources = filteredSources.filter((s) => !isTantricSource(s));
+
+  const sourcesByTradition = nonTantricSources.reduce(
+    (acc, source) => {
+      const tradition = source.tradition;
+      if (!acc[tradition]) acc[tradition] = [];
+      acc[tradition].push(source);
+      return acc;
+    },
+    {} as Record<string, Source[]>
+  );
 
   const traditionOrder = ['Hindu', 'Tantric', 'Buddhist', 'Taoist', 'Zen', 'Sufi', 'ChristianMystic', 'Hermetic', 'Stoic'];
   const getTraditionOrder = (tradition: string) => {
@@ -87,14 +122,12 @@ export function StudyLibrary() {
 
   return (
     <div className="space-y-6">
-      {/* Subheader - main title is in AppLayout */}
       <div className="text-center pb-4 border-b border-white/10">
         <p className="text-sm text-white/60">
           Browse complete texts by tradition, period, and reading progress
         </p>
       </div>
 
-      {/* Search */}
       <div className="relative" role="search">
         <input
           type="text"
@@ -120,18 +153,138 @@ export function StudyLibrary() {
         </svg>
       </div>
 
-      {/* Texts by Tradition */}
       <div className="space-y-8">
-        {sortedTraditions.map(tradition => (
+        {tantricSources.length > 0 && (
+          <div key="nondual-tantra" className="space-y-3">
+            <div className="rounded-2xl border border-violet-500/25 bg-gradient-to-br from-violet-500/15 to-indigo-500/10 p-5 md:p-6">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl" aria-hidden="true">
+                  🕉️
+                </span>
+                <div className="min-w-0 flex-1 space-y-2">
+                  <h3 className="text-lg md:text-xl font-serif text-white tracking-tight">Nondual Tantra</h3>
+                  <p className="text-sm text-violet-200/85 leading-relaxed">
+                    Kashmir Shaivism, Trika, Recognition, and the Practice of Awareness
+                  </p>
+                  <p className="text-xs text-white/50 leading-relaxed max-w-2xl mx-auto md:mx-0">
+                    Here, &quot;tantra&quot; does not mean pop-culture sexual tantra. This library focuses on contemplative
+                    nondual Shaiva Tantra: study of the texts and gentle meditative integration in daily life.
+                  </p>
+                </div>
+              </div>
+            </div>
+            {onOpenNondualTantraPath && (
+              <div className="rounded-xl border border-violet-500/20 bg-gradient-to-br from-violet-500/10 to-indigo-600/5 p-4 md:p-5">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                  <div className="min-w-0 space-y-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-xs font-medium uppercase tracking-wider text-violet-300/90">Guided path</span>
+                      <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-white/70">Study</span>
+                      <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] text-emerald-200/90">
+                        Practice
+                      </span>
+                    </div>
+                    <h3 className="text-base md:text-lg font-serif text-white">Entering Nondual Tantra</h3>
+                    <p className="text-sm text-white/65 leading-relaxed max-w-2xl">
+                      Seven modules: what tantra means here, Śiva and Śakti, the body and energy, the three upāyas,
+                      recognition, spanda, and working with the Vijñāna Bhairava—with reflection and timed practices.
+                    </p>
+                    <ol className="list-decimal list-inside text-xs text-white/50 space-y-1 pt-1">
+                      <li>What Tantra Actually Means</li>
+                      <li>Śiva and Śakti</li>
+                      <li>Awareness, Energy, and the Body</li>
+                      <li>The Three Upāyas</li>
+                      <li>Recognition: You Are Not Separate</li>
+                      <li>Spanda: The Pulse of Consciousness</li>
+                      <li>Practice from the Vijñāna Bhairava</li>
+                    </ol>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={onOpenNondualTantraPath}
+                    className="shrink-0 w-full sm:w-auto px-4 py-3 rounded-xl bg-gradient-to-r from-violet-500 to-indigo-500 text-white text-sm font-medium shadow-lg shadow-violet-500/20 hover:from-violet-400 hover:to-indigo-400 transition-all text-center"
+                  >
+                    Open guided path
+                  </button>
+                </div>
+              </div>
+            )}
+            <div className="rounded-xl border border-white/10 bg-white/[0.07] overflow-hidden">
+              <button
+                type="button"
+                onClick={() => setNondualIntroOpen(!nondualIntroOpen)}
+                className="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
+                aria-expanded={nondualIntroOpen}
+              >
+                <span className="font-medium text-white text-sm md:text-base">What Is Nondual Tantra?</span>
+                <svg
+                  className={`w-5 h-5 text-white/50 shrink-0 transition-transform ${nondualIntroOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {nondualIntroOpen && (
+                <div className="px-4 pb-4 pt-0 border-t border-white/10 space-y-3 text-sm text-white/75 leading-relaxed">
+                  <p>
+                    In this section, <strong className="text-white/90 font-medium">Shiva</strong> names pure awareness — the
+                    open field in which experience appears — and <strong className="text-white/90 font-medium">Shakti</strong>{' '}
+                    names its dynamic power: energy, creativity, and the pulse of attention itself. The world and body are
+                    treated as sacred expression, not obstacles to overcome.
+                  </p>
+                  <p>
+                    Liberation is framed as <strong className="text-white/90 font-medium">recognition</strong> (pratyabhijñā):
+                    remembering what was never truly absent. Practice points toward direct perception — resting in awareness
+                    while living an ordinary human life — rather than escape or dogma.
+                  </p>
+                  <p className="text-white/60 text-xs">
+                    Use the texts for study; use the guided path and practices for slow integration. Nothing here replaces
+                    qualified human teaching where that is appropriate.
+                  </p>
+                  {onOpenNondualTantraPath && (
+                    <button
+                      type="button"
+                      onClick={onOpenNondualTantraPath}
+                      className="mt-2 w-full sm:w-auto px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-500 to-indigo-500 text-white text-sm font-medium shadow-lg shadow-violet-500/20 hover:from-violet-400 hover:to-indigo-400 transition-all"
+                    >
+                      Open guided path: Entering Nondual Tantra
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+            <h4 className="text-xs uppercase tracking-wider text-violet-300/70 font-medium flex items-center gap-2">
+              <span>📚</span>
+              <span>Texts in this section</span>
+              <span className="text-white/30">({tantricSources.length})</span>
+            </h4>
+            <div className="grid gap-3">
+              {tantricSources.map((source) => (
+                <SourceCard
+                  key={source.id}
+                  source={source}
+                  onSelect={() => handleSelectText(source)}
+                  progress={progress[source.id]}
+                  actualVerseCount={getVerseCount(source.id)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {sortedTraditions.map((tradition) => (
           <div key={tradition} className="space-y-3">
             <h3 className="text-xs uppercase tracking-wider text-violet-300/70 font-medium flex items-center gap-2">
               <span>{getTraditionIcon(tradition)}</span>
               <span>{getTraditionLabel(tradition)}</span>
               <span className="text-white/30">({sourcesByTradition[tradition].length})</span>
             </h3>
-            
+
             <div className="grid gap-3">
-              {sourcesByTradition[tradition].map(source => (
+              {sourcesByTradition[tradition].map((source) => (
                 <SourceCard
                   key={source.id}
                   source={source}
@@ -145,11 +298,9 @@ export function StudyLibrary() {
         ))}
       </div>
 
-      {/* Stats */}
       <div className="text-center pt-4 border-t border-white/10">
         <p className="text-xs text-white/40">
-          {sources.reduce((sum, s) => sum + getVerseCount(s.id), 0)} verses loaded • 
-          {' '}{sources.length} sacred texts
+          {sources.reduce((sum, s) => sum + getVerseCount(s.id), 0)} verses loaded • {sources.length} sacred texts
         </p>
       </div>
     </div>
@@ -164,10 +315,8 @@ type SourceCardProps = {
 };
 
 function SourceCard({ source, onSelect, progress, actualVerseCount }: SourceCardProps) {
-  const progressPercent = progress
-    ? Math.round((progress.lastVerseIndex / actualVerseCount) * 100)
-    : 0;
-  const traditionLabel = getTraditionLabel(source.tradition);
+  const progressPercent = progress ? Math.round((progress.lastVerseIndex / actualVerseCount) * 100) : 0;
+  const traditionLabel = isTantricSource(source) ? 'Nondual Tantra' : getTraditionLabel(source.tradition);
 
   return (
     <button
@@ -175,9 +324,7 @@ function SourceCard({ source, onSelect, progress, actualVerseCount }: SourceCard
       className="w-full text-left bg-gradient-to-br from-white/10 to-white/5 rounded-xl p-4 border border-white/10 transition-all duration-300 group hover:from-white/15 hover:to-white/10 hover:border-white/20"
     >
       <div className="flex items-start gap-3">
-        <div className="text-2xl flex-shrink-0">
-          {source.icon || '📜'}
-        </div>
+        <div className="text-2xl flex-shrink-0">{source.icon || '📜'}</div>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
@@ -185,11 +332,12 @@ function SourceCard({ source, onSelect, progress, actualVerseCount }: SourceCard
               {source.name}
             </h3>
           </div>
+          {source.subtitle && (
+            <p className="text-xs text-white/50 mb-2 line-clamp-2">{source.subtitle}</p>
+          )}
           <div className="mb-2 flex flex-wrap items-center gap-2 text-[11px] text-white/45">
             <span className="rounded-full bg-white/5 px-2 py-1">{traditionLabel}</span>
-            {source.period && (
-              <span className="rounded-full bg-white/5 px-2 py-1">{source.period}</span>
-            )}
+            {source.period && <span className="rounded-full bg-white/5 px-2 py-1">{source.period}</span>}
           </div>
 
           <div className="flex items-center gap-3 text-xs text-white/40">
@@ -224,30 +372,30 @@ function SourceCard({ source, onSelect, progress, actualVerseCount }: SourceCard
 
 function getTraditionIcon(tradition: string): string {
   const icons: Record<string, string> = {
-    'Hindu': '🙏',
-    'Tantric': '🕉️',
-    'Buddhist': '☸️',
-    'Taoist': '☯️',
-    'Zen': '🌀',
-    'Sufi': '🌹',
-    'ChristianMystic': '✝️',
-    'Hermetic': '⚗️',
-    'Stoic': '🏛️',
+    Hindu: '🙏',
+    Tantric: '🕉️',
+    Buddhist: '☸️',
+    Taoist: '☯️',
+    Zen: '🌀',
+    Sufi: '🌹',
+    ChristianMystic: '✝️',
+    Hermetic: '⚗️',
+    Stoic: '🏛️',
   };
   return icons[tradition] || '📜';
 }
 
 function getTraditionLabel(tradition: string): string {
   const labels: Record<string, string> = {
-    'Hindu': 'Hindu Tradition',
-    'Tantric': 'Tantric Tradition',
-    'Buddhist': 'Buddhist Tradition',
-    'Taoist': 'Taoist Tradition',
-    'Zen': 'Zen Tradition',
-    'Sufi': 'Sufi Tradition',
-    'ChristianMystic': 'Christian Mysticism',
-    'Hermetic': 'Hermetic Tradition',
-    'Stoic': 'Stoic Tradition',
+    Hindu: 'Hindu Tradition',
+    Tantric: 'Tantric Tradition',
+    Buddhist: 'Buddhist Tradition',
+    Taoist: 'Taoist Tradition',
+    Zen: 'Zen Tradition',
+    Sufi: 'Sufi Tradition',
+    ChristianMystic: 'Christian Mysticism',
+    Hermetic: 'Hermetic Tradition',
+    Stoic: 'Stoic Tradition',
   };
   return labels[tradition] || tradition;
 }

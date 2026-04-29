@@ -16,6 +16,23 @@ export type Tradition =
   | 'Hermetic'
   | 'Stoic';
 
+/** Vijñāna Bhairava practice filters (canonical) */
+export type VbtPracticeCategory =
+  | 'breath'
+  | 'sound'
+  | 'space'
+  | 'emotion'
+  | 'desire'
+  | 'fear'
+  | 'body'
+  | 'senses'
+  | 'void'
+  | 'dream_sleep'
+  | 'thought_gap'
+  | 'mantra';
+
+export type VerseContentKind = 'source_text' | 'educational_note';
+
 /**
  * The core Verse type - every sacred text passage uses this structure
  */
@@ -52,6 +69,27 @@ export type Verse = {
   
   /** Optional commentary or explanation */
   commentary?: string;
+
+  /** Primary practice bucket for VBT filters */
+  practiceCategory?: VbtPracticeCategory;
+
+  /** Plain-language paraphrase (not a substitute for translation attribution on `text`) */
+  plainLanguage?: string;
+
+  /** App-provided contemplative instructions */
+  practiceInstructions?: string;
+
+  /** Prompt for reflection */
+  reflectionPrompt?: string;
+
+  /** Everyday life application */
+  modernLifeApplication?: string;
+
+  /** Journal prompt */
+  journalQuestion?: string;
+
+  /** Distinguish scripture lines from educational notes */
+  contentKind?: VerseContentKind;
 };
 
 /**
@@ -104,6 +142,15 @@ export type Source = {
   
   /** Rich historical context for the text */
   historicalIntro?: HistoricalIntro;
+
+  /** Card / reader subtitle (not the same as historical period) */
+  subtitle?: string;
+
+  /** Alternate titles for search (e.g. ASCII forms of diacritic titles) */
+  searchKeywords?: string[];
+
+  /** Shown in introduction area as study guidance (e.g. three upāyas) */
+  pedagogicalNote?: string;
 };
 
 /**

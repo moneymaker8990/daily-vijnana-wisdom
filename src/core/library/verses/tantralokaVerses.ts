@@ -1,7 +1,7 @@
 /**
- * Tantraloka - Curated selections
+ * Tantrāloka — curated selections (not the full encyclopedic text)
  *
- * Adapted from the teaching arc of Abhinavagupta's encyclopedic manual.
+ * Adapted excerpts from the teaching arc of Abhinavagupta’s manual.
  */
 
 import type { Verse } from '../types';
@@ -10,7 +10,7 @@ export const tantralokaVerses: Verse[] = [
   {
     id: 'tantraloka-1',
     sourceId: 'tantraloka-selections',
-    sourceName: 'Tantraloka (Selections)',
+    sourceName: 'Tantrāloka — Selections',
     tradition: 'Tantric',
     chapter: 1,
     verseNumber: 1,
@@ -23,7 +23,7 @@ export const tantralokaVerses: Verse[] = [
   {
     id: 'tantraloka-2',
     sourceId: 'tantraloka-selections',
-    sourceName: 'Tantraloka (Selections)',
+    sourceName: 'Tantrāloka — Selections',
     tradition: 'Tantric',
     chapter: 1,
     verseNumber: 4,
@@ -35,7 +35,7 @@ export const tantralokaVerses: Verse[] = [
   {
     id: 'tantraloka-3',
     sourceId: 'tantraloka-selections',
-    sourceName: 'Tantraloka (Selections)',
+    sourceName: 'Tantrāloka — Selections',
     tradition: 'Tantric',
     chapter: 3,
     verseNumber: 2,
@@ -47,7 +47,7 @@ export const tantralokaVerses: Verse[] = [
   {
     id: 'tantraloka-4',
     sourceId: 'tantraloka-selections',
-    sourceName: 'Tantraloka (Selections)',
+    sourceName: 'Tantrāloka — Selections',
     tradition: 'Tantric',
     chapter: 4,
     verseNumber: 7,
@@ -59,7 +59,7 @@ export const tantralokaVerses: Verse[] = [
   {
     id: 'tantraloka-5',
     sourceId: 'tantraloka-selections',
-    sourceName: 'Tantraloka (Selections)',
+    sourceName: 'Tantrāloka — Selections',
     tradition: 'Tantric',
     chapter: 5,
     verseNumber: 3,
@@ -71,7 +71,7 @@ export const tantralokaVerses: Verse[] = [
   {
     id: 'tantraloka-6',
     sourceId: 'tantraloka-selections',
-    sourceName: 'Tantraloka (Selections)',
+    sourceName: 'Tantrāloka — Selections',
     tradition: 'Tantric',
     chapter: 8,
     verseNumber: 5,
@@ -83,7 +83,7 @@ export const tantralokaVerses: Verse[] = [
   {
     id: 'tantraloka-7',
     sourceId: 'tantraloka-selections',
-    sourceName: 'Tantraloka (Selections)',
+    sourceName: 'Tantrāloka — Selections',
     tradition: 'Tantric',
     chapter: 9,
     verseNumber: 4,
@@ -95,7 +95,7 @@ export const tantralokaVerses: Verse[] = [
   {
     id: 'tantraloka-8',
     sourceId: 'tantraloka-selections',
-    sourceName: 'Tantraloka (Selections)',
+    sourceName: 'Tantrāloka — Selections',
     tradition: 'Tantric',
     chapter: 13,
     verseNumber: 6,
@@ -107,7 +107,7 @@ export const tantralokaVerses: Verse[] = [
   {
     id: 'tantraloka-9',
     sourceId: 'tantraloka-selections',
-    sourceName: 'Tantraloka (Selections)',
+    sourceName: 'Tantrāloka — Selections',
     tradition: 'Tantric',
     chapter: 15,
     verseNumber: 2,
@@ -119,7 +119,7 @@ export const tantralokaVerses: Verse[] = [
   {
     id: 'tantraloka-10',
     sourceId: 'tantraloka-selections',
-    sourceName: 'Tantraloka (Selections)',
+    sourceName: 'Tantrāloka — Selections',
     tradition: 'Tantric',
     chapter: 20,
     verseNumber: 8,
@@ -131,7 +131,7 @@ export const tantralokaVerses: Verse[] = [
   {
     id: 'tantraloka-11',
     sourceId: 'tantraloka-selections',
-    sourceName: 'Tantraloka (Selections)',
+    sourceName: 'Tantrāloka — Selections',
     tradition: 'Tantric',
     chapter: 23,
     verseNumber: 5,
@@ -143,7 +143,7 @@ export const tantralokaVerses: Verse[] = [
   {
     id: 'tantraloka-12',
     sourceId: 'tantraloka-selections',
-    sourceName: 'Tantraloka (Selections)',
+    sourceName: 'Tantrāloka — Selections',
     tradition: 'Tantric',
     chapter: 29,
     verseNumber: 1,

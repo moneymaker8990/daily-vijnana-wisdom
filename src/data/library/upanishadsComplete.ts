@@ -2,6 +2,7 @@ import type { LibraryText } from './types';
 
 export const UPANISHADS: LibraryText = {
   id: 'upanishads',
+  registrySourceId: 'upanishads',
   title: 'The Upanishads',
   subtitle: 'Secret Teachings of the Seers',
   description: 'Ancient Sanskrit texts containing the core philosophical concepts of Hinduism—Brahman (ultimate reality), Atman (self), and the non-dual nature of existence. These mystical dialogues explore the nature of consciousness itself.',

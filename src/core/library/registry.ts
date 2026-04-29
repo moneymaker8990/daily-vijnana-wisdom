@@ -18,6 +18,7 @@ import { shivaSutraVerses } from './verses/shivaSutraVerses';
 import { spandaKarikaVerses } from './verses/spandaKarikaVerses';
 import { pratyabhijnahridayamVerses } from './verses/pratyabhijnahridayamVerses';
 import { tantralokaVerses } from './verses/tantralokaVerses';
+import { paramarthasaraVerses } from './verses/paramarthasaraVerses';
 import { rigVedaVerses } from './verses/rigVedaVerses';
 import { dhammapadaVerses } from './verses/dhammapadaVerses';
 import { zenKoansVerses } from './verses/zenKoansVerses';
@@ -54,6 +55,7 @@ export const ALL_VERSES: Verse[] = [
   ...spandaKarikaVerses,
   ...pratyabhijnahridayamVerses,
   ...tantralokaVerses,
+  ...paramarthasaraVerses,
   ...rigVedaVerses,
   ...dhammapadaVerses,
   ...zenKoansVerses,
@@ -116,19 +118,35 @@ export const ALL_SOURCES: Source[] = [
   },
   {
     id: 'vijnana-bhairava-tantra',
-    name: 'Vijnana Bhairava Tantra',
+    name: 'Vijñāna Bhairava Tantra',
     tradition: 'Tantric',
     totalVerses: 112,
-    description: 'A practice manual of 112 direct experiments using breath, sensation, sound, and attention as doorways into presence.',
+    subtitle: '112 contemplative gateways (study & practice)',
+    description:
+      'Flagship practice text of nondual Shaiva Tantra (Kashmir Shaivism): 112 contemplative experiments using breath, sound, the senses, emotion, sleep, and attention as doorways into direct recognition.',
     originalLanguage: 'Sanskrit',
     period: '8th-9th century CE',
     translator: 'Paul Reps',
     icon: '🕉️',
+    searchKeywords: [
+      'Vijnana',
+      'Bhairava',
+      'Kashmir',
+      'Shaivism',
+      'Trika',
+      'dharana',
+      'meditation',
+      'nondual tantra',
+    ],
     historicalIntro: {
-      origin: 'The Vijnana Bhairava Tantra comes out of Kashmir Shaivism and is framed as a dialogue between Shiva and Devi. That framing is important: the text is relational, practical, and grounded in lived experience rather than distant abstraction.',
-      author: 'Like many tantric works, it is treated as revealed wisdom rather than the property of a single thinker. Later teachers such as Abhinavagupta helped transmit and interpret it, but the core voice remains strikingly immediate and instructional.',
-      significance: 'What sets this text apart is its refusal to separate spiritual practice from ordinary life. Breath, surprise, desire, sound, sleep, and sensation all become usable. It reads less like doctrine and more like a collection of precise invitations.',
-      howToRead: 'Do not try to admire all 112 techniques from a distance. Pick one, try it honestly, and notice what actually happens in your body and attention. The text rewards experiment more than analysis.',
+      origin:
+        'The Vijñāna Bhairava Tantra comes out of Kashmir Shaivism and is framed as a dialogue between Shiva and Shakti. That framing matters: the text is relational, practical, and grounded in lived experience rather than distant abstraction.',
+      author:
+        'Like many tantric works, it is treated as revealed wisdom rather than the property of a single thinker. Later teachers such as Abhinavagupta helped transmit and interpret it, but the core voice remains strikingly immediate and instructional.',
+      significance:
+        'What sets this text apart is its refusal to separate spiritual practice from ordinary life. Breath, surprise, desire, sound, sleep, and sensation all become usable. It reads less like doctrine and more like a collection of precise invitations.',
+      howToRead:
+        'Do not try to admire all 112 techniques from a distance. Pick one, try it honestly, and notice what actually happens in your body and attention. Use practice categories to explore by theme. The text rewards experiment more than analysis.',
     },
   },
   {
@@ -185,66 +203,137 @@ export const ALL_SOURCES: Source[] = [
     name: 'Shiva Sutras',
     tradition: 'Tantric',
     totalVerses: 77,
-    description: 'Revealed to the sage Vasugupta in a dream, these 77 sutras form the foundation of Kashmir Shaivism, describing consciousness as supreme reality.',
+    description:
+      'Revealed to the sage Vasugupta in a dream, these 77 sutras form the foundation of Kashmir Shaivism, describing consciousness as supreme reality.',
     originalLanguage: 'Sanskrit',
     period: '9th century CE',
     icon: '🔱',
+    searchKeywords: ['Vasugupta', 'Kashmir', 'Shaivism', 'upaya', 'Trika', 'recognition'],
+    pedagogicalNote: `The Shiva Sutras are arranged in three sections that map to three modes of practice (upāyas)—ways of participating, not abstract “topics”:
+
+• Śāmbhavopāya — The direct path of resting in awareness (often called the way of Shiva): letting recognition be primary.
+• Śāktopāya — The path of śakti: energy, mantra, refined thought, and luminous attention as skillful means.
+• Āṇavopāya — The embodied path: breath, body, ritual structure, and method when the mind needs a steadier bridge.
+
+Most practitioners move between these modes over time. The point is competent practice, not ranking yourself.`,
     historicalIntro: {
-      origin: 'According to tradition, the sage Vasugupta received these sutras in a dream around 800-850 CE in the Kashmir valley. He was directed to a rock on Mahadeva Mountain where the sutras were inscribed. This text became the foundation of the Kashmir Shaivism tradition.',
-      author: 'Revealed to Vasugupta; considered a direct transmission from Shiva (consciousness itself). The commentary tradition was developed by masters including Ksemaraja and Abhinavagupta, whose elaborations help unlock the compressed meaning of each sutra.',
-      significance: 'The Shiva Sutras present a non-dual tantra distinct from both Vedanta and Buddhist approaches. Here, the world is not illusion but the creative expression of consciousness. The body and senses become instruments of realization rather than obstacles. This recognition-based path influenced later teachings across traditions.',
-      howToRead: 'Each sutra is extremely condensed—a seed containing vast teaching. Read with a good commentary (Ksemaraja\'s is classical). Focus on the three "awakenings" that structure the text: Shambhavopaya (the way of Shiva), Shaktopaya (the way of energy), and Anavopaya (the individual way). Let each sutra become a meditation object.',
+      origin:
+        'According to tradition, the sage Vasugupta received these sutras in a dream around 800-850 CE in the Kashmir valley. He was directed to a rock on Mahadeva Mountain where the sutras were inscribed. This text became the foundation of the Kashmir Shaivism tradition.',
+      author:
+        'Revealed to Vasugupta; considered a direct transmission from Shiva (consciousness itself). The commentary tradition was developed by masters including Ksemaraja and Abhinavagupta, whose elaborations help unlock the compressed meaning of each sutra.',
+      significance:
+        'The Shiva Sutras present a non-dual tantra distinct from both Vedanta and Buddhist approaches. Here, the world is not illusion but the creative expression of consciousness. The body and senses become instruments of realization rather than obstacles. This recognition-based path influenced later teachings across traditions.',
+      howToRead:
+        'Each sutra is extremely condensed—a seed containing vast teaching. Use the table of contents to see which section (upāya) you are in. Read with reputable commentaries when you can. Let each sutra become a short contemplation rather than a slogan.',
     },
   },
   {
     id: 'spanda-karika',
-    name: 'Spanda Karika',
+    name: 'Spanda Kārikā — Selections',
     tradition: 'Tantric',
     totalVerses: 12,
-    description: 'A concise Kashmir Shaivism text on the subtle pulse of consciousness, teaching how stillness and movement share one living source.',
+    subtitle: 'The Pulse of Consciousness',
+    description:
+      'Curated verses on spanda—the subtle pulse of consciousness in Kashmir Shaivism: stillness and movement as one alive field.',
     originalLanguage: 'Sanskrit',
     period: '9th century CE',
     translator: 'Adapted from traditional translations',
     icon: '🌊',
+    searchKeywords: ['Spanda Karika', 'Kashmir', 'vibration', 'consciousness', 'pulse'],
     historicalIntro: {
-      origin: 'The Spanda Karika emerged in the early flowering of Kashmir Shaivism and is traditionally linked to the teachings of Vasugupta and his lineage. It distills the insight that ultimate reality is not inert, but vibrantly alive as the subtle throb or pulse called spanda.',
-      author: 'The text is usually attributed to Kallata, a direct disciple in the Vasugupta lineage, though some traditions link its core insight more directly to Vasugupta himself. However scholars sort the authorship, the work clearly stands in the earliest stream of non-dual Shaiva thought.',
-      significance: 'Spanda matters because it reframes spiritual life around living participation rather than withdrawal. Consciousness is not merely the witness behind experience; it is the very pulse within thought, sensation, creativity, and action.',
-      howToRead: 'Read the verses as contemplative prompts rather than as abstract metaphysics. The practical question is always the same: can you feel the living pulse of awareness in stillness, in emotion, and in ordinary activity?',
+      origin:
+        'The Spanda Kārikā emerged in the early flowering of Kashmir Shaivism and is traditionally linked to the teachings of Vasugupta and his lineage. This app includes a short selection, not the full text.',
+      author:
+        'The work is often attributed to Kallata, a direct disciple in the Vasugupta lineage, though lineages differ. However authorship is sorted, the text belongs to the earliest stream of non-dual Shaiva thought.',
+      significance:
+        'Spanda reframes practice around living participation. Consciousness is not only “witness” behind experience; it is the subtle throb within thought, sensation, and action—themes this selection highlights.',
+      howToRead:
+        'Read slowly as contemplation, not metaphysics to memorize. Core themes: subtle vibration; consciousness as alive stillness; the pulse beneath thought; energy and awareness as inseparable; finding movement inside stillness.',
     },
   },
   {
     id: 'pratyabhijnahridayam',
-    name: 'Pratyabhijnahridayam',
+    name: 'Pratyabhijñāhṛdayam',
     tradition: 'Tantric',
-    totalVerses: 12,
-    description: 'Kshemaraja\'s short manual of recognition, explaining how infinite consciousness appears as the individual and how it can remember itself.',
+    totalVerses: 20,
+    subtitle: 'The Heart of Recognition',
+    description:
+      'Kṣemarāja’s twenty-sutra manual of recognition (pratyabhijñā) in full in-app form—adapted English paraphrases, not a critical Sanskrit edition.',
     originalLanguage: 'Sanskrit',
     period: '11th century CE',
     translator: 'Adapted from traditional translations',
     icon: '💓',
+    searchKeywords: [
+      'Pratyabhijna Hridayam',
+      'Kshemaraja',
+      'Ksemaraja',
+      'recognition',
+      'Kashmir Shaivism',
+    ],
     historicalIntro: {
-      origin: 'Pratyabhijnahridayam, “The Heart of Recognition,” was composed in medieval Kashmir as a concise doorway into the recognition school of Shaivism. It condenses a sophisticated philosophical tradition into a more approachable series of aphoristic teachings.',
-      author: 'The work is attributed to Kshemaraja, one of the great commentators of Kashmir Shaivism and a disciple in the lineage of Abhinavagupta. He was especially gifted at turning dense doctrine into language practitioners could actually use.',
-      significance: 'Its power lies in its clarity: bondage is not a real fall from divinity but a contraction or forgetting of what consciousness already is. Liberation, then, is recognition rather than acquisition.',
-      howToRead: 'Read it with the language of remembrance in mind. Each verse asks you to notice where you contract into a smaller identity and how awareness might recognize itself again in the middle of ordinary life.',
+      origin:
+        'The Pratyabhijñāhṛdayam (“Heart of Recognition”) was composed in medieval Kashmir as a doorway into the Pratyabhijñā school. It condenses sophisticated philosophy into aphorisms you can hold in practice.',
+      author:
+        'Attributed to Kṣemarāja, a major commentator in the lineage of Abhinavagupta, known for turning doctrine into usable language.',
+      significance:
+        'Bondage is described as contraction and forgetting, not as a permanent stain. Liberation is recognition—remembering what awareness already is. Core themes: recognition; forgetting and remembering; contraction and expansion; Śiva as awareness; the world as expression of consciousness; freedom while living.',
+      howToRead:
+        'Read with gentleness. Notice where you narrow into a small story, then sense the wider field of knowing that already holds the story. Search also uses the plain alias “Pratyabhijna Hridayam.”',
     },
   },
   {
     id: 'tantraloka-selections',
-    name: 'Tantraloka (Selections)',
+    name: 'Tantrāloka — Selections',
     tradition: 'Tantric',
     totalVerses: 12,
-    description: 'Curated passages from Abhinavagupta\'s vast tantric synthesis, emphasizing embodied practice, ritual, and recognition as one path.',
+    subtitle: 'Light on Tantra (excerpts only)',
+    description:
+      'Curated excerpts from Abhinavagupta’s vast synthesis— not the full Tantrāloka. Emphasizes embodied practice, mantra, and recognition as one path.',
     originalLanguage: 'Sanskrit',
     period: '10th-11th century CE',
     translator: 'Adapted from traditional translations',
     icon: '🪔',
+    searchKeywords: ['Abhinavagupta', 'Tantraloka', 'Kashmir', 'ritual', 'recognition'],
     historicalIntro: {
-      origin: 'Tantraloka, “Light on Tantra,” was written in Kashmir as Abhinavagupta\'s grand synthesis of ritual, philosophy, yoga, and contemplative insight. It gathers many streams of tantric practice into a single, luminous vision.',
-      author: 'Abhinavagupta was the towering polymath of Kashmir Shaivism: philosopher, exegete, poet, aesthetician, and practitioner. His work shaped how later generations understood the unity of doctrine and practice in the Shaiva tradition.',
-      significance: 'Tantraloka is significant because it refuses the split between the highest realization and embodied life. Ritual, mantra, breath, relationship, and direct awareness are all shown as valid expressions of one awakened field.',
-      howToRead: 'Approach selections slowly and practically. Rather than trying to master the whole system, notice how Abhinavagupta keeps redirecting outer practice toward inner recognition and whole-life integration.',
+      origin:
+        'Tantrāloka (“Light on Tantra”) is Abhinavagupta’s encyclopedic work in Kashmir. This app contains only brief selections; it does not include the full text.',
+      author:
+        'Abhinavagupta: philosopher, exegete, poet, and practitioner—central to how later generations understood doctrine and practice together.',
+      significance:
+        'The work integrates ritual, mantra, breath, yoga, and direct awareness as expressions of one field. Selections here gesture toward that unity without replacing serious study.',
+      howToRead: `Suggested themes to hold while reading selections:
+• What is Tantra here?
+• Śiva and Śakti
+• The universe as consciousness
+• The upāyas (modes of practice)
+• Mantra and vibration
+• Ritual as inner transformation
+• The body as sacred
+• Recognition and liberation`,
+    },
+  },
+  {
+    id: 'paramarthasara-selections',
+    name: 'Paramārthasāra',
+    tradition: 'Tantric',
+    totalVerses: 28,
+    subtitle: 'The Essence of the Highest Reality',
+    description:
+      'Full in-app thematic series: educational notes on Paramārthasāra-related Kashmir Shaiva themes (practice, recognition, manifestation, ethics). Not a scripture translation or critical edition.',
+    originalLanguage: 'Sanskrit',
+    period: '10th–11th century CE (attributed tradition)',
+    translator: 'App educational summaries (not primary-source translation)',
+    icon: '📿',
+    searchKeywords: ['Abhinavagupta', 'Paramarthasara', 'essence', 'Kashmir', 'consciousness'],
+    historicalIntro: {
+      origin:
+        'The Paramārthasāra is associated with the nondual Śaiva scholastic world of Kashmir and with the vast literary output around Abhinavagupta’s circle. Public-domain presentation of a full critical translation is outside this app’s scope.',
+      author:
+        'Tradition and scholarship link the work to the Kashmir Shaiva intellectual world; treat authorship and dating the way serious sources do—not as a sound bite.',
+      significance:
+        'Themes that readers often explore: the nature of consciousness; manifestation; bondage and liberation; recognition; the relation of individual awareness to universal awareness.',
+      howToRead:
+        'Use these short notes as orientation, then read reputable translations and teachers. Nothing here is offered as a stand-in for scripture or initiation.',
     },
   },
   {

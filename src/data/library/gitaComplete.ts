@@ -2,6 +2,7 @@ import type { LibraryText } from './types';
 
 export const BHAGAVAD_GITA: LibraryText = {
   id: 'gita',
+  registrySourceId: 'bhagavad-gita',
   title: 'Bhagavad Gita',
   subtitle: 'The Song of God',
   description: 'A 700-verse dialogue between prince Arjuna and Lord Krishna on the battlefield of Kurukshetra. It addresses the nature of duty, action, devotion, and liberation—becoming one of the most influential spiritual texts in human history.',

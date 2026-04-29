@@ -1,11 +1,13 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import type { LibraryText } from '@data/library/types';
+import type { VbtPracticeCategory } from '@core/library/types';
 import { updateReadingProgress, toggleBookmark, isBookmarked } from '@lib/readingProgress';
 import { ALL_SOURCES } from '@core/library/registry';
 import { SingleVerseView } from './SingleVerseView';
 import { ListView } from './ListView';
 import { TableOfContents } from './TableOfContents';
 import { IntroductionPanel } from './IntroductionPanel';
+import { VBT_CATEGORY_LABELS, VBT_CATEGORY_ORDER } from '@core/library/verses/vbtVersePracticeCategories';
 
 type TextReaderProps = {
   text: LibraryText;
@@ -13,36 +15,67 @@ type TextReaderProps = {
   initialVerse?: number;
 };
 
-// Helper to get source data from text title - uses registry for accurate mapping
-function getSource(title: string) {
-  return ALL_SOURCES.find((s) => s.name === title);
+function getSourceForText(text: LibraryText) {
+  return (
+    ALL_SOURCES.find((s) => s.id === text.registrySourceId) ??
+    ALL_SOURCES.find((s) => s.name === text.title)
+  );
 }
 
 export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) {
-  const [currentIndex, setCurrentIndex] = useState(initialVerse);
+  const isVbt = text.registrySourceId === 'vijnana-bhairava-tantra';
+  const [practiceCategory, setPracticeCategory] = useState<VbtPracticeCategory | 'all'>('all');
+  const [currentIndex, setCurrentIndex] = useState(() =>
+    Math.min(Math.max(0, initialVerse), Math.max(0, text.verses.length - 1))
+  );
   const [viewMode, setViewMode] = useState<'single' | 'list'>('single');
   const [showToc, setShowToc] = useState(false);
   const [showIntro, setShowIntro] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const verseRef = useRef<HTMLDivElement>(null);
 
-  const source = getSource(text.title);
-  const sourceId = source?.id || text.title.toLowerCase().replace(/\s+/g, '-');
-  const verse = text.verses[currentIndex];
+  const displayVerses = useMemo(() => {
+    if (!isVbt || practiceCategory === 'all') return text.verses;
+    return text.verses.filter((v) => v.practiceCategory === practiceCategory);
+  }, [isVbt, practiceCategory, text.verses]);
 
-  // Check bookmark status on mount and when verse changes
+  const displayText = useMemo(
+    (): LibraryText => ({
+      ...text,
+      verses: displayVerses,
+      totalVerses: displayVerses.length,
+    }),
+    [text, displayVerses]
+  );
+
+  const source = getSourceForText(text);
+  const sourceId = source?.id || text.registrySourceId || text.title.toLowerCase().replace(/\s+/g, '-');
+  const verse = displayText.verses[currentIndex];
+
+  useEffect(() => {
+    if (currentIndex >= displayText.verses.length) {
+      setCurrentIndex(Math.max(0, displayText.verses.length - 1));
+    }
+  }, [currentIndex, displayText.verses.length]);
+
   useEffect(() => {
     if (verse) {
       setBookmarked(isBookmarked(sourceId, verse.id));
     }
   }, [sourceId, verse]);
 
-  // Save reading progress when index changes
   useEffect(() => {
     if (verse) {
-      updateReadingProgress(sourceId, verse.id, currentIndex, verse.chapter, verse.number);
+      const fullIndex = text.verses.findIndex((v) => v.id === verse.id);
+      updateReadingProgress(
+        sourceId,
+        verse.id,
+        fullIndex >= 0 ? fullIndex : currentIndex,
+        verse.chapter,
+        verse.number
+      );
     }
-  }, [currentIndex, verse, sourceId]);
+  }, [currentIndex, verse, sourceId, text.verses]);
 
   useEffect(() => {
     if (viewMode === 'single' && verseRef.current) {
@@ -63,8 +96,20 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
     setViewMode('single');
   };
 
+  const goToVerseFromFullTextIndex = (fullIndex: number) => {
+    const id = text.verses[fullIndex]?.id;
+    if (!id) return goToVerse(0);
+    const idx = displayVerses.findIndex((v) => v.id === id);
+    if (idx >= 0) {
+      goToVerse(idx);
+    } else {
+      setPracticeCategory('all');
+      goToVerse(fullIndex);
+    }
+  };
+
   const goNext = () => {
-    if (currentIndex < text.verses.length - 1) {
+    if (currentIndex < displayText.verses.length - 1) {
       setCurrentIndex(currentIndex + 1);
     }
   };
@@ -75,9 +120,16 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
     }
   };
 
+  const onCategoryChange = (cat: VbtPracticeCategory | 'all') => {
+    setPracticeCategory(cat);
+    setCurrentIndex(0);
+    setShowToc(false);
+  };
+
+  const showTocButton = !(isVbt && practiceCategory !== 'all');
+
   return (
     <div className="space-y-4">
-      {/* Header */}
       <div className="flex items-center justify-between pb-4 border-b border-white/10">
         <button
           onClick={onBack}
@@ -90,8 +142,7 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
         </button>
 
         <div className="flex items-center gap-2">
-          {/* About/Intro Toggle */}
-          {source?.historicalIntro && (
+          {(source?.historicalIntro || source?.pedagogicalNote) && (
             <button
               onClick={() => setShowIntro(!showIntro)}
               className={`p-2 rounded-lg transition-colors ${
@@ -112,7 +163,6 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
             </button>
           )}
 
-          {/* View Toggle */}
           <button
             onClick={() => setViewMode(viewMode === 'single' ? 'list' : 'single')}
             className={`p-2 rounded-lg transition-colors ${
@@ -132,28 +182,35 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
             </svg>
           </button>
 
-          {/* TOC Toggle */}
-          <button
-            onClick={() => setShowToc(!showToc)}
-            className={`p-2 rounded-lg transition-colors ${
-              showToc ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80'
-            }`}
-            title="Table of contents"
-            aria-label="Table of contents"
-            aria-pressed={showToc}
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h8m-8 6h16" />
-            </svg>
-          </button>
+          {showTocButton && (
+            <button
+              onClick={() => setShowToc(!showToc)}
+              className={`p-2 rounded-lg transition-colors ${
+                showToc ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80'
+              }`}
+              title="Table of contents"
+              aria-label="Table of contents"
+              aria-pressed={showToc}
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h8m-8 6h16" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Title */}
       <div className="text-center">
         <h2 className="text-xl md:text-2xl font-serif text-white">{text.title}</h2>
         <p className="text-sm text-white/50">{text.subtitle}</p>
-        {source?.historicalIntro && !showIntro && (
+        {isVbt && !showIntro && (
+          <p className="mt-2 text-xs text-white/45 max-w-xl mx-auto leading-relaxed">
+            <span className="text-violet-300/80">Study</span> the verses and introduction.
+            <span className="text-emerald-300/80"> Practice</span> uses category filters and the contemplative sections on
+            each verse (app commentary—not alternate translations).
+          </p>
+        )}
+        {(source?.historicalIntro || source?.pedagogicalNote) && !showIntro && (
           <button
             onClick={() => setShowIntro(true)}
             className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/60 transition-colors hover:bg-white/10 hover:text-white/80"
@@ -164,30 +221,81 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
         )}
       </div>
 
-      {/* Historical Introduction */}
-      {showIntro && source?.historicalIntro && (
-        <IntroductionPanel intro={source.historicalIntro} source={source} onClose={() => setShowIntro(false)} />
+      {isVbt && !showIntro && (
+        <div className="space-y-2">
+          <p className="text-xs text-white/45 text-center md:text-left">Practice focus</p>
+          <div
+            className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1"
+            role="tablist"
+            aria-label="Vijñāna Bhairava practice categories"
+          >
+            <button
+              type="button"
+              role="tab"
+              aria-selected={practiceCategory === 'all'}
+              onClick={() => onCategoryChange('all')}
+              className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                practiceCategory === 'all'
+                  ? 'bg-violet-500 text-white'
+                  : 'bg-white/10 text-white/70 hover:bg-white/15'
+              }`}
+            >
+              All
+            </button>
+            {VBT_CATEGORY_ORDER.map((cat) => {
+              const count = text.verses.filter((v) => v.practiceCategory === cat).length;
+              if (count === 0) return null;
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  role="tab"
+                  aria-selected={practiceCategory === cat}
+                  onClick={() => onCategoryChange(cat)}
+                  className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                    practiceCategory === cat
+                      ? 'bg-violet-500 text-white'
+                      : 'bg-white/10 text-white/70 hover:bg-white/15'
+                  }`}
+                >
+                  {VBT_CATEGORY_LABELS[cat]} ({count})
+                </button>
+              );
+            })}
+          </div>
+        </div>
       )}
 
-      {/* Table of Contents */}
-      {!showIntro && showToc && (
+      {showIntro && source && (source.historicalIntro || source.pedagogicalNote) && (
+        <IntroductionPanel
+          intro={source.historicalIntro}
+          source={source}
+          onClose={() => setShowIntro(false)}
+        />
+      )}
+
+      {!showIntro && showToc && showTocButton && (
         <TableOfContents
           text={text}
-          currentIndex={currentIndex}
-          onSelect={goToVerse}
+          currentIndex={Math.max(0, text.verses.findIndex((v) => v.id === verse?.id))}
+          onSelect={goToVerseFromFullTextIndex}
           onClose={() => setShowToc(false)}
         />
       )}
 
-      {/* Main Content */}
+      {!showIntro && !showToc && displayText.verses.length === 0 && (
+        <p className="text-center text-sm text-white/55 py-8">No verses match this practice focus.</p>
+      )}
+
       {!showIntro &&
         !showToc &&
+        displayText.verses.length > 0 &&
         (viewMode === 'single' ? (
           <SingleVerseView
             verse={verse}
-            text={text}
+            text={displayText}
             index={currentIndex}
-            total={text.verses.length}
+            total={displayText.verses.length}
             onPrev={goPrev}
             onNext={goNext}
             verseRef={verseRef}
@@ -195,7 +303,7 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
             onToggleBookmark={handleToggleBookmark}
           />
         ) : (
-          <ListView text={text} currentIndex={currentIndex} onSelect={goToVerse} />
+          <ListView text={displayText} currentIndex={currentIndex} onSelect={goToVerse} />
         ))}
     </div>
   );
