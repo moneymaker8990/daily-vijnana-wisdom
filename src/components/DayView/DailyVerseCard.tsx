@@ -1,12 +1,17 @@
 /**
  * DailyVerseCard - Shows a daily verse from the Sacred Library
  *
- * Uses getDailyVerse() for deterministic, day-based selection.
+ * Uses getJourneyDailyVerse() from dailyVerseSchedule (not raw ALL_VERSES index).
  * Distinct emerald/teal gradient to differentiate from the violet sacred text cards.
  */
 
 import { useState } from 'react';
-import { getDailyVerse, getSourceById } from '@core/library/engine';
+import { getJourneyDailyVerse } from '@core/library/dailyVerseSchedule';
+import { getSourceById } from '@core/library/engine';
+import {
+  TranslationReaderNotePanel,
+  translationNoteHasContent,
+} from '../Study/TranslationReaderNotePanel';
 
 type DailyVerseCardProps = {
   dayNumber: number;
@@ -16,7 +21,7 @@ type DailyVerseCardProps = {
 export function DailyVerseCard({ dayNumber, onOpenLibrary }: DailyVerseCardProps) {
   const [showCommentary, setShowCommentary] = useState(false);
 
-  const verse = getDailyVerse(dayNumber);
+  const verse = getJourneyDailyVerse(dayNumber);
   if (!verse) return null;
 
   const source = getSourceById(verse.sourceId);
@@ -49,6 +54,24 @@ export function DailyVerseCard({ dayNumber, onOpenLibrary }: DailyVerseCardProps
       >
         "{verse.text}"
       </p>
+
+      {verse.plainLanguage && (
+        <div className="mt-2 pt-3 border-t border-emerald-400/15">
+          <p className="text-[10px] text-emerald-300/55 uppercase tracking-wider text-center mb-1.5">
+            English · close reading
+          </p>
+          <p
+            className="text-xs sm:text-sm text-white/70 leading-relaxed text-center"
+            style={{ overflowWrap: 'break-word' }}
+          >
+            {verse.plainLanguage}
+          </p>
+        </div>
+      )}
+
+      {translationNoteHasContent(verse.translationReaderNote) && (
+        <TranslationReaderNotePanel note={verse.translationReaderNote!} variant="daily" />
+      )}
 
       {/* Commentary toggle */}
       {verse.commentary && (

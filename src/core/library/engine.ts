@@ -6,6 +6,7 @@
  */
 
 import type { Verse, Source, VerseFilter, Tradition } from './types';
+import { getJourneyDailyVerse } from './dailyVerseSchedule';
 import { ALL_VERSES, ALL_SOURCES } from './registry';
 
 /**
@@ -102,19 +103,18 @@ export function getVersesByTradition(tradition: Tradition | Tradition[]): Verse[
 }
 
 /**
- * Get a deterministic "daily verse" for a given day number
- * Uses a seeded selection to ensure the same verse for the same day
+ * Get a deterministic "daily verse" for journey day 1–365 (see `DAILY_VERSE_SCHEDULE`).
+ * Optional `sourceId` keeps a simple modulo fallback for specialized callers.
  */
 export function getDailyVerse(dayNumber: number, sourceId?: string): Verse | null {
-  let pool = sourceId
-    ? ALL_VERSES.filter(v => v.sourceId === sourceId)
-    : ALL_VERSES;
-  
-  if (!pool.length) return null;
-  
-  // Simple seeded random based on day number
-  const index = dayNumber % pool.length;
-  return pool[index];
+  if (sourceId) {
+    const pool = ALL_VERSES.filter((v) => v.sourceId === sourceId);
+    if (!pool.length) return null;
+    const index = dayNumber % pool.length;
+    return pool[index];
+  }
+
+  return getJourneyDailyVerse(dayNumber);
 }
 
 /**

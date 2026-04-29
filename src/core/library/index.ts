@@ -11,6 +11,8 @@ export * from './tags';
 // Registry
 export { ALL_VERSES, ALL_SOURCES, getVerseCountBySource, getTraditionStats } from './registry';
 
+export { DAILY_VERSE_SCHEDULE, DAILY_VERSE_FALLBACK_ID, getJourneyDailyVerse } from './dailyVerseSchedule';
+
 // Engine API
 export {
   getRandomVerse,
