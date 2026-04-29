@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import * as Sentry from '@sentry/react';
 import { AuthProvider } from './components/Auth';
 import { ErrorBoundary, ToastProvider } from './components/ui';
+import { prepareCacheForCurrentBuild } from './lib/cacheMigration';
 import './index.css';
 
 function showFatal(message: string, detail?: string) {
@@ -49,8 +50,11 @@ if (!rootEl) {
     '<p style="color:#e2e8f0;padding:2rem;font-family:system-ui">This page is missing <code>#root</code>.</p>'
   );
 } else {
-  void import('./App')
-    .then(({ default: App }) => {
+  void (async () => {
+    await prepareCacheForCurrentBuild(import.meta.env.VITE_BUILD_ID, import.meta.env.PROD);
+
+    try {
+      const { default: App } = await import('./App');
       try {
         ReactDOM.createRoot(rootEl).render(
           <React.StrictMode>
@@ -70,13 +74,13 @@ if (!rootEl) {
           err instanceof Error ? err.message : String(err)
         );
       }
-    })
-    .catch((err: unknown) => {
+    } catch (err: unknown) {
       console.error(err);
       const msg = err instanceof Error ? err.message : String(err);
       showFatal(
         'The application bundle could not be loaded. This is common right after a deploy when an old tab or offline copy still points at removed files.',
         msg
       );
-    });
+    }
+  })();
 }

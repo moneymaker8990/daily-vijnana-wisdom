@@ -1,12 +1,37 @@
+import { readFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
-import { resolve } from 'path'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
+const pkg = JSON.parse(readFileSync(resolve(__dirname, 'package.json'), 'utf-8')) as {
+  version: string
+}
+
+function resolveProductionBuildId(): string {
+  const sha =
+    process.env.VERCEL_GIT_COMMIT_SHA ??
+    process.env.CF_PAGES_COMMIT_SHA ??
+    process.env.GITHUB_SHA ??
+    ''
+  const trimmed = sha.trim()
+  if (trimmed.length >= 7) return trimmed.slice(0, 12)
+  return `${pkg.version}-local`
+}
 
 // https://vite.dev/config/
-export default defineConfig({
-  resolve: {
+export default defineConfig(({ mode }) => {
+  const productionBuildId = mode === 'production' ? resolveProductionBuildId() : 'dev'
+
+  return {
+    define: {
+      'import.meta.env.VITE_BUILD_ID': JSON.stringify(productionBuildId),
+    },
+    resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
       '@components': resolve(__dirname, 'src/components'),
@@ -15,8 +40,8 @@ export default defineConfig({
       '@data': resolve(__dirname, 'src/data'),
       '@hooks': resolve(__dirname, 'src/hooks'),
     },
-  },
-  build: {
+    },
+    build: {
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -38,8 +63,8 @@ export default defineConfig({
         },
       },
     },
-  },
-  plugins: [
+    },
+    plugins: [
     react(),
     tailwindcss(),
     VitePWA({
@@ -111,7 +136,9 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        // Do not precache JS or HTML: stale shells + hashed chunks cause blank
+        // pages after deploy. Shell and bundles load from network when online.
+        globPatterns: ['**/*.{css,ico,png,svg,woff2}'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -144,5 +171,6 @@ export default defineConfig({
         ]
       }
     })
-  ],
+    ],
+  }
 })

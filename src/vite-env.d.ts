@@ -1,23 +1,6 @@
 /// <reference types="vite/client" />
 
-declare module '*.css' {
-  const content: string;
-  export default content;
+interface ImportMetaEnv {
+  readonly VITE_BUILD_ID: string;
+  readonly VITE_SENTRY_DSN?: string;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
