@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback, lazy, Suspense } from 'react';
+import { useEffect, useLayoutEffect, useState, useRef, useCallback, lazy, Suspense } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { AppLayout } from './components/Layout/AppLayout';
 import { AssistantProvider } from './components/Assistants';
@@ -12,7 +12,7 @@ import { TabNavigation, type TabId } from './components/Navigation/TabNavigation
 import { OfflineIndicator, PaywallModal, ReviewPromptModal, useToast } from './components/ui';
 import { OnboardingFlow } from './components/Onboarding/OnboardingFlow';
 import { MilestoneModal } from './components/ui/MilestoneModal';
-import { recordDailyVisit, checkNewMilestone } from './lib/streakTracker';
+import { recordDailyVisit, checkNewMilestone, getStreakData, type StreakData } from './lib/streakTracker';
 import { track } from './lib/analytics';
 import {
   getPaywallTriggerContext,
@@ -90,6 +90,7 @@ function App() {
   const [showReviewPrompt, setShowReviewPrompt] = useState(false);
   const [milestone, setMilestone] = useState<{ days: number; title: string; message: string } | null>(null);
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [headerStreak, setHeaderStreak] = useState<StreakData>(() => getStreakData());
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -189,32 +190,64 @@ function App() {
     handleTabChange('courses');
   };
 
-  // Record daily visit and check for milestones
-  useEffect(() => {
+  // Record daily visit, keep header streak in sync, and re-check when the app resumes (PWA / mobile).
+  useLayoutEffect(() => {
     if (showOnboarding) return;
-    const streak = recordDailyVisit();
-    const m = checkNewMilestone(streak);
 
-    if (streak.current >= 2 && streak.current <= 4) {
-      const nudgeKey = `${NUDGE_SHOWN_PREFIX}${streak.current}`;
-      if (!localStorage.getItem(nudgeKey)) {
-        info('Great consistency. Keep your daily rhythm going this week.');
-        localStorage.setItem(nudgeKey, 'true');
+    const applyMilestoneAndNudge = (streak: StreakData) => {
+      if (streak.current >= 2 && streak.current <= 4) {
+        const nudgeKey = `${NUDGE_SHOWN_PREFIX}${streak.current}`;
+        if (!localStorage.getItem(nudgeKey)) {
+          info('Great consistency. Keep your daily rhythm going this week.');
+          localStorage.setItem(nudgeKey, 'true');
+        }
       }
-    }
 
-    if (m) {
-      setMilestone(m);
-      track('streak_milestone', { days: m.days, title: m.title });
+      const m = checkNewMilestone(streak);
+      if (m) {
+        setMilestone(m);
+        track('streak_milestone', { days: m.days, title: m.title });
 
-      if (m.days >= 7 && !premiumEnabled) {
-        setPaywallContext('streak_7_value_moment');
-        setShowPaywall(true);
-        track('paywall_view', { trigger: 'streak_7_value_moment' });
+        if (m.days >= 7 && !premiumEnabled) {
+          setPaywallContext('streak_7_value_moment');
+          setShowPaywall(true);
+          track('paywall_view', { trigger: 'streak_7_value_moment' });
+        }
       }
-    }
-    maybeOpenReviewPrompt();
-  }, [showOnboarding]);
+    };
+
+    const syncVisitFromStorage = (opts: { includeReviewPrompt: boolean }) => {
+      const streak = recordDailyVisit();
+      setHeaderStreak(streak);
+      applyMilestoneAndNudge(streak);
+      if (opts.includeReviewPrompt) {
+        maybeOpenReviewPrompt();
+      }
+    };
+
+    syncVisitFromStorage({ includeReviewPrompt: true });
+
+    const onResume = () => {
+      if (document.visibilityState !== 'visible') return;
+      syncVisitFromStorage({ includeReviewPrompt: false });
+    };
+
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) {
+        syncVisitFromStorage({ includeReviewPrompt: false });
+      }
+    };
+
+    document.addEventListener('visibilitychange', onResume);
+    window.addEventListener('focus', onResume);
+    window.addEventListener('pageshow', onPageShow);
+
+    return () => {
+      document.removeEventListener('visibilitychange', onResume);
+      window.removeEventListener('focus', onResume);
+      window.removeEventListener('pageshow', onPageShow);
+    };
+  }, [showOnboarding, premiumEnabled]);
 
   const handleOnboardingComplete = () => {
     localStorage.setItem(STORAGE_KEYS.ONBOARDING_COMPLETE, 'true');
@@ -439,7 +472,12 @@ function App() {
   return (
     <AssistantProvider>
       <OfflineIndicator />
-      <AppLayout onGoToDay={goToDay} activeTab={activeTab} containerRef={mainContainerRef}>
+      <AppLayout
+        onGoToDay={goToDay}
+        activeTab={activeTab}
+        containerRef={mainContainerRef}
+        streakData={headerStreak}
+      >
         <div className="app-content-bottom-safe">
           <Suspense fallback={suspenseFallback}>
             {renderContent()}

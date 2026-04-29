@@ -5,7 +5,7 @@ import { TextSizeToggle } from '../Settings/TextSizeControl';
 import { Settings } from '../Settings';
 import { UserMenu } from '../Auth';
 import { useAssistants } from '../Assistants';
-import { getStreakData } from '@lib/streakTracker';
+import type { StreakData } from '@lib/streakTracker';
 import { track } from '@lib/analytics';
 
 type TabId = 'daily' | 'courses' | 'library' | 'journal' | 'dreams';
@@ -15,6 +15,7 @@ type AppLayoutProps = {
   onGoToDay?: (day: number) => void;
   activeTab?: TabId;
   containerRef?: RefObject<HTMLDivElement | null>;
+  streakData: StreakData;
 };
 
 const PAGE_TITLES: Record<TabId, string> = {
@@ -25,13 +26,18 @@ const PAGE_TITLES: Record<TabId, string> = {
   dreams: 'Dream Journal',
 };
 
-export function AppLayout({ children, onGoToDay, activeTab = 'daily', containerRef }: AppLayoutProps) {
+export function AppLayout({
+  children,
+  onGoToDay,
+  activeTab = 'daily',
+  containerRef,
+  streakData,
+}: AppLayoutProps) {
   const [showNotificationSettings, setShowNotificationSettings] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showHeaderMenu, setShowHeaderMenu] = useState(false);
   const [, forceUpdate] = useState({});
-  const streakData = getStreakData();
   const headerMenuRef = useRef<HTMLDivElement>(null);
   const { openMeditation, openSpiritualGuide } = useAssistants();
 

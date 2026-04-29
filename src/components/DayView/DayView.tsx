@@ -183,8 +183,6 @@ export function DayView({
         </div>
       )}
 
-      <InsightGraph onNavigateTab={onNavigateTab} />
-
       {/* Tradition Passages */}
       <section>
         <SectionHeader>Sacred Texts</SectionHeader>
@@ -593,6 +591,8 @@ export function DayView({
           </p>
         )}
       </section>
+
+      <InsightGraph onNavigateTab={onNavigateTab} />
 
       {/* Navigation */}
       <NavigationButtons
