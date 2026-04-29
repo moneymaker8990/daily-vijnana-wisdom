@@ -17,6 +17,16 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      (function () {
+        if (!('serviceWorker' in navigator)) return;
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          regs.forEach(function (r) {
+            r.unregister();
+          });
+        });
+      })();
+    </script>
     <!-- If the JS entry never runs (404, CSP) or hangs before paint, show guidance after a delay -->
     <script>
       window.setTimeout(function () {

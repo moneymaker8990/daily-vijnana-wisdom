@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import * as Sentry from '@sentry/react';
+import App from './App';
 import { AuthProvider } from './components/Auth';
 import { ErrorBoundary, ToastProvider } from './components/ui';
-import { prepareCacheForCurrentBuild } from './lib/cacheMigration';
 import './index.css';
-
-/** DevTools: filter by "MindVanta" or check Network for 404 on `/assets/index-*.js` if the screen stays purple. */
-console.debug('[MindVanta] build', import.meta.env.VITE_BUILD_ID);
 
 function showFatal(message: string, detail?: string) {
   const root = document.getElementById('root');
@@ -53,46 +50,23 @@ if (!rootEl) {
     '<p style="color:#e2e8f0;padding:2rem;font-family:system-ui">This page is missing <code>#root</code>.</p>'
   );
 } else {
-  void (async () => {
-    await prepareCacheForCurrentBuild(import.meta.env.VITE_BUILD_ID, import.meta.env.PROD);
-
-    try {
-      const { default: App } = await import('./App');
-      try {
-        ReactDOM.createRoot(rootEl).render(
-          <React.StrictMode>
-            <ErrorBoundary>
-              <AuthProvider>
-                <ToastProvider>
-                  <App />
-                </ToastProvider>
-              </AuthProvider>
-            </ErrorBoundary>
-          </React.StrictMode>
-        );
-        if (import.meta.env.PROD) {
-          queueMicrotask(() => {
-            void import('virtual:pwa-register')
-              .then(({ registerSW }) => {
-                registerSW({ immediate: true });
-              })
-              .catch(() => {});
-          });
-        }
-      } catch (err) {
-        console.error(err);
-        showFatal(
-          'The user interface failed to render.',
-          err instanceof Error ? err.message : String(err)
-        );
-      }
-    } catch (err: unknown) {
-      console.error(err);
-      const msg = err instanceof Error ? err.message : String(err);
-      showFatal(
-        'The application bundle could not be loaded. This is common right after a deploy when an old tab or offline copy still points at removed files.',
-        msg
-      );
-    }
-  })();
+  try {
+    ReactDOM.createRoot(rootEl).render(
+      <React.StrictMode>
+        <ErrorBoundary>
+          <AuthProvider>
+            <ToastProvider>
+              <App />
+            </ToastProvider>
+          </AuthProvider>
+        </ErrorBoundary>
+      </React.StrictMode>
+    );
+  } catch (err) {
+    console.error(err);
+    showFatal(
+      'The user interface failed to render.',
+      err instanceof Error ? err.message : String(err)
+    );
+  }
 }
