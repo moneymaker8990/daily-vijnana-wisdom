@@ -70,6 +70,15 @@ if (!rootEl) {
             </ErrorBoundary>
           </React.StrictMode>
         );
+        if (import.meta.env.PROD) {
+          queueMicrotask(() => {
+            void import('virtual:pwa-register')
+              .then(({ registerSW }) => {
+                registerSW({ immediate: true });
+              })
+              .catch(() => {});
+          });
+        }
       } catch (err) {
         console.error(err);
         showFatal(

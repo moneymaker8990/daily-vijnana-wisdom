@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'mindvanta_build_id';
+const STORAGE_KEY = 'mindvanta_build_id_v3';
 
 /**
  * On production, compares the baked-in build id to the last successful boot.

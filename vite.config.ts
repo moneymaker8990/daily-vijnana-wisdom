@@ -13,14 +13,19 @@ const pkg = JSON.parse(readFileSync(resolve(__dirname, 'package.json'), 'utf-8')
 }
 
 function resolveProductionBuildId(): string {
-  const sha =
+  const sha = (
     process.env.VERCEL_GIT_COMMIT_SHA ??
     process.env.CF_PAGES_COMMIT_SHA ??
     process.env.GITHUB_SHA ??
     ''
-  const trimmed = sha.trim()
-  if (trimmed.length >= 7) return trimmed.slice(0, 12)
-  return `${pkg.version}-local`
+  ).trim()
+  if (sha.length >= 7) return sha.slice(0, 12)
+
+  const deployId = (process.env.VERCEL_DEPLOYMENT_ID ?? process.env.NETLIFY_DEPLOY_ID ?? '').trim()
+  if (deployId.length >= 8) return deployId.slice(0, 16)
+
+  // Without CI env, still produce a unique id per `vite build` so cache migration runs.
+  return `${pkg.version}-${Date.now()}`
 }
 
 /** Replaces Vite’s module entry with an inline script that can clear SW/cache before inject. */
@@ -44,13 +49,12 @@ function buildBootstrapInlineScript(buildId: string, entrySrc: string): string {
     '(function(){',
     `var BUILD_ID=${BUILD_ID};`,
     `var ENTRY=${ENTRY};`,
-    "var KEY='mindvanta_build_id';",
+    "var KEY='mindvanta_build_id_v3';",
     'function loadApp(){',
     'function inject(){',
     "var s=document.createElement('script');",
     "s.type='module';",
     's.src=ENTRY;',
-    "s.crossOrigin='anonymous';",
     'document.body.appendChild(s);',
     '}',
     "if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',inject,{once:true});}else{inject();}",
@@ -135,6 +139,9 @@ export default defineConfig(({ mode }) => {
     react(),
     tailwindcss(),
     VitePWA({
+      // Do not inject registerSW — after we unregister a broken SW we must not immediately
+      // register again before the app loads. Re-enable manual registration later if needed.
+      injectRegister: null,
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg'],
       manifest: {
@@ -210,21 +217,6 @@ export default defineConfig(({ mode }) => {
         // pages after deploy. Shell and bundles load from network when online.
         globPatterns: ['**/*.{css,ico,png,svg,woff2}'],
         runtimeCaching: [
-          {
-            urlPattern: ({ request }) => request.mode === 'navigate',
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'pages-network-first',
-              networkTimeoutSeconds: 5,
-              expiration: {
-                maxEntries: 32,
-                maxAgeSeconds: 60 * 60 * 24,
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: 'CacheFirst',
