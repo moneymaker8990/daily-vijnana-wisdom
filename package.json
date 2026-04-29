@@ -18,6 +18,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:e2e:live": "playwright test tests/e2e/vercel-prod-smoke.spec.ts -c playwright.vercel.config.ts",
     "test:ai-health": "node ./scripts/test-hyper-processor-health.mjs",
     "supabase:link": "npx supabase link --project-ref coihujjfdhpqfwmibfbi",
     "supabase:db:push": "npx supabase db push",
