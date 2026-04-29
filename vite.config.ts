@@ -200,6 +200,9 @@ export default defineConfig(({ mode }) => {
         ]
       },
       workbox: {
+        // Default SPA fallback registers NavigationRoute(index.html) but we intentionally
+        // do not precache HTML; that leaves a handler with no precached shell → blank page.
+        navigateFallback: null,
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
