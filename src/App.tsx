@@ -80,9 +80,13 @@ function App() {
   const mainContainerRef = useRef<HTMLDivElement>(null);
   const onboardingStartTracked = useRef(false);
   const sessionStartedAt = useRef<number>(Date.now());
-  const [showOnboarding, setShowOnboarding] = useState(
-    () => !localStorage.getItem(STORAGE_KEYS.ONBOARDING_COMPLETE)
-  );
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    try {
+      return !localStorage.getItem(STORAGE_KEYS.ONBOARDING_COMPLETE);
+    } catch {
+      return true;
+    }
+  });
   const [premiumEnabled, setPremiumEnabled] = useState<boolean>(() => hasPremiumAccess());
   const [showPaywall, setShowPaywall] = useState(false);
   const [paywallBusy, setPaywallBusy] = useState(false);
@@ -91,6 +95,13 @@ function App() {
   const [milestone, setMilestone] = useState<{ days: number; title: string; message: string } | null>(null);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [headerStreak, setHeaderStreak] = useState<StreakData>(() => getStreakData());
+
+  useEffect(() => {
+    track('app_open', {
+      platform: 'web',
+      app_version: import.meta.env.VITE_APP_VERSION ?? 'unknown',
+    });
+  }, []);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {

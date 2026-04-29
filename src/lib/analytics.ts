@@ -28,38 +28,50 @@ function readQueue(): AnalyticsEvent[] {
 }
 
 function writeQueue(queue: AnalyticsEvent[]): void {
-  localStorage.setItem(QUEUE_KEY, JSON.stringify(queue.slice(-MAX_QUEUE)));
+  try {
+    localStorage.setItem(QUEUE_KEY, JSON.stringify(queue.slice(-MAX_QUEUE)));
+  } catch {
+    // Quota exceeded, private mode, or storage disabled — do not break the app.
+  }
 }
 
 function enqueue(event: AnalyticsEvent): void {
-  const queue = readQueue();
-  queue.push(event);
-  writeQueue(queue);
+  try {
+    const queue = readQueue();
+    queue.push(event);
+    writeQueue(queue);
+  } catch {
+    // Never throw from analytics.
+  }
 }
 
 export function track(eventName: string, props: AnalyticsProps = {}): void {
-  const payload: AnalyticsEvent = {
-    event: eventName,
-    props: {
-      ...props,
-      app_version: import.meta.env.VITE_APP_VERSION ?? 'unknown',
-      env: import.meta.env.MODE,
-    },
-    ts: new Date().toISOString(),
-  };
+  try {
+    const payload: AnalyticsEvent = {
+      event: eventName,
+      props: {
+        ...props,
+        app_version: import.meta.env.VITE_APP_VERSION ?? 'unknown',
+        env: import.meta.env.MODE,
+      },
+      ts: new Date().toISOString(),
+    };
 
-  enqueue(payload);
+    enqueue(payload);
 
-  if (window.posthog?.capture) {
-    window.posthog.capture(eventName, payload.props);
-  }
+    if (window.posthog?.capture) {
+      window.posthog.capture(eventName, payload.props);
+    }
 
-  if (window.gtag) {
-    window.gtag('event', eventName, payload.props);
-  }
+    if (window.gtag) {
+      window.gtag('event', eventName, payload.props);
+    }
 
-  if (import.meta.env.DEV) {
-    console.debug('[analytics]', payload.event, payload.props);
+    if (import.meta.env.DEV) {
+      console.debug('[analytics]', payload.event, payload.props);
+    }
+  } catch {
+    // Third-party or queue failures must not surface to users.
   }
 }
 
