@@ -17,6 +17,18 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- If the JS entry never runs (404, CSP) or hangs before paint, show guidance after a delay -->
+    <script>
+      window.setTimeout(function () {
+        var r = document.getElementById('root');
+        if (!r || r.children.length > 0) return;
+        r.innerHTML =
+          '<div style="color:#e2e8f0;padding:2rem;font-family:system-ui,sans-serif;max-width:34rem;margin:0 auto;line-height:1.5">' +
+          '<h1 style="font-size:1.1rem;margin:0 0 0.75rem;font-weight:600">This page did not finish loading</h1>' +
+          '<p style="margin:0 0 0.75rem;opacity:0.9">The app scripts may be blocked or still caching an old version. Try a hard refresh (Ctrl+Shift+R), another network, or clear site data and unregister the service worker for this site.</p>' +
+          '</div>';
+      }, 12000);
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
