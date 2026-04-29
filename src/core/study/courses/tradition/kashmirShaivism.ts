@@ -12,7 +12,7 @@ export const kashmirShaivismCourse: Course = {
   icon: '🔱',
   pathwayType: 'tradition',
   difficulty: 3,
-  estimatedWeeks: 3,
+  estimatedWeeks: 4,
   lessons: [
     {
       id: 'ks-1',
@@ -47,7 +47,7 @@ Your aim in this path is neither belief nor performance. It is **clearer percept
 Nondual Shaiva traditions refuse a harsh split between “spirit” and “world.” The body and the cosmos are understood as **expression**, not as a prison to escape. Practice is not mainly about becoming pure in a moralistic sense; it is about **recognition** of what is already true prior to struggle.
 
 The Vijñāna Bhairava opens in the voice of the Goddess asking precise questions—because awakening here is relational and intimate, not cold theory.`,
-      verses: ['vbt-1', 'ss-1-1', 'ss-1-19', 'pratyabhijna-1'],
+      verses: ['vbt-1', 'ss-1-1', 'ss-1-19', 'pratyabhijna-1', 'spanda-1', 'paramarthasara-5'],
       reflectionQuestions: [
         'When you hear “Śiva,” can you translate it experimentally as “the fact of being aware” rather than a distant deity only?',
         'Where do you feel śakti most plainly today—as aliveness, emotion, curiosity, or pressure?',
@@ -72,7 +72,7 @@ The Vijñāna Bhairava opens in the voice of the Goddess asking precise question
 Energy (śakti) is not a belief about “vibes.” It is the palpable **aliveness** of attention—warmth, vibration, emotional color, the hum beneath thought. The body becomes a **tuning instrument**, not an enemy.
 
 The Vijñāna Bhairava repeatedly turns ordinary moments (taste, touch, fatigue, space) into contemplative doorways. That practicality is the tradition’s generosity.`,
-      verses: ['vbt-27', 'vbt-48', 'vbt-6', 'tantraloka-4'],
+      verses: ['vbt-27', 'vbt-48', 'vbt-6', 'tantraloka-4', 'tantraloka-16', 'spanda-5', 'paramarthasara-13'],
       reflectionQuestions: [
         'Where do you habitually treat the body as an obstacle rather than a place of knowing?',
         'What happens when you feel sensation without immediately explaining it?',
@@ -125,7 +125,14 @@ These are **different skills**, not ranks of worth. Most people use more than on
 Liberation is remembering the **whole field**. Thoughts and feelings can still arise; what changes is the felt truth of their context.
 
 This is not arrogance (“I am God” as slogan) but humility: seeing through the brittle story of separation.`,
-      verses: ['pratyabhijna-2', 'pratyabhijna-6', 'pratyabhijna-11', 'ss-1-14'],
+      verses: [
+        'pratyabhijna-2',
+        'pratyabhijna-6',
+        'pratyabhijna-11',
+        'pratyabhijna-13',
+        'pratyabhijna-17',
+        'ss-1-14',
+      ],
       reflectionQuestions: [
         'Where do you feel most separate from life when stressed?',
         'What helps you remember a wider context without bypassing pain?',
@@ -148,7 +155,16 @@ This is not arrogance (“I am God” as slogan) but humility: seeing through th
       introduction: `**Spanda** is the subtle **pulse** of consciousness—not a theatrical vibration, but the living fact that awareness is never dead. Stillness and movement interweave.
 
 In the Spanda selections, look for pointers to the **gap between thoughts**, emotion as revelation, and freedom **in** activity rather than only away from it.`,
-      verses: ['spanda-2', 'spanda-4', 'spanda-5', 'spanda-11'],
+      verses: [
+        'spanda-2',
+        'spanda-4',
+        'spanda-5',
+        'spanda-11',
+        'spanda-24',
+        'spanda-32',
+        'spanda-41',
+        'spanda-53',
+      ],
       reflectionQuestions: [
         'Can you sense a quiet aliveness beneath mental chatter?',
         'How is this different from anxious agitation?',
@@ -171,7 +187,7 @@ In the Spanda selections, look for pointers to the **gap between thoughts**, emo
       introduction: `The **Vijñāna Bhairava** is this library’s flagship practice text: 112 experiments in attention. Categories (breath, sound, body, etc.) help you browse by **how** you want to work today.
 
 Pick **one** technique and stay with it for a season. The text rewards repetition and sincerity more than quantity.`,
-      verses: ['vbt-2', 'vbt-9', 'vbt-45', 'vbt-72', 'vbt-112'],
+      verses: ['vbt-2', 'vbt-9', 'vbt-45', 'vbt-72', 'vbt-112', 'paramarthasara-4'],
       reflectionQuestions: [
         'Which category of practice fits your temperament this week?',
         'What is the smallest daily dose of practice you can actually keep?',
@@ -185,6 +201,40 @@ Pick **one** technique and stay with it for a season. The text rewards repetitio
           'Choose one verse that confuses you slightly—in a good way.',
           'Try it gently for fifteen minutes without optimizing.',
           'Journal three sentences about what happened, without judging “success.”',
+        ],
+      },
+    },
+    {
+      id: 'ks-8',
+      title: 'Tantrāloka & Paramārthasāra threads',
+      introduction: `**Tantrāloka** (Abhinavagupta) is encyclopedic; this app carries **selections only**—enough to taste how ritual, mantra, body, and recognition stay one conversation.
+
+**Paramārthasāra** here appears as **short educational themes**, not a verse-by-verse translation. Use them to orient, then seek teachers and published translations when you are ready to go deeper.
+
+Both streams insist: nonduality is not an idea that cancels life—it is a way of meeting life with fewer unnecessary splits.`,
+      verses: [
+        'tantraloka-1',
+        'tantraloka-10',
+        'tantraloka-25',
+        'tantraloka-40',
+        'paramarthasara-1',
+        'paramarthasara-17',
+        'paramarthasara-33',
+        'paramarthasara-62',
+      ],
+      reflectionQuestions: [
+        'Where do you still split “spiritual” from “ordinary” in a way that exhausts you?',
+        'What is one practice form (breath, sound, gesture, ethics) that could become more sincere this week?',
+        'How will you avoid turning these maps into new arrogance?',
+      ],
+      practice: {
+        title: 'Read one selection aloud, then sit',
+        duration: '18 minutes',
+        instructions: [
+          'Open Spanda, Tantrāloka selections, or Paramārthasāra themes in the Library.',
+          'Read one passage slowly aloud or under your breath.',
+          'Sit eight minutes without analyzing: let the tone of the words reverberate.',
+          'Close with one sentence you could say kindly to yourself.',
         ],
       },
     },

@@ -3,7 +3,13 @@
  *
  * Contains quotes from all traditions for use across all 365 days.
  * Each tradition has multiple texts that rotate to ensure variety.
+ *
+ * Kashmir Shaiva companions (Spanda, Pratyabhijñāhṛdayam, Tantrāloka, Paramārthasāra)
+ * resolve through ALL_VERSES in getTextByIndex for deep rotation pools.
  */
+
+import type { Verse } from '@core/library/types';
+import { ALL_VERSES } from '@core/library/registry';
 
 export type TraditionKey =
   | 'vijnana' | 'tao' | 'gita' | 'upanishads' | 'ashtavakra' | 'yogaSutras' | 'shivaSutras'
@@ -638,10 +644,59 @@ export const WISDOM_TRADITIONS: Record<TraditionKey, TraditionData> = {
   },
 };
 
+const LIBRARY_COMPANION_SOURCE_BY_TRADITION: Partial<Record<TraditionKey, string>> = {
+  spandaKarika: 'spanda-karika',
+  pratyabhijnahridayam: 'pratyabhijnahridayam',
+  tantraloka: 'tantraloka-selections',
+  paramarthasara: 'paramarthasara-selections',
+};
+
+const sortedVersesBySourceId: Map<string, Verse[]> = new Map();
+
+function verseOrderingKey(v: Verse): [number, number, string] {
+  const chRaw = v.chapter;
+  const ch =
+    typeof chRaw === 'number'
+      ? chRaw
+      : typeof chRaw === 'string'
+        ? parseInt(chRaw, 10) || 0
+        : 0;
+  const vn = v.verseNumber;
+  let num = 0;
+  if (typeof vn === 'number') num = vn;
+  else if (typeof vn === 'string') {
+    const m = /\d+/.exec(vn);
+    num = m ? parseInt(m[0], 10) : 0;
+  }
+  return [ch, num, v.id];
+}
+
+function versesFromLibraryForTradition(tradition: TraditionKey): Verse[] {
+  const sourceId = LIBRARY_COMPANION_SOURCE_BY_TRADITION[tradition];
+  if (!sourceId) return [];
+  let cached = sortedVersesBySourceId.get(sourceId);
+  if (!cached) {
+    cached = ALL_VERSES.filter((x) => x.sourceId === sourceId).sort((a, b) => {
+      const [ac, an, ai] = verseOrderingKey(a);
+      const [bc, bn, bi] = verseOrderingKey(b);
+      if (ac !== bc) return ac - bc;
+      if (an !== bn) return an - bn;
+      return ai.localeCompare(bi);
+    });
+    sortedVersesBySourceId.set(sourceId, cached);
+  }
+  return cached;
+}
+
 /**
  * Get tradition text by index with cycling
  */
 export function getTextByIndex(tradition: TraditionKey, index: number): string {
+  const fromLibrary = versesFromLibraryForTradition(tradition);
+  if (fromLibrary.length > 0) {
+    const v = fromLibrary[index % fromLibrary.length];
+    return v.text;
+  }
   const data = WISDOM_TRADITIONS[tradition];
   return data.texts[index % data.texts.length];
 }

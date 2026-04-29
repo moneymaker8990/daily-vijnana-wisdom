@@ -34,6 +34,19 @@ export type VbtPracticeCategory =
 export type VerseContentKind = 'source_text' | 'educational_note';
 
 /**
+ * Optional transparency for app-original `plainLanguage` renderings:
+ * one short paragraph per field; cite uncertainty explicitly.
+ */
+export type TranslationReaderNote = {
+  /** What tracks the Sanskrit closely vs what is stretched for readable English */
+  tightVsLoose?: string;
+  /** Alternate readings, ambiguous compounds, or places commentaries diverge */
+  alternatives?: string;
+  /** What to hold lightly in practice without overclaiming doctrine */
+  takeaway?: string;
+};
+
+/**
  * The core Verse type - every sacred text passage uses this structure
  */
 export type Verse = {
@@ -73,8 +86,11 @@ export type Verse = {
   /** Primary practice bucket for VBT filters */
   practiceCategory?: VbtPracticeCategory;
 
-  /** Plain-language paraphrase (not a substitute for translation attribution on `text`) */
+  /** Readable English keyed tightly to `text` (e.g. app-original close reading; attribute published translations separately on `translator`/`commentary` when used) */
   plainLanguage?: string;
+
+  /** Where the close reading is especially interpretive: honesty, range, takeaway */
+  translationReaderNote?: TranslationReaderNote;
 
   /** App-provided contemplative instructions */
   practiceInstructions?: string;

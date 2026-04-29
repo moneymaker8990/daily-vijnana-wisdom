@@ -15,6 +15,11 @@ import type { TextExplanation } from '@lib/textExplain';
 import { getQuizForLesson } from '@data/quizzes';
 import { hasCompletedQuiz } from '@lib/quizProgress';
 import { LessonQuiz } from './LessonQuiz';
+import {
+  TranslationReaderNotePanel,
+  translationNoteHasContent,
+  formatTranslationNoteForPrompt,
+} from '../Study/TranslationReaderNotePanel';
 
 // Helper to parse duration string like "10-15 minutes" into a number
 function parseDuration(durationStr: string): number {
@@ -363,7 +368,13 @@ function VerseCard({ verse, index }: VerseCardProps) {
         </span>
         <div className="flex items-center gap-2">
           <ExplainButton
-            text={verse.text}
+            text={(() => {
+              let t = verse.text;
+              if (verse.plainLanguage) t += `\n\n${verse.plainLanguage}`;
+              const tn = formatTranslationNoteForPrompt(verse.translationReaderNote);
+              if (tn) t += `\n\n${tn}`;
+              return t;
+            })()}
             source={verse.sourceName}
             onExplanation={setExplanation}
             isExpanded={explanation !== null}
@@ -375,7 +386,18 @@ function VerseCard({ verse, index }: VerseCardProps) {
       <p className="text-sm text-white/90 font-serif leading-relaxed italic">
         "{verse.text}"
       </p>
-      
+
+      {verse.plainLanguage && (
+        <div className="mt-3 pt-3 border-t border-white/10">
+          <p className="text-[10px] uppercase tracking-wider text-violet-300/60 mb-1">English · close reading</p>
+          <p className="text-xs text-white/65 leading-relaxed">{verse.plainLanguage}</p>
+        </div>
+      )}
+
+      {translationNoteHasContent(verse.translationReaderNote) && (
+        <TranslationReaderNotePanel note={verse.translationReaderNote!} variant="compact" />
+      )}
+
       {verse.commentary && (
         <p className="mt-3 text-xs text-white/50 pl-3 border-l-2 border-violet-500/30">
           {verse.commentary}

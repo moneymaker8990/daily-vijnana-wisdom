@@ -8,6 +8,7 @@ import { ExplainButton, ExplainPanel } from '../Explain';
 import { useAssistants } from '../Assistants';
 import { createPassageGuideContext } from '@lib/spiritualGuide';
 import type { TextExplanation } from '@lib/textExplain';
+import { TranslationReaderNotePanel, translationNoteHasContent, formatTranslationNoteForPrompt } from './TranslationReaderNotePanel';
 
 export type SingleVerseViewProps = {
   verse: LibraryVerse;
@@ -82,9 +83,18 @@ export function SingleVerseView({
 
         {verse.plainLanguage && (
           <div className="mt-6 pt-6 border-t border-white/10">
-            <h4 className="text-xs uppercase tracking-wider text-violet-300/70 mb-2">In plain language</h4>
+            <h4 className="text-xs uppercase tracking-wider text-violet-300/70 mb-2">
+              English · close reading
+            </h4>
+            <p className="text-[11px] text-white/45 mb-2 leading-relaxed">
+              Original wording for study—tracks the Sanskrit tightly; not a published translation.
+            </p>
             <p className="text-sm md:text-base text-white/75 leading-relaxed">{verse.plainLanguage}</p>
           </div>
+        )}
+
+        {translationNoteHasContent(verse.translationReaderNote) && (
+          <TranslationReaderNotePanel note={verse.translationReaderNote!} variant="library" />
         )}
 
         {verse.commentary && (
@@ -135,7 +145,13 @@ export function SingleVerseView({
         {/* Actions */}
         <div className="mt-4 flex items-center justify-end gap-2">
           <ExplainButton
-            text={verse.text}
+            text={(() => {
+              let t = verse.text;
+              if (verse.plainLanguage) t += `\n\n${verse.plainLanguage}`;
+              const tn = formatTranslationNoteForPrompt(verse.translationReaderNote);
+              if (tn) t += `\n\n${tn}`;
+              return t;
+            })()}
             source={text.title}
             onExplanation={setExplanation}
             isExpanded={explanation !== null}

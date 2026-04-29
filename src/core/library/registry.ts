@@ -229,20 +229,21 @@ Most practitioners move between these modes over time. The point is competent pr
   },
   {
     id: 'spanda-karika',
-    name: 'Spanda Kārikā — Selections',
+    name: 'Spanda Kārikā',
     tradition: 'Tantric',
-    totalVerses: 12,
+    totalVerses: 53,
     subtitle: 'The Pulse of Consciousness',
     description:
-      'Curated verses on spanda—the subtle pulse of consciousness in Kashmir Shaivism: stillness and movement as one alive field.',
+      'Fifty-three kārikās in Sanskrit (GRETIL; CC BY-NC-SA) plus an in-app English close reading keyed to each verse—original wording, not a published translation.',
     originalLanguage: 'Sanskrit',
     period: '9th century CE',
-    translator: 'Adapted from traditional translations',
+    translator:
+      'Sanskrit: GRETIL sa_vasugupta-spandakArikA (input M. Faliero); CC BY-NC-SA 4.0',
     icon: '🌊',
     searchKeywords: ['Spanda Karika', 'Kashmir', 'vibration', 'consciousness', 'pulse'],
     historicalIntro: {
       origin:
-        'The Spanda Kārikā emerged in the early flowering of Kashmir Shaivism and is traditionally linked to the teachings of Vasugupta and his lineage. This app includes a short selection, not the full text.',
+        'The Spanda Kārikā emerged in the early flowering of Kashmir Shaivism and is traditionally linked to Vasugupta and his lineage. These entries are the Sanskrit kārikās (niḥṣyanda I–IV) from the GRETIL electronic text, not English paraphrase.',
       author:
         'The work is often attributed to Kallata, a direct disciple in the Vasugupta lineage, though lineages differ. However authorship is sorted, the text belongs to the earliest stream of non-dual Shaiva thought.',
       significance:
@@ -258,10 +259,11 @@ Most practitioners move between these modes over time. The point is competent pr
     totalVerses: 20,
     subtitle: 'The Heart of Recognition',
     description:
-      'Kṣemarāja’s twenty-sutra manual of recognition (pratyabhijñā) in full in-app form—adapted English paraphrases, not a critical Sanskrit edition.',
+      'Twenty sūtras in Sanskrit (GRETIL; CC BY-NC-SA) plus an in-app English close reading for each—original wording, not a published translation.',
     originalLanguage: 'Sanskrit',
     period: '11th century CE',
-    translator: 'Adapted from traditional translations',
+    translator:
+      'Sanskrit: GRETIL sa_kSemarAja-pratyabhijJAhRdaya; CC BY-NC-SA 4.0',
     icon: '💓',
     searchKeywords: [
       'Pratyabhijna Hridayam',
@@ -276,7 +278,7 @@ Most practitioners move between these modes over time. The point is competent pr
       author:
         'Attributed to Kṣemarāja, a major commentator in the lineage of Abhinavagupta, known for turning doctrine into usable language.',
       significance:
-        'Bondage is described as contraction and forgetting, not as a permanent stain. Liberation is recognition—remembering what awareness already is. Core themes: recognition; forgetting and remembering; contraction and expansion; Śiva as awareness; the world as expression of consciousness; freedom while living.',
+        'Bondage is described as contraction and forgetting, not as a permanent stain. Liberation is recognition—remembering what awareness already is. The app carries the twenty sūtras as Sanskrit source lines (pratyabhijna-1…20).',
       howToRead:
         'Read with gentleness. Notice where you narrow into a small story, then sense the wider field of knowing that already holds the story. Search also uses the plain alias “Pratyabhijna Hridayam.”',
     },
@@ -285,7 +287,7 @@ Most practitioners move between these modes over time. The point is competent pr
     id: 'tantraloka-selections',
     name: 'Tantrāloka — Selections',
     tradition: 'Tantric',
-    totalVerses: 12,
+    totalVerses: 50,
     subtitle: 'Light on Tantra (excerpts only)',
     description:
       'Curated excerpts from Abhinavagupta’s vast synthesis— not the full Tantrāloka. Emphasizes embodied practice, mantra, and recognition as one path.',
@@ -316,10 +318,10 @@ Most practitioners move between these modes over time. The point is competent pr
     id: 'paramarthasara-selections',
     name: 'Paramārthasāra',
     tradition: 'Tantric',
-    totalVerses: 28,
+    totalVerses: 100,
     subtitle: 'The Essence of the Highest Reality',
     description:
-      'Full in-app thematic series: educational notes on Paramārthasāra-related Kashmir Shaiva themes (practice, recognition, manifestation, ethics). Not a scripture translation or critical edition.',
+      'Thematic educational series (100 entries) on Paramārthasāra-related Kashmir Shaiva themes (practice, recognition, manifestation, ethics). Not a scripture translation or critical edition.',
     originalLanguage: 'Sanskrit',
     period: '10th–11th century CE (attributed tradition)',
     translator: 'App educational summaries (not primary-source translation)',

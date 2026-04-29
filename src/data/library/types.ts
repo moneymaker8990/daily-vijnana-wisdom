@@ -1,6 +1,10 @@
 // Types for the Study Library
 
-import type { VbtPracticeCategory, VerseContentKind } from '@core/library/types';
+import type {
+  VbtPracticeCategory,
+  VerseContentKind,
+  TranslationReaderNote,
+} from '@core/library/types';
 
 export type TextTradition =
   | 'vijnana'
@@ -21,6 +25,7 @@ export type LibraryVerse = {
   keywords?: string[];
   practiceCategory?: VbtPracticeCategory;
   plainLanguage?: string;
+  translationReaderNote?: TranslationReaderNote;
   practiceInstructions?: string;
   reflectionPrompt?: string;
   modernLifeApplication?: string;

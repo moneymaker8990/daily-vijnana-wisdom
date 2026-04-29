@@ -23,6 +23,7 @@ function verseToLibraryVerse(verse: Verse, index: number): LibraryVerse {
     keywords: verse.tags,
     practiceCategory: verse.practiceCategory,
     plainLanguage: verse.plainLanguage,
+    translationReaderNote: verse.translationReaderNote,
     practiceInstructions: verse.practiceInstructions,
     reflectionPrompt: verse.reflectionPrompt,
     modernLifeApplication: verse.modernLifeApplication,
