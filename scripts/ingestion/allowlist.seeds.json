@@ -1,0 +1,75 @@
+{
+  "_comment": "Curated Internet Archive identifiers; verify IA metadata before approving.",
+  "entries": [
+    {
+      "work_id": "shiva-sutras",
+      "source_type": "internet_archive",
+      "ingestion_tier": "tier1_production_candidate",
+      "identifiers": ["dli.ernet.242144"],
+      "notes": "Śiva Sūtra Vimarśinī / DLI scan — verify license; Spanda kārikā uses separate IA ids."
+    },
+    {
+      "work_id": "spanda-karika",
+      "source_type": "internet_archive",
+      "ingestion_tier": "tier1_production_candidate",
+      "identifiers": ["thespandakarikas00vasuuoft", "spandakairikasof015352mbp"],
+      "notes": "Spanda kārikā volumes — confirm CC0/PD vs undetermined."
+    },
+    {
+      "work_id": "pratyabhijna-hridayam",
+      "source_type": "internet_archive",
+      "ingestion_tier": "tier1_production_candidate",
+      "identifiers": [],
+      "notes": "Add KSTS/GRETIL-sourced IA mirror ids if any; Tier 2 GRETIL primary stays reference-only."
+    },
+    {
+      "work_id": "paramarthasara",
+      "source_type": "internet_archive",
+      "ingestion_tier": "tier1_production_candidate",
+      "identifiers": [],
+      "notes": "Search IA for KSTS Paramārthasāra CC0/PD items; pair with app study layer."
+    },
+    {
+      "work_id": "vijnana-bhairava-tantra",
+      "source_type": "internet_archive",
+      "ingestion_tier": "tier1_production_candidate",
+      "identifiers": [],
+      "notes": "Prefer PD-mark/CC0 items; separate Sanskrit layer vs English translation review."
+    },
+    {
+      "work_id": "isvara-pratyabhijna-karika",
+      "source_type": "internet_archive",
+      "ingestion_tier": "tier1_production_candidate",
+      "identifiers": [],
+      "notes": "Seed IA CC0 items (e.g. Pandit/Kaw editions) once identifiers confirmed."
+    },
+    {
+      "work_id": "isvara-pratyabhijna-vimarshini",
+      "source_type": "internet_archive",
+      "ingestion_tier": "tier1_production_candidate",
+      "identifiers": [],
+      "notes": "Often commentary under copyright — expect bibliography_only until cleared."
+    },
+    {
+      "work_id": "tantraloka",
+      "source_type": "internet_archive",
+      "ingestion_tier": "tier1_production_candidate",
+      "identifiers": [],
+      "notes": "Multi-volume KSTS 1918–1938 set — ingest metadata per volume id; chapter lazy load only."
+    },
+    {
+      "work_id": "malinivijayottara-tantra",
+      "source_type": "internet_archive",
+      "ingestion_tier": "tier1_production_candidate",
+      "identifiers": [],
+      "notes": "KSTS 1922 Malini — add verified IA identifiers."
+    },
+    {
+      "work_id": "netra-tantra",
+      "source_type": "internet_archive",
+      "ingestion_tier": "tier1_production_candidate",
+      "identifiers": [],
+      "notes": "Netra KSTS 1926 — add verified IA identifiers."
+    }
+  ]
+}

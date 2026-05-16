@@ -83,7 +83,7 @@ export function TabNavigation({ activeTab, onTabChange, hasPremiumAccess = false
                 {tab.icon}
               </span>
               <span className="text-[10px] font-medium flex items-center gap-1">
-                {tab.label}
+                <span>{tab.label}</span>
                 {!hasPremiumAccess && PREMIUM_TAB_IDS.includes(tab.id) && (
                   <span className="text-[9px] text-white/35" aria-hidden="true">lock</span>
                 )}

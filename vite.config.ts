@@ -33,7 +33,7 @@ export default defineConfig({
           // Only split the large library/data bundles. Splitting DayView/Dreams/Study into
           // separate manualChunks created circular chunk graphs (daily <-> dreams) so React
           // was undefined during module init → blank purple screen in production.
-          if (id.includes('/src/core/library/') || id.includes('/src/data/entries/')) {
+          if (id.includes('/src/core/library/') || id.includes('/src/core/catalog/') || id.includes('/src/data/entries/')) {
             return 'library';
           }
         },

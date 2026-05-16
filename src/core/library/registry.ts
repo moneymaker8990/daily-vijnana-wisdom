@@ -128,6 +128,7 @@ export const ALL_SOURCES: Source[] = [
     period: '8th-9th century CE',
     translator: 'Paul Reps',
     icon: '🕉️',
+    contentTier: 'rootText',
     searchKeywords: [
       'Vijnana',
       'Bhairava',
@@ -208,6 +209,7 @@ export const ALL_SOURCES: Source[] = [
     originalLanguage: 'Sanskrit',
     period: '9th century CE',
     icon: '🔱',
+    contentTier: 'rootText',
     searchKeywords: ['Vasugupta', 'Kashmir', 'Shaivism', 'upaya', 'Trika', 'recognition'],
     pedagogicalNote: `The Shiva Sutras are arranged in three sections that map to three modes of practice (upāyas)—ways of participating, not abstract “topics”:
 
@@ -240,6 +242,7 @@ Most practitioners move between these modes over time. The point is competent pr
     translator:
       'Sanskrit: GRETIL sa_vasugupta-spandakArikA (input M. Faliero); CC BY-NC-SA 4.0',
     icon: '🌊',
+    contentTier: 'rootText',
     searchKeywords: ['Spanda Karika', 'Kashmir', 'vibration', 'consciousness', 'pulse'],
     historicalIntro: {
       origin:
@@ -247,7 +250,7 @@ Most practitioners move between these modes over time. The point is competent pr
       author:
         'The work is often attributed to Kallata, a direct disciple in the Vasugupta lineage, though lineages differ. However authorship is sorted, the text belongs to the earliest stream of non-dual Shaiva thought.',
       significance:
-        'Spanda reframes practice around living participation. Consciousness is not only “witness” behind experience; it is the subtle throb within thought, sensation, and action—themes this selection highlights.',
+        'Spanda reframes practice around living participation. Consciousness is not only “witness” behind experience; it is the subtle throb within thought, sensation, and action. This app includes the full sequence of fifty-three kārikās from GRETIL.',
       howToRead:
         'Read slowly as contemplation, not metaphysics to memorize. Core themes: subtle vibration; consciousness as alive stillness; the pulse beneath thought; energy and awareness as inseparable; finding movement inside stillness.',
     },
@@ -265,6 +268,7 @@ Most practitioners move between these modes over time. The point is competent pr
     translator:
       'Sanskrit: GRETIL sa_kSemarAja-pratyabhijJAhRdaya; CC BY-NC-SA 4.0',
     icon: '💓',
+    contentTier: 'summaryOrDigest',
     searchKeywords: [
       'Pratyabhijna Hridayam',
       'Kshemaraja',
@@ -278,7 +282,7 @@ Most practitioners move between these modes over time. The point is competent pr
       author:
         'Attributed to Kṣemarāja, a major commentator in the lineage of Abhinavagupta, known for turning doctrine into usable language.',
       significance:
-        'Bondage is described as contraction and forgetting, not as a permanent stain. Liberation is recognition—remembering what awareness already is. The app carries the twenty sūtras as Sanskrit source lines (pratyabhijna-1…20).',
+        'Bondage is described as contraction and forgetting, not as a permanent stain. Liberation is recognition—remembering what awareness already is. The twenty sūtras condense the much larger Pratyabhijñā system (e.g. Utpaladeva’s Īśvara Pratyabhijñā Kārikā and commentary tradition), which is not yet included in this app.',
       howToRead:
         'Read with gentleness. Notice where you narrow into a small story, then sense the wider field of knowing that already holds the story. Search also uses the plain alias “Pratyabhijna Hridayam.”',
     },
@@ -295,10 +299,13 @@ Most practitioners move between these modes over time. The point is competent pr
     period: '10th-11th century CE',
     translator: 'Adapted from traditional translations',
     icon: '🪔',
+    contentTier: 'excerpt',
+    /** Order-of-magnitude full Tantrāloka length (recensions differ). */
+    canonicalVerseTotal: 5800,
     searchKeywords: ['Abhinavagupta', 'Tantraloka', 'Kashmir', 'ritual', 'recognition'],
     historicalIntro: {
       origin:
-        'Tantrāloka (“Light on Tantra”) is Abhinavagupta’s encyclopedic work in Kashmir. This app contains only brief selections; it does not include the full text.',
+        'Tantrāloka (“Light on Tantra”) is Abhinavagupta’s encyclopedic work in Kashmir—roughly thirty-seven chapters and on the order of five to six thousand verses in commonly cited editions. This app contains only brief selections; it does not include the full text.',
       author:
         'Abhinavagupta: philosopher, exegete, poet, and practitioner—central to how later generations understood doctrine and practice together.',
       significance:
@@ -326,6 +333,7 @@ Most practitioners move between these modes over time. The point is competent pr
     period: '10th–11th century CE (attributed tradition)',
     translator: 'App educational summaries (not primary-source translation)',
     icon: '📿',
+    contentTier: 'educationalSeries',
     searchKeywords: ['Abhinavagupta', 'Paramarthasara', 'essence', 'Kashmir', 'consciousness'],
     historicalIntro: {
       origin:

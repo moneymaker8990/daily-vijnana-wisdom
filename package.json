@@ -22,7 +22,12 @@
     "test:ai-health": "node ./scripts/test-hyper-processor-health.mjs",
     "supabase:link": "npx supabase link --project-ref coihujjfdhpqfwmibfbi",
     "supabase:db:push": "npx supabase db push",
-    "supabase:functions:deploy:all": "npx supabase functions deploy hyper-processor --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi && npx supabase functions deploy check-entitlement --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi && npx supabase functions deploy stripe-checkout --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi && npx supabase functions deploy stripe-reconcile --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi && npx supabase functions deploy stripe-webhook --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi"
+    "supabase:functions:deploy:all": "npx supabase functions deploy hyper-processor --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi && npx supabase functions deploy check-entitlement --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi && npx supabase functions deploy stripe-checkout --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi && npx supabase functions deploy stripe-reconcile --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi && npx supabase functions deploy stripe-webhook --no-verify-jwt --project-ref coihujjfdhpqfwmibfbi",
+    "ingest:metadata:dry": "tsx scripts/ingestion/runIngestMetadata.ts --dry-run",
+    "ingest:metadata:sql": "tsx scripts/ingestion/runIngestMetadata.ts --emit-sql scripts/ingestion/_generated_candidates.sql",
+    "ingest:metadata:push": "npm run ingest:metadata:sql && npx supabase db query --linked -f scripts/ingestion/_generated_candidates.sql",
+    "ingest:metadata": "tsx scripts/ingestion/runIngestMetadata.ts",
+    "ingest:texts": "tsx scripts/ingestion/ingestTexts.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
@@ -31,9 +36,11 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "dotenv": "^17.4.2",
     "jsdom": "^26.0.0",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.1.17",
+    "tsx": "^4.21.0",
     "typescript": "~5.9.3",
     "vite": "^7.2.4",
     "vitest": "^3.0.0"

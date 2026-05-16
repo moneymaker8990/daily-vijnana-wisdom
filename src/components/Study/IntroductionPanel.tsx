@@ -1,15 +1,20 @@
 import { useState } from 'react';
-import type { HistoricalIntro } from '@core/library/types';
+import type { HistoricalIntro, Source } from '@core/library/types';
+import { formatVerseScopeLine, getContentTierShortLabel } from '@core/library/contentTierDisplay';
 
 export type IntroductionPanelProps = {
   intro?: HistoricalIntro;
-  source: {
-    name: string;
-    period?: string;
-    originalLanguage?: string;
-    icon?: string;
-    pedagogicalNote?: string;
-  };
+  source: Pick<
+    Source,
+    | 'name'
+    | 'period'
+    | 'originalLanguage'
+    | 'icon'
+    | 'pedagogicalNote'
+    | 'contentTier'
+    | 'canonicalVerseTotal'
+    | 'totalVerses'
+  >;
   onClose: () => void;
 };
 
@@ -67,6 +72,17 @@ export function IntroductionPanel({ intro, source, onClose }: IntroductionPanelP
         <div className="rounded-xl border border-violet-500/25 bg-violet-500/10 p-4">
           <p className="text-xs uppercase tracking-wider text-violet-200/80 mb-2">Study orientation</p>
           <p className="text-sm text-white/85 leading-relaxed whitespace-pre-line">{source.pedagogicalNote}</p>
+        </div>
+      )}
+
+      {source.totalVerses != null && (
+        <div className="rounded-xl border border-white/10 bg-white/5 p-3 text-xs text-white/70 leading-relaxed">
+          <p>
+            {getContentTierShortLabel(source.contentTier) && (
+              <span className="font-medium text-violet-200/90">{getContentTierShortLabel(source.contentTier)} — </span>
+            )}
+            {formatVerseScopeLine(source, source.totalVerses)}
+          </p>
         </div>
       )}
 

@@ -28,6 +28,7 @@ export interface Lesson {
   title: string;
   introduction: string;
   verses: string[]; // verse IDs from ALL_VERSES
+  relatedTextSlugs?: string[];
   reflectionQuestions: string[];
   practice: Practice;
   traditionalContext?: string; // for comparative lessons

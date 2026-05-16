@@ -3,6 +3,9 @@ import type { LibraryText } from '@data/library/types';
 import type { VbtPracticeCategory } from '@core/library/types';
 import { updateReadingProgress, toggleBookmark, isBookmarked } from '@lib/readingProgress';
 import { ALL_SOURCES } from '@core/library/registry';
+import { getShippingVersionForLegacySource } from '@core/catalog/catalogEngine';
+import { assertApprovedForSurface } from '@core/catalog/licenseGuard';
+import { formatVerseScopeLine, getContentTierShortLabel } from '@core/library/contentTierDisplay';
 import { SingleVerseView } from './SingleVerseView';
 import { ListView } from './ListView';
 import { TableOfContents } from './TableOfContents';
@@ -51,6 +54,13 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
   const source = getSourceForText(text);
   const sourceId = source?.id || text.registrySourceId || text.title.toLowerCase().replace(/\s+/g, '-');
   const verse = displayText.verses[currentIndex];
+
+  useEffect(() => {
+    const ver = getShippingVersionForLegacySource(sourceId);
+    if (ver) {
+      assertApprovedForSurface(ver, 'segment_reader', `TextReader:${sourceId}`);
+    }
+  }, [sourceId]);
 
   useEffect(() => {
     if (currentIndex >= displayText.verses.length) {
@@ -203,6 +213,14 @@ export function TextReader({ text, onBack, initialVerse = 0 }: TextReaderProps) 
       <div className="text-center">
         <h2 className="text-xl md:text-2xl font-serif text-white">{text.title}</h2>
         <p className="text-sm text-white/50">{text.subtitle}</p>
+        {source && source.totalVerses != null && (
+          <p className="mt-2 text-xs text-white/45 max-w-xl mx-auto leading-relaxed">
+            {getContentTierShortLabel(source.contentTier) && (
+              <span className="text-violet-300/85 font-medium">{getContentTierShortLabel(source.contentTier)} · </span>
+            )}
+            {formatVerseScopeLine(source, text.verses.length)}
+          </p>
+        )}
         {isVbt && !showIntro && (
           <p className="mt-2 text-xs text-white/45 max-w-xl mx-auto leading-relaxed">
             <span className="text-violet-300/80">Study</span> the verses and introduction.

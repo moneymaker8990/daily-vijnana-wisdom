@@ -33,6 +33,14 @@ export type VbtPracticeCategory =
 
 export type VerseContentKind = 'source_text' | 'educational_note';
 
+/** How complete / what kind of material this source is in the app (esp. Kashmir Shaivism shelf). */
+export type ContentTier =
+  | 'rootText'
+  | 'excerpt'
+  | 'summaryOrDigest'
+  | 'educationalSeries'
+  | 'commentary';
+
 /**
  * Optional transparency for app-original `plainLanguage` renderings:
  * one short paragraph per field; cite uncertainty explicitly.
@@ -167,6 +175,18 @@ export type Source = {
 
   /** Shown in introduction area as study guidance (e.g. three upāyas) */
   pedagogicalNote?: string;
+
+  /**
+   * Transparency: is this the full root text in-app, an excerpt, a digest, etc.?
+   * Omitted sources are treated as unspecified in the UI.
+   */
+  contentTier?: ContentTier;
+
+  /**
+   * When `contentTier` is `excerpt`, approximate verse count of the traditional full work
+   * (scholarship varies). UI may show "N in app · ~M+ in traditional editions".
+   */
+  canonicalVerseTotal?: number;
 };
 
 /**
