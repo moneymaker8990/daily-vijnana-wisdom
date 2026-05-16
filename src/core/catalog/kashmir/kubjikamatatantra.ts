@@ -1,6 +1,14 @@
 import type { MindvantaRendering, ReflectionPrompt, TextVersion, TextWork } from '../types';
 
 const sourceUrl = 'https://www.wisdomlib.org/hinduism/book/kubjikamatatantra-sanskrit';
+const REVIEWED_AT = '2026-05-15';
+const SELECTED_RENDERING_REVIEW = {
+  reviewNotes:
+    'Selected rendering editorial pass complete for non-ritual presentation, scope honesty, and tone. Sanskrit/source selection still requires specialist review.',
+  reviewerName: 'Mindvanta editorial review',
+  reviewedAt: REVIEWED_AT,
+  needsSanskritReview: true,
+} as const;
 
 export type ConceptSection = {
   id: string;
@@ -82,6 +90,7 @@ export const KUBJIKAMATATANTRA_RENDERINGS: MindvantaRendering[] = [
     sourceReference: 'Kubjikamatatantra selected study note 1',
     reviewStatus: 'draft',
     productionEligible: false,
+    ...SELECTED_RENDERING_REVIEW,
   },
   {
     id: 'kubjikamatatantra-selected-2',
@@ -110,6 +119,7 @@ export const KUBJIKAMATATANTRA_RENDERINGS: MindvantaRendering[] = [
     sourceReference: 'Kubjikamatatantra selected study note 2',
     reviewStatus: 'draft',
     productionEligible: false,
+    ...SELECTED_RENDERING_REVIEW,
   },
   {
     id: 'kubjikamatatantra-selected-3',
@@ -138,6 +148,7 @@ export const KUBJIKAMATATANTRA_RENDERINGS: MindvantaRendering[] = [
     sourceReference: 'Kubjikamatatantra selected study note 3',
     reviewStatus: 'draft',
     productionEligible: false,
+    ...SELECTED_RENDERING_REVIEW,
   },
 ];
 

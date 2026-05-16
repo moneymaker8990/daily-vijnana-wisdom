@@ -90,4 +90,15 @@ describe('Kramastotra Mindvanta rendering', () => {
     expect(getApprovedRenderingsForWork('kramastotra')).toHaveLength(0);
     expect(KRAMASTOTRA_RENDERINGS.every((rendering) => !canShowRenderingInProduction(rendering))).toBe(true);
   });
+
+  it('records editorial review state without claiming Sanskrit approval', () => {
+    for (const rendering of KRAMASTOTRA_RENDERINGS) {
+      expect(rendering.needsSanskritReview).toBe(true);
+      expect(rendering.reviewNotes).toContain('Editorial safety pass');
+      expect(rendering.reviewerName).toBe('Mindvanta editorial review');
+      expect(rendering.reviewedAt).toBe('2026-05-15');
+      expect(rendering.reviewStatus).toBe('draft');
+      expect(rendering.productionEligible).toBe(false);
+    }
+  });
 });

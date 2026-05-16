@@ -8,6 +8,7 @@ No Kramastotra record should be marked `approved` until human review and Sanskri
 
 ## Consistency Pass
 
+- Editorial safety pass recorded on 2026-05-15 as `reviewNotes`, `reviewerName`, `reviewedAt`, and `needsSanskritReview`.
 - House style is contemplative and non-sensational.
 - The rendering set avoids initiatory ritual instructions and lineage-restricted procedures.
 - Key terms consistently preserve advanced Sanskrit vocabulary such as `Krama`, `Kali`, `Shakti`, `samvid`, `srishti`, `sthiti`, and `laya`.

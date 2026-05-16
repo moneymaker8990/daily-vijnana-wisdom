@@ -4,6 +4,9 @@ export const KRAMASTOTRA_SOURCE_LABEL =
   'Original Mindvanta Rendering and Commentary based on the Sanskrit source text.';
 
 const sourceUrl = 'https://sanskritdocuments.org/doc_shiva/kramastotram.html';
+const REVIEWED_AT = '2026-05-15';
+const EDITORIAL_REVIEW_NOTE =
+  'Editorial safety pass complete for tone, scope, and non-ritual presentation. Sanskrit accuracy and source alignment still require human review.';
 
 const TERMS = {
   krama: {
@@ -102,6 +105,10 @@ function rendering(index: number, seed: VerseSeed): MindvantaRendering {
     sourceReference: `Kramastotra ${index}`,
     reviewStatus: 'draft',
     productionEligible: false,
+    reviewNotes: EDITORIAL_REVIEW_NOTE,
+    reviewerName: 'Mindvanta editorial review',
+    reviewedAt: REVIEWED_AT,
+    needsSanskritReview: true,
   };
 }
 

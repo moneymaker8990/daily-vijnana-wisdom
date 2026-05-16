@@ -28,6 +28,8 @@ describe('Kubjikamatatantra selected Mindvanta edition', () => {
       expect(rendering.sourceTextSlug).toBe('kubjikamatatantra');
       expect(rendering.productionEligible).toBe(false);
       expect(['draft', 'needs_review']).toContain(rendering.reviewStatus);
+      expect(rendering.needsSanskritReview).toBe(true);
+      expect(rendering.reviewNotes).toContain('Selected rendering editorial pass');
       expect(rendering.practiceNote.toLowerCase()).not.toContain('initiation procedure');
     }
   });
