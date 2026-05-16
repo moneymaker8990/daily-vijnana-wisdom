@@ -185,35 +185,35 @@ export const crookedGoddessCourse: Course = {
       'meeting-kubjika',
       'Meeting Kubjika',
       ['kubjikamatatantra'],
-      'Kubjika is introduced as hidden, contracted goddess power, held here as selected Mindvanta study rather than full translation.',
+      'Kubjika is introduced as hidden, contracted goddess power, held here as selected Mindvanta study rather than a full translation or ritual guide.',
       'Meet hidden power'
     ),
     lesson(
       'the-crooked-path',
       'The Crooked Path',
       ['kubjikamatatantra'],
-      'Crookedness points to coiled and non-linear transformation, not defect or spectacle.',
+      'Crookedness points to coiled and non-linear transformation: power folding inward, moving indirectly, and refusing spectacle or defect language.',
       'Follow one curve'
     ),
     lesson(
       'body-as-sacred-map',
       'Body as Sacred Map',
       ['kubjikamatatantra'],
-      'The body is approached as a sacred field with ethical caution and without ritual procedural claims.',
+      'The body is approached as a sacred field with ethical caution, contemplative restraint, and no claim to publish ritual procedures.',
       'Include the body'
     ),
     lesson(
       'kaula-family-of-power',
       'The Kaula Family of Power',
       ['kubjikamatatantra'],
-      'Kula language invites study of embodied totality while preserving technical humility.',
+      'Kula language invites study of embodied totality, sacred relation, and technical humility without flattening Kaula terms into slogans.',
       'Name the family'
     ),
     lesson(
       'power-without-sensationalism',
       'Power Without Sensationalism',
       ['kubjikamatatantra'],
-      'Advanced goddess study becomes more trustworthy when it refuses theatrics and keeps review gates visible.',
+      'Advanced goddess study becomes more trustworthy when it refuses theatrics, keeps review gates visible, and names what is not being taught.',
       'Practice restraint'
     ),
   ],
@@ -233,28 +233,28 @@ export const churningOfConsciousnessCourse: Course = {
       'what-is-churning',
       'What Is Churning?',
       ['manthanabhairava-tantra'],
-      'Manthana frames transformation as churning: pressure, turning, devotion, and awareness meeting resistance.',
+      'Manthana frames transformation as churning: pressure, turning, devotion, and awareness meeting resistance without turning intensity into drama.',
       'Notice friction'
     ),
     lesson(
       'bhairava-and-bhairavi',
       'Bhairava and Bhairavi',
       ['manthanabhairava-tantra'],
-      'Fierce awareness and its power are studied symbolically, not sensationally.',
+      'Fierce awareness and its power are studied symbolically and ethically, with emphasis on orientation rather than sensational imagery.',
       'Hold intensity steadily'
     ),
     lesson(
       'hidden-power-and-initiation',
       'Hidden Power and Initiation',
       ['manthanabhairava-tantra'],
-      'The guided map respects hiddenness and does not publish lineage-restricted procedure.',
+      'The guided map respects hiddenness, initiation boundaries, and living traditions by refusing to publish lineage-restricted procedure.',
       'Respect the hidden'
     ),
     lesson(
       'subtle-body-as-field',
       'Subtle Body as Sacred Field',
       ['manthanabhairava-tantra'],
-      'Subtle-body language is framed as contemplative map and historical orientation.',
+      'Subtle-body language is framed as contemplative map and historical orientation, not as a do-it-yourself ritual technology.',
       'Sense the field'
     ),
     lesson(

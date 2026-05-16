@@ -41,7 +41,6 @@ export const reflectionWeights: Record<DifficultyBand, Record<string, number>> =
     'diamond-sutra': 3,
     'shiva-sutras': 3,
     'spanda-karika': 3,
-    'tripura-rahasya': 2,
   },
 };
 

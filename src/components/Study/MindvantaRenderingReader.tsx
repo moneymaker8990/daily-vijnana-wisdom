@@ -48,7 +48,8 @@ export function MindvantaRenderingReader({ work, renderings, onBack }: Mindvanta
         </div>
         <h1 className="text-2xl md:text-3xl font-serif text-white">{work.title_primary}</h1>
         <p className="text-sm text-white/65 leading-relaxed">
-          Original Mindvanta Rendering and Commentary based on the Sanskrit source text.
+          Original Mindvanta Rendering and Commentary based on Sanskrit source material. Intended for contemplative
+          study, not as a critical academic edition.
         </p>
       </header>
 

@@ -1,7 +1,7 @@
 import type { MindvantaRendering, ReflectionPrompt, SanskritKeyTerm, TextVersion, TextWork } from '../types';
 
 export const KRAMASTOTRA_SOURCE_LABEL =
-  'Original Mindvanta Rendering and Commentary based on the Sanskrit source text.';
+  'Original Mindvanta Rendering and Commentary based on Sanskrit source material. Intended for contemplative study, not as a critical academic edition.';
 
 const sourceUrl = 'https://sanskritdocuments.org/doc_shiva/kramastotram.html';
 const REVIEWED_AT = '2026-05-15';
@@ -529,7 +529,7 @@ export const KRAMASTOTRA_WORK: TextWork = {
     'Thirty draft verse-level renderings, literal notes, commentary, practice notes, key terms, and reflection questions for review.',
   ],
   not_included_yet: [
-    'Official scholarly translation or critical academic edition.',
+    'No official scholarly translation or critical academic edition.',
     'Production-approved rendering before human and Sanskrit review.',
     'Initiatory ritual instructions or lineage-restricted practice procedures.',
   ],

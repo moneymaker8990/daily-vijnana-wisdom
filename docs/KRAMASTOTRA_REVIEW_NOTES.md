@@ -12,7 +12,7 @@ No Kramastotra record should be marked `approved` until human review and Sanskri
 - House style is contemplative and non-sensational.
 - The rendering set avoids initiatory ritual instructions and lineage-restricted procedures.
 - Key terms consistently preserve advanced Sanskrit vocabulary such as `Krama`, `Kali`, `Shakti`, `samvid`, `srishti`, `sthiti`, and `laya`.
-- The app-facing label remains: "Original Mindvanta Rendering and Commentary based on the Sanskrit source text."
+- The app-facing label remains: "Original Mindvanta Rendering and Commentary based on Sanskrit source material. Intended for contemplative study, not as a critical academic edition."
 - Ambiguity is acknowledged through `ambiguityNotes` rather than hidden behind overconfident translation claims.
 
 ## Open Review Needs

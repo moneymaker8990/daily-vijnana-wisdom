@@ -68,7 +68,7 @@ describe('Kramastotra Mindvanta rendering', () => {
     expect(labels.size).toBe(30);
     expect([...labels].every((label) => label?.startsWith('Kramastotra '))).toBe(true);
     expect(KRAMASTOTRA_SOURCE_LABEL).toBe(
-      'Original Mindvanta Rendering and Commentary based on the Sanskrit source text.'
+      'Original Mindvanta Rendering and Commentary based on Sanskrit source material. Intended for contemplative study, not as a critical academic edition.'
     );
   });
 

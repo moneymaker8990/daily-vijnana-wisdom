@@ -46,7 +46,7 @@ These levels are product scope labels, not scholarly claims. They drive badges, 
 
 App-facing label:
 
-> Original Mindvanta Rendering and Commentary based on the Sanskrit source text.
+> Original Mindvanta Rendering and Commentary based on Sanskrit source material. Intended for contemplative study, not as a critical academic edition.
 
 The current implementation includes 30 draft verse renderings with Sanskrit source lines, transliteration, literal notes, philosophical commentary, practice notes, reflection questions, key Sanskrit terms, and ambiguity notes. All renderings are `reviewStatus: "draft"` and `productionEligible: false`.
 
