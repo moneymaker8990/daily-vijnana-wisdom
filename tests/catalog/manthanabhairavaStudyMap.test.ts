@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { getCatalogWorkBySlug } from '@core/catalog/catalogEngine';
 import { canRenderWorkOnSurface } from '@core/catalog/licenseGuard';
+import { getApprovedRenderingsForWork, getDraftRenderingsForWork } from '@core/catalog/renderingReview';
 import { MANTHANABHAIRAVA_STUDY_MAP } from '@core/catalog/kashmir/manthanabhairava';
 
 describe('Manthanabhairava guided study map', () => {
@@ -30,5 +31,10 @@ describe('Manthanabhairava guided study map', () => {
       'Why this is advanced material',
       'How Mindvanta approaches this responsibly',
     ]);
+  });
+
+  it('does not register Manthanabhairava verse renderings for a map-only work', () => {
+    expect(getDraftRenderingsForWork('manthanabhairava-tantra')).toHaveLength(0);
+    expect(getApprovedRenderingsForWork('manthanabhairava-tantra')).toHaveLength(0);
   });
 });

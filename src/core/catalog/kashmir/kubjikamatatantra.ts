@@ -103,7 +103,7 @@ export const KUBJIKAMATATANTRA_RENDERINGS: MindvantaRendering[] = [
       'The body is not outside the sacred family of awareness; it is one of the places where Shakti gathers herself.',
     literalNotes: 'Selected conceptual rendering draft around kula as family, body, and totality.',
     philosophicalCommentary:
-      'Mindvanta should present Kaula embodiment as careful contemplative theology, not as a manual of esoteric procedure.',
+      'Kaula embodiment is approached here as careful contemplative theology, not as a manual of esoteric procedure.',
     practiceNote: 'Feel the body as included in awareness before trying to improve or transcend it.',
     reflectionQuestion: 'What changes when embodiment is included in the sacred rather than treated as a problem?',
     keyTerms: [
@@ -165,13 +165,73 @@ const reflectionThemes = [
   'power without sensationalism',
 ];
 
-const KUBJIKA_REFLECTIONS: ReflectionPrompt[] = reflectionThemes.map((theme, index) => ({
+const KUBJIKA_REFLECTION_COPY = [
+  {
+    theme: 'embodiment',
+    prompt: 'Kubjika study begins by asking whether the body can be included in awareness without turning it into spectacle.',
+    practice: 'Feel one ordinary bodily sensation as included in awareness, then stop before adding esoteric meaning.',
+    journalQuestion: 'Where do I exclude the body from sacred attention, and where do I overinterpret it?',
+  },
+  {
+    theme: 'hidden power',
+    prompt: 'The crooked goddess points toward power that is hidden, coiled, and indirect rather than performative.',
+    practice: 'Notice one quiet form of strength that does not need display.',
+    journalQuestion: 'What kind of power becomes clearer when it remains humble?',
+  },
+  {
+    theme: 'Shakti',
+    prompt: 'In this selected study layer, Shakti is approached as lived aliveness rather than as a claim of ritual access.',
+    practice: 'Sense aliveness in breath, posture, and attention without trying to control it.',
+    journalQuestion: 'How does power feel when it is not fused with control?',
+  },
+  {
+    theme: 'subtle body',
+    prompt: 'Subtle-body language is treated as symbolic orientation until qualified review says more can be responsibly taught.',
+    practice: 'Map attention gently through the body as metaphor, not as procedure.',
+    journalQuestion: 'What helps me distinguish contemplative symbol from instruction?',
+  },
+  {
+    theme: 'sacred body',
+    prompt: 'The body as mandala means the ordinary body is not outside sacred study, but it does not make the app a ritual manual.',
+    practice: 'Choose one daily movement and let it become careful rather than automatic.',
+    journalQuestion: 'How can reverence for embodiment stay grounded and ethical?',
+  },
+  {
+    theme: 'contraction and expansion',
+    prompt: 'Crookedness can be read as contraction that protects, gathers, and later opens.',
+    practice: 'Find one place of contraction and meet it with curiosity instead of force.',
+    journalQuestion: 'What might this contraction be preserving until it can open safely?',
+  },
+  {
+    theme: 'non-linear awakening',
+    prompt: 'Kubjika resists straight-line spiritual progress; hiddenness and curvature are part of the study map.',
+    practice: 'Review one detour in your practice and name what it taught.',
+    journalQuestion: 'Where has the indirect path been more honest than the direct one?',
+  },
+  {
+    theme: 'devotion to the goddess',
+    prompt: 'Devotion here means respectful attention to Shakti, not possession of restricted knowledge.',
+    practice: 'Offer a moment of gratitude for aliveness without asking it to perform.',
+    journalQuestion: 'How can devotion deepen without becoming entitlement?',
+  },
+  {
+    theme: 'Kaula context',
+    prompt: 'Kula language gathers body, relation, and totality, but this draft keeps the technical term visible for review.',
+    practice: 'Notice one relationship as part of the field of practice.',
+    journalQuestion: 'What changes when practice is relational rather than private?',
+  },
+  {
+    theme: 'power without sensationalism',
+    prompt: 'The safest doorway into advanced goddess material is restraint: power becomes clearer when theatrics are removed.',
+    practice: 'Speak less about one intense experience and study it quietly instead.',
+    journalQuestion: 'Where does drama blur the difference between insight and intensity?',
+  },
+] satisfies Array<Pick<ReflectionPrompt, 'theme' | 'prompt' | 'practice' | 'journalQuestion'>>;
+
+const KUBJIKA_REFLECTIONS: ReflectionPrompt[] = KUBJIKA_REFLECTION_COPY.map((reflection, index) => ({
   id: `kubjikamatatantra-reflection-${index + 1}`,
   sourceTextSlug: 'kubjikamatatantra',
-  theme,
-  prompt: `Let Kubjikamatatantra frame ${theme} as a careful contemplative inquiry rather than a claim of full translation.`,
-  practice: 'Pause and sense embodiment as included in awareness without forcing an esoteric interpretation.',
-  journalQuestion: `How can ${theme} be approached with reverence, restraint, and clarity?`,
+  ...reflection,
   difficulty: 'advanced',
   linkedCourseSlug: 'crooked-goddess-body-power-nondual-shakti',
   linkedLibrarySlug: 'kubjikamatatantra',
@@ -258,8 +318,8 @@ export const KUBJIKAMATATANTRA_VERSION: TextVersion = {
   license_type: 'app_original',
   license_notes: 'Selected Mindvanta renderings and conceptual study only; not a complete translation.',
   attribution_required: true,
-  commercial_use_allowed: true,
-  derivative_use_allowed: true,
+  commercial_use_allowed: false,
+  derivative_use_allowed: false,
   approved_for_shipping: false,
   approved_surfaces: [],
   review_notes: 'Production approval requires source, safety, and Sanskrit/Tantra review.',

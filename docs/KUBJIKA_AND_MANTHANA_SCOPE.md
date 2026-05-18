@@ -19,3 +19,5 @@ Mindvanta does not claim selected renderings or a full verse-by-verse translatio
 ## Shared Review Rule
 
 Both entries remain `reviewStatus: "needs_review"` and must stay hidden from production library/reflection/search result surfaces until explicit approval.
+
+`libraryEligible`, `courseEligible`, `reflectionEligible`, and `allowed_surfaces` describe the surfaces these works may eventually use after approval. They do not by themselves make a work production-visible; production visibility still requires the catalog/review gates to pass.

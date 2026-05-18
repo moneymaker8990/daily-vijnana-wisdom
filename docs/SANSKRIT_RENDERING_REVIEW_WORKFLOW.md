@@ -30,8 +30,11 @@ The helper `canShowRenderingInProduction(rendering)` enforces this. Draft record
 5. Check commentary tone: precise, contemplative, non-sensational, and not imitating a living translator.
 6. Remove any ritual procedure, initiation instructions, or lineage-restricted material.
 7. Add `reviewNotes`, `reviewerName`, `reviewedAt`, and `needsSanskritReview` where relevant.
-8. Move records to `needs_review` only after editorial pass.
-9. Move records to `approved` only after human review; Sanskrit/Tantra review is required for production eligibility.
+8. After editorial pass, the catalog work can remain `needs_review` while individual rendering records remain `draft` if Sanskrit/source alignment is still unresolved.
+9. Move individual records to `needs_review` only when they are ready for human/Sanskrit review.
+10. Move records to `approved` only after human review; Sanskrit/Tantra review is required for production eligibility.
+
+For map-only entries such as `manthanabhairava-tantra`, the work is gated through catalog visibility rather than rendering-record approval because no verse-level rendering records are registered.
 
 ## What Mindvanta Is Not Claiming
 

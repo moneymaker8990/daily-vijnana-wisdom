@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getAllCatalogWorks, getCatalogWorkBySlug } from '@core/catalog/catalogEngine';
+import { getAllCatalogWorks, getCatalogWorkBySlug, getVersionsForWork } from '@core/catalog/catalogEngine';
 import { KRAMASTOTRA_RENDERINGS, KRAMASTOTRA_SOURCE_LABEL } from '@core/catalog/kashmir/kramastotra';
 import {
   KUBJIKAMATATANTRA_CONCEPTS,
@@ -32,6 +32,27 @@ describe('Tantra expansion audit hardening', () => {
       expect(work?.sourceName?.trim().length, slug).toBeGreaterThan(0);
       expect(work?.bibliography.length, slug).toBeGreaterThan(0);
       expect(work?.warning?.toLowerCase(), slug).toContain('not');
+    }
+  });
+
+  it('keeps draft Tantra versions legally conservative until approval', () => {
+    for (const slug of ADVANCED_TANTRA_SLUGS) {
+      const version = getVersionsForWork(slug)[0];
+
+      expect(version?.approved_for_shipping, slug).toBe(false);
+      expect(version?.commercial_use_allowed, slug).toBe(false);
+      expect(version?.derivative_use_allowed, slug).toBe(false);
+    }
+  });
+
+  it('uses work-specific reflection copy instead of templated placeholder prose', () => {
+    for (const slug of ADVANCED_TANTRA_SLUGS) {
+      const work = getCatalogWorkBySlug(slug);
+      const prompts = work?.reflectionPrompts ?? [];
+
+      expect(prompts.length, slug).toBeGreaterThanOrEqual(10);
+      expect(new Set(prompts.map((prompt) => prompt.prompt)).size, slug).toBe(prompts.length);
+      expect(prompts.every((prompt) => !prompt.prompt.startsWith(`Let ${work?.title_primary}`)), slug).toBe(true);
     }
   });
 

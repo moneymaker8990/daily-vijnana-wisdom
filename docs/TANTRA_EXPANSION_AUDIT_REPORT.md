@@ -31,6 +31,10 @@ It verifies the content system as implemented today. It does not approve Sanskri
 - Strengthened advanced course introductions so they read as real study modules rather than thin placeholders.
 - Reworded Kramastotra "not included yet" copy to avoid any context-free reading as an official translation claim.
 - Added an audit test that prevents placeholder terms, unsafe authority claims, missing advanced source attribution, stale reflection weights, and thin advanced course lessons.
+- Added parity tests proving Kubjika and Manthanabhairava stay out of production search/reflection surfaces while course context remains searchable.
+- Hardened remaining Tantra copy around ritual shape, source certainty, draft legal status, and templated reflection prose.
+- Added shared review/license badge labels and per-rendering review metadata in reader/admin UI.
+- Added Manthanabhairava bibliographic source URL metadata and confirmed it remains map-only with no registered verse renderings.
 
 ## Remaining Gated Content
 
@@ -53,21 +57,37 @@ No advanced Tantra content should be marked `approved` or `productionEligible: t
   - Rendering review admin shows review state and production ineligibility.
 - Targeted tests confirm:
   - Review-gated works stay out of production reflection/search/library surfaces.
+  - Kubjika selected renderings stay draft-only and production-ineligible.
+  - Manthanabhairava has no registered draft or approved rendering records.
   - Course links resolve.
   - Search result content-level facets are present.
   - Reflection weights point only to real catalog works.
+  - Rendering UI displays friendly review labels and Sanskrit-review metadata.
 
 ## Files Changed In This Audit
 
 - `docs/KRAMASTOTRA_REVIEW_NOTES.md`
 - `docs/LIBRARY_EXPANSION_STATUS.md`
 - `docs/TANTRA_EXPANSION_AUDIT_REPORT.md`
+- `docs/KUBJIKA_AND_MANTHANA_SCOPE.md`
+- `docs/SANSKRIT_RENDERING_REVIEW_WORKFLOW.md`
+- `src/components/Admin/RenderingReviewAdmin.tsx`
+- `src/components/Study/RenderingDetailView.tsx`
 - `src/components/Study/MindvantaRenderingReader.tsx`
+- `src/components/Study/StudyLibrary.tsx`
 - `src/core/catalog/kashmir/kramastotra.ts`
+- `src/core/catalog/kashmir/kubjikamatatantra.ts`
+- `src/core/catalog/kashmir/manthanabhairava.ts`
+- `src/core/catalog/reviewStatusLabels.ts`
 - `src/core/reflections/catalogReflections.ts`
 - `src/core/study/courses/themed/libraryExpansion.ts`
+- `tests/catalog/kubjikaRendering.test.ts`
+- `tests/catalog/manthanabhairavaStudyMap.test.ts`
 - `tests/catalog/kramastotraRendering.test.ts`
 - `tests/catalog/tantraExpansionAudit.test.ts`
+- `tests/components/renderingReviewUi.test.tsx`
+- `tests/reflections/catalogReflections.test.ts`
+- `tests/search/catalogSearch.test.ts`
 
 ## Recommended Next Phase
 

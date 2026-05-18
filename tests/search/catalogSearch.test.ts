@@ -65,4 +65,19 @@ describe('catalog search projection', () => {
     expect(kubjikaCourse?.renderingLevel).toBe('selected_mindvanta_renderings');
     expect(kubjikaCourse?.renderingLevelLabel).toBe('Guided Study with Selected Mindvanta Renderings');
   });
+
+  it('keeps Kubjika and Manthanabhairava out of production result surfaces while allowing course context', () => {
+    const kubjikaResults = searchCatalogContent('crooked goddess');
+    const manthanaResults = searchCatalogContent('churning of consciousness');
+    const productionResults = [...kubjikaResults, ...manthanaResults].filter(
+      (result) => result.type === 'library_work' || result.type === 'reflection_prompt'
+    );
+
+    expect(kubjikaResults.some((result) => result.type === 'course_module')).toBe(true);
+    expect(manthanaResults.some((result) => result.type === 'course_module')).toBe(true);
+    expect(productionResults.map((result) => result.slug)).not.toContain('kubjikamatatantra');
+    expect(productionResults.map((result) => result.slug)).not.toContain('manthanabhairava-tantra');
+    expect(productionResults.map((result) => result.linkedLibrarySlug)).not.toContain('kubjikamatatantra');
+    expect(productionResults.map((result) => result.linkedLibrarySlug)).not.toContain('manthanabhairava-tantra');
+  });
 });

@@ -120,7 +120,7 @@ const verseSeeds: VerseSeed[] = [
       'When the discipline of suffering has reached its end, this praise becomes the rite of crossing into vast joy.',
     literalNotes: 'The verse turns praise into a completion rite after the exhaustion of sorrow.',
     commentary:
-      'Kramastotra opens by refusing to treat devotion as escape. Praise is the movement by which contracted fear is ripened into fearless awareness.',
+      'On this reading, the opening refuses to treat devotion as escape. Praise becomes a way contracted fear can ripen into fearless awareness.',
     practice: 'Name one repeated sorrow, then feel the simple awareness in which it is known.',
     question: 'What changes when suffering is met as a threshold rather than a final identity?',
     terms: [TERMS.krama, TERMS.bhairava],
@@ -144,7 +144,7 @@ const verseSeeds: VerseSeed[] = [
       'The Self is not known as living experience unless it is touched by its own reflective power.',
     literalNotes: 'Unreflected selfhood is contrasted with self-recognition through awareness.',
     commentary:
-      'The hymn insists that consciousness is not blank being. It is luminous self-contact, the pulse by which experience becomes meaningful.',
+      'If this line is read through the Krama lens, consciousness is not blank being. It is luminous self-contact, the pulse by which experience becomes meaningful.',
     practice: 'Rest for a minute, then notice not only what appears but that appearing is known.',
     question: 'How does experience feel when awareness recognizes itself in the act of knowing?',
     terms: [TERMS.vimarsha, TERMS.samvid, TERMS.shakti],
@@ -177,11 +177,11 @@ const verseSeeds: VerseSeed[] = [
     originalScript: 'भवप्राज्यैश्वर्यप्रथितबहुशक्तेर्भगवतः',
     transliteration: 'bhava-prajyaishvarya-prathita-bahu-shakter bhagavatah',
     rendering:
-      'The Lord of many powers wears the wealth of becoming; bowing into that unity is the first method.',
+      'The Lord of many powers wears the wealth of becoming; recognizing that unity is the first method.',
     literalNotes: 'The verse links the many powers of manifestation with Shiva-unity.',
     commentary:
       'Practice begins where multiplicity is no longer denied. The many powers are honored as the expressive body of the one.',
-    practice: 'Bow inwardly to one sensation, one emotion, and one thought as powers of awareness.',
+    practice: 'Acknowledge one sensation, one emotion, and one thought as powers of awareness.',
     question: 'Can multiplicity become a doorway into unity rather than a distraction from it?',
     terms: [TERMS.shakti, TERMS.bhairava],
   },
@@ -216,7 +216,7 @@ const verseSeeds: VerseSeed[] = [
       'O giver of blessing, your body appears as all these forms, and my heart keeps rushing to praise that indivisible display.',
     literalNotes: 'The divine body is described as the manifold world without true division.',
     commentary:
-      'The hymn makes embodiment sacred without reducing the divine to any single form. The many are a body of recognition.',
+      'This reading makes embodiment sacred without reducing the divine to any single form. The many are approached as a body of recognition.',
     practice: 'Look at three different objects and sense them as one field of appearing.',
     question: 'What happens when the world is approached as a body of awareness?',
     terms: [TERMS.shakti, TERMS.samvid],
@@ -360,7 +360,7 @@ const verseSeeds: VerseSeed[] = [
       'Thus the three powers expand into six wheels, establishing the steps of the Krama in the field of experience.',
     literalNotes: 'The verse connects three powers, sixfold structure, and sequential unfolding.',
     commentary:
-      'The hymn sketches a subtle map without making it a manual. The point is contemplative recognition of power moving as sequence.',
+      'This stanza can be read as sketching a subtle map without making it a manual. The point is contemplative recognition of power moving as sequence.',
     practice: 'Feel experience as a sequence of opening, knowing, acting, and returning.',
     question: 'Can a subtle map help you recognize experience without trying to control it?',
     terms: [TERMS.krama, TERMS.shakti],
@@ -441,11 +441,11 @@ const verseSeeds: VerseSeed[] = [
     originalScript: 'अनर्गलस्वात्ममये महेशे तिष्ठन्ति यस्मिन् विभुशक्तयस्ताः',
     transliteration: 'anargala-svatmamaye maheshe tishthanti yasmin vibhu-shaktayas tah',
     rendering:
-      'In the unobstructed Lord made of the Self, all-pervading powers abide; I bow to that power-bearing one, essence of the world.',
+      'In the unobstructed Lord made of the Self, all-pervading powers abide; this rendering acknowledges the power-bearing one as essence of the world.',
     literalNotes: 'The verse names the power-bearing Lord and Manthana as world-essence.',
     commentary:
-      'The hymn’s devotion is precise: power and power-holder are not split into rival principles. The world is their shared essence.',
-    practice: 'Bow inwardly to the power that lets this moment appear at all.',
+      'On this reading, devotion is precise: power and power-holder are not split into rival principles. The world is their shared essence.',
+    practice: 'Acknowledge the power that lets this moment appear at all.',
     question: 'How do power and awareness belong together in direct experience?',
     terms: [TERMS.shakti, TERMS.bhairava, TERMS.samvid],
   },
@@ -465,10 +465,10 @@ const verseSeeds: VerseSeed[] = [
     originalScript: 'षट्षष्ठिनामके वर्षे नवम्यामसितेऽहनि',
     transliteration: 'shat-shashti-namake varshe navamyam asite ahani',
     rendering:
-      'In the sixty-sixth year, on the dark ninth day of Margashirsha, Abhinavagupta praised Shiva.',
-    literalNotes: 'The closing verse gives date, authorial attribution, and devotional completion.',
+      'The colophon-like closing points to a sixty-sixth year, a dark ninth day of Margashirsha, and praise of Shiva associated with Abhinavagupta.',
+    literalNotes: 'The closing verse appears to give date, authorial attribution, and devotional completion; source alignment requires review.',
     commentary:
-      'The ending grounds the luminous hymn in historical time. Krama is not only cosmic sequence; it is also this day, this author, this act.',
+      'On this draft reading, the ending grounds the hymn in historical time. Krama is not only cosmic sequence; it is also this day, this author, this act.',
     practice: 'Mark today as part of the sequence of your own practice, not as an anonymous day.',
     question: 'What would it mean to make this day worthy of remembrance in awareness?',
     terms: [TERMS.krama, TERMS.bhairava, TERMS.kali],
@@ -492,13 +492,73 @@ const reflectionThemes = [
   'recognition',
 ];
 
-const KRAMASTOTRA_REFLECTIONS: ReflectionPrompt[] = reflectionThemes.map((theme, index) => ({
+const KRAMASTOTRA_REFLECTION_COPY = [
+  {
+    theme: 'Kali',
+    prompt: 'Kali is approached here as the power of time and return, not as a figure for spectacle or fear.',
+    practice: 'Notice one ending today and feel the awareness that remains present through it.',
+    journalQuestion: 'How does time feel when it is held inside awareness rather than outside me?',
+  },
+  {
+    theme: 'time',
+    prompt: 'Kramastotra study turns time from an enemy into a sequence through which awareness can recognize itself.',
+    practice: 'Pause between two tasks and sense the transition instead of rushing past it.',
+    journalQuestion: 'Where did time feel like pressure, and where did it feel like revelation?',
+  },
+  {
+    theme: 'sequence',
+    prompt: 'Krama means sequence, but the sequence is living: arising, appearing, dissolving, and being known.',
+    practice: 'Track one perception from first contact through naming and release.',
+    journalQuestion: 'What did I learn by watching the order of one experience?',
+  },
+  {
+    theme: 'dissolution',
+    prompt: 'Dissolution is treated as return to awareness, not collapse into meaninglessness.',
+    practice: 'Let one small tension dissolve without replacing it with another story.',
+    journalQuestion: 'What remains when something no longer needs to be held together?',
+  },
+  {
+    theme: 'perception',
+    prompt: 'Perception becomes a study site when seeing, naming, and knowing are recognized as one movement.',
+    practice: 'Look at one object before labeling it, then feel the label arise.',
+    journalQuestion: 'How did perception change before and after naming?',
+  },
+  {
+    theme: 'awareness',
+    prompt: 'The rendering set keeps returning to awareness as the field in which every phase is known.',
+    practice: 'Ask quietly: what is aware of this moment before I improve it?',
+    journalQuestion: 'What did I notice when I stopped trying to manufacture awareness?',
+  },
+  {
+    theme: 'transition',
+    prompt: 'Transitions are not gaps in practice; they are where Krama becomes easiest to feel.',
+    practice: 'At a doorway, breath, or notification, notice the before, during, and after.',
+    journalQuestion: 'Which transition today revealed continuity?',
+  },
+  {
+    theme: 'the gap between moments',
+    prompt: 'The gap between moments is not blank; it is a subtle doorway into what does not move.',
+    practice: 'After one thought ends, rest before chasing the next one.',
+    journalQuestion: 'What was present in the interval?',
+  },
+  {
+    theme: 'sacred change',
+    prompt: 'Change becomes sacred when it is not reduced to loss or improvement.',
+    practice: 'Name one change as a movement of awareness rather than a problem to solve.',
+    journalQuestion: 'What changed today, and what knew the change?',
+  },
+  {
+    theme: 'recognition',
+    prompt: 'Recognition is the moment awareness notices itself in the very sequence it seemed to be watching.',
+    practice: 'During one ordinary action, ask whether the knower is separate from the known.',
+    journalQuestion: 'Where did recognition feel ordinary rather than dramatic?',
+  },
+] satisfies Array<Pick<ReflectionPrompt, 'theme' | 'prompt' | 'practice' | 'journalQuestion'>>;
+
+const KRAMASTOTRA_REFLECTIONS: ReflectionPrompt[] = KRAMASTOTRA_REFLECTION_COPY.map((reflection, index) => ({
   id: `kramastotra-reflection-${index + 1}`,
   sourceTextSlug: 'kramastotra',
-  theme,
-  prompt: `Let Kramastotra point you toward ${theme} as a living movement of awareness rather than an abstract idea.`,
-  practice: 'Pause at a transition between activities and sense the awareness that remains continuous.',
-  journalQuestion: `How does ${theme} appear in direct experience today?`,
+  ...reflection,
   difficulty: 'advanced',
   linkedCourseSlug: 'kali-time-and-sequence-of-awareness',
   linkedLibrarySlug: 'kramastotra',
@@ -517,10 +577,10 @@ export const KRAMASTOTRA_WORK: TextWork = {
   summary_short:
     'A Krama-oriented hymn on awareness unfolding as sequence, time, goddess power, creation, maintenance, and dissolution.',
   summary_long:
-    'Kramastotra is treated here as an advanced Mindvanta rendering project, not as an official scholarly translation. The first pass offers original contemplative renderings and commentary from Sanskrit source lines, all held behind review gates until qualified review.',
+    'Kramastotra is treated here as an advanced Mindvanta rendering project, not as an official scholarly translation. This first pass offers original contemplative renderings and commentary from Sanskrit source lines, with verse alignment and Sanskrit accuracy still held behind review gates.',
   why_it_matters:
     'It gives Mindvanta a focused Kali/Krama backbone for time, perception, transition, and recognition without copying modern copyrighted translations.',
-  status_badge: 'stub',
+  status_badge: 'active',
   availability_mode: 'guided_study',
   source_license_status: 'original_only',
   allowed_surfaces: ['library_card', 'study_guide', 'search_index'],
@@ -586,8 +646,8 @@ export const KRAMASTOTRA_VERSION: TextVersion = {
   license_type: 'app_original',
   license_notes: `${KRAMASTOTRA_SOURCE_LABEL} Draft only; not an official translation or critical edition.`,
   attribution_required: true,
-  commercial_use_allowed: true,
-  derivative_use_allowed: true,
+  commercial_use_allowed: false,
+  derivative_use_allowed: false,
   approved_for_shipping: false,
   approved_surfaces: [],
   review_notes: 'Production approval requires human review and preferably Sanskrit/Tantra scholarship review.',

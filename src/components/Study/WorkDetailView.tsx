@@ -7,6 +7,7 @@ import {
   getVersionsForWork,
 } from '@core/catalog/catalogEngine';
 import { getRenderingLevelLabel } from '@core/catalog/renderingLevels';
+import { getLicenseStatusLabel, getReviewStatusLabel } from '@core/catalog/reviewStatusLabels';
 import type { TextWork } from '@core/catalog/types';
 import { getCatalogReaderMode } from './readerRouting';
 
@@ -74,7 +75,7 @@ export function WorkDetailView({
           </span>
           {work.licenseStatus && (
             <span className="rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-emerald-200/90">
-              {getLicenseBadgeLabel(work.licenseStatus)}
+              {getLicenseStatusLabel(work.licenseStatus)}
             </span>
           )}
           {work.renderingLevel && (
@@ -84,7 +85,7 @@ export function WorkDetailView({
           )}
           {work.reviewStatus && (
             <span className="rounded-full border border-amber-400/25 bg-amber-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-amber-100/90">
-              {getReviewBadgeLabel(work.reviewStatus)}
+              {getReviewStatusLabel(work.reviewStatus)}
             </span>
           )}
           {work.status_badge !== 'active' && (
@@ -254,42 +255,6 @@ export function WorkDetailView({
       )}
     </div>
   );
-}
-
-function getReviewBadgeLabel(status: NonNullable<TextWork['reviewStatus']>): string {
-  switch (status) {
-    case 'draft':
-      return 'Draft';
-    case 'needs_review':
-      return 'Needs Review';
-    case 'approved':
-      return 'Approved';
-    case 'rejected':
-      return 'Rejected';
-    default: {
-      const exhaustive: never = status;
-      return exhaustive;
-    }
-  }
-}
-
-function getLicenseBadgeLabel(status: NonNullable<TextWork['licenseStatus']>): string {
-  switch (status) {
-    case 'public_domain_us':
-      return 'Public Domain';
-    case 'open_license':
-      return 'Open License';
-    case 'source_text_only':
-      return 'Guided Commentary';
-    case 'needs_review':
-      return 'Needs Review';
-    case 'do_not_import':
-      return 'Do Not Import';
-    default: {
-      const exhaustive: never = status;
-      return exhaustive;
-    }
-  }
 }
 
 function Bibliography({ work }: { work: TextWork }) {

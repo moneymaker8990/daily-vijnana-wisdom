@@ -2,6 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { getCatalogWorkBySlug } from '@core/catalog/catalogEngine';
 import { canRenderWorkOnSurface } from '@core/catalog/licenseGuard';
 import {
+  canShowRenderingInProduction,
+  getApprovedRenderingsForWork,
+  getDraftRenderingsForWork,
+} from '@core/catalog/renderingReview';
+import {
   KUBJIKAMATATANTRA_CONCEPTS,
   KUBJIKAMATATANTRA_RENDERINGS,
 } from '@core/catalog/kashmir/kubjikamatatantra';
@@ -32,6 +37,12 @@ describe('Kubjikamatatantra selected Mindvanta edition', () => {
       expect(rendering.reviewNotes).toContain('Selected rendering editorial pass');
       expect(rendering.practiceNote.toLowerCase()).not.toContain('initiation procedure');
     }
+  });
+
+  it('keeps selected rendering records blocked by production helpers', () => {
+    expect(getDraftRenderingsForWork('kubjikamatatantra')).toHaveLength(KUBJIKAMATATANTRA_RENDERINGS.length);
+    expect(getApprovedRenderingsForWork('kubjikamatatantra')).toHaveLength(0);
+    expect(KUBJIKAMATATANTRA_RENDERINGS.every((rendering) => !canShowRenderingInProduction(rendering))).toBe(true);
   });
 
   it('documents the required conceptual map', () => {

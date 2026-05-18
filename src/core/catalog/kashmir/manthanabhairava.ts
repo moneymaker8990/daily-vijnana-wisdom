@@ -1,5 +1,7 @@
 import type { ReflectionPrompt, TextVersion, TextWork } from '../types';
 
+const sourceUrl = 'https://www.worldcat.org/search?q=Manthanabhairava+Tantra';
+
 export type StudyMapSection = {
   id: string;
   title: string;
@@ -70,13 +72,73 @@ const reflectionThemes = [
   'responsible study',
 ];
 
-const MANTHANA_REFLECTIONS: ReflectionPrompt[] = reflectionThemes.map((theme, index) => ({
+const MANTHANA_REFLECTION_COPY = [
+  {
+    theme: 'transformation',
+    prompt: 'Manthanabhairava is kept as a study map for transformation, not a claim that Mindvanta has translated the text.',
+    practice: 'Name one pressure that is changing you without dramatizing it.',
+    journalQuestion: 'What kind of transformation becomes possible when intensity is held steadily?',
+  },
+  {
+    theme: 'churning',
+    prompt: 'Churning suggests repeated turning: resistance, devotion, attention, and time working together.',
+    practice: 'Stay with one unresolved feeling for three breaths without forcing a conclusion.',
+    journalQuestion: 'What is being churned in me right now?',
+  },
+  {
+    theme: 'friction',
+    prompt: 'Friction can be an enemy of comfort and a teacher of precision.',
+    practice: 'Notice where friction lives in the body, then soften the story around it.',
+    journalQuestion: 'Where is friction clarifying what I actually value?',
+  },
+  {
+    theme: 'hidden power',
+    prompt: 'The map treats hidden power as something to respect, not something to expose or perform.',
+    practice: 'Let one private strength remain private today.',
+    journalQuestion: 'What power becomes safer when it is not displayed?',
+  },
+  {
+    theme: 'fierce awareness',
+    prompt: 'Fierce awareness cuts confusion without needing violent imagery or inflated certainty.',
+    practice: 'Look directly at one avoidance pattern with steadiness and care.',
+    journalQuestion: 'What does fierceness look like when it is compassionate?',
+  },
+  {
+    theme: 'devotion',
+    prompt: 'Devotion in advanced study can mean humility before what is not yet understood.',
+    practice: 'Pause before one conclusion and admit what still needs learning.',
+    journalQuestion: 'How can not-knowing become a devotional posture?',
+  },
+  {
+    theme: 'sacred embodiment',
+    prompt: 'The body is a sacred field in this map, but Mindvanta does not turn that field into ritual instruction.',
+    practice: 'Let posture become dignified and relaxed for one minute.',
+    journalQuestion: 'How can embodiment be honored without being overcoded?',
+  },
+  {
+    theme: 'nondual Shakti',
+    prompt: 'Nondual Shakti means power and awareness are not finally split, but the statement remains a study pointer.',
+    practice: 'Feel one movement of energy and the awareness that knows it as a single event.',
+    journalQuestion: 'Where do I separate power from awareness in my own language?',
+  },
+  {
+    theme: 'inner intensity',
+    prompt: 'Inner intensity becomes useful only when it is paired with discernment and care.',
+    practice: 'Lower the volume around one intense feeling while keeping attention present.',
+    journalQuestion: 'What helps intensity mature into clarity?',
+  },
+  {
+    theme: 'responsible study',
+    prompt: 'Responsible study keeps maps, translations, and practices in their proper lanes.',
+    practice: 'Name one boundary that protects this material from misuse.',
+    journalQuestion: 'What does intellectual honesty ask of me before I go deeper?',
+  },
+] satisfies Array<Pick<ReflectionPrompt, 'theme' | 'prompt' | 'practice' | 'journalQuestion'>>;
+
+const MANTHANA_REFLECTIONS: ReflectionPrompt[] = MANTHANA_REFLECTION_COPY.map((reflection, index) => ({
   id: `manthanabhairava-reflection-${index + 1}`,
   sourceTextSlug: 'manthanabhairava-tantra',
-  theme,
-  prompt: `Let Manthanabhairava frame ${theme} as advanced study, not as a claim of complete translation.`,
-  practice: 'Notice one form of inner friction and meet it with steady awareness rather than dramatizing it.',
-  journalQuestion: `How can ${theme} become clearer without becoming sensational?`,
+  ...reflection,
   difficulty: 'advanced',
   linkedCourseSlug: 'churning-of-consciousness',
   linkedLibrarySlug: 'manthanabhairava-tantra',
@@ -114,6 +176,7 @@ export const MANTHANABHAIRAVA_WORK: TextWork = {
   bibliography: [
     {
       citation: 'Manthanabhairava Tantra secondary and bibliographic references',
+      url: sourceUrl,
       note: 'Used for study-map orientation only; no complete translation is bundled.',
     },
   ],
@@ -127,6 +190,7 @@ export const MANTHANABHAIRAVA_WORK: TextWork = {
   difficultyBand: 'advanced',
   originalLanguage: 'Sanskrit',
   sourceName: 'Manthanabhairava Tantra bibliographic study references',
+  sourceUrl,
   libraryEligible: true,
   courseEligible: true,
   reflectionEligible: true,
@@ -157,11 +221,12 @@ export const MANTHANABHAIRAVA_VERSION: TextVersion = {
   script: 'Sanskrit source orientation with English study map',
   translator_or_editor: 'Mindvanta guided study map draft; specialist review required',
   source_name: 'Manthanabhairava Tantra bibliographic study references',
+  source_url: sourceUrl,
   license_type: 'app_original',
   license_notes: 'Guided study map only; not a complete translation or selected rendering edition.',
   attribution_required: true,
-  commercial_use_allowed: true,
-  derivative_use_allowed: true,
+  commercial_use_allowed: false,
+  derivative_use_allowed: false,
   approved_for_shipping: false,
   approved_surfaces: [],
   review_notes: 'Production approval requires specialist review and no ritual-procedure leakage.',

@@ -24,6 +24,8 @@ describe('catalog daily reflections', () => {
     expect(slugs).toContain('upanishads-paramananda');
     expect(slugs).not.toContain('devi-bhagavata-purana');
     expect(slugs).not.toContain('kramastotra');
+    expect(slugs).not.toContain('kubjikamatatantra');
+    expect(slugs).not.toContain('manthanabhairava-tantra');
   });
 
   it('selects a linked daily reflection deterministically', () => {
@@ -59,5 +61,7 @@ describe('catalog daily reflections', () => {
 
     expect(selectedSlugs).not.toContain('devi-bhagavata-purana');
     expect(selectedSlugs).not.toContain('kramastotra');
+    expect(selectedSlugs).not.toContain('kubjikamatatantra');
+    expect(selectedSlugs).not.toContain('manthanabhairava-tantra');
   });
 });

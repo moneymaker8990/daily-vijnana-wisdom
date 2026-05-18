@@ -12,6 +12,7 @@ import { getCatalogReaderMode } from './readerRouting';
 import { getReadingProgress, type ReadingProgress } from '@lib/readingProgress';
 import { getDraftRenderingsForWork } from '@core/catalog/renderingReview';
 import { getRenderingLevelLabel } from '@core/catalog/renderingLevels';
+import { getLicenseStatusLabel } from '@core/catalog/reviewStatusLabels';
 import {
   AVAILABILITY_MODE_LABELS,
   getAllCatalogWorks,
@@ -536,7 +537,7 @@ function CatalogWorkCard({ work, sources, onSelect, progress, verseCount }: Cata
             </span>
             {work.licenseStatus && (
               <span className="shrink-0 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-200/90">
-                {getLicenseBadgeLabel(work.licenseStatus)}
+                {getLicenseStatusLabel(work.licenseStatus)}
               </span>
             )}
             {work.renderingLevel && (
@@ -644,25 +645,6 @@ function SourceCard({ source, onSelect, progress, actualVerseCount }: SourceCard
       </div>
     </button>
   );
-}
-
-function getLicenseBadgeLabel(status: NonNullable<TextWork['licenseStatus']>): string {
-  switch (status) {
-    case 'public_domain_us':
-      return 'Public Domain';
-    case 'open_license':
-      return 'Open License';
-    case 'source_text_only':
-      return 'Guided Commentary';
-    case 'needs_review':
-      return 'Needs Review';
-    case 'do_not_import':
-      return 'Do Not Import';
-    default: {
-      const exhaustive: never = status;
-      return exhaustive;
-    }
-  }
 }
 
 function getTraditionIcon(tradition: string): string {

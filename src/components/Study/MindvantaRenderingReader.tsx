@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { MindvantaRendering, TextWork } from '@core/catalog/types';
 import { getRenderingLevelLabel } from '@core/catalog/renderingLevels';
+import { getReviewStatusLabel } from '@core/catalog/reviewStatusLabels';
 import { RenderingDetailView } from './RenderingDetailView';
 
 type MindvantaRenderingReaderProps = {
@@ -43,7 +44,10 @@ export function MindvantaRenderingReader({ work, renderings, onBack }: Mindvanta
             </span>
           )}
           <span className="rounded-full border border-amber-400/25 bg-amber-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-amber-100/90">
-            {work.reviewStatus ?? 'draft'}
+            Work: {getReviewStatusLabel(work.reviewStatus)}
+          </span>
+          <span className="rounded-full border border-amber-400/25 bg-amber-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-amber-100/90">
+            Rendering: {getReviewStatusLabel(rendering.reviewStatus)}
           </span>
         </div>
         <h1 className="text-2xl md:text-3xl font-serif text-white">{work.title_primary}</h1>
