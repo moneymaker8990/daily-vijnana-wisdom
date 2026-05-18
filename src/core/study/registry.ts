@@ -12,6 +12,16 @@ import { stillnessAndSilenceCourse } from './courses/themed/stillnessAndSilence'
 import { deathAndDeathlessnessCourse } from './courses/themed/deathAndDeathlessness';
 import { pathOfLoveCourse } from './courses/themed/pathOfLove';
 import { actionWithoutAttachmentCourse } from './courses/themed/actionWithoutAttachment';
+import {
+  churningOfConsciousnessCourse,
+  crookedGoddessCourse,
+  emptinessAndNonGraspingCourse,
+  goddessShaktiCourse,
+  kaliTimeSequenceCourse,
+  realityDreamAndMindCourse,
+  thePathOfPracticeCourse,
+  whatIsAwarenessCourse,
+} from './courses/themed/libraryExpansion';
 
 // Import tradition courses  
 import { advaitaEssentialsCourse } from './courses/tradition/advaitaEssentials';
@@ -37,6 +47,14 @@ export const ALL_COURSES: Course[] = [
   deathAndDeathlessnessCourse,
   pathOfLoveCourse,
   actionWithoutAttachmentCourse,
+  whatIsAwarenessCourse,
+  realityDreamAndMindCourse,
+  thePathOfPracticeCourse,
+  goddessShaktiCourse,
+  emptinessAndNonGraspingCourse,
+  kaliTimeSequenceCourse,
+  crookedGoddessCourse,
+  churningOfConsciousnessCourse,
   // Tradition Deep Dives
   advaitaEssentialsCourse,
   kashmirShaivismCourse,

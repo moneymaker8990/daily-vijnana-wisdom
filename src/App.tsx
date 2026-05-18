@@ -38,9 +38,14 @@ const Journal = lazy(() => import('./components/Journal').then(m => ({ default: 
 const StudyHub = lazy(() => import('./components/StudyPathways').then(m => ({ default: m.StudyHub })));
 const StudyLibrary = lazy(() => import('./components/Study/StudyLibrary').then(m => ({ default: m.StudyLibrary })));
 const DreamJournal = lazy(() => import('./components/Dreams/DreamJournal').then(m => ({ default: m.DreamJournal })));
+const SourceIngestionAdmin = lazy(() =>
+  import('./components/Admin/SourceIngestionAdmin').then((m) => ({ default: m.SourceIngestionAdmin }))
+);
 const FIRST_JOURNAL_TRACKED_KEY = 'mindvanta_first_journal_tracked';
 const FIRST_DREAM_TRACKED_KEY = 'mindvanta_first_dream_tracked';
 const NUDGE_SHOWN_PREFIX = 'mindvanta_weekly_nudge_';
+const SOURCE_ADMIN_HASH = '#admin/sources';
+const sourceAdminFeatureEnabled = import.meta.env.VITE_ENABLE_SOURCE_ADMIN === 'true';
 
 // Replace the numeric App Store id below with the real id assigned by App Store Connect after first submission.
 const APP_STORE_REVIEW_URL =
@@ -94,6 +99,7 @@ function App() {
   const [showReviewPrompt, setShowReviewPrompt] = useState(false);
   const [milestone, setMilestone] = useState<{ days: number; title: string; message: string } | null>(null);
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [sourceAdminOpen, setSourceAdminOpen] = useState(false);
   const [headerStreak, setHeaderStreak] = useState<StreakData>(() => getStreakData());
 
   useEffect(() => {
@@ -101,6 +107,14 @@ function App() {
       platform: 'web',
       app_version: import.meta.env.VITE_APP_VERSION ?? 'unknown',
     });
+  }, []);
+
+  useEffect(() => {
+    if (!sourceAdminFeatureEnabled) return;
+    const sync = () => setSourceAdminOpen(window.location.hash === SOURCE_ADMIN_HASH);
+    sync();
+    window.addEventListener('hashchange', sync);
+    return () => window.removeEventListener('hashchange', sync);
   }, []);
 
   useEffect(() => {
@@ -475,6 +489,21 @@ function App() {
       <p className="text-white/60 text-sm">Loading...</p>
     </div>
   );
+
+  if (sourceAdminFeatureEnabled && sourceAdminOpen) {
+    return (
+      <Suspense fallback={suspenseFallback}>
+        <SourceIngestionAdmin
+          onClose={() => {
+            setSourceAdminOpen(false);
+            if (window.location.hash === SOURCE_ADMIN_HASH) {
+              window.location.hash = '';
+            }
+          }}
+        />
+      </Suspense>
+    );
+  }
 
   if (showOnboarding) {
     return <OnboardingFlow onComplete={handleOnboardingComplete} />;

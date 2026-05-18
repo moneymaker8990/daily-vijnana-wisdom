@@ -9,6 +9,7 @@ import { getCourseById, getNextLesson, getPreviousLesson, isLastLesson, getLesso
 import { completeLesson, setCurrentLesson, isLessonCompleted } from '@core/study/progress';
 import { ALL_VERSES } from '@core/library/registry';
 import type { Verse } from '@core/library/types';
+import { getCatalogWorkBySlug } from '@core/catalog/catalogEngine';
 import { MeditationTimer } from '../Timer/MeditationTimer';
 import { ExplainButton, ExplainPanel } from '../Explain';
 import type { TextExplanation } from '@lib/textExplain';
@@ -35,7 +36,7 @@ type LessonViewProps = {
 };
 
 export function LessonView({ courseId, lessonId, onBack, onNavigateLesson }: LessonViewProps) {
-  const [expandedSection, setExpandedSection] = useState<'intro' | 'verses' | 'reflection' | 'practice' | null>('intro');
+  const [expandedSection, setExpandedSection] = useState<'intro' | 'texts' | 'verses' | 'reflection' | 'practice' | null>('intro');
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(() => hasCompletedQuiz(courseId, lessonId));
 
@@ -71,6 +72,9 @@ export function LessonView({ courseId, lessonId, onBack, onNavigateLesson }: Les
   const verseObjects = lesson.verses
     .map(id => ALL_VERSES.find(v => v.id === id))
     .filter((v): v is Verse => v !== undefined);
+  const relatedTextWorks = (lesson.relatedTextSlugs ?? [])
+    .map((slug) => getCatalogWorkBySlug(slug))
+    .filter((work): work is NonNullable<ReturnType<typeof getCatalogWorkBySlug>> => work !== undefined);
 
   const handleCompleteLesson = () => {
     completeLesson(courseId, lessonId, nextLesson?.id);
@@ -134,6 +138,39 @@ export function LessonView({ courseId, lessonId, onBack, onNavigateLesson }: Les
             ))}
           </div>
         </CollapsibleSection>
+
+        {relatedTextWorks.length > 0 && (
+          <CollapsibleSection
+            title={`Related Texts (${relatedTextWorks.length})`}
+            icon="📚"
+            isOpen={expandedSection === 'texts'}
+            onToggle={() => toggleSection('texts')}
+          >
+            <div className="space-y-3">
+              {relatedTextWorks.map((work) => (
+                <div key={work.slug} className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="text-sm font-serif text-white">{work.title_primary}</h3>
+                    <span className="rounded-full bg-violet-500/15 px-2 py-0.5 text-[10px] uppercase tracking-wide text-violet-200">
+                      Read in Library
+                    </span>
+                    {work.reflectionEligible && (
+                      <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] uppercase tracking-wide text-emerald-200">
+                        Reflect on this
+                      </span>
+                    )}
+                    {work.courseEligible && (
+                      <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] uppercase tracking-wide text-white/60">
+                        Practice today
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-2 text-xs text-white/60 leading-relaxed">{work.summary_short}</p>
+                </div>
+              ))}
+            </div>
+          </CollapsibleSection>
+        )}
 
         {/* Sacred Verses */}
         {lesson.verses.length > 0 && (

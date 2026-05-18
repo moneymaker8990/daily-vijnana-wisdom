@@ -65,9 +65,9 @@ export const WISDOM_TRADITIONS: Record<TraditionKey, TraditionData> = {
   },
 
   spandaKarika: {
-    name: 'Spanda Kārikā (selections)',
+    name: 'Spanda Kārikā',
     context:
-      'Selections from a foundational Kashmir Shaivism work on spanda—the subtle pulse of consciousness in stillness and movement.',
+      'The fifty-three kārikās on spanda in this app—the subtle pulse of consciousness in stillness and movement—sourced from GRETIL with in-app English close readings.',
     whyMatters: 'Spanda teaches that awareness is not static withdrawal but the living energy present within thought, sensation, and action.',
     texts: [
       'The universe is the flashing forth of the living pulse of consciousness.',
@@ -85,7 +85,7 @@ export const WISDOM_TRADITIONS: Record<TraditionKey, TraditionData> = {
   pratyabhijnahridayam: {
     name: 'Pratyabhijñāhṛdayam',
     context:
-      'Kṣemarāja’s “Heart of Recognition”: how consciousness appears as the individual and remembers itself—liberation as recognition, not acquisition.',
+      'Kṣemarāja’s “Heart of Recognition”: how consciousness appears as the individual and remembers itself—liberation as recognition, not acquisition. Twenty sūtras that digest the much larger Pratyabhijñā philosophical corpus (e.g. Utpaladeva’s kārikās and commentary), which is not included in this app.',
     whyMatters: 'This text reframes liberation as recognition rather than acquisition: you are remembering what you never stopped being.',
     texts: [
       'Consciousness, absolutely free and self-luminous, is the cause of the universe.',
@@ -103,7 +103,7 @@ export const WISDOM_TRADITIONS: Record<TraditionKey, TraditionData> = {
   tantraloka: {
     name: 'Tantrāloka (selections)',
     context:
-      'Brief selections from Abhinavagupta’s vast synthesis—not the full Tantrāloka—pointing to ritual, mantra, embodiment, and recognition as one path.',
+      'Curated selections from Abhinavagupta’s vast synthesis (traditionally on the order of dozens of chapters and thousands of verses)—not the full Tantrāloka—pointing to ritual, mantra, embodiment, and recognition as one path.',
     whyMatters:
       'These excerpts refuse a split between realization and life, hinting how practice and world can express one awakened field.',
     texts: [
@@ -122,7 +122,7 @@ export const WISDOM_TRADITIONS: Record<TraditionKey, TraditionData> = {
   paramarthasara: {
     name: 'Paramārthasāra (study themes)',
     context:
-      'Educational themes associated with Abhinavagupta’s “Essence of the Highest Reality”—app commentary for orientation, not a substitute for reading qualified translations.',
+      'Educational themes associated with Abhinavagupta’s “Essence of the Highest Reality”—app commentary for orientation. Traditional editions are often near one hundred ślokas; this is not a verse-by-verse translation or critical edition.',
     whyMatters:
       'These notes help you see how nondual Shaiva teaching weaves practice, recognition, and everyday life without splitting spirit from world.',
     texts: [

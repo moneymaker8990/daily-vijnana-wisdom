@@ -11,6 +11,7 @@ import { WisdomSearch } from './WisdomSearch';
 import { DailyVerseCard } from './DailyVerseCard';
 import { getDataSource } from '@lib/dataSource';
 import { InsightGraph } from '../Insights/InsightGraph';
+import { selectDailyReflection } from '@core/reflections/catalogReflections';
 
 type DayViewProps = {
   entry: DailyEntry;
@@ -132,6 +133,10 @@ export function DayView({
   }, [showSearch, allEntries.length]);
 
   const sizeClasses = textSizeClasses[textSize];
+  const catalogReflection = selectDailyReflection({
+    dayNumber,
+    difficulty: dayNumber < 121 ? 'beginner' : dayNumber < 241 ? 'intermediate' : 'advanced',
+  });
 
   return (
     <div className="space-y-5 sm:space-y-6 md:space-y-8">
@@ -522,6 +527,40 @@ export function DayView({
         <p className={`${sizeClasses.body} text-white/75 leading-relaxed`} style={{ overflowWrap: 'break-word' }}>
           {entry.integratedReflectionBody}
         </p>
+      </section>
+
+      <section className="bg-gradient-to-br from-violet-500/10 to-indigo-500/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-violet-400/20">
+        <div className="flex flex-wrap items-center gap-2 mb-3">
+          <SectionHeader className="mb-0">Library Reflection</SectionHeader>
+          <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-white/60">
+            {catalogReflection.sourceTitle}
+          </span>
+          <span className="rounded-full bg-violet-500/20 px-2 py-0.5 text-[10px] text-violet-100">
+            {catalogReflection.theme}
+          </span>
+        </div>
+        <h4 className={`${textSize === 'large' ? 'text-lg sm:text-xl md:text-2xl' : 'text-base sm:text-lg md:text-xl'} font-serif text-white mb-2 sm:mb-3`}>
+          {catalogReflection.title}
+        </h4>
+        <p className={`${sizeClasses.body} text-white/75 leading-relaxed`} style={{ overflowWrap: 'break-word' }}>
+          {catalogReflection.body}
+        </p>
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          <div className="rounded-xl bg-white/[0.05] p-3">
+            <p className="text-[10px] uppercase tracking-wider text-violet-200/70 mb-1">Practice this today</p>
+            <p className="text-xs sm:text-sm text-white/70 leading-relaxed">{catalogReflection.practice}</p>
+          </div>
+          <div className="rounded-xl bg-white/[0.05] p-3">
+            <p className="text-[10px] uppercase tracking-wider text-violet-200/70 mb-1">Journal on this</p>
+            <p className="text-xs sm:text-sm text-white/70 leading-relaxed">{catalogReflection.journalQuestion}</p>
+          </div>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2 text-[10px] uppercase tracking-wide text-white/50">
+          <span className="rounded-full bg-white/5 px-2 py-1">Go deeper: Library / {catalogReflection.linkedLibrarySlug}</span>
+          {catalogReflection.linkedCourseSlug && (
+            <span className="rounded-full bg-white/5 px-2 py-1">Related course: {catalogReflection.linkedCourseSlug}</span>
+          )}
+        </div>
       </section>
 
       {/* Meditation with Timer */}

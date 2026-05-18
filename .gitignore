@@ -34,5 +34,6 @@ ios/App/build
 supabase/.temp
 .branches
 
-# Generated screenshots
-store-assets/screenshots/
+# Generated ingestion SQL (large snapshots)
+scripts/ingestion/_generated_candidates.sql
+
